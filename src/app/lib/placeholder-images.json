@@ -1,0 +1,35 @@
+
+{
+  "placeholderImages": [
+    {
+      "id": "hero-bg",
+      "description": "Professional video editing setup with neon lighting",
+      "imageUrl": "https://picsum.photos/seed/videomaster-hero/1200/800",
+      "imageHint": "video editing studio"
+    },
+    {
+      "id": "template-1",
+      "description": "Vibrant cinematic vlog template preview",
+      "imageUrl": "https://picsum.photos/seed/vlog-template/400/600",
+      "imageHint": "vlog cinematic"
+    },
+    {
+      "id": "template-2",
+      "description": "Minimalist corporate presentation template",
+      "imageUrl": "https://picsum.photos/seed/corp-template/400/600",
+      "imageHint": "corporate video"
+    },
+    {
+      "id": "template-3",
+      "description": "Fast-paced action sports editing template",
+      "imageUrl": "https://picsum.photos/seed/action-template/400/600",
+      "imageHint": "action sports"
+    },
+    {
+      "id": "avatar-user",
+      "description": "Professional user profile avatar",
+      "imageUrl": "https://picsum.photos/seed/user-avatar/200/200",
+      "imageHint": "user profile"
+    }
+  ]
+}
