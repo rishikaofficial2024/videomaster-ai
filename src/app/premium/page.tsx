@@ -1,10 +1,45 @@
 
+"use client";
+
+import { useState } from "react";
 import { Navbar } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Crown, Check, Zap, Cloud, Video, ShieldCheck } from "lucide-react";
+import { Crown, Check, Zap, Cloud, Video, ShieldCheck, Loader2 } from "lucide-react";
+import { useUser, useFirestore, useDoc } from "@/firebase";
+import { doc, updateDoc } from "firebase/firestore";
+import { useToast } from "@/hooks/use-toast";
 
 export default function PremiumPage() {
+  const { user } = useUser();
+  const db = useFirestore();
+  const { data: profile } = useDoc(user ? doc(db, "users", user.uid) : null);
+  const [loading, setLoading] = useState(false);
+  const { toast } = useToast();
+
+  const handleUpgrade = async () => {
+    if (!user) return;
+    setLoading(true);
+    try {
+      await updateDoc(doc(db, "users", user.uid), {
+        isPremium: true,
+        credits: 9999, // Unlimited credits for premium
+      });
+      toast({
+        title: "Welcome to PRO!",
+        description: "You now have access to all professional features.",
+      });
+    } catch (e) {
+      toast({
+        variant: "destructive",
+        title: "Upgrade Failed",
+        description: "Could not process your subscription.",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const features = [
     { title: "4K High Res Exports", icon: Video, desc: "Export videos in stunning crystal clear 4K." },
     { title: "Unlimited AI Credits", icon: Zap, desc: "Run auto-captions and content analysis endlessly." },
@@ -56,14 +91,21 @@ export default function PremiumPage() {
               <span className="text-muted-foreground">/ month</span>
             </div>
             <ul className="space-y-3 text-sm text-left px-4">
-              <li className="flex items-center gap-2"><Check className="text-primary w-4 h-4" /> All Premium Features</li>
+              <li className="flex items-center gap-2">
+                <Check className="text-primary w-4 h-4" /> 
+                {profile?.isPremium ? "Active Subscription" : "All Premium Features"}
+              </li>
               <li className="flex items-center gap-2"><Check className="text-primary w-4 h-4" /> Early Access to AI Tools</li>
               <li className="flex items-center gap-2"><Check className="text-primary w-4 h-4" /> Dedicated Support</li>
             </ul>
           </CardContent>
           <CardFooter>
-            <Button className="w-full h-14 text-lg font-bold bg-primary hover:bg-primary/90 text-white shadow-xl shadow-primary/20">
-              Upgrade Now
+            <Button 
+              className="w-full h-14 text-lg font-bold bg-primary hover:bg-primary/90 text-white shadow-xl shadow-primary/20"
+              onClick={handleUpgrade}
+              disabled={loading || profile?.isPremium}
+            >
+              {loading ? <Loader2 className="animate-spin" /> : profile?.isPremium ? "Already Subscribed" : "Upgrade Now"}
             </Button>
           </CardFooter>
         </Card>

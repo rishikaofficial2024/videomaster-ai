@@ -9,18 +9,51 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Video, Chrome } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
+import { useAuth, useFirestore } from "@/firebase";
+import { useToast } from "@/hooks/use-toast";
 
 export default function SignupPage() {
   const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const router = useRouter();
+  const { toast } = useToast();
+  const auth = useAuth();
+  const db = useFirestore();
 
-  const handleSignup = (e: React.FormEvent) => {
+  const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+      const displayName = `${firstName} ${lastName}`;
+
+      await updateProfile(user, { displayName });
+
+      // Create user profile in Firestore
+      await setDoc(doc(db, "users", user.uid), {
+        email: user.email,
+        displayName: displayName,
+        isPremium: false,
+        credits: 10,
+        photoURL: "",
+      });
+
       router.push("/dashboard");
-    }, 1500);
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Signup Failed",
+        description: error.message,
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -42,20 +75,49 @@ export default function SignupPage() {
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="firstName">First Name</Label>
-                <Input id="firstName" placeholder="John" required className="bg-background/50" />
+                <Input 
+                  id="firstName" 
+                  placeholder="John" 
+                  required 
+                  className="bg-background/50" 
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="lastName">Last Name</Label>
-                <Input id="lastName" placeholder="Doe" required className="bg-background/50" />
+                <Input 
+                  id="lastName" 
+                  placeholder="Doe" 
+                  required 
+                  className="bg-background/50" 
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                />
               </div>
             </div>
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" placeholder="john@example.com" required className="bg-background/50" />
+              <Input 
+                id="email" 
+                type="email" 
+                placeholder="john@example.com" 
+                required 
+                className="bg-background/50" 
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
             </div>
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
-              <Input id="password" type="password" required className="bg-background/50" />
+              <Input 
+                id="password" 
+                type="password" 
+                required 
+                className="bg-background/50" 
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
             </div>
             <Button type="submit" className="w-full h-12 text-lg font-medium" disabled={loading}>
               {loading ? "Creating account..." : "Create Account"}
