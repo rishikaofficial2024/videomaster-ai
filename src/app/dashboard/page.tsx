@@ -4,17 +4,24 @@
 import { Navbar } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Plus, Play, Sparkles, Wand2, History, ChevronRight, Loader2 } from "lucide-react";
+import { Plus, Play, Sparkles, Wand2, History, ChevronRight, Loader2, Crown } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
-import { useUser, useFirestore, useCollection } from "@/firebase";
-import { collection, query, orderBy, limit } from "firebase/firestore";
+import { useUser, useFirestore, useCollection, useDoc } from "@/firebase";
+import { collection, query, orderBy, limit, doc } from "firebase/firestore";
 import { useMemo } from "react";
 
 export default function Dashboard() {
   const { user, loading: userLoading } = useUser();
   const db = useFirestore();
+
+  const userProfileRef = useMemo(() => {
+    if (!user) return null;
+    return doc(db, "users", user.uid);
+  }, [user, db]);
+
+  const { data: profile } = useDoc(userProfileRef);
 
   const projectsQuery = useMemo(() => {
     if (!db || !user) return null;
@@ -43,8 +50,15 @@ export default function Dashboard() {
         {/* Header Section */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
-            <h1 className="text-3xl font-headline font-bold">Hello, {user?.displayName || 'Creator'}!</h1>
-            <p className="text-muted-foreground">What will you create today?</p>
+            <h1 className="text-3xl font-headline font-bold">Hello, {user?.displayName?.split(' ')[0] || 'Creator'}!</h1>
+            <div className="flex items-center gap-2 mt-1">
+              <p className="text-muted-foreground">Credits: {profile?.credits ?? 0}</p>
+              {profile?.isPremium && (
+                <span className="bg-primary/20 text-primary text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
+                  <Crown className="w-3 h-3" /> PRO
+                </span>
+              )}
+            </div>
           </div>
           <Button size="lg" className="rounded-full px-8 h-12 gap-2 shadow-lg shadow-primary/20" asChild>
             <Link href="/editor">
@@ -67,13 +81,17 @@ export default function Dashboard() {
               <span className="text-xs font-semibold">AI Hashtags</span>
             </Link>
           </Button>
-          <Button variant="outline" className="h-24 flex flex-col gap-2 rounded-2xl bg-card/50">
-            <Play className="text-green-500 w-6 h-6" />
-            <span className="text-xs font-semibold">Quick Export</span>
+          <Button variant="outline" className="h-24 flex flex-col gap-2 rounded-2xl bg-card/50" asChild>
+            <Link href="/projects">
+              <Play className="text-green-500 w-6 h-6" />
+              <span className="text-xs font-semibold">My Videos</span>
+            </Link>
           </Button>
-          <Button variant="outline" className="h-24 flex flex-col gap-2 rounded-2xl bg-card/50">
-            <History className="text-orange-400 w-6 h-6" />
-            <span className="text-xs font-semibold">History</span>
+          <Button variant="outline" className="h-24 flex flex-col gap-2 rounded-2xl bg-card/50" asChild>
+            <Link href="/premium">
+              <History className="text-orange-400 w-6 h-6" />
+              <span className="text-xs font-semibold">Upgrade</span>
+            </Link>
           </Button>
         </section>
 
@@ -93,7 +111,7 @@ export default function Dashboard() {
           ) : projects && projects.length > 0 ? (
             <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
               {projects.map((project: any) => (
-                <Card key={project.id} className="min-w-[280px] group cursor-pointer overflow-hidden border-none shadow-md" asChild>
+                <Card key={project.id} className="min-w-[280px] group cursor-pointer overflow-hidden border-none shadow-md">
                   <Link href={`/editor?id=${project.id}`}>
                     <div className="aspect-video relative">
                       <Image
@@ -109,7 +127,7 @@ export default function Dashboard() {
                     <CardContent className="p-3">
                       <p className="font-medium truncate">{project.title}</p>
                       <p className="text-xs text-muted-foreground">
-                        {new Date(project.updatedAt || project.createdAt).toLocaleDateString()}
+                        {new Date(project.updatedAt?.seconds * 1000 || project.createdAt?.seconds * 1000).toLocaleDateString()}
                       </p>
                     </CardContent>
                   </Link>

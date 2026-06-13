@@ -10,7 +10,8 @@ import { Card } from "@/components/ui/card";
 import { 
   Play, Pause, SkipBack, SkipForward, Scissors, 
   Trash2, Music, Wand2, Download, 
-  Crop, Filter, Gauge, Type, Sparkles, ChevronLeft, Loader2, Video
+  Crop, Filter, Gauge, Type, Sparkles, ChevronLeft, Loader2, Video,
+  Coins
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { aiVideoContentOptimization } from "@/ai/flows/ai-video-content-optimization-flow";
@@ -18,12 +19,12 @@ import { Progress } from "@/components/ui/progress";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useUser, useFirestore, useDoc } from "@/firebase";
-import { doc, setDoc, updateDoc, serverTimestamp } from "firebase/firestore";
+import { doc, setDoc, updateDoc, serverTimestamp, increment } from "firebase/firestore";
 import Image from "next/image";
 
 export default function EditorPage() {
   const searchParams = useSearchParams();
-  const projectId = searchParams.get("id");
+  const projectIdFromUrl = searchParams.get("id");
   const router = useRouter();
   const { user } = useUser();
   const db = useFirestore();
@@ -34,12 +35,19 @@ export default function EditorPage() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [exportProgress, setExportProgress] = useState(0);
 
+  const userProfileRef = useMemo(() => {
+    if (!user) return null;
+    return doc(db, "users", user.uid);
+  }, [user, db]);
+
+  const { data: profile } = useDoc(userProfileRef);
+
   const projectRef = useMemo(() => {
     if (!user) return null;
-    return doc(db, "users", user.uid, "projects", projectId || "temp-" + Date.now());
-  }, [user, db, projectId]);
+    return doc(db, "users", user.uid, "projects", projectIdFromUrl || "new-" + Date.now());
+  }, [user, db, projectIdFromUrl]);
 
-  const { data: project, loading: projectLoading } = useDoc(projectId ? projectRef : null);
+  const { data: project, loading: projectLoading } = useDoc(projectIdFromUrl ? projectRef : null);
 
   useEffect(() => {
     if (project) {
@@ -55,20 +63,31 @@ export default function EditorPage() {
       status: "draft",
     };
     
-    if (projectId) {
+    if (projectIdFromUrl) {
       updateDoc(projectRef, data);
     } else {
       setDoc(projectRef, {
         ...data,
         createdAt: serverTimestamp(),
+        thumbnailUrl: `https://picsum.photos/seed/${projectRef.id}/600/400`,
       });
-      router.push(`/editor?id=${projectRef.id}`);
+      router.replace(`/editor?id=${projectRef.id}`);
     }
     
-    toast({ title: "Project Saved", description: "Changes synced to cloud." });
+    toast({ title: "Project Saved" });
   };
 
   const handleExport = () => {
+    if (!profile?.isPremium && (profile?.credits ?? 0) < 5) {
+      toast({
+        variant: "destructive",
+        title: "Insufficient Credits",
+        description: "Exporting costs 5 credits. Upgrade to PRO for unlimited exports.",
+        action: <Button variant="outline" size="sm" asChild><Link href="/premium">Upgrade</Link></Button>
+      });
+      return;
+    }
+
     setIsProcessing(true);
     setExportProgress(0);
     const interval = setInterval(() => {
@@ -76,6 +95,11 @@ export default function EditorPage() {
         if (prev >= 100) {
           clearInterval(interval);
           setIsProcessing(false);
+          
+          if (!profile?.isPremium && userProfileRef) {
+            updateDoc(userProfileRef, { credits: increment(-5) });
+          }
+
           toast({
             title: "Export Complete!",
             description: "Video saved to your cloud studio in 1080p.",
@@ -88,6 +112,15 @@ export default function EditorPage() {
   };
 
   const handleAIAnalyze = async () => {
+    if (!profile?.isPremium && (profile?.credits ?? 0) < 2) {
+      toast({
+        variant: "destructive",
+        title: "Insufficient Credits",
+        description: "AI Tools cost 2 credits per use.",
+      });
+      return;
+    }
+
     toast({ title: "AI Alchemist", description: "Analyzing scenes for optimized content..." });
     try {
       const result = await aiVideoContentOptimization({ 
@@ -100,6 +133,10 @@ export default function EditorPage() {
           optimizedDescription: result.description,
           hashtags: result.hashtags,
         });
+
+        if (!profile?.isPremium && userProfileRef) {
+          updateDoc(userProfileRef, { credits: increment(-2) });
+        }
       }
 
       toast({
@@ -132,10 +169,15 @@ export default function EditorPage() {
             value={title} 
             onChange={(e) => setTitle(e.target.value)}
             onBlur={handleSave}
-            className="bg-transparent font-headline font-bold focus:outline-none border-b border-transparent focus:border-primary px-1"
+            className="bg-transparent font-headline font-bold focus:outline-none border-b border-transparent focus:border-primary px-1 max-w-[150px] sm:max-w-none"
           />
         </div>
         <div className="flex items-center gap-2">
+          {!profile?.isPremium && (
+            <div className="hidden sm:flex items-center gap-1 text-xs font-bold text-muted-foreground mr-2">
+              <Coins className="w-3 h-3 text-orange-400" /> {profile?.credits ?? 0}
+            </div>
+          )}
           <Button variant="ghost" size="sm" className="gap-2" onClick={handleAIAnalyze}>
             <Sparkles className="w-4 h-4 text-primary" />
             <span className="hidden sm:inline">AI Optimize</span>
@@ -205,7 +247,16 @@ export default function EditorPage() {
                   <div className="p-2 bg-primary rounded-lg text-white"><Type className="w-5 h-5" /></div>
                   <div>
                     <h4 className="font-bold text-sm">Auto Captions</h4>
-                    <p className="text-xs text-muted-foreground">AI Transcribe audio</p>
+                    <p className="text-xs text-muted-foreground">AI Transcribe audio (2c)</p>
+                  </div>
+                </div>
+              </Card>
+              <Card className="p-4 border-accent/20 bg-accent/5 cursor-pointer hover:bg-accent/10" onClick={handleAIAnalyze}>
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-accent rounded-lg text-white"><Sparkles className="w-5 h-5" /></div>
+                  <div>
+                    <h4 className="font-bold text-sm">Magic SEO</h4>
+                    <p className="text-xs text-muted-foreground">Tags & Title (2c)</p>
                   </div>
                 </div>
               </Card>
