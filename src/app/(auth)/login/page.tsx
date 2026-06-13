@@ -10,28 +10,46 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Video, Chrome } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
+import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { useAuth } from "@/firebase";
 
 export default function LoginPage() {
   const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const router = useRouter();
   const { toast } = useToast();
+  const auth = useAuth();
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    // Simulate auth
-    setTimeout(() => {
-      setLoading(false);
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
       router.push("/dashboard");
-    }, 1500);
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Login Failed",
+        description: error.message,
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleGoogleLogin = () => {
-    toast({
-      title: "Google Login",
-      description: "Redirecting to Google Authentication...",
-    });
-    setTimeout(() => router.push("/dashboard"), 1000);
+  const handleGoogleLogin = async () => {
+    try {
+      const provider = new GoogleAuthProvider();
+      await signInWithPopup(auth, provider);
+      router.push("/dashboard");
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Google Login Failed",
+        description: error.message,
+      });
+    }
   };
 
   return (
@@ -52,14 +70,29 @@ export default function LoginPage() {
           <form onSubmit={handleLogin} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" placeholder="m@example.com" required className="bg-background/50" />
+              <Input 
+                id="email" 
+                type="email" 
+                placeholder="m@example.com" 
+                required 
+                className="bg-background/50" 
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
             </div>
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <Label htmlFor="password">Password</Label>
                 <Link href="#" className="text-xs text-primary hover:underline">Forgot password?</Link>
               </div>
-              <Input id="password" type="password" required className="bg-background/50" />
+              <Input 
+                id="password" 
+                type="password" 
+                required 
+                className="bg-background/50" 
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
             </div>
             <Button type="submit" className="w-full h-12 text-lg font-medium" disabled={loading}>
               {loading ? "Authenticating..." : "Login"}

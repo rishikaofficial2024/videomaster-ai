@@ -1,14 +1,40 @@
 
+"use client";
+
 import { Navbar } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Plus, Play, Sparkles, Wand2, History, ChevronRight } from "lucide-react";
+import { Plus, Play, Sparkles, Wand2, History, ChevronRight, Loader2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
+import { useUser, useFirestore, useCollection } from "@/firebase";
+import { collection, query, orderBy, limit } from "firebase/firestore";
+import { useMemo } from "react";
 
 export default function Dashboard() {
+  const { user, loading: userLoading } = useUser();
+  const db = useFirestore();
+
+  const projectsQuery = useMemo(() => {
+    if (!db || !user) return null;
+    return query(
+      collection(db, "users", user.uid, "projects"),
+      orderBy("createdAt", "desc"),
+      limit(5)
+    );
+  }, [db, user]);
+
+  const { data: projects, loading: projectsLoading } = useCollection(projectsQuery);
   const templates = PlaceHolderImages.filter(img => img.id.includes("template"));
+
+  if (userLoading) {
+    return (
+      <div className="h-screen flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen pb-20 md:pt-20">
@@ -17,7 +43,7 @@ export default function Dashboard() {
         {/* Header Section */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
-            <h1 className="text-3xl font-headline font-bold">Hello, Creator!</h1>
+            <h1 className="text-3xl font-headline font-bold">Hello, {user?.displayName || 'Creator'}!</h1>
             <p className="text-muted-foreground">What will you create today?</p>
           </div>
           <Button size="lg" className="rounded-full px-8 h-12 gap-2 shadow-lg shadow-primary/20" asChild>
@@ -29,13 +55,17 @@ export default function Dashboard() {
 
         {/* AI Quick Tools */}
         <section className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <Button variant="outline" className="h-24 flex flex-col gap-2 rounded-2xl bg-card/50">
-            <Wand2 className="text-primary w-6 h-6" />
-            <span className="text-xs font-semibold">Auto Captions</span>
+          <Button variant="outline" className="h-24 flex flex-col gap-2 rounded-2xl bg-card/50" asChild>
+            <Link href="/editor?tool=captions">
+              <Wand2 className="text-primary w-6 h-6" />
+              <span className="text-xs font-semibold">Auto Captions</span>
+            </Link>
           </Button>
-          <Button variant="outline" className="h-24 flex flex-col gap-2 rounded-2xl bg-card/50">
-            <Sparkles className="text-accent w-6 h-6" />
-            <span className="text-xs font-semibold">AI Hashtags</span>
+          <Button variant="outline" className="h-24 flex flex-col gap-2 rounded-2xl bg-card/50" asChild>
+             <Link href="/editor?tool=optimization">
+              <Sparkles className="text-accent w-6 h-6" />
+              <span className="text-xs font-semibold">AI Hashtags</span>
+            </Link>
           </Button>
           <Button variant="outline" className="h-24 flex flex-col gap-2 rounded-2xl bg-card/50">
             <Play className="text-green-500 w-6 h-6" />
@@ -55,27 +85,45 @@ export default function Dashboard() {
               View All <ChevronRight className="w-4 h-4" />
             </Link>
           </div>
-          <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
-            {[1, 2, 3].map((i) => (
-              <Card key={i} className="min-w-[280px] group cursor-pointer overflow-hidden border-none shadow-md">
-                <div className="aspect-video relative">
-                  <Image
-                    src={`https://picsum.photos/seed/project-${i}/600/400`}
-                    alt="Project"
-                    fill
-                    className="object-cover transition-transform group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                    <Play className="w-10 h-10 text-white fill-white" />
-                  </div>
-                </div>
-                <CardContent className="p-3">
-                  <p className="font-medium">My Awesome Vlog #{i}</p>
-                  <p className="text-xs text-muted-foreground">Edited 2 hours ago</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+          
+          {projectsLoading ? (
+            <div className="flex gap-4 py-4 overflow-x-auto">
+              {[1, 2].map(i => <div key={i} className="min-w-[280px] h-48 bg-muted animate-pulse rounded-xl" />)}
+            </div>
+          ) : projects && projects.length > 0 ? (
+            <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
+              {projects.map((project: any) => (
+                <Card key={project.id} className="min-w-[280px] group cursor-pointer overflow-hidden border-none shadow-md" asChild>
+                  <Link href={`/editor?id=${project.id}`}>
+                    <div className="aspect-video relative">
+                      <Image
+                        src={project.thumbnailUrl || `https://picsum.photos/seed/${project.id}/600/400`}
+                        alt={project.title}
+                        fill
+                        className="object-cover transition-transform group-hover:scale-105"
+                      />
+                      <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                        <Play className="w-10 h-10 text-white fill-white" />
+                      </div>
+                    </div>
+                    <CardContent className="p-3">
+                      <p className="font-medium truncate">{project.title}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {new Date(project.updatedAt || project.createdAt).toLocaleDateString()}
+                      </p>
+                    </CardContent>
+                  </Link>
+                </Card>
+              ))}
+            </div>
+          ) : (
+            <div className="bg-card/50 border-2 border-dashed border-muted rounded-2xl p-12 text-center">
+              <p className="text-muted-foreground mb-4">You haven't created any projects yet.</p>
+              <Button variant="secondary" asChild>
+                <Link href="/editor">Start your first project</Link>
+              </Button>
+            </div>
+          )}
         </section>
 
         {/* Templates */}
