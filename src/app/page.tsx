@@ -1,7 +1,7 @@
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Video, ArrowRight, Sparkles, Wand2, Smartphone } from "lucide-react";
+import { Video, ArrowRight, Sparkles, Wand2, Smartphone, Download, Apple, Play } from "lucide-react";
 import Image from "next/image";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 
@@ -10,7 +10,7 @@ export default function LandingPage() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <header className="px-4 lg:px-6 h-14 flex items-center border-b">
+      <header className="px-4 lg:px-6 h-14 flex items-center border-b fixed top-0 w-full bg-background/80 backdrop-blur-md z-50">
         <Link className="flex items-center justify-center gap-2" href="/">
           <Video className="h-6 w-6 text-primary" />
           <span className="font-headline font-bold text-xl">VideoMaster AI</span>
@@ -24,7 +24,7 @@ export default function LandingPage() {
           </Link>
         </nav>
       </header>
-      <main className="flex-1">
+      <main className="flex-1 mt-14">
         <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48 bg-background">
           <div className="container px-4 md:px-6 mx-auto">
             <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px] items-center">
@@ -45,13 +45,25 @@ export default function LandingPage() {
                     <Link href="/login">Watch Demo</Link>
                   </Button>
                 </div>
+                <div className="flex items-center gap-4 pt-4">
+                  <div className="flex -space-x-2">
+                    {[1, 2, 3, 4].map((i) => (
+                      <div key={i} className="w-8 h-8 rounded-full border-2 border-background overflow-hidden relative">
+                        <Image src={`https://picsum.photos/seed/user-${i}/64/64`} alt="User" fill />
+                      </div>
+                    ))}
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    Joined by <span className="text-foreground font-bold">10k+</span> creators worldwide
+                  </p>
+                </div>
               </div>
               <div className="relative group">
                 <div className="absolute -inset-1 bg-gradient-to-r from-primary to-accent rounded-xl blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
                 {heroImg && (
                   <Image
                     alt="VideoMaster Hero"
-                    className="relative mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center sm:w-full"
+                    className="relative mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center sm:w-full shadow-2xl"
                     height={600}
                     src={heroImg.imageUrl}
                     width={800}
@@ -65,8 +77,12 @@ export default function LandingPage() {
         
         <section className="w-full py-12 md:py-24 bg-muted/30">
           <div className="container px-4 md:px-6 mx-auto">
+            <div className="flex flex-col items-center text-center space-y-4 mb-12">
+              <h2 className="text-3xl font-headline font-bold">Everything you need to go viral</h2>
+              <p className="text-muted-foreground max-w-[600px]">Powerful AI tools built into a professional timeline editor.</p>
+            </div>
             <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-3">
-              <div className="flex flex-col items-center space-y-4 text-center">
+              <div className="flex flex-col items-center space-y-4 text-center p-6 rounded-2xl bg-card border shadow-sm">
                 <div className="p-4 bg-primary/10 rounded-full">
                   <Wand2 className="h-8 w-8 text-primary" />
                 </div>
@@ -75,7 +91,7 @@ export default function LandingPage() {
                   Transform audio into perfectly timed subtitles instantly using our advanced AI reasoning tools.
                 </p>
               </div>
-              <div className="flex flex-col items-center space-y-4 text-center">
+              <div className="flex flex-col items-center space-y-4 text-center p-6 rounded-2xl bg-card border shadow-sm">
                 <div className="p-4 bg-accent/10 rounded-full">
                   <Sparkles className="h-8 w-8 text-accent" />
                 </div>
@@ -84,7 +100,7 @@ export default function LandingPage() {
                   Optimize your social reach with AI-generated hashtags, titles, and descriptions tailored to your video.
                 </p>
               </div>
-              <div className="flex flex-col items-center space-y-4 text-center">
+              <div className="flex flex-col items-center space-y-4 text-center p-6 rounded-2xl bg-card border shadow-sm">
                 <div className="p-4 bg-primary/10 rounded-full">
                   <Smartphone className="h-8 w-8 text-primary" />
                 </div>
@@ -93,6 +109,32 @@ export default function LandingPage() {
                   Start editing on your phone, finish on your tablet. Your projects are always safe in the cloud.
                 </p>
               </div>
+            </div>
+          </div>
+        </section>
+
+        {/* App Download Section */}
+        <section className="w-full py-12 md:py-24 bg-primary text-primary-foreground">
+          <div className="container px-4 md:px-6 mx-auto text-center space-y-8">
+            <h2 className="text-3xl md:text-5xl font-headline font-bold">Edit on the go</h2>
+            <p className="text-primary-foreground/80 max-w-lg mx-auto md:text-lg">
+              Download our professional mobile app to access the AI Studio anytime, anywhere.
+            </p>
+            <div className="flex flex-col sm:flex-row justify-center gap-4 pt-4">
+              <Button size="lg" variant="secondary" className="h-16 px-8 gap-3 rounded-2xl">
+                <Apple className="w-6 h-6 fill-current" />
+                <div className="text-left">
+                  <div className="text-[10px] font-bold opacity-70 uppercase tracking-widest">Download on the</div>
+                  <div className="text-lg font-bold">App Store</div>
+                </div>
+              </Button>
+              <Button size="lg" variant="secondary" className="h-16 px-8 gap-3 rounded-2xl">
+                <Play className="w-6 h-6 fill-current" />
+                <div className="text-left">
+                  <div className="text-[10px] font-bold opacity-70 uppercase tracking-widest">Get it on</div>
+                  <div className="text-lg font-bold">Google Play</div>
+                </div>
+              </Button>
             </div>
           </div>
         </section>
