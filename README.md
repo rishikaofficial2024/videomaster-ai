@@ -3,11 +3,20 @@
 
 Professional AI-powered video editor built with Next.js 15, Firebase, and Capacitor. This app is optimized for professional mobile video creation and monetization.
 
+## 📱 Mobile Identity
+* **App Name**: VideoMaster AI
+* **Android Package Name (App ID)**: `com.videomaster.ai`
+* **iOS Bundle ID**: `com.videomaster.ai`
+
 ## 🚀 Final Production Checklist (DO THIS BEFORE PUBLISHING)
 
 ### 1. Firebase Console Settings (REQUIRED)
 * **Enable Authentication**: Go to [Firebase Console](https://console.firebase.google.com/), navigate to **Build > Authentication**, and enable **Email/Password** and **Google**.
 * **Firestore Setup**: Go to **Build > Firestore Database** and click "Create Database". Start in **Production Mode**.
+* **Add Android App**: 
+  * In Firebase Project Settings, click "Add App" > "Android".
+  * Use Package Name: `com.videomaster.ai`.
+  * Download the `google-services.json` and place it in `/android/app/`.
 * **API Keys**: 
   * Ensure your `GEMINI_API_KEY` is set in your environment variables for Genkit flows.
   * Copy your **Web API Key** from Project Settings and paste it into `src/firebase/config.ts`.
