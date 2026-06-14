@@ -28,7 +28,8 @@
         "optimizedDescription": { "type": "string" },
         "hashtags": { "type": "array", "items": { "type": "string" } },
         "thumbnailUrl": { "type": "string" },
-        "videoDataUri": { "type": "string", "description": "Base64 data of the actual video or generated clip" }
+        "videoDataUri": { "type": "string", "description": "Base64 data of the actual video or generated clip" },
+        "subtitles": { "type": "string", "description": "Generated WebVTT content" }
       },
       "required": ["title", "createdAt", "status"]
     }
