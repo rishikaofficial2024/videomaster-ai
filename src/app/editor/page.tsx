@@ -12,7 +12,7 @@ import {
   Play, Pause, SkipBack, SkipForward, Scissors, 
   Trash2, Music, Wand2, Download, 
   Crop, Filter, Gauge, Type, Sparkles, ChevronLeft, Loader2, Video,
-  Coins, Upload, Zap
+  Coins, Upload, Zap, Captions
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { aiVideoContentOptimization } from "@/ai/flows/ai-video-content-optimization-flow";
@@ -44,6 +44,7 @@ export default function EditorPage() {
   const [activeTab, setActiveTab] = useState(toolFromUrl === "captions" ? "ai" : "tools");
   const [selectedVideoData, setSelectedVideoData] = useState<string | null>(null);
   const [videoPrompt, setVideoPrompt] = useState("");
+  const [subtitles, setSubtitles] = useState<string | null>(null);
 
   const userProfileRef = useMemo(() => {
     if (!user) return null;
@@ -63,6 +64,7 @@ export default function EditorPage() {
     if (project) {
       setTitle(project.title || "Untitled Project");
       setSelectedVideoData(project.videoDataUri || null);
+      setSubtitles(project.subtitles || null);
     }
   }, [project]);
 
@@ -185,6 +187,39 @@ export default function EditorPage() {
     }
   };
 
+  const handleAutoCaptions = async () => {
+    if (!selectedVideoData) {
+      toast({ title: "Video Required", description: "Upload a video first." });
+      return;
+    }
+    if (!profile?.isPremium && (profile?.credits ?? 0) < 3) {
+      toast({ variant: "destructive", title: "Insufficient Credits", description: "Captions cost 3 credits." });
+      return;
+    }
+
+    setIsProcessing(true);
+    try {
+      // In a real app, we'd extract audio. Here we mock with a flow call.
+      const result = await generateAutoCaptionsAndSubtitles({ audioDataUri: selectedVideoData });
+      setSubtitles(result.subtitles);
+      
+      if (projectRef) {
+        updateDoc(projectRef, {
+          subtitles: result.subtitles,
+          updatedAt: serverTimestamp(),
+        });
+        if (!profile?.isPremium && userProfileRef) {
+          updateDoc(userProfileRef, { credits: increment(-3) });
+        }
+      }
+      toast({ title: "Captions Generated!" });
+    } catch (e) {
+      toast({ variant: "destructive", title: "Transcription Error" });
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
   const handleMagicVideo = async () => {
     if (!videoPrompt) {
       toast({ title: "Prompt Required", description: "Enter a description for your magic video." });
@@ -248,7 +283,7 @@ export default function EditorPage() {
         <div className="flex items-center gap-2">
           <Button variant="ghost" size="sm" className="gap-2 text-foreground" onClick={handleAIAnalyze} disabled={isProcessing}>
             <Sparkles className="w-4 h-4 text-primary" />
-            <span className="hidden sm:inline">AI Optimize</span>
+            <span className="hidden sm:inline">AI SEO</span>
           </Button>
           <Button size="sm" className="bg-primary hover:bg-primary/90 text-white gap-2" onClick={handleExport} disabled={isProcessing}>
             <Download className="w-4 h-4" />
@@ -260,15 +295,24 @@ export default function EditorPage() {
       <div className="flex-1 flex flex-col lg:flex-row overflow-hidden">
         <div className="flex-1 bg-black flex flex-col relative group">
           <div className="flex-1 relative flex items-center justify-center">
-            <div className="aspect-video w-full max-w-4xl bg-[#1a1a1a] shadow-2xl relative flex items-center justify-center cursor-pointer" onClick={handleFileClick}>
+            <div className="aspect-video w-full max-w-4xl bg-[#1a1a1a] shadow-2xl relative flex items-center justify-center cursor-pointer overflow-hidden" onClick={handleFileClick}>
                <input type="file" ref={fileInputRef} className="hidden" accept="video/*" onChange={handleFileChange} />
                {!selectedVideoData ? (
                  <div className="flex flex-col items-center gap-4 text-white/20">
                     <Upload className="w-16 h-16" />
-                    <span className="text-sm font-medium">Select or Generate a Video</span>
+                    <span className="text-sm font-medium">Upload or Generate Video</span>
                  </div>
                ) : (
-                 <video src={selectedVideoData} className="w-full h-full object-contain" controls={isPlaying} />
+                 <>
+                   <video src={selectedVideoData} className="w-full h-full object-contain" controls={isPlaying} />
+                   {subtitles && isPlaying && (
+                     <div className="absolute bottom-12 left-0 right-0 text-center px-4 pointer-events-none">
+                       <span className="bg-black/80 text-white px-3 py-1 rounded-md text-sm font-medium shadow-lg border border-white/20">
+                         {subtitles.split('\n')[3] || "Captions applied..."}
+                       </span>
+                     </div>
+                   )}
+                 </>
                )}
             </div>
           </div>
@@ -304,10 +348,10 @@ export default function EditorPage() {
                 <div className="p-4 border rounded-xl bg-primary/5 space-y-3">
                   <div className="flex items-center gap-2">
                     <Zap className="w-5 h-5 text-primary" />
-                    <h4 className="font-bold text-sm">Magic Video Gen</h4>
+                    <h4 className="font-bold text-sm text-foreground">Veo Video Gen</h4>
                   </div>
                   <Input 
-                    placeholder="Describe a scene (e.g. A cat in space)" 
+                    placeholder="e.g. A dragon flying over a forest" 
                     value={videoPrompt}
                     onChange={(e) => setVideoPrompt(e.target.value)}
                     className="bg-background"
@@ -316,22 +360,48 @@ export default function EditorPage() {
                     Generate (10c)
                   </Button>
                 </div>
-                
-                <Card className="p-4 border-accent/20 bg-accent/5 cursor-pointer hover:bg-accent/10 transition-colors" onClick={handleAIAnalyze}>
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 bg-accent rounded-lg text-white"><Sparkles className="w-5 h-5" /></div>
-                    <div className="flex-1 text-sm">
-                      <h4 className="font-bold">Magic SEO</h4>
-                      <p className="text-xs text-muted-foreground">Tags & Title (2c)</p>
-                    </div>
+
+                <Button 
+                  variant="outline" 
+                  className="w-full h-14 justify-start gap-3 px-4 rounded-xl border-accent/20 bg-accent/5 hover:bg-accent/10"
+                  onClick={handleAutoCaptions}
+                  disabled={isProcessing}
+                >
+                  <Captions className="w-5 h-5 text-accent" />
+                  <div className="text-left">
+                    <p className="text-xs font-bold text-foreground">Auto-Captions</p>
+                    <p className="text-[10px] text-muted-foreground">3 Credits</p>
                   </div>
-                </Card>
+                </Button>
+                
+                <Button 
+                  variant="outline" 
+                  className="w-full h-14 justify-start gap-3 px-4 rounded-xl border-primary/20 bg-primary/5 hover:bg-primary/10"
+                  onClick={handleAIAnalyze}
+                  disabled={isProcessing}
+                >
+                  <Sparkles className="w-5 h-5 text-primary" />
+                  <div className="text-left">
+                    <p className="text-xs font-bold text-foreground">Optimize SEO</p>
+                    <p className="text-[10px] text-muted-foreground">2 Credits</p>
+                  </div>
+                </Button>
               </div>
             </TabsContent>
 
             <TabsContent value="audio" className="p-4 space-y-4">
-               <h4 className="text-sm font-semibold">Library</h4>
-               <p className="text-xs text-muted-foreground">Select background music for your masterpiece.</p>
+               <h4 className="text-sm font-semibold text-foreground">Library</h4>
+               <div className="space-y-2">
+                 {[1, 2, 3].map(i => (
+                   <div key={i} className="flex items-center justify-between p-2 rounded-lg bg-muted/50">
+                     <div className="flex items-center gap-3">
+                       <Music className="w-4 h-4 text-primary" />
+                       <span className="text-xs font-medium text-foreground">Track 0{i}.mp3</span>
+                     </div>
+                     <Button variant="ghost" size="sm" className="h-7 text-[10px]">Add</Button>
+                   </div>
+                 ))}
+               </div>
             </TabsContent>
           </Tabs>
         </div>
@@ -342,10 +412,10 @@ export default function EditorPage() {
            <div className="max-w-md w-full text-center space-y-6">
              <Loader2 className="w-12 h-12 animate-spin text-primary mx-auto" />
              <div className="space-y-2">
-               <h3 className="text-2xl font-headline font-bold text-white">AI Alchemy</h3>
-               <p className="text-muted-foreground">Consulting the digital muses...</p>
+               <h3 className="text-2xl font-headline font-bold text-white uppercase tracking-tighter">AI Processing</h3>
+               <p className="text-muted-foreground text-sm">Our neural networks are weaving their magic...</p>
              </div>
-             <Progress value={exportProgress} className="h-2" />
+             <Progress value={exportProgress || 45} className="h-1.5" />
            </div>
         </div>
       )}

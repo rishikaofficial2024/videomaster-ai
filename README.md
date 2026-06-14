@@ -1,39 +1,43 @@
 
-# VideoMaster AI - Mobile Build Guide
+# VideoMaster AI - Mobile Build Guide (Android APK)
 
-This project is a Next.js 15 application optimized for conversion into an Android APK using Capacitor.
+Professional AI-powered video editor built with Next.js 15, Firebase, and Capacitor.
 
-## Prerequisites
-- Node.js & npm installed.
-- Android Studio installed on your local machine.
-
-## How to Build the APK (Step-by-Step)
-
-1. **Download the Source Code**: Export this project from the IDE.
-2. **Install Dependencies**: Open your terminal in the project folder and run:
+## Step 1: Local Setup
+1. **Export Code**: Click the export button in the top right to download this project.
+2. **Install Node**: Ensure you have Node.js 18+ installed.
+3. **Install Dependencies**:
    ```bash
    npm install
    ```
-3. **Build the Web App**: This generates the static `out` folder required for the mobile app.
-   ```bash
-   npm run build
+
+## Step 2: Firebase Deployment (Required for AI)
+To use Genkit AI features (Veo video generation, AI Captions), the app must communicate with a live backend.
+1. Deploy this project to **Firebase App Hosting**.
+2. Update `capacitor.config.ts`:
+   ```ts
+   // Set the server url to your live production domain
+   url: 'https://your-production-app.web.app'
    ```
-4. **Initialize Capacitor**:
-   ```bash
-   npx cap init "VideoMaster AI" com.videomaster.ai --web-dir out
-   ```
-5. **Add Android Platform**:
-   ```bash
-   npm run mobile:add
-   ```
-6. **Sync & Build APK**: This script will sync the latest code and open Android Studio:
+
+## Step 3: Android Studio Setup
+1. Install **Android Studio**.
+2. Open Android Studio and install the **Android SDK** and an **Emulator**.
+
+## Step 4: Build & APK Generation
+We have provided an automated script to handle the Capacitor lifecycle.
+1. Run the build command:
    ```bash
    npm run mobile:build-apk
    ```
-7. **Final Step in Android Studio**:
-   - Once Android Studio opens, wait for Gradle to finish syncing.
-   - Go to **Build** menu > **Build Bundle(s) / APK(s)** > **Build APK(s)**.
-   - A notification will appear when the build is done. Click **Locate** to find your `app-debug.apk`.
+   *This command runs `next build`, exports static files to `/out`, and syncs them to the Android project.*
+2. Once **Android Studio** opens:
+   - Wait for the Gradle sync to finish (watch the status bar).
+   - Go to **Build** menu -> **Build Bundle(s) / APK(s)** -> **Build APK(s)**.
+3. When finished, a popup will appear. Click **Locate** to find your `app-debug.apk`.
 
-## Deployment
-For AI features (Genkit) to work inside the APK, you should host this Next.js app on **Firebase App Hosting** and update the `url` property in `capacitor.config.ts` to point to your live website.
+## Features
+- **AI Veo Video Gen**: Create cinematic clips from text.
+- **Auto-Captions**: Generate subtitles with AI reasoning.
+- **Monetization**: Pro subscriptions and Credit system integrated with Firestore.
+- **Cloud Studio**: Real-time project persistence across devices.
