@@ -1,15 +1,15 @@
 
 # VideoMaster AI - Production & APK Build Guide
 
-Professional AI-powered video editor built with Next.js 15, Firebase, and Capacitor.
+Professional AI-powered video editor built with Next.js 15, Firebase, and Capacitor. This app is optimized for professional mobile video creation and monetization.
 
 ## 🚀 Final Production Checklist (DO THIS BEFORE PUBLISHING)
 
 ### 1. Firebase Console Settings
-* **Enable Authentication**: In the Firebase Console, go to **Auth** and enable "Email/Password" and "Google" sign-in providers.
-* **Update Config**: Replace the placeholder values in `src/firebase/config.ts` with your actual Firebase project configuration found in **Project Settings**.
-* **Firestore Rules**: Ensure your security rules allow users to read/write only their own data.
-* **Storage**: Enable Firebase Storage if you plan to move from Base64 to file-based storage in the future.
+* **Enable Authentication**: Go to the Firebase Console, navigate to **Auth**, and enable the "Email/Password" and "Google" sign-in providers.
+* **Update Config**: Replace the placeholder values in `src/firebase/config.ts` with your actual Firebase project configuration found in **Project Settings > General**.
+* **Firestore Rules**: Ensure your security rules allow users to read/write only their own data (this is handled automatically if you use our deployment system, but verify in the console).
+* **Storage**: If you intend to use Firebase Storage for large video files in the future, enable it in the console.
 
 ### 2. Local Environment Setup
 * **API Keys**: Add your `GEMINI_API_KEY` to your Firebase App Hosting environment variables.
@@ -35,9 +35,15 @@ Professional AI-powered video editor built with Next.js 15, Firebase, and Capaci
 * `npm run mobile:build-apk`: Automated command to build, sync, and open Android Studio.
 * `npm run genkit:dev`: Start Genkit UI for testing AI flows.
 
-## Features
-- **AI Veo Video Gen**: Create cinematic clips from text prompts.
-- **AI Voiceover (TTS)**: Professional narration using Gemini.
-- **AI Magic SEO**: Optimized titles, descriptions, and hashtags.
-- **Monetization**: Credit-based system and PRO subscriptions.
-- **Cloud Studio**: Seamless project sync across devices.
+## Core Features
+- **AI Veo Video Gen**: Create cinematic clips from text prompts using the latest Veo models.
+- **AI Voiceover (TTS)**: Professional narration using Gemini 2.5 Flash TTS.
+- **AI Magic SEO**: Optimized titles, descriptions, and hashtags for social media growth.
+- **Monetization**: Credit-based system for AI tools and PRO subscriptions for unlimited access.
+- **Cloud Studio**: Seamless project sync across devices using Firestore.
+
+## Tech Stack
+- **Frontend**: Next.js 15 (App Router), Tailwind CSS, ShadCN UI.
+- **Backend**: Firebase Authentication & Firestore.
+- **AI**: Google Genkit & Gemini Pro/Veo.
+- **Mobile**: Capacitor (Android/iOS Bridge).
