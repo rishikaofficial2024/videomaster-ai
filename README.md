@@ -20,7 +20,7 @@ Professional AI-powered video editor built with Next.js 15, Firebase, and Capaci
   * Download the `google-services.json` and place it in `/android/app/`.
 * **API Keys**: 
   * Ensure your `GEMINI_API_KEY` is set in your environment variables for Genkit flows.
-  * Copy your **Web API Key** from Project Settings and paste it into `src/firebase/config.ts`.
+  * Update your `src/firebase/config.ts` with your actual Firebase project credentials from the console.
 
 ### 2. Local Environment Setup
 * **Install Dependencies**: Run `npm install`.
@@ -37,18 +37,18 @@ Professional AI-powered video editor built with Next.js 15, Firebase, and Capaci
    - Follow the wizard to create a keystore and sign your production app.
 
 ## Core Features
-- **AI Veo Video Gen**: Create cinematic clips from text prompts using Google's Veo 2.0.
-- **AI Voiceover (TTS)**: Professional narration using Gemini 2.5 Flash TTS with multiple voice options.
+- **AI Veo Video Gen**: Create cinematic clips from text prompts using Google's Veo.
+- **AI Voiceover (TTS)**: Professional narration using Gemini 2.5 Flash TTS.
 - **AI Magic SEO**: Automated analysis for titles, descriptions, and hashtags.
-- **Auto-Captions**: Instant transcription and WebVTT subtitle generation.
+- **Auto-Captions**: Instant transcription and subtitle generation.
 - **Monetization**: Credit-based usage system and PRO subscriptions.
 - **Cloud Studio**: Seamless project synchronization across all mobile devices.
 
 ## Tech Stack
 - **Frontend**: Next.js 15 (App Router), React 19, Tailwind CSS, ShadCN UI.
 - **Backend**: Firebase Auth, Cloud Firestore.
-- **AI**: Genkit with Gemini 2.5 Flash & Veo 2.0.
-- **Mobile**: Capacitor 7 for native Android/iOS performance.
+- **AI**: Genkit with Gemini 2.5 Flash & Veo.
+- **Mobile**: Capacitor 7 for native performance.
 
 ## Troubleshooting
 - **Build Errors**: If `npm run build` fails, ensure there are no TypeScript errors in the source.
