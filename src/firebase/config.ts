@@ -7,7 +7,7 @@
  * your actual API Key from the Firebase Console (Project Settings > General).
  */
 export const firebaseConfig = {
-  apiKey: "AIzaSyD-Actual-API-Key-From-Console", // REPLACE THIS WITH YOUR REAL API KEY
+  apiKey: "AIzaSyD-Actual-API-Key-From-Console", // <-- CHANGE THIS TO YOUR REAL KEY
   authDomain: "videomaster-ai.firebaseapp.com",
   projectId: "videomaster-ai",
   storageBucket: "videomaster-ai.appspot.com",
