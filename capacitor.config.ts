@@ -7,8 +7,9 @@ const config: CapacitorConfig = {
   webDir: 'out',
   server: {
     androidScheme: 'https',
-    // Once deployed, replace with your hosted URL to allow the APK to access server-side AI features.
-    // url: 'https://videomaster-ai.web.app',
+    // IMPORTANT: Once you deploy to Firebase App Hosting, 
+    // uncomment the line below and add your production URL.
+    // url: 'https://your-app-id.web.app',
     allowNavigation: ['*']
   },
   android: {

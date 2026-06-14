@@ -2,10 +2,10 @@
 import type {NextConfig} from 'next';
 
 const nextConfig: NextConfig = {
-  /* config options here */
-  output: 'export', // Required for generating static assets for Capacitor
+  // Required for generating static assets for Capacitor APK build
+  output: 'export', 
   images: {
-    unoptimized: true, // Required for static export
+    unoptimized: true, 
     remotePatterns: [
       {
         protocol: 'https',

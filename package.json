@@ -1,20 +1,18 @@
 
 {
-  "name": "nextn",
-  "version": "0.1.0",
+  "name": "videomaster-ai",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack -p 9002",
     "genkit:dev": "genkit start -- tsx src/ai/dev.ts",
-    "genkit:watch": "genkit start -- tsx --watch src/ai/dev.ts",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "typecheck": "tsc --noEmit",
     "mobile:init": "cap init",
-    "mobile:add-android": "cap add android",
+    "mobile:add": "cap add android",
     "mobile:sync": "npm run build && cap sync android",
-    "mobile:open-android": "cap open android",
+    "mobile:open": "cap open android",
     "mobile:build-apk": "npm run build && cap sync android && cap open android"
   },
   "dependencies": {
