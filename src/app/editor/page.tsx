@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { Navbar } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -11,7 +11,7 @@ import {
   Play, Pause, SkipBack, SkipForward, Scissors, 
   Trash2, Music, Wand2, Download, 
   Crop, Filter, Gauge, Type, Sparkles, ChevronLeft, Loader2, Video,
-  Coins
+  Coins, Upload
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { aiVideoContentOptimization } from "@/ai/flows/ai-video-content-optimization-flow";
@@ -33,12 +33,14 @@ export default function EditorPage() {
   const { user } = useUser();
   const db = useFirestore();
   const { toast } = useToast();
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [title, setTitle] = useState("Untitled Project");
   const [isPlaying, setIsPlaying] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [exportProgress, setExportProgress] = useState(0);
   const [activeTab, setActiveTab] = useState(toolFromUrl === "captions" ? "ai" : "tools");
+  const [selectedVideoName, setSelectedVideoName] = useState<string | null>(null);
 
   const userProfileRef = useMemo(() => {
     if (!user) return null;
@@ -59,6 +61,22 @@ export default function EditorPage() {
       setTitle(project.title || "Untitled Project");
     }
   }, [project]);
+
+  const handleFileClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setSelectedVideoName(file.name);
+      toast({
+        title: "Video Loaded",
+        description: `${file.name} added to your studio.`,
+      });
+      handleSave();
+    }
+  };
 
   const handleSave = () => {
     if (!user || !projectRef) return;
@@ -182,7 +200,6 @@ export default function EditorPage() {
     setIsProcessing(true);
     toast({ title: "Transcribing...", description: "AI is listening to your audio..." });
     try {
-      // Mock audio data for the prototype
       const result = await generateAutoCaptionsAndSubtitles({ 
         audioDataUri: "data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA=" 
       });
@@ -223,15 +240,18 @@ export default function EditorPage() {
       
       <div className="bg-background border-b px-4 py-2 flex items-center justify-between z-10">
         <div className="flex items-center gap-2">
-          <Link href="/dashboard" className="p-1 hover:bg-muted rounded-full">
+          <Link href="/dashboard" className="p-1 hover:bg-muted rounded-full text-foreground">
             <ChevronLeft className="w-6 h-6" />
           </Link>
-          <input 
-            value={title} 
-            onChange={(e) => setTitle(e.target.value)}
-            onBlur={handleSave}
-            className="bg-transparent font-headline font-bold focus:outline-none border-b border-transparent focus:border-primary px-1 max-w-[150px] sm:max-w-none"
-          />
+          <div className="flex flex-col">
+            <input 
+              value={title} 
+              onChange={(e) => setTitle(e.target.value)}
+              onBlur={handleSave}
+              className="bg-transparent font-headline font-bold focus:outline-none border-b border-transparent focus:border-primary px-1 max-w-[150px] sm:max-w-none text-foreground"
+            />
+            {selectedVideoName && <span className="text-[10px] text-muted-foreground px-1">{selectedVideoName}</span>}
+          </div>
         </div>
         <div className="flex items-center gap-2">
           {!profile?.isPremium && (
@@ -239,7 +259,7 @@ export default function EditorPage() {
               <Coins className="w-3.5 h-3.5 text-orange-400" /> {profile?.credits ?? 0}
             </div>
           )}
-          <Button variant="ghost" size="sm" className="gap-2" onClick={handleAIAnalyze} disabled={isProcessing}>
+          <Button variant="ghost" size="sm" className="gap-2 text-foreground" onClick={handleAIAnalyze} disabled={isProcessing}>
             <Sparkles className="w-4 h-4 text-primary" />
             <span className="hidden sm:inline">AI Optimize</span>
           </Button>
@@ -253,11 +273,27 @@ export default function EditorPage() {
       <div className="flex-1 flex flex-col lg:flex-row overflow-hidden">
         <div className="flex-1 bg-black flex flex-col relative group">
           <div className="flex-1 relative flex items-center justify-center">
-            <div className="aspect-video w-full max-w-4xl bg-[#1a1a1a] shadow-2xl relative flex items-center justify-center">
-               <Video className="w-16 h-16 text-white/10" />
-               <div className="absolute bottom-10 left-0 right-0 text-center text-white font-bold drop-shadow-md px-4">
-                 {project?.optimizedTitle || project?.title}
-               </div>
+            <div className="aspect-video w-full max-w-4xl bg-[#1a1a1a] shadow-2xl relative flex items-center justify-center cursor-pointer" onClick={handleFileClick}>
+               <input 
+                 type="file" 
+                 ref={fileInputRef} 
+                 className="hidden" 
+                 accept="video/*" 
+                 onChange={handleFileChange}
+               />
+               {!selectedVideoName ? (
+                 <div className="flex flex-col items-center gap-4 text-white/20">
+                    <Upload className="w-16 h-16" />
+                    <span className="text-sm font-medium">Select a video to start editing</span>
+                 </div>
+               ) : (
+                 <>
+                   <Video className="w-16 h-16 text-white/10" />
+                   <div className="absolute bottom-10 left-0 right-0 text-center text-white font-bold drop-shadow-md px-4">
+                     {project?.optimizedTitle || project?.title}
+                   </div>
+                 </>
+               )}
                {project?.transcript && (
                  <div className="absolute bottom-4 left-0 right-0 text-center text-xs bg-black/60 py-1 px-4 text-primary font-medium">
                    [Subtitles Enabled]
@@ -293,10 +329,10 @@ export default function EditorPage() {
             
             <TabsContent value="tools" className="p-4 space-y-6">
               <div className="grid grid-cols-2 gap-3">
-                <Button variant="outline" className="h-20 flex-col gap-2 rounded-xl"><Scissors className="w-5 h-5" /> Trim</Button>
-                <Button variant="outline" className="h-20 flex-col gap-2 rounded-xl"><Crop className="w-5 h-5" /> Crop</Button>
-                <Button variant="outline" className="h-20 flex-col gap-2 rounded-xl"><Gauge className="w-5 h-5" /> Speed</Button>
-                <Button variant="outline" className="h-20 flex-col gap-2 rounded-xl"><Filter className="w-5 h-5" /> Filters</Button>
+                <Button variant="outline" className="h-20 flex-col gap-2 rounded-xl text-foreground"><Scissors className="w-5 h-5" /> Trim</Button>
+                <Button variant="outline" className="h-20 flex-col gap-2 rounded-xl text-foreground"><Crop className="w-5 h-5" /> Crop</Button>
+                <Button variant="outline" className="h-20 flex-col gap-2 rounded-xl text-foreground"><Gauge className="w-5 h-5" /> Speed</Button>
+                <Button variant="outline" className="h-20 flex-col gap-2 rounded-xl text-foreground"><Filter className="w-5 h-5" /> Filters</Button>
               </div>
               <div className="space-y-4">
                 <div className="flex justify-between items-center text-sm font-medium">
@@ -351,13 +387,13 @@ export default function EditorPage() {
       <div className="bg-card h-48 lg:h-64 border-t flex flex-col pb-20 md:pb-0">
         <div className="flex items-center px-4 py-2 border-b bg-muted/20 gap-4">
           <div className="flex items-center gap-2">
-             <Button variant="ghost" size="sm" className="h-8 w-8 p-0"><Scissors className="w-4 h-4" /></Button>
-             <Button variant="ghost" size="sm" className="h-8 w-8 p-0"><Trash2 className="w-4 h-4" /></Button>
+             <Button variant="ghost" size="sm" className="h-8 w-8 p-0 text-foreground"><Scissors className="w-4 h-4" /></Button>
+             <Button variant="ghost" size="sm" className="h-8 w-8 p-0 text-foreground"><Trash2 className="w-4 h-4" /></Button>
           </div>
           <div className="flex-1 timeline-scrubber h-1">
             <div className="absolute h-1 bg-primary" style={{ width: '35%' }}></div>
           </div>
-          <span className="text-[10px] font-mono">00:35 / 02:45</span>
+          <span className="text-[10px] font-mono text-foreground">00:35 / 02:45</span>
         </div>
         
         <div className="flex-1 overflow-x-auto p-4">
@@ -378,7 +414,7 @@ export default function EditorPage() {
            <div className="max-w-md w-full text-center space-y-6">
              <Loader2 className="w-12 h-12 animate-spin text-primary mx-auto" />
              <div className="space-y-2">
-               <h3 className="text-2xl font-headline font-bold">AI Alchemist at Work</h3>
+               <h3 className="text-2xl font-headline font-bold text-white">AI Alchemist at Work</h3>
                <p className="text-muted-foreground">Rendering cinematic enhancements...</p>
              </div>
              <Progress value={exportProgress} className="h-2" />
