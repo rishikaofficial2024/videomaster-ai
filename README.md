@@ -1,7 +1,7 @@
 
 # VideoMaster AI - Mobile Build Guide (Android APK)
 
-Professional AI-powered video editor built with Next.js 15, Firebase, and Capacitor. This app features AI Veo video generation, auto-captions, and a cloud-synced studio.
+Professional AI-powered video editor built with Next.js 15, Firebase, and Capacitor. This app features AI Veo video generation, AI Voiceovers, auto-captions, and a cloud-synced studio.
 
 ## Step 1: Local Setup
 1. **Export Code**: Click the export button in the top right of the IDE to download this project.
@@ -12,7 +12,7 @@ Professional AI-powered video editor built with Next.js 15, Firebase, and Capaci
    ```
 
 ## Step 2: Firebase Deployment (Required for AI)
-To use Genkit AI features (Veo video generation, AI Captions), the app must communicate with a live backend.
+To use Genkit AI features (Veo video generation, AI Captions, Voiceovers), the app must communicate with a live backend.
 1. Deploy this project to **Firebase App Hosting**.
 2. Once deployed, get your production URL (e.g., `https://videomaster-ai.web.app`).
 3. Update `capacitor.config.ts`:
@@ -40,6 +40,7 @@ We have provided an automated script in `package.json` to handle the Capacitor l
 
 ## Features
 - **AI Veo Video Gen**: Create cinematic clips from text prompts.
+- **AI Voiceover (TTS)**: Professional narration for your scenes.
 - **Auto-Captions**: Generate perfectly timed subtitles with AI reasoning.
 - **Monetization**: Integrated Pro subscriptions and Credit system using Firestore.
 - **Cloud Studio**: Real-time project persistence across all your mobile devices.
@@ -47,3 +48,4 @@ We have provided an automated script in `package.json` to handle the Capacitor l
 ## Troubleshooting
 - **AI not working?** Ensure your `server.url` in `capacitor.config.ts` matches your deployed Firebase URL.
 - **Build errors?** Ensure you have run `npm run build` at least once locally to generate the `out` directory.
+- **Missing Audio?** Check your browser console; some AI flows require the `wav` package (already included in `package.json`).
