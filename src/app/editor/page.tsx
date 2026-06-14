@@ -27,7 +27,6 @@ import { doc, setDoc, updateDoc, serverTimestamp, increment } from "firebase/fir
 import Image from "next/image";
 import { errorEmitter } from "@/firebase/error-emitter";
 import { FirestorePermissionError } from "@/firebase/errors";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 export default function EditorPage() {
   const searchParams = useSearchParams();
@@ -154,7 +153,13 @@ export default function EditorPage() {
           setIsProcessing(false);
           
           if (!profile?.isPremium && userProfileRef) {
-            updateDoc(userProfileRef, { credits: increment(-5) });
+            updateDoc(userProfileRef, { credits: increment(-5) }).catch(async (e) => {
+              errorEmitter.emit("permission-error", new FirestorePermissionError({
+                path: userProfileRef.path,
+                operation: "update",
+                requestResourceData: { credits: increment(-5) }
+              }));
+            });
           }
 
           toast({
@@ -178,14 +183,28 @@ export default function EditorPage() {
       });
       
       if (projectRef) {
-        updateDoc(projectRef, {
+        const updateData = {
           optimizedTitle: result.title,
           optimizedDescription: result.description,
           hashtags: result.hashtags,
           updatedAt: serverTimestamp(),
+        };
+        updateDoc(projectRef, updateData).catch(async (e) => {
+          errorEmitter.emit("permission-error", new FirestorePermissionError({
+            path: projectRef.path,
+            operation: "update",
+            requestResourceData: updateData
+          }));
         });
+
         if (!profile?.isPremium && userProfileRef) {
-          updateDoc(userProfileRef, { credits: increment(-2) });
+          updateDoc(userProfileRef, { credits: increment(-2) }).catch(async (e) => {
+            errorEmitter.emit("permission-error", new FirestorePermissionError({
+              path: userProfileRef.path,
+              operation: "update",
+              requestResourceData: { credits: increment(-2) }
+            }));
+          });
         }
       }
       toast({ title: "Optimization Complete" });
@@ -209,12 +228,26 @@ export default function EditorPage() {
       setSubtitles(result.subtitles);
       
       if (projectRef) {
-        updateDoc(projectRef, {
+        const updateData = {
           subtitles: result.subtitles,
           updatedAt: serverTimestamp(),
+        };
+        updateDoc(projectRef, updateData).catch(async (e) => {
+          errorEmitter.emit("permission-error", new FirestorePermissionError({
+            path: projectRef.path,
+            operation: "update",
+            requestResourceData: updateData
+          }));
         });
+
         if (!profile?.isPremium && userProfileRef) {
-          updateDoc(userProfileRef, { credits: increment(-3) });
+          updateDoc(userProfileRef, { credits: increment(-3) }).catch(async (e) => {
+            errorEmitter.emit("permission-error", new FirestorePermissionError({
+              path: userProfileRef.path,
+              operation: "update",
+              requestResourceData: { credits: increment(-3) }
+            }));
+          });
         }
       }
       toast({ title: "Captions Generated!" });
@@ -241,12 +274,26 @@ export default function EditorPage() {
       setSelectedVideoData(result.videoDataUri);
       
       if (projectRef) {
-        updateDoc(projectRef, {
+        const updateData = {
           videoDataUri: result.videoDataUri,
           updatedAt: serverTimestamp(),
+        };
+        updateDoc(projectRef, updateData).catch(async (e) => {
+          errorEmitter.emit("permission-error", new FirestorePermissionError({
+            path: projectRef.path,
+            operation: "update",
+            requestResourceData: updateData
+          }));
         });
+
         if (!profile?.isPremium && userProfileRef) {
-          updateDoc(userProfileRef, { credits: increment(-10) });
+          updateDoc(userProfileRef, { credits: increment(-10) }).catch(async (e) => {
+            errorEmitter.emit("permission-error", new FirestorePermissionError({
+              path: userProfileRef.path,
+              operation: "update",
+              requestResourceData: { credits: increment(-10) }
+            }));
+          });
         }
       }
       toast({ title: "Magic Complete!", description: "Your AI video has been generated." });
@@ -270,7 +317,13 @@ export default function EditorPage() {
       const result = await generateAiVoiceover({ text: voiceoverText });
       setGeneratedVoiceover(result.audioDataUri);
       if (!profile?.isPremium && userProfileRef) {
-        updateDoc(userProfileRef, { credits: increment(-4) });
+        updateDoc(userProfileRef, { credits: increment(-4) }).catch(async (e) => {
+          errorEmitter.emit("permission-error", new FirestorePermissionError({
+            path: userProfileRef.path,
+            operation: "update",
+            requestResourceData: { credits: increment(-4) }
+          }));
+        });
       }
       toast({ title: "Voiceover Ready", description: "AI narration has been added to the scene." });
     } catch (e: any) {

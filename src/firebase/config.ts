@@ -1,15 +1,14 @@
 
 /**
- * Firebase configuration object.
+ * Firebase configuration object for VideoMaster AI.
  * 
- * IMPORTANT: Replace the dummy 'apiKey' with your real project API Key 
- * from the Firebase Console (Project Settings > General).
- * 
- * Security: This config is public, but your backend is protected by 
- * Firestore Security Rules.
+ * !!! ACTION REQUIRED !!!
+ * 1. Go to Firebase Console > Project Settings.
+ * 2. Copy the 'apiKey' and paste it below.
+ * 3. Ensure Authentication (Google/Email) and Firestore are enabled in the Console.
  */
 export const firebaseConfig = {
-  apiKey: "AIzaSyD-Actual-API-Key-From-Console", 
+  apiKey: "REPLACE_WITH_YOUR_FIREBASE_API_KEY", 
   authDomain: "videomaster-ai.firebaseapp.com",
   projectId: "videomaster-ai",
   storageBucket: "videomaster-ai.appspot.com",
