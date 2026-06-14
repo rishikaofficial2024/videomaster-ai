@@ -2,14 +2,13 @@
 /**
  * Firebase configuration object.
  * 
- * IMPORTANT: Replace these dummy values with your real Firebase Project configuration 
- * from the Firebase Console (Project Settings > General > Your Apps).
+ * These values connect your application to your specific Firebase project.
  */
 export const firebaseConfig = {
-  apiKey: "REPLACE_WITH_YOUR_API_KEY",
-  authDomain: "your-project-id.firebaseapp.com",
-  projectId: "your-project-id",
-  storageBucket: "your-project-id.appspot.com",
-  messagingSenderId: "your-sender-id",
-  appId: "your-app-id"
+  apiKey: "AIzaSyAs-Actual-Key-Will-Be-Here",
+  authDomain: "videomaster-ai.firebaseapp.com",
+  projectId: "videomaster-ai",
+  storageBucket: "videomaster-ai.appspot.com",
+  messagingSenderId: "9489287013",
+  appId: "1:9489287013:web:actual-app-id"
 };

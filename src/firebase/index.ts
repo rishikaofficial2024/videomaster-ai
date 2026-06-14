@@ -10,6 +10,10 @@ let app: FirebaseApp;
 let auth: Auth;
 let firestore: Firestore;
 
+/**
+ * Initializes Firebase services and returns the instances.
+ * This function is idempotent and safe to call multiple times.
+ */
 export function initializeFirebase() {
   if (getApps().length > 0) {
     app = getApp();
