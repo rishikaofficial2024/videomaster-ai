@@ -1,51 +1,42 @@
 
-# VideoMaster AI - Mobile Build Guide (Android APK)
+# VideoMaster AI - Production & APK Build Guide
 
-Professional AI-powered video editor built with Next.js 15, Firebase, and Capacitor. This app features AI Veo video generation, AI Voiceovers, auto-captions, and a cloud-synced studio.
+Professional AI-powered video editor built with Next.js 15, Firebase, and Capacitor.
 
-## Step 1: Local Setup
-1. **Export Code**: Click the export button in the top right of the IDE to download this project.
-2. **Install Node**: Ensure you have Node.js 18+ installed on your local machine.
-3. **Install Dependencies**:
-   ```bash
-   npm install
-   ```
+## 🚀 Final Production Checklist (DO THIS BEFORE PUBLISHING)
 
-## Step 2: Firebase Deployment (Required for AI)
-To use Genkit AI features (Veo video generation, AI Captions, Voiceovers), the app must communicate with a live backend.
-1. Deploy this project to **Firebase App Hosting**.
-2. Once deployed, get your production URL (e.g., `https://videomaster-ai.web.app`).
-3. Update `capacitor.config.ts`:
-   ```ts
-   // Set the server url to your live production domain
-   url: 'https://your-production-app.web.app'
-   ```
+### 1. Firebase Console Settings
+* **Enable Authentication**: In the Firebase Console, go to Auth and enable "Email/Password" and "Google" sign-in providers.
+* **Update Config**: Replace the dummy values in `src/firebase/config.ts` with your actual Firebase project configuration found in Project Settings.
+* **Firestore Rules**: Ensure your rules allow users to read/write only their own data.
+* **Storage**: Enable Firebase Storage if you plan to move from Base64 to file-based storage in the future.
 
-## Step 3: Android Studio Setup
-1. Download and install **Android Studio**.
-2. Open Android Studio and install the **Android SDK** (API level 34+) and a virtual **Emulator**.
+### 2. Local Environment Setup
+* **API Keys**: Add your `GEMINI_API_KEY` to your Firebase App Hosting environment variables.
+* **Capacitor URL**: Once you have your production URL (e.g., `https://videomaster-ai.web.app`), update `capacitor.config.ts`:
+  ```ts
+  server: {
+    url: 'https://your-app-id.web.app',
+    allowNavigation: ['*']
+  }
+  ```
 
-## Step 4: Build & APK Generation
-We have provided an automated script in `package.json` to handle the Capacitor lifecycle.
-1. Run the build command in your terminal:
-   ```bash
-   npm run mobile:build-apk
-   ```
-   *This command runs `next build`, exports static files to `/out`, and syncs them to the Android project.*
-2. Once **Android Studio** opens automatically:
-   - Wait for the **Gradle sync** to finish (watch the status bar at the bottom).
-   - Go to the **Build** menu in the top toolbar.
-   - Select **Build Bundle(s) / APK(s)** -> **Build APK(s)**.
-3. When the build is finished, a notification popup will appear in the bottom right. Click **Locate** to find your `app-debug.apk`.
+### 3. Build & APK Generation
+1. **Install Dependencies**: `npm install`
+2. **Build Web Assets**: `npm run build` (This creates the `/out` directory).
+3. **Sync Mobile**: `npm run mobile:sync`
+4. **Android Studio**: 
+   - Open the `/android` folder in Android Studio.
+   - Go to **Build > Generate Signed Bundle / APK**.
+   - Create a new Key Store (for Google Play) or use **Build APK** for testing.
+
+## Commands Reference
+* `npm run dev`: Local web development.
+* `npm run mobile:build-apk`: Automated command to build, sync, and open Android Studio.
+* `npm run genkit:dev`: Start Genkit UI for testing AI flows.
 
 ## Features
 - **AI Veo Video Gen**: Create cinematic clips from text prompts.
-- **AI Voiceover (TTS)**: Professional narration for your scenes.
-- **Auto-Captions**: Generate perfectly timed subtitles with AI reasoning.
-- **Monetization**: Integrated Pro subscriptions and Credit system using Firestore.
-- **Cloud Studio**: Real-time project persistence across all your mobile devices.
-
-## Troubleshooting
-- **AI not working?** Ensure your `server.url` in `capacitor.config.ts` matches your deployed Firebase URL.
-- **Build errors?** Ensure you have run `npm run build` at least once locally to generate the `out` directory.
-- **Missing Audio?** Check your browser console; some AI flows require the `wav` package (already included in `package.json`).
+- **AI Voiceover (TTS)**: Professional narration using Gemini.
+- **AI Magic SEO**: Optimized titles, descriptions, and hashtags.
+- **Monetization**: Credit-based system and PRO subscriptions.

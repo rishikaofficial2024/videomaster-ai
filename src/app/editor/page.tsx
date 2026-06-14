@@ -12,7 +12,7 @@ import {
   Play, Pause, SkipBack, SkipForward, Scissors, 
   Trash2, Music, Wand2, Download, 
   Crop, Filter, Gauge, Type, Sparkles, ChevronLeft, Loader2, Video,
-  Coins, Upload, Zap, Captions, Mic, Volume2
+  Coins, Upload, Zap, Captions, Mic, Volume2, AlertCircle
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { aiVideoContentOptimization } from "@/ai/flows/ai-video-content-optimization-flow";
@@ -27,6 +27,7 @@ import { doc, setDoc, updateDoc, serverTimestamp, increment } from "firebase/fir
 import Image from "next/image";
 import { errorEmitter } from "@/firebase/error-emitter";
 import { FirestorePermissionError } from "@/firebase/errors";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 export default function EditorPage() {
   const searchParams = useSearchParams();
@@ -59,7 +60,8 @@ export default function EditorPage() {
 
   const projectRef = useMemo(() => {
     if (!user) return null;
-    return doc(db, "users", user.uid, "projects", projectIdFromUrl || "new-" + Date.now());
+    const id = projectIdFromUrl || "new-" + Date.now();
+    return doc(db, "users", user.uid, "projects", id);
   }, [user, db, projectIdFromUrl]);
 
   const { data: project, loading: projectLoading } = useDoc(projectIdFromUrl ? projectRef : null);
@@ -126,16 +128,22 @@ export default function EditorPage() {
     }
   };
 
-  const handleExport = () => {
-    if (!profile?.isPremium && (profile?.credits ?? 0) < 5) {
+  const checkCredits = (cost: number) => {
+    if (profile?.isPremium) return true;
+    if ((profile?.credits ?? 0) < cost) {
       toast({
         variant: "destructive",
         title: "Insufficient Credits",
-        description: "Exporting costs 5 credits. Upgrade to PRO for unlimited exports.",
+        description: `This action costs ${cost} credits. Please upgrade to PRO for unlimited access.`,
         action: <Button variant="outline" size="sm" asChild><Link href="/premium">Upgrade</Link></Button>
       });
-      return;
+      return false;
     }
+    return true;
+  };
+
+  const handleExport = () => {
+    if (!checkCredits(5)) return;
 
     setIsProcessing(true);
     setExportProgress(0);
@@ -161,10 +169,7 @@ export default function EditorPage() {
   };
 
   const handleAIAnalyze = async () => {
-    if (!profile?.isPremium && (profile?.credits ?? 0) < 2) {
-      toast({ variant: "destructive", title: "Insufficient Credits" });
-      return;
-    }
+    if (!checkCredits(2)) return;
 
     setIsProcessing(true);
     try {
@@ -184,8 +189,8 @@ export default function EditorPage() {
         }
       }
       toast({ title: "Optimization Complete" });
-    } catch (e) {
-      toast({ variant: "destructive", title: "AI Error" });
+    } catch (e: any) {
+      toast({ variant: "destructive", title: "AI Error", description: e.message });
     } finally {
       setIsProcessing(false);
     }
@@ -196,10 +201,7 @@ export default function EditorPage() {
       toast({ title: "Video Required", description: "Upload a video first." });
       return;
     }
-    if (!profile?.isPremium && (profile?.credits ?? 0) < 3) {
-      toast({ variant: "destructive", title: "Insufficient Credits", description: "Captions cost 3 credits." });
-      return;
-    }
+    if (!checkCredits(3)) return;
 
     setIsProcessing(true);
     try {
@@ -216,8 +218,8 @@ export default function EditorPage() {
         }
       }
       toast({ title: "Captions Generated!" });
-    } catch (e) {
-      toast({ variant: "destructive", title: "Transcription Error" });
+    } catch (e: any) {
+      toast({ variant: "destructive", title: "Transcription Error", description: e.message });
     } finally {
       setIsProcessing(false);
     }
@@ -228,10 +230,7 @@ export default function EditorPage() {
       toast({ title: "Prompt Required", description: "Enter a description for your magic video." });
       return;
     }
-    if (!profile?.isPremium && (profile?.credits ?? 0) < 10) {
-      toast({ variant: "destructive", title: "Insufficient Credits", description: "Video generation costs 10 credits." });
-      return;
-    }
+    if (!checkCredits(10)) return;
 
     setIsProcessing(true);
     setExportProgress(0);
@@ -251,8 +250,8 @@ export default function EditorPage() {
         }
       }
       toast({ title: "Magic Complete!", description: "Your AI video has been generated." });
-    } catch (e) {
-      toast({ variant: "destructive", title: "Generation Error", description: "AI video generation failed." });
+    } catch (e: any) {
+      toast({ variant: "destructive", title: "Generation Error", description: e.message });
     } finally {
       clearInterval(progressInterval);
       setIsProcessing(false);
@@ -264,10 +263,7 @@ export default function EditorPage() {
       toast({ title: "Script Required" });
       return;
     }
-    if (!profile?.isPremium && (profile?.credits ?? 0) < 4) {
-      toast({ variant: "destructive", title: "Insufficient Credits" });
-      return;
-    }
+    if (!checkCredits(4)) return;
 
     setIsProcessing(true);
     try {
@@ -277,8 +273,8 @@ export default function EditorPage() {
         updateDoc(userProfileRef, { credits: increment(-4) });
       }
       toast({ title: "Voiceover Ready", description: "AI narration has been added to the scene." });
-    } catch (e) {
-      toast({ variant: "destructive", title: "Voiceover Error" });
+    } catch (e: any) {
+      toast({ variant: "destructive", title: "Voiceover Error", description: e.message });
     } finally {
       setIsProcessing(false);
     }
@@ -309,10 +305,12 @@ export default function EditorPage() {
           />
         </div>
         <div className="flex items-center gap-2">
-          <Button variant="ghost" size="sm" className="gap-2 text-foreground" onClick={handleAIAnalyze} disabled={isProcessing}>
-            <Sparkles className="w-4 h-4 text-primary" />
-            <span className="hidden sm:inline">AI SEO</span>
-          </Button>
+          {!profile?.isPremium && (
+            <div className="hidden sm:flex items-center gap-1.5 px-3 py-1 bg-primary/10 rounded-full border border-primary/20">
+              <Coins className="w-3.5 h-3.5 text-primary" />
+              <span className="text-xs font-bold text-primary">{profile?.credits ?? 0}</span>
+            </div>
+          )}
           <Button size="sm" className="bg-primary hover:bg-primary/90 text-white gap-2" onClick={handleExport} disabled={isProcessing}>
             <Download className="w-4 h-4" />
             {isProcessing ? "Wait..." : "Export"}
@@ -374,6 +372,19 @@ export default function EditorPage() {
                 <Button variant="outline" className="h-20 flex-col gap-2 rounded-xl text-foreground"><Crop className="w-5 h-5" /> Crop</Button>
                 <Button variant="outline" className="h-20 flex-col gap-2 rounded-xl text-foreground"><Gauge className="w-5 h-5" /> Speed</Button>
                 <Button variant="outline" className="h-20 flex-col gap-2 rounded-xl text-foreground"><Filter className="w-5 h-5" /> Filters</Button>
+              </div>
+              <div className="p-4 bg-muted/30 rounded-2xl border border-dashed text-center">
+                 <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-widest mb-2">Editor Stats</p>
+                 <div className="grid grid-cols-2 gap-2">
+                    <div className="bg-background p-2 rounded-xl shadow-sm">
+                       <p className="text-lg font-bold">1080p</p>
+                       <p className="text-[8px] text-muted-foreground">Quality</p>
+                    </div>
+                    <div className="bg-background p-2 rounded-xl shadow-sm">
+                       <p className="text-lg font-bold">30fps</p>
+                       <p className="text-[8px] text-muted-foreground">Frame Rate</p>
+                    </div>
+                 </div>
               </div>
             </TabsContent>
 
