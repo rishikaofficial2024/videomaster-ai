@@ -15,16 +15,20 @@ import {
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { aiVideoContentOptimization } from "@/ai/flows/ai-video-content-optimization-flow";
+import { generateAutoCaptionsAndSubtitles } from "@/ai/flows/ai-auto-caption-and-subtitle-generation-flow";
 import { Progress } from "@/components/ui/progress";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useUser, useFirestore, useDoc } from "@/firebase";
 import { doc, setDoc, updateDoc, serverTimestamp, increment } from "firebase/firestore";
 import Image from "next/image";
+import { errorEmitter } from "@/firebase/error-emitter";
+import { FirestorePermissionError } from "@/firebase/errors";
 
 export default function EditorPage() {
   const searchParams = useSearchParams();
   const projectIdFromUrl = searchParams.get("id");
+  const toolFromUrl = searchParams.get("tool");
   const router = useRouter();
   const { user } = useUser();
   const db = useFirestore();
@@ -34,6 +38,7 @@ export default function EditorPage() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [exportProgress, setExportProgress] = useState(0);
+  const [activeTab, setActiveTab] = useState(toolFromUrl === "captions" ? "ai" : "tools");
 
   const userProfileRef = useMemo(() => {
     if (!user) return null;
@@ -64,12 +69,24 @@ export default function EditorPage() {
     };
     
     if (projectIdFromUrl) {
-      updateDoc(projectRef, data);
+      updateDoc(projectRef, data).catch(async (e) => {
+        errorEmitter.emit("permission-error", new FirestorePermissionError({
+          path: projectRef.path,
+          operation: "update",
+          requestResourceData: data
+        }));
+      });
     } else {
       setDoc(projectRef, {
         ...data,
         createdAt: serverTimestamp(),
         thumbnailUrl: `https://picsum.photos/seed/${projectRef.id}/600/400`,
+      }).catch(async (e) => {
+        errorEmitter.emit("permission-error", new FirestorePermissionError({
+          path: projectRef.path,
+          operation: "create",
+          requestResourceData: data
+        }));
       });
       router.replace(`/editor?id=${projectRef.id}`);
     }
@@ -121,6 +138,7 @@ export default function EditorPage() {
       return;
     }
 
+    setIsProcessing(true);
     toast({ title: "AI Alchemist", description: "Analyzing scenes for optimized content..." });
     try {
       const result = await aiVideoContentOptimization({ 
@@ -132,6 +150,7 @@ export default function EditorPage() {
           optimizedTitle: result.title,
           optimizedDescription: result.description,
           hashtags: result.hashtags,
+          updatedAt: serverTimestamp(),
         });
 
         if (!profile?.isPremium && userProfileRef) {
@@ -144,7 +163,49 @@ export default function EditorPage() {
         description: `Generated title: ${result.title.substring(0, 30)}...`,
       });
     } catch (e) {
-      console.error(e);
+      toast({ variant: "destructive", title: "AI Error", description: "Failed to optimize content." });
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  const handleAutoCaptions = async () => {
+     if (!profile?.isPremium && (profile?.credits ?? 0) < 3) {
+      toast({
+        variant: "destructive",
+        title: "Insufficient Credits",
+        description: "Auto Captions cost 3 credits.",
+      });
+      return;
+    }
+
+    setIsProcessing(true);
+    toast({ title: "Transcribing...", description: "AI is listening to your audio..." });
+    try {
+      // Mock audio data for the prototype
+      const result = await generateAutoCaptionsAndSubtitles({ 
+        audioDataUri: "data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA=" 
+      });
+      
+      if (projectRef) {
+        updateDoc(projectRef, {
+          transcript: result.subtitles,
+          updatedAt: serverTimestamp(),
+        });
+
+        if (!profile?.isPremium && userProfileRef) {
+          updateDoc(userProfileRef, { credits: increment(-3) });
+        }
+      }
+
+      toast({
+        title: "Captions Ready!",
+        description: "Subtitles have been added to your timeline.",
+      });
+    } catch (e) {
+      toast({ variant: "destructive", title: "Transcription Error", description: "Failed to generate captions." });
+    } finally {
+      setIsProcessing(false);
     }
   };
 
@@ -175,10 +236,10 @@ export default function EditorPage() {
         <div className="flex items-center gap-2">
           {!profile?.isPremium && (
             <div className="hidden sm:flex items-center gap-1 text-xs font-bold text-muted-foreground mr-2">
-              <Coins className="w-3 h-3 text-orange-400" /> {profile?.credits ?? 0}
+              <Coins className="w-3.5 h-3.5 text-orange-400" /> {profile?.credits ?? 0}
             </div>
           )}
-          <Button variant="ghost" size="sm" className="gap-2" onClick={handleAIAnalyze}>
+          <Button variant="ghost" size="sm" className="gap-2" onClick={handleAIAnalyze} disabled={isProcessing}>
             <Sparkles className="w-4 h-4 text-primary" />
             <span className="hidden sm:inline">AI Optimize</span>
           </Button>
@@ -195,8 +256,13 @@ export default function EditorPage() {
             <div className="aspect-video w-full max-w-4xl bg-[#1a1a1a] shadow-2xl relative flex items-center justify-center">
                <Video className="w-16 h-16 text-white/10" />
                <div className="absolute bottom-10 left-0 right-0 text-center text-white font-bold drop-shadow-md px-4">
-                 {project?.optimizedTitle || "[AI Subtitle Placeholder]"}
+                 {project?.optimizedTitle || project?.title}
                </div>
+               {project?.transcript && (
+                 <div className="absolute bottom-4 left-0 right-0 text-center text-xs bg-black/60 py-1 px-4 text-primary font-medium">
+                   [Subtitles Enabled]
+                 </div>
+               )}
             </div>
           </div>
           
@@ -218,7 +284,7 @@ export default function EditorPage() {
         </div>
 
         <div className="w-full lg:w-80 bg-background border-l overflow-y-auto">
-          <Tabs defaultValue="tools" className="w-full">
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
             <TabsList className="w-full h-12 rounded-none grid grid-cols-3 bg-muted/50">
               <TabsTrigger value="tools">Tools</TabsTrigger>
               <TabsTrigger value="ai">AI Tools</TabsTrigger>
@@ -242,22 +308,24 @@ export default function EditorPage() {
             </TabsContent>
 
             <TabsContent value="ai" className="p-4 space-y-4">
-              <Card className="p-4 border-primary/20 bg-primary/5 cursor-pointer hover:bg-primary/10" onClick={handleAIAnalyze}>
+              <Card className="p-4 border-primary/20 bg-primary/5 cursor-pointer hover:bg-primary/10 transition-colors" onClick={handleAutoCaptions}>
                 <div className="flex items-center gap-3">
                   <div className="p-2 bg-primary rounded-lg text-white"><Type className="w-5 h-5" /></div>
-                  <div>
+                  <div className="flex-1">
                     <h4 className="font-bold text-sm">Auto Captions</h4>
-                    <p className="text-xs text-muted-foreground">AI Transcribe audio (2c)</p>
+                    <p className="text-xs text-muted-foreground">AI Transcribe audio (3c)</p>
                   </div>
+                  {project?.transcript && <div className="w-2 h-2 bg-green-500 rounded-full" />}
                 </div>
               </Card>
-              <Card className="p-4 border-accent/20 bg-accent/5 cursor-pointer hover:bg-accent/10" onClick={handleAIAnalyze}>
+              <Card className="p-4 border-accent/20 bg-accent/5 cursor-pointer hover:bg-accent/10 transition-colors" onClick={handleAIAnalyze}>
                 <div className="flex items-center gap-3">
                   <div className="p-2 bg-accent rounded-lg text-white"><Sparkles className="w-5 h-5" /></div>
-                  <div>
+                  <div className="flex-1">
                     <h4 className="font-bold text-sm">Magic SEO</h4>
                     <p className="text-xs text-muted-foreground">Tags & Title (2c)</p>
                   </div>
+                  {project?.hashtags && <div className="w-2 h-2 bg-green-500 rounded-full" />}
                 </div>
               </Card>
             </TabsContent>
@@ -265,7 +333,7 @@ export default function EditorPage() {
             <TabsContent value="audio" className="p-4 space-y-4">
               <div className="space-y-2">
                 <h4 className="text-sm font-semibold">Library</h4>
-                {[1, 2].map(i => (
+                {[1, 2, 3].map(i => (
                   <div key={i} className="flex items-center justify-between p-2 rounded-lg bg-muted/50">
                     <div className="flex items-center gap-2">
                       <Music className="w-4 h-4 text-primary" />
@@ -295,7 +363,7 @@ export default function EditorPage() {
         <div className="flex-1 overflow-x-auto p-4">
           <div className="flex gap-1 h-full min-w-[2000px] relative">
             <div className="absolute top-0 left-0 right-0 h-1/2 flex items-center gap-0.5">
-              {[...Array(10)].map((_, i) => (
+              {[...Array(12)].map((_, i) => (
                 <div key={i} className="h-16 w-32 bg-primary/20 rounded border border-white/5 relative overflow-hidden">
                   <Image src={`https://picsum.photos/seed/thumb-${i}/128/64`} alt="Frame" fill className="object-cover opacity-30" />
                 </div>
@@ -310,8 +378,8 @@ export default function EditorPage() {
            <div className="max-w-md w-full text-center space-y-6">
              <Loader2 className="w-12 h-12 animate-spin text-primary mx-auto" />
              <div className="space-y-2">
-               <h3 className="text-2xl font-headline font-bold">Rendering 4K</h3>
-               <p className="text-muted-foreground">Applying AI enhancements...</p>
+               <h3 className="text-2xl font-headline font-bold">AI Alchemist at Work</h3>
+               <p className="text-muted-foreground">Rendering cinematic enhancements...</p>
              </div>
              <Progress value={exportProgress} className="h-2" />
              <Button variant="ghost" onClick={() => setIsProcessing(false)} className="text-muted-foreground">Cancel</Button>

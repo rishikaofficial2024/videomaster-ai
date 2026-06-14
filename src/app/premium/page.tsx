@@ -9,6 +9,8 @@ import { Crown, Check, Zap, Cloud, Video, ShieldCheck, Loader2 } from "lucide-re
 import { useUser, useFirestore, useDoc } from "@/firebase";
 import { doc, updateDoc } from "firebase/firestore";
 import { useToast } from "@/hooks/use-toast";
+import { errorEmitter } from "@/firebase/error-emitter";
+import { FirestorePermissionError } from "@/firebase/errors";
 
 export default function PremiumPage() {
   const { user } = useUser();
@@ -20,10 +22,19 @@ export default function PremiumPage() {
   const handleUpgrade = async () => {
     if (!user) return;
     setLoading(true);
+    const userRef = doc(db, "users", user.uid);
+    const data = {
+      isPremium: true,
+      credits: 9999,
+    };
+
     try {
-      await updateDoc(doc(db, "users", user.uid), {
-        isPremium: true,
-        credits: 9999, // Unlimited credits for premium
+      await updateDoc(userRef, data).catch(async (e) => {
+        errorEmitter.emit("permission-error", new FirestorePermissionError({
+          path: userRef.path,
+          operation: "update",
+          requestResourceData: data
+        }));
       });
       toast({
         title: "Welcome to PRO!",
