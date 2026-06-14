@@ -3,36 +3,31 @@
 
 AI-powered professional video editing for Android and iOS. Built with Next.js 15, Firebase, and Capacitor.
 
-## 🚩 PENDING SETTINGS (ACTION REQUIRED)
+## 🚩 FINAL STEP (DO THIS NOW)
 
-Follow these 3 steps to make the app fully functional:
+Aapka code 100% ready hai. Bas ye 2 kaam karein:
 
-### 1. Update Firebase Credentials
-*   Open `src/firebase/config.ts`.
-*   Replace `REPLACE_WITH_YOUR_FIREBASE_API_KEY` with your actual API Key from the [Firebase Console](https://console.firebase.google.com/).
+### 1. AI Connect Karein
+*   `.env` file kholiye.
+*   `your_actual_gemini_api_key_here` ki jagah apni Gemini Key daliye.
 
-### 2. Update AI Credentials
-*   Open `.env`.
-*   Add your `GEMINI_API_KEY` from [Google AI Studio](https://aistudio.google.com/app/apikey).
-
-### 3. Enable Cloud Services
-*   **Authentication**: Enable "Email/Password" and "Google" in the Firebase Console.
-*   **Firestore**: Click "Create Database" in the Firebase Console (Production Mode).
-*   **Rules**: Security rules are applied automatically from `docs/backend.json`.
+### 2. Firebase Activate Karein
+*   **Auth**: [Firebase Console](https://console.firebase.google.com/) mein jaakar "Authentication" enable karein.
+*   **Database**: "Firestore Database" par click karein aur "Create Database" karein.
 
 ---
 
 ## 🛠 Features
-- **AI Veo Video Gen**: High-end cinematic clips from text.
-- **AI Voiceover**: Studio-quality narration (Gemini TTS).
-- **Auto-Captions**: Instant transcription to WebVTT.
-- **Magic SEO**: AI analysis for social media viral reach.
+- **AI Veo Video Gen**: Cinematic clips from text.
+- **AI Voiceover**: Studio-quality narration.
+- **Auto-Captions**: Instant subtitles.
+- **Magic SEO**: Social media optimization.
 
 ## 📱 Mobile Identity
 * **App Name**: VideoMaster AI
 * **Android Package Name**: `com.videomaster.ai`
 * **Version**: 1.0.0
 
-## 🚀 How to Test
-1. **Web**: Run `npm run dev` and visit `http://localhost:9002/test-connection`.
-2. **Android**: Run `npm run mobile:sync` then `npx cap open android`.
+## 🚀 Testing
+1. **Web**: `npm run dev` karke `/test-connection` par jayein.
+2. **Android**: `npm run mobile:sync` karein aur Android Studio mein chalayein.

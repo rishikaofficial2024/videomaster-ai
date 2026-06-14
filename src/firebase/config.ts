@@ -2,13 +2,11 @@
 /**
  * Firebase configuration object for VideoMaster AI.
  * 
- * !!! ACTION REQUIRED !!!
- * 1. Go to Firebase Console > Project Settings.
- * 2. Copy the 'apiKey' and paste it below.
- * 3. Ensure Authentication (Google/Email) and Firestore are enabled in the Console.
+ * I have pre-filled your Project ID and App ID. 
+ * You just need to paste your API Key below.
  */
 export const firebaseConfig = {
-  apiKey: "REPLACE_WITH_YOUR_FIREBASE_API_KEY", 
+  apiKey: "REPLACE_WITH_YOUR_FIREBASE_API_KEY", // Get this from Firebase Project Settings
   authDomain: "videomaster-ai.firebaseapp.com",
   projectId: "videomaster-ai",
   storageBucket: "videomaster-ai.appspot.com",
