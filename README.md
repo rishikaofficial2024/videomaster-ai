@@ -1,3 +1,4 @@
+
 # VideoMaster AI - Professional Video Editor
 
 Professional AI-powered video editor built with Next.js 15, Firebase, and Capacitor. This app is optimized for professional mobile video creation and monetization.
@@ -5,21 +6,23 @@ Professional AI-powered video editor built with Next.js 15, Firebase, and Capaci
 ## 🚀 Final Production Checklist (DO THIS BEFORE PUBLISHING)
 
 ### 1. Firebase Console Settings (REQUIRED)
-* **Enable Authentication**: Go to the [Firebase Console](https://console.firebase.google.com/), navigate to **Auth**, and enable the "Email/Password" and "Google" sign-in providers.
-* **Firestore Setup**: Go to **Firestore Database** and click "Create Database". Start in **Production Mode**. Use the rules generated in the project.
-* **API Keys**: Ensure your `GEMINI_API_KEY` is set in your environment variables for Genkit flows.
+* **Enable Authentication**: Go to [Firebase Console](https://console.firebase.google.com/), navigate to **Build > Authentication**, and enable **Email/Password** and **Google**.
+* **Firestore Setup**: Go to **Build > Firestore Database** and click "Create Database". Start in **Production Mode**.
+* **API Keys**: 
+  * Ensure your `GEMINI_API_KEY` is set in your environment variables for Genkit flows.
+  * Copy your **Web API Key** from Project Settings and paste it into `src/firebase/config.ts`.
 
 ### 2. Local Environment Setup
-* **Capacitor URL**: Once you have your production URL (e.g., `https://videomaster-ai.web.app`), update `capacitor.config.ts`.
 * **Build Assets**: Run `npm run build` to generate the static files for the mobile app.
+* **Sync Mobile**: Run `npm run mobile:sync`. This updates the Android project with your latest web code.
 
 ### 3. Build & APK Generation
-1. **Install Dependencies**: Run `npm install` in your project root.
-2. **Build Web Assets**: Run `npm run build`. This creates the `/out` directory.
-3. **Sync Mobile**: Run `npm run mobile:sync`. This updates the Android project.
-4. **Android Studio**: 
+1. **Install Dependencies**: Run `npm install`.
+2. **Build & Sync**: Run `npm run mobile:sync`.
+3. **Android Studio**: 
    - Open the `/android` folder in Android Studio.
-   - Go to **Build > Generate Signed Bundle / APK** to create your final `.apk`.
+   - Go to **Build > Build Bundle(s) / APK(s) > Build APK(s)** to create your test `.apk`.
+   - Go to **Build > Generate Signed Bundle / APK** for production.
 
 ## Core Features
 - **AI Veo Video Gen**: Create cinematic clips from text prompts.
@@ -27,3 +30,9 @@ Professional AI-powered video editor built with Next.js 15, Firebase, and Capaci
 - **AI Magic SEO**: Optimized titles, descriptions, and hashtags.
 - **Monetization**: Credit-based system and PRO subscriptions.
 - **Cloud Studio**: Seamless project sync across devices.
+
+## Tech Stack
+- **Frontend**: Next.js 15, React, Tailwind CSS, ShadCN UI.
+- **Backend**: Firebase Auth, Firestore.
+- **AI**: Genkit with Gemini 2.5 Flash & Veo 2.0.
+- **Mobile**: Capacitor 7.

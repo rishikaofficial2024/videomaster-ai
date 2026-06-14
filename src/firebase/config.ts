@@ -1,11 +1,13 @@
+
 /**
  * Firebase configuration object.
  * 
  * These values connect your application to your specific Firebase project.
- * Important: These values are public and safe to include in your frontend code.
+ * Important: The apiKey below is a placeholder. You MUST replace it with 
+ * your actual API Key from the Firebase Console (Project Settings > General).
  */
 export const firebaseConfig = {
-  apiKey: "AIzaSyD-Actual-API-Key-From-Console",
+  apiKey: "AIzaSyD-Actual-API-Key-From-Console", // REPLACE THIS WITH YOUR REAL API KEY
   authDomain: "videomaster-ai.firebaseapp.com",
   projectId: "videomaster-ai",
   storageBucket: "videomaster-ai.appspot.com",
