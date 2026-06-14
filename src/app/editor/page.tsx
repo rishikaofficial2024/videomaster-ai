@@ -12,12 +12,13 @@ import {
   Play, Pause, SkipBack, SkipForward, Scissors, 
   Trash2, Music, Wand2, Download, 
   Crop, Filter, Gauge, Type, Sparkles, ChevronLeft, Loader2, Video,
-  Coins, Upload, Zap, Captions
+  Coins, Upload, Zap, Captions, Mic, Volume2
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { aiVideoContentOptimization } from "@/ai/flows/ai-video-content-optimization-flow";
 import { generateAutoCaptionsAndSubtitles } from "@/ai/flows/ai-auto-caption-and-subtitle-generation-flow";
 import { generateAiVideo } from "@/ai/flows/ai-video-generation-flow";
+import { generateAiVoiceover } from "@/ai/flows/ai-voiceover-generation-flow";
 import { Progress } from "@/components/ui/progress";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
@@ -36,6 +37,7 @@ export default function EditorPage() {
   const db = useFirestore();
   const { toast } = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const audioRef = useRef<HTMLAudioElement>(null);
 
   const [title, setTitle] = useState("Untitled Project");
   const [isPlaying, setIsPlaying] = useState(false);
@@ -45,6 +47,8 @@ export default function EditorPage() {
   const [selectedVideoData, setSelectedVideoData] = useState<string | null>(null);
   const [videoPrompt, setVideoPrompt] = useState("");
   const [subtitles, setSubtitles] = useState<string | null>(null);
+  const [voiceoverText, setVoiceoverText] = useState("");
+  const [generatedVoiceover, setGeneratedVoiceover] = useState<string | null>(null);
 
   const userProfileRef = useMemo(() => {
     if (!user) return null;
@@ -199,7 +203,6 @@ export default function EditorPage() {
 
     setIsProcessing(true);
     try {
-      // In a real app, we'd extract audio. Here we mock with a flow call.
       const result = await generateAutoCaptionsAndSubtitles({ audioDataUri: selectedVideoData });
       setSubtitles(result.subtitles);
       
@@ -252,6 +255,31 @@ export default function EditorPage() {
       toast({ variant: "destructive", title: "Generation Error", description: "AI video generation failed." });
     } finally {
       clearInterval(progressInterval);
+      setIsProcessing(false);
+    }
+  };
+
+  const handleVoiceover = async () => {
+    if (!voiceoverText) {
+      toast({ title: "Script Required" });
+      return;
+    }
+    if (!profile?.isPremium && (profile?.credits ?? 0) < 4) {
+      toast({ variant: "destructive", title: "Insufficient Credits" });
+      return;
+    }
+
+    setIsProcessing(true);
+    try {
+      const result = await generateAiVoiceover({ text: voiceoverText });
+      setGeneratedVoiceover(result.audioDataUri);
+      if (!profile?.isPremium && userProfileRef) {
+        updateDoc(userProfileRef, { credits: increment(-4) });
+      }
+      toast({ title: "Voiceover Ready", description: "AI narration has been added to the scene." });
+    } catch (e) {
+      toast({ variant: "destructive", title: "Voiceover Error" });
+    } finally {
       setIsProcessing(false);
     }
   };
@@ -312,6 +340,9 @@ export default function EditorPage() {
                        </span>
                      </div>
                    )}
+                   {generatedVoiceover && (
+                     <audio ref={audioRef} src={generatedVoiceover} onEnded={() => setIsPlaying(false)} />
+                   )}
                  </>
                )}
             </div>
@@ -319,7 +350,10 @@ export default function EditorPage() {
           
           <div className="absolute bottom-4 left-0 right-0 flex justify-center items-center gap-6 text-white bg-black/40 backdrop-blur-md py-4 translate-y-full group-hover:translate-y-0 transition-transform">
             <Button variant="ghost" size="icon" className="hover:bg-white/10 rounded-full"><SkipBack className="w-6 h-6" /></Button>
-            <Button size="icon" className="w-12 h-12 bg-primary hover:bg-primary/90 rounded-full shadow-lg" onClick={() => setIsPlaying(!isPlaying)}>
+            <Button size="icon" className="w-12 h-12 bg-primary hover:bg-primary/90 rounded-full shadow-lg" onClick={() => {
+              setIsPlaying(!isPlaying);
+              if (!isPlaying && audioRef.current) audioRef.current.play();
+            }}>
               {isPlaying ? <Pause className="w-6 h-6 fill-white" /> : <Play className="w-6 h-6 fill-white" />}
             </Button>
             <Button variant="ghost" size="icon" className="hover:bg-white/10 rounded-full"><SkipForward className="w-6 h-6" /></Button>
@@ -361,6 +395,22 @@ export default function EditorPage() {
                   </Button>
                 </div>
 
+                <div className="p-4 border rounded-xl bg-accent/5 space-y-3">
+                  <div className="flex items-center gap-2">
+                    <Mic className="w-5 h-5 text-accent" />
+                    <h4 className="font-bold text-sm text-foreground">AI Voiceover</h4>
+                  </div>
+                  <textarea 
+                    placeholder="Enter script for AI to speak..." 
+                    value={voiceoverText}
+                    onChange={(e) => setVoiceoverText(e.target.value)}
+                    className="w-full bg-background border rounded-lg p-2 text-xs h-20 focus:ring-1 focus:ring-accent"
+                  />
+                  <Button variant="outline" className="w-full border-accent text-accent hover:bg-accent hover:text-white" size="sm" onClick={handleVoiceover} disabled={isProcessing}>
+                    Add Voiceover (4c)
+                  </Button>
+                </div>
+
                 <Button 
                   variant="outline" 
                   className="w-full h-14 justify-start gap-3 px-4 rounded-xl border-accent/20 bg-accent/5 hover:bg-accent/10"
@@ -390,13 +440,22 @@ export default function EditorPage() {
             </TabsContent>
 
             <TabsContent value="audio" className="p-4 space-y-4">
-               <h4 className="text-sm font-semibold text-foreground">Library</h4>
+               <h4 className="text-sm font-semibold text-foreground">Scene Audio</h4>
                <div className="space-y-2">
-                 {[1, 2, 3].map(i => (
+                 {generatedVoiceover && (
+                   <div className="flex items-center justify-between p-3 rounded-xl bg-accent/10 border border-accent/20">
+                     <div className="flex items-center gap-3">
+                       <Volume2 className="w-4 h-4 text-accent" />
+                       <span className="text-xs font-bold text-foreground">AI Narration</span>
+                     </div>
+                     <Button variant="ghost" size="sm" className="h-7 text-destructive" onClick={() => setGeneratedVoiceover(null)}>Delete</Button>
+                   </div>
+                 )}
+                 {[1, 2].map(i => (
                    <div key={i} className="flex items-center justify-between p-2 rounded-lg bg-muted/50">
                      <div className="flex items-center gap-3">
                        <Music className="w-4 h-4 text-primary" />
-                       <span className="text-xs font-medium text-foreground">Track 0{i}.mp3</span>
+                       <span className="text-xs font-medium text-foreground">BGM Track 0{i}.mp3</span>
                      </div>
                      <Button variant="ghost" size="sm" className="h-7 text-[10px]">Add</Button>
                    </div>

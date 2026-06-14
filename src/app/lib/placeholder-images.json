@@ -30,6 +30,12 @@
       "description": "Professional user profile avatar",
       "imageUrl": "https://picsum.photos/seed/user-avatar/200/200",
       "imageHint": "user profile"
+    },
+    {
+      "id": "feature-ai",
+      "description": "Neural network visualization",
+      "imageUrl": "https://picsum.photos/seed/feature-ai/800/600",
+      "imageHint": "neural network"
     }
   ]
 }
