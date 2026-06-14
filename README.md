@@ -6,9 +6,9 @@ Professional AI-powered video editor built with Next.js 15, Firebase, and Capaci
 ## 🚀 Final Production Checklist (DO THIS BEFORE PUBLISHING)
 
 ### 1. Firebase Console Settings
-* **Enable Authentication**: In the Firebase Console, go to Auth and enable "Email/Password" and "Google" sign-in providers.
-* **Update Config**: Replace the dummy values in `src/firebase/config.ts` with your actual Firebase project configuration found in Project Settings.
-* **Firestore Rules**: Ensure your rules allow users to read/write only their own data.
+* **Enable Authentication**: In the Firebase Console, go to **Auth** and enable "Email/Password" and "Google" sign-in providers.
+* **Update Config**: Replace the placeholder values in `src/firebase/config.ts` with your actual Firebase project configuration found in **Project Settings**.
+* **Firestore Rules**: Ensure your security rules allow users to read/write only their own data.
 * **Storage**: Enable Firebase Storage if you plan to move from Base64 to file-based storage in the future.
 
 ### 2. Local Environment Setup
@@ -22,13 +22,13 @@ Professional AI-powered video editor built with Next.js 15, Firebase, and Capaci
   ```
 
 ### 3. Build & APK Generation
-1. **Install Dependencies**: `npm install`
-2. **Build Web Assets**: `npm run build` (This creates the `/out` directory).
-3. **Sync Mobile**: `npm run mobile:sync`
+1. **Install Dependencies**: Run `npm install` in your project root.
+2. **Build Web Assets**: Run `npm run build`. This creates the `/out` directory containing your static app.
+3. **Sync Mobile**: Run `npm run mobile:sync`. This updates the Android project with your latest web code.
 4. **Android Studio**: 
    - Open the `/android` folder in Android Studio.
    - Go to **Build > Generate Signed Bundle / APK**.
-   - Create a new Key Store (for Google Play) or use **Build APK** for testing.
+   - Create a new Key Store (for Google Play) or use **Build > Build APK** for local testing.
 
 ## Commands Reference
 * `npm run dev`: Local web development.
@@ -40,3 +40,4 @@ Professional AI-powered video editor built with Next.js 15, Firebase, and Capaci
 - **AI Voiceover (TTS)**: Professional narration using Gemini.
 - **AI Magic SEO**: Optimized titles, descriptions, and hashtags.
 - **Monetization**: Credit-based system and PRO subscriptions.
+- **Cloud Studio**: Seamless project sync across devices.
