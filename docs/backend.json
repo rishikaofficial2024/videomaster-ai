@@ -27,7 +27,8 @@
         "optimizedTitle": { "type": "string" },
         "optimizedDescription": { "type": "string" },
         "hashtags": { "type": "array", "items": { "type": "string" } },
-        "thumbnailUrl": { "type": "string" }
+        "thumbnailUrl": { "type": "string" },
+        "videoDataUri": { "type": "string", "description": "Base64 data of the actual video or generated clip" }
       },
       "required": ["title", "createdAt", "status"]
     }
