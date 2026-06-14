@@ -37,19 +37,21 @@ Professional AI-powered video editor built with Next.js 15, Firebase, and Capaci
    - Follow the wizard to create a keystore and sign your production app.
 
 ## Core Features
-- **AI Veo Video Gen**: Create cinematic clips from text prompts.
-- **AI Voiceover (TTS)**: Professional narration using Gemini 2.5 Flash TTS.
-- **AI Magic SEO**: Optimized titles, descriptions, and hashtags.
-- **Monetization**: Credit-based system and PRO subscriptions.
-- **Cloud Studio**: Seamless project sync across devices.
+- **AI Veo Video Gen**: Create cinematic clips from text prompts using Google's Veo 2.0.
+- **AI Voiceover (TTS)**: Professional narration using Gemini 2.5 Flash TTS with multiple voice options.
+- **AI Magic SEO**: Automated analysis for titles, descriptions, and hashtags.
+- **Auto-Captions**: Instant transcription and WebVTT subtitle generation.
+- **Monetization**: Credit-based usage system and PRO subscriptions.
+- **Cloud Studio**: Seamless project synchronization across all mobile devices.
 
 ## Tech Stack
-- **Frontend**: Next.js 15, React, Tailwind CSS, ShadCN UI.
-- **Backend**: Firebase Auth, Firestore.
+- **Frontend**: Next.js 15 (App Router), React 19, Tailwind CSS, ShadCN UI.
+- **Backend**: Firebase Auth, Cloud Firestore.
 - **AI**: Genkit with Gemini 2.5 Flash & Veo 2.0.
-- **Mobile**: Capacitor 7.
+- **Mobile**: Capacitor 7 for native Android/iOS performance.
 
 ## Troubleshooting
-- **Build Errors**: If `npm run build` fails, ensure you don't have any TypeScript errors.
-- **Firebase Errors**: Ensure your `google-services.json` is correctly placed in the `/android/app/` folder.
-- **AI Failures**: Check that your `GEMINI_API_KEY` is valid and has sufficient quota.
+- **Build Errors**: If `npm run build` fails, ensure there are no TypeScript errors in the source.
+- **Firebase Connection**: Double-check the `google-services.json` placement and ensure the package name matches exactly.
+- **AI Credits**: Ensure the user profile in Firestore has enough `credits` or `isPremium` set to `true`.
+- **API Limits**: Veo generation has specific rate limits; check your Google AI Studio dashboard if generation fails repeatedly.
