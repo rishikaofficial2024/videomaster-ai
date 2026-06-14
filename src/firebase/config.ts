@@ -1,8 +1,8 @@
-
 /**
  * Firebase configuration object.
  * 
  * These values connect your application to your specific Firebase project.
+ * Important: These values are public and safe to include in your frontend code.
  */
 export const firebaseConfig = {
   apiKey: "AIzaSyAs-Actual-Key-Will-Be-Here",

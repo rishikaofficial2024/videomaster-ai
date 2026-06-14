@@ -1,4 +1,3 @@
-
 'use client';
 
 import { initializeApp, getApps, getApp, FirebaseApp } from 'firebase/app';
@@ -12,7 +11,7 @@ let firestore: Firestore;
 
 /**
  * Initializes Firebase services and returns the instances.
- * This function is idempotent and safe to call multiple times.
+ * This function is idempotent and safe to call multiple times on the client.
  */
 export function initializeFirebase() {
   if (getApps().length > 0) {
