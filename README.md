@@ -1,28 +1,38 @@
 
-# 🚀 VideoMaster AI - Final Launch Checklist
+# 🚀 VideoMaster AI - Live Setup Guide
 
-Aapka app coding aur design ke hisaab se 100% complete hai. Ise live (active) karne ke liye bas ye 3 steps pure karein:
+Aapka app coding ke hisaab se 100% complete hai. Ise active karne ke liye ye steps follow karein:
 
 ---
 
-### 🔑 1. Firebase API Key Update (Sabse Zaruri)
-- **Kahan milegi?**: [Firebase Console](https://console.firebase.google.com/) > Project Settings > Your Apps.
-- **Kya karna hai?**: `src/firebase/config.ts` file mein `YOUR_REAL_API_KEY_HERE` ko apni real key se replace karein.
+### 🔑 Step 1: Firebase API Key (Kaunsi hai aur kahan milegi?)
 
-### 🛠️ 2. Firebase Console Settings
-- **Authentication**: `Build > Authentication` mein jayein aur "Email/Password" aur "Google" provider ko Enable karein.
-- **Firestore**: `Build > Firestore Database` mein jayein aur "Create Database" par click karein (Start in Test Mode).
+**API Key Kya Hai?**  
+Ye aapke project ka unique identification code hai jo app ko Firebase services se jodta hai.
 
-### 🤖 3. AI Features Setup (Gemini Key)
-- **Kahan milegi?**: [Google AI Studio](https://aistudio.google.com/app/apikey) se apni API Key lein.
-- **Kya karna hai?**: Is key ko apni deployment settings ya local `.env` file mein `GEMINI_API_KEY` ke naam se save karein.
+**Kahan Milegi? (Step-by-Step):**
+1. **Console Link**: [Firebase Console Settings](https://console.firebase.google.com/project/videomaster-ai/settings/general/) par click karein.
+2. **Settings**: Agar link kaam na kare toh Dashboard mein upar **Gear (⚙️) icon** dabakar 'Project Settings' mein jayein.
+3. **Your Apps**: 'General' tab mein sabse niche scroll karein jahan 'Web App' ka config dikhega.
+4. **Copy**: Wahan `apiKey: "AIza..."` jaisi ek lambi string hogi, use copy karein.
+5. **Paste**: Apni coding files mein `src/firebase/config.ts` file kholein aur `YOUR_REAL_API_KEY_HERE` ko hata kar apni key paste kar dein.
+
+---
+
+### 🛠️ Step 2: Authentication Enable Karein
+Firebase Console mein **Build > Authentication** mein jayein aur:
+- 'Email/Password' provider ko Enable karein.
+- 'Google' provider ko Enable karein.
+
+### 📊 Step 3: Firestore Database Create Karein
+Firebase Console mein **Build > Firestore Database** mein jayein aur:
+- **Create Database** par click karein.
+- **Start in Test Mode** select karke save karein.
 
 ---
 
 ### 📱 Mobile APK Kaise Banayein?
-- Terminal mein `npm run mobile:build-apk` chalayein.
-- Isse Android Studio khulega jahan se aap final APK nikal sakte hain.
+Jab Firebase setup ho jaye, tab terminal mein ye command chalayein:
+`npm run mobile:build-apk`
 
----
-
-**Tip**: Agar app login nahi ho raha ya data save nahi kar raha, toh `/test-connection` page par jaakar check karein ki kaunsi service pending hai!
+**Tip**: Agar kuch kaam na kare, toh app ke `/test-connection` page par jayein, wo khud bata dega kya missing hai!
