@@ -2,11 +2,14 @@
 /**
  * Firebase configuration object for VideoMaster AI.
  * 
- * IMPORTANT: Replace 'AIzaSy...' with your actual Web API Key 
- * from Firebase Project Settings > General.
+ * KAISE FIX KAREIN:
+ * 1. Firebase Console > Project Settings (Gear icon) par jayein.
+ * 2. Niche "Your Apps" section mein 'firebaseConfig' object ko copy karein.
+ * 3. Use yahan niche paste kar dein.
  */
 export const firebaseConfig = {
-  apiKey: "AIzaSyB_REPLACE_WITH_ACTUAL_KEY", 
+  // Is key ko badalna zaroori hai tabhi login chalega
+  apiKey: "AIzaSyB_APNI_REAL_KEY_YAHA_DALEIN", 
   authDomain: "videomaster-ai.firebaseapp.com",
   projectId: "videomaster-ai",
   storageBucket: "videomaster-ai.appspot.com",
