@@ -1,31 +1,26 @@
 
 # 🚀 VideoMaster AI - Setup Guide (Hindi)
 
-Aapka app ready hai! Bas ye 3 kaam kar lijiye aur aapka app chalne lagega:
+Aapka app ready hai! API Key dhundhne ke liye ye steps follow karein:
 
 ---
 
-### 1. API Key Kahan Milegi? (Firebase)
-*   [Firebase Console](https://console.firebase.google.com/) par jayein.
-*   Apne project par click karein.
-*   Upar left mein ⚙️ (Settings) par click karke **Project Settings** chunein.
-*   Niche scroll karein "Your apps" section mein.
-*   Wahan ek code ka tukda (Snippet) milega jisme `apiKey`, `authDomain` likha hoga.
-*   Use copy karein aur apne project ki file `src/firebase/config.ts` mein paste kar dein.
+### 🔑 API Key Kaise Nikalein?
+1.  **[Firebase Console](https://console.firebase.google.com/)** par jayein.
+2.  Apne Project par click karein.
+3.  Upar left mein gear icon ⚙️ par click karke **Project Settings** chunein.
+4.  Niche scroll karein "Your apps" section mein.
+5.  Wahan aapko ek code milega (Snippet), usme `apiKey: "..."` likha hoga.
+6.  Usko copy karke `src/firebase/config.ts` mein paste kar dein.
 
-### 2. Authentication Enable Karein
-*   Firebase Console mein left menu mein **Build > Authentication** par jayein.
-*   **Get Started** button dabayein.
-*   "Sign-in method" tab mein **Google** aur **Email/Password** ko enable karke Save kar dein.
+---
 
-### 3. Database Chalu Karein
-*   Left menu mein **Build > Firestore Database** par jayein.
-*   **Create Database** par click karein.
-*   **Start in Test Mode** select karein aur Enable kar dein.
+### 🛠️ App Ko Chalane Ke Liye Checklist:
+- [ ] **Authentication**: Firebase Console mein jaakar **Build > Authentication** chalu karein (Google/Email).
+- [ ] **Firestore**: **Build > Firestore Database** par jayein aur **Create Database** (Test Mode) par click karein.
+- [ ] **Gemini Key**: AI features ke liye `.env` file mein apni Gemini key dalein.
 
 ---
 
 ### 🛠️ App Kaise Check Karein?
-Jab aap ye kar lenge, toh browser mein `/test-connection` page par jayein. Agar saari lights **Green** hain, toh aapka app perfect hai!
-
-**Support**: Agar kuch samajh na aaye, toh `src/firebase/config.ts` file ko khol kar uske upar likhe instructions padhein.
+Browser mein `/test-connection` page par jayein. Agar sab **Green** hai, toh aapka app perfect hai!
