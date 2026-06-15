@@ -4,15 +4,15 @@
  * 
  * 🗝️ API KEY KAHAN SE MILEGI? (Follow these steps):
  * 1. Firebase Console (https://console.firebase.google.com/) par jayein.
- * 2. Apne project par click karein.
+ * 2. "videomaster-ai" project par click karein.
  * 3. Left side mein upar Gear icon (⚙️) par click karke 'Project Settings' chunein.
  * 4. Niche scroll karein 'Your apps' section tak. 
- * 5. Wahan 'Web App' ke code snippet mein aapko 'apiKey' milegi.
+ * 5. Wahan 'Web App' (</> icon) ke code snippet mein aapko 'apiKey' milegi.
  * 
  * 👇 Niche wali 'apiKey' ki jagah apni real key paste karein 👇
  */
 export const firebaseConfig = {
-  apiKey: "YAHAN_APNI_FIREBASE_API_KEY_PASTE_KAREIN", 
+  apiKey: "YOUR_REAL_API_KEY_HERE", // <-- Yahan apni API Key paste karein
   authDomain: "videomaster-ai.firebaseapp.com",
   projectId: "videomaster-ai",
   storageBucket: "videomaster-ai.appspot.com",

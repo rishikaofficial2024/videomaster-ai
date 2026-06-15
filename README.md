@@ -7,10 +7,11 @@ Aapka app live aane ke liye bilkul tayyar hai! Bas ye 2 zaruri settings kar liji
 
 ### 🔑 1. Firebase API Key Kaise Dalein?
 1.  **[Firebase Console](https://console.firebase.google.com/)** par jayein.
-2.  **Project Settings** (Gear icon ⚙️) par click karein.
-3.  Niche scroll karein aur **Web App** (</> icon) section mein jayein.
-4.  Wahan aapko `apiKey: "AIza..."` jaisa ek code milega.
-5.  Usko copy karein aur is file mein paste kar dein: `src/firebase/config.ts`.
+2.  **videomaster-ai** project par click karein.
+3.  **Project Settings** (Gear icon ⚙️) par click karein.
+4.  Niche scroll karein aur **Your apps** section mein jayein.
+5.  Wahan aapko `apiKey: "AIza..."` jaisa ek code milega.
+6.  Usko copy karein aur is file mein paste kar dein: `src/firebase/config.ts`.
 
 ---
 
