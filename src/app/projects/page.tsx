@@ -57,6 +57,17 @@ export default function ProjectsPage() {
     }
   };
 
+  const formatDate = (project: any) => {
+    const ts = project.updatedAt || project.createdAt;
+    if (!ts) return "Recently";
+    try {
+      const date = ts.seconds ? new Date(ts.seconds * 1000) : new Date(ts);
+      return date.toLocaleDateString();
+    } catch (e) {
+      return "Recently";
+    }
+  };
+
   if (userLoading) {
     return (
       <div className="h-screen flex items-center justify-center">
@@ -118,7 +129,7 @@ export default function ProjectsPage() {
                   <div className="space-y-1">
                     <h3 className="font-bold truncate max-w-[200px]">{project.title}</h3>
                     <p className="text-xs text-muted-foreground">
-                      Modified {new Date(project.updatedAt?.seconds * 1000 || project.createdAt?.seconds * 1000).toLocaleDateString()}
+                      Modified {formatDate(project)}
                     </p>
                   </div>
                   <DropdownMenu>

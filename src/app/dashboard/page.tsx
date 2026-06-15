@@ -10,7 +10,7 @@ import Link from "next/link";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 import { useUser, useFirestore, useCollection, useDoc } from "@/firebase";
 import { collection, query, orderBy, limit, doc } from "firebase/firestore";
-import { useMemo } from "react";
+import { useMemo, useState, useEffect } from "react";
 
 export default function Dashboard() {
   const { user, loading: userLoading } = useUser();
@@ -35,10 +35,20 @@ export default function Dashboard() {
   const { data: projects, loading: projectsLoading } = useCollection(projectsQuery);
   const templates = PlaceHolderImages.filter(img => img.id.includes("template"));
 
+  const [clientDate, setClientDate] = useState<string>("");
+
+  useEffect(() => {
+    setClientDate(new Date().toLocaleDateString());
+  }, []);
+
   const formatDate = (timestamp: any) => {
     if (!timestamp) return "Just now";
-    const date = new Date(timestamp.seconds * 1000);
-    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    try {
+      const date = timestamp.seconds ? new Date(timestamp.seconds * 1000) : new Date(timestamp);
+      return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    } catch (e) {
+      return "Recently";
+    }
   };
 
   if (userLoading) {
