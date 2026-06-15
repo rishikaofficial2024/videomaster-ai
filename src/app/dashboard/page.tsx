@@ -35,6 +35,12 @@ export default function Dashboard() {
   const { data: projects, loading: projectsLoading } = useCollection(projectsQuery);
   const templates = PlaceHolderImages.filter(img => img.id.includes("template"));
 
+  const formatDate = (timestamp: any) => {
+    if (!timestamp) return "Just now";
+    const date = new Date(timestamp.seconds * 1000);
+    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  };
+
   if (userLoading) {
     return (
       <div className="h-screen flex items-center justify-center bg-background">
@@ -145,7 +151,7 @@ export default function Dashboard() {
                     <CardContent className="p-4">
                       <p className="font-bold truncate text-foreground">{project.title}</p>
                       <p className="text-xs text-muted-foreground mt-0.5">
-                        {new Date(project.updatedAt?.seconds * 1000 || project.createdAt?.seconds * 1000).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                        {formatDate(project.updatedAt || project.createdAt)}
                       </p>
                     </CardContent>
                   </Link>

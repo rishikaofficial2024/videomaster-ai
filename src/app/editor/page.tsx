@@ -40,8 +40,9 @@ export default function EditorPage() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
 
-  // Generate a stable ID for new projects to prevent re-creation on every render
-  const [newProjectId] = useState(() => "new-" + Math.random().toString(36).substring(2, 9));
+  // Use a stable ID to prevent hydration mismatches
+  const [projectId, setProjectId] = useState<string | null>(projectIdFromUrl);
+  const [isNewProject, setIsNewProject] = useState(!projectIdFromUrl);
   
   const [title, setTitle] = useState("Untitled Project");
   const [isPlaying, setIsPlaying] = useState(false);
@@ -54,6 +55,14 @@ export default function EditorPage() {
   const [voiceoverText, setVoiceoverText] = useState("");
   const [generatedVoiceover, setGeneratedVoiceover] = useState<string | null>(null);
 
+  // Generate ID on client only to avoid hydration mismatch
+  useEffect(() => {
+    if (!projectId && !projectIdFromUrl) {
+      const newId = "new-" + Math.random().toString(36).substring(2, 9);
+      setProjectId(newId);
+    }
+  }, [projectId, projectIdFromUrl]);
+
   const userProfileRef = useMemo(() => {
     if (!user) return null;
     return doc(db, "users", user.uid);
@@ -62,10 +71,9 @@ export default function EditorPage() {
   const { data: profile } = useDoc(userProfileRef);
 
   const projectRef = useMemo(() => {
-    if (!user) return null;
-    const id = projectIdFromUrl || newProjectId;
-    return doc(db, "users", user.uid, "projects", id);
-  }, [user, db, projectIdFromUrl, newProjectId]);
+    if (!user || !projectId) return null;
+    return doc(db, "users", user.uid, "projects", projectId);
+  }, [user, db, projectId]);
 
   const { data: project, loading: projectLoading } = useDoc(projectIdFromUrl ? projectRef : null);
 
@@ -74,6 +82,7 @@ export default function EditorPage() {
       setTitle(project.title || "Untitled Project");
       setSelectedVideoData(project.videoDataUri || null);
       setSubtitles(project.subtitles || null);
+      setIsNewProject(false);
     }
   }, [project]);
 
@@ -107,7 +116,7 @@ export default function EditorPage() {
     };
     if (videoUri) data.videoDataUri = videoUri;
     
-    if (projectIdFromUrl) {
+    if (!isNewProject) {
       updateDoc(projectRef, data).catch((e) => {
         errorEmitter.emit("permission-error", new FirestorePermissionError({
           path: projectRef.path,
@@ -121,6 +130,7 @@ export default function EditorPage() {
         createdAt: serverTimestamp(),
         thumbnailUrl: `https://picsum.photos/seed/${projectRef.id}/600/400`,
       }).then(() => {
+        setIsNewProject(false);
         if (!projectIdFromUrl) {
           router.replace(`/editor?id=${projectRef.id}`);
         }
@@ -359,7 +369,7 @@ export default function EditorPage() {
     }
   };
 
-  if (projectLoading) {
+  if (projectLoading || !projectId) {
     return (
       <div className="h-screen flex items-center justify-center bg-black">
         <Loader2 className="w-8 h-8 animate-spin text-primary" />
