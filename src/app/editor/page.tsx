@@ -40,6 +40,9 @@ export default function EditorPage() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
 
+  // Generate a stable ID for new projects to prevent re-creation on every render
+  const [newProjectId] = useState(() => "new-" + Math.random().toString(36).substring(2, 9));
+  
   const [title, setTitle] = useState("Untitled Project");
   const [isPlaying, setIsPlaying] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -60,9 +63,9 @@ export default function EditorPage() {
 
   const projectRef = useMemo(() => {
     if (!user) return null;
-    const id = projectIdFromUrl || "new-" + Date.now();
+    const id = projectIdFromUrl || newProjectId;
     return doc(db, "users", user.uid, "projects", id);
-  }, [user, db, projectIdFromUrl]);
+  }, [user, db, projectIdFromUrl, newProjectId]);
 
   const { data: project, loading: projectLoading } = useDoc(projectIdFromUrl ? projectRef : null);
 
@@ -105,7 +108,7 @@ export default function EditorPage() {
     if (videoUri) data.videoDataUri = videoUri;
     
     if (projectIdFromUrl) {
-      updateDoc(projectRef, data).catch(async (e) => {
+      updateDoc(projectRef, data).catch((e) => {
         errorEmitter.emit("permission-error", new FirestorePermissionError({
           path: projectRef.path,
           operation: "update",
@@ -117,14 +120,17 @@ export default function EditorPage() {
         ...data,
         createdAt: serverTimestamp(),
         thumbnailUrl: `https://picsum.photos/seed/${projectRef.id}/600/400`,
-      }).catch(async (e) => {
+      }).then(() => {
+        if (!projectIdFromUrl) {
+          router.replace(`/editor?id=${projectRef.id}`);
+        }
+      }).catch((e) => {
         errorEmitter.emit("permission-error", new FirestorePermissionError({
           path: projectRef.path,
           operation: "create",
           requestResourceData: data
         }));
       });
-      router.replace(`/editor?id=${projectRef.id}`);
     }
   };
 
@@ -142,16 +148,22 @@ export default function EditorPage() {
     return true;
   };
 
-  const togglePlayback = () => {
+  const togglePlayback = async () => {
     if (videoRef.current) {
-      if (isPlaying) {
-        videoRef.current.pause();
-        if (audioRef.current) audioRef.current.pause();
-      } else {
-        videoRef.current.play();
-        if (audioRef.current) audioRef.current.play();
+      try {
+        if (isPlaying) {
+          videoRef.current.pause();
+          if (audioRef.current) audioRef.current.pause();
+          setIsPlaying(false);
+        } else {
+          await videoRef.current.play();
+          if (audioRef.current) await audioRef.current.play();
+          setIsPlaying(true);
+        }
+      } catch (err) {
+        console.error("Playback failed:", err);
+        setIsPlaying(false);
       }
-      setIsPlaying(!isPlaying);
     }
   };
 
@@ -167,7 +179,7 @@ export default function EditorPage() {
           setIsProcessing(false);
           
           if (!profile?.isPremium && userProfileRef) {
-            updateDoc(userProfileRef, { credits: increment(-5) }).catch(async (e) => {
+            updateDoc(userProfileRef, { credits: increment(-5) }).catch((e) => {
               errorEmitter.emit("permission-error", new FirestorePermissionError({
                 path: userProfileRef.path,
                 operation: "update",
@@ -203,7 +215,7 @@ export default function EditorPage() {
           hashtags: result.hashtags,
           updatedAt: serverTimestamp(),
         };
-        updateDoc(projectRef, updateData).catch(async (e) => {
+        updateDoc(projectRef, updateData).catch((e) => {
           errorEmitter.emit("permission-error", new FirestorePermissionError({
             path: projectRef.path,
             operation: "update",
@@ -212,7 +224,7 @@ export default function EditorPage() {
         });
 
         if (!profile?.isPremium && userProfileRef) {
-          updateDoc(userProfileRef, { credits: increment(-2) }).catch(async (e) => {
+          updateDoc(userProfileRef, { credits: increment(-2) }).catch((e) => {
             errorEmitter.emit("permission-error", new FirestorePermissionError({
               path: userProfileRef.path,
               operation: "update",
@@ -246,7 +258,7 @@ export default function EditorPage() {
           subtitles: result.subtitles,
           updatedAt: serverTimestamp(),
         };
-        updateDoc(projectRef, updateData).catch(async (e) => {
+        updateDoc(projectRef, updateData).catch((e) => {
           errorEmitter.emit("permission-error", new FirestorePermissionError({
             path: projectRef.path,
             operation: "update",
@@ -255,7 +267,7 @@ export default function EditorPage() {
         });
 
         if (!profile?.isPremium && userProfileRef) {
-          updateDoc(userProfileRef, { credits: increment(-3) }).catch(async (e) => {
+          updateDoc(userProfileRef, { credits: increment(-3) }).catch((e) => {
             errorEmitter.emit("permission-error", new FirestorePermissionError({
               path: userProfileRef.path,
               operation: "update",
@@ -292,7 +304,7 @@ export default function EditorPage() {
           videoDataUri: result.videoDataUri,
           updatedAt: serverTimestamp(),
         };
-        updateDoc(projectRef, updateData).catch(async (e) => {
+        updateDoc(projectRef, updateData).catch((e) => {
           errorEmitter.emit("permission-error", new FirestorePermissionError({
             path: projectRef.path,
             operation: "update",
@@ -301,7 +313,7 @@ export default function EditorPage() {
         });
 
         if (!profile?.isPremium && userProfileRef) {
-          updateDoc(userProfileRef, { credits: increment(-10) }).catch(async (e) => {
+          updateDoc(userProfileRef, { credits: increment(-10) }).catch((e) => {
             errorEmitter.emit("permission-error", new FirestorePermissionError({
               path: userProfileRef.path,
               operation: "update",
@@ -331,7 +343,7 @@ export default function EditorPage() {
       const result = await generateAiVoiceover({ text: voiceoverText });
       setGeneratedVoiceover(result.audioDataUri);
       if (!profile?.isPremium && userProfileRef) {
-        updateDoc(userProfileRef, { credits: increment(-4) }).catch(async (e) => {
+        updateDoc(userProfileRef, { credits: increment(-4) }).catch((e) => {
           errorEmitter.emit("permission-error", new FirestorePermissionError({
             path: userProfileRef.path,
             operation: "update",

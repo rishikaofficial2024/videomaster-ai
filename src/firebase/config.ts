@@ -9,10 +9,10 @@
  * 4. Niche scroll karein 'Your apps' section tak. 
  * 5. Wahan 'Web App' (</> icon) ke code snippet mein aapko 'apiKey' milegi.
  * 
- * 👇 Niche wali 'apiKey' ki jagah apni real key paste karein 👇
+ * 👇 Replace "YOUR_REAL_API_KEY_HERE" with your actual Firebase API Key 👇
  */
 export const firebaseConfig = {
-  apiKey: "YOUR_REAL_API_KEY_HERE", // <-- Yahan apni API Key paste karein
+  apiKey: "YOUR_REAL_API_KEY_HERE", 
   authDomain: "videomaster-ai.firebaseapp.com",
   projectId: "videomaster-ai",
   storageBucket: "videomaster-ai.appspot.com",

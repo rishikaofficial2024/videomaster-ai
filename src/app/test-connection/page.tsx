@@ -1,12 +1,14 @@
+
 "use client";
 
 import { useState, useEffect } from "react";
 import { Navbar } from "@/components/navbar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { CheckCircle2, XCircle, Loader2, Signal, Wifi, Zap, Database } from "lucide-react";
+import { CheckCircle2, XCircle, Loader2, Signal, Wifi, Zap, Database, AlertCircle } from "lucide-react";
 import { useAuth, useFirestore } from "@/firebase";
 import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 export default function TestConnectionPage() {
   const auth = useAuth();
@@ -16,19 +18,23 @@ export default function TestConnectionPage() {
     firestore: "pending",
     auth: "pending",
   });
+  const [errors, setErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
 
   const runTests = async () => {
     setLoading(true);
+    setErrors({});
     setStatus({ firebase: "testing", firestore: "testing", auth: "testing" });
 
     // 1. Test Firebase App Instance
     const appOk = !!auth.app;
     setStatus(prev => ({ ...prev, firebase: appOk ? "success" : "error" }));
+    if (!appOk) setErrors(prev => ({ ...prev, firebase: "Firebase SDK failed to initialize. Check your config.ts" }));
 
     // 2. Test Auth State
     const authOk = !!auth;
     setStatus(prev => ({ ...prev, auth: authOk ? "success" : "error" }));
+    if (!authOk) setErrors(prev => ({ ...prev, auth: "Auth service unavailable. Enable Authentication in Firebase Console." }));
 
     // 3. Test Firestore Read/Write
     try {
@@ -36,9 +42,10 @@ export default function TestConnectionPage() {
       await setDoc(testDocRef, { lastTest: serverTimestamp() }, { merge: true });
       const snap = await getDoc(testDocRef);
       setStatus(prev => ({ ...prev, firestore: snap.exists() ? "success" : "error" }));
-    } catch (e) {
+    } catch (e: any) {
       console.error("Firestore test failed:", e);
       setStatus(prev => ({ ...prev, firestore: "error" }));
+      setErrors(prev => ({ ...prev, firestore: e.message || "Permissions denied. Check Security Rules and enable Firestore." }));
     }
 
     setLoading(false);
@@ -63,6 +70,18 @@ export default function TestConnectionPage() {
           <h1 className="text-3xl font-headline font-bold">System Health</h1>
           <p className="text-muted-foreground">Verify your app's connections to cloud services.</p>
         </div>
+
+        {Object.keys(errors).length > 0 && (
+          <Alert variant="destructive" className="bg-destructive/10 border-destructive/20 text-destructive">
+            <AlertCircle className="h-4 w-4" />
+            <AlertTitle>Connection Issues Detected</AlertTitle>
+            <AlertDescription className="text-xs mt-2 space-y-1">
+              {Object.entries(errors).map(([key, msg]) => (
+                <p key={key}>• {msg}</p>
+              ))}
+            </AlertDescription>
+          </Alert>
+        )}
 
         <Card className="border-none shadow-xl bg-card/50 backdrop-blur-sm">
           <CardHeader>
@@ -107,7 +126,7 @@ export default function TestConnectionPage() {
 
         <div className="p-4 bg-primary/5 rounded-2xl border border-primary/10">
           <p className="text-xs text-center text-muted-foreground">
-            If any tests fail, ensure your Firebase Console has **Auth** and **Firestore** enabled and your `apiKey` in `src/firebase/config.ts` is correct.
+            Important: Ensure your `apiKey` in `src/firebase/config.ts` matches your Firebase Project settings.
           </p>
         </div>
       </main>
