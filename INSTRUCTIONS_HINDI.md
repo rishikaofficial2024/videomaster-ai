@@ -1,16 +1,28 @@
 
-# 🚀 VideoMaster AI - APK Kaise Banayein? (Free Guide)
+# 🛠️ VideoMaster AI - Problem Solver Guide
 
-Aapka app mobile ke liye ready hai. APK banane ke liye ye steps follow karein:
+Agar aapka app "Connecting..." par atka hai ya error de raha hai, toh ye check karein:
 
-### 📱 APK Banane Ka Tarika:
-1. **Build Karein**: Terminal mein `npm run build` chalayein. Isse `out` folder banega.
-2. **Android Folder Banayein**: Terminal mein `npx cap add android` chalayein.
-3. **Android Studio Kholein**: Terminal mein `npm run mobile:open` chalayein.
-4. **Build APK**: Android Studio ke andar **Build > Build Bundle(s) / APK(s) > Build APK(s)** par click karein.
+### 1. Firebase API Key ki Problem
+- **Kahan milegi?**: Firebase Console -> Project Settings -> General -> Your Apps.
+- **Kahan dalni hai?**: `src/firebase/config.ts` file mein.
 
-### 🔑 API Key Kaise Dalein? (Jaruri!)
-App chalane ke liye `src/firebase/config.ts` mein apni Firebase API Key paste karein. Iske bina APK crash ho jayegi.
+### 2. Login Nahi Ho Raha?
+- Firebase Console mein jayein.
+- **Build > Authentication** par click karein.
+- **Sign-in method** tab mein jayein aur **Email/Password** ko "Enable" karein.
 
----
-**Tip**: APK test karne ke liye aap apna phone USB se connect karke Android Studio se direct "Run" bhi kar sakte hain.
+### 3. Data Save Nahi Ho Raha?
+- Firebase Console mein jayein.
+- **Build > Firestore Database** par click karein.
+- **Create Database** par click karke use "Test Mode" mein shuru karein.
+
+### 4. AI Features (Captions/Video Gen) Kaam Nahi Kar Rahe?
+- `.env` file mein apni **Gemini API Key** dalein.
+- Key yahan se milegi: [aistudio.google.com/app/apikey](https://aistudio.google.com/app/apikey)
+
+### 5. APK Kaise Banayein?
+- Terminal mein ye command chalayein: `npm run mobile:build-apk`
+- Isse Android Studio khulega jahan se aap APK nikal sakte hain.
+
+**Zaruri**: Jab tak aap Firebase Console mein Authentication aur Firestore Database ko "Enable" nahi karenge, tab tak app sahi se kaam nahi karega.

@@ -1,26 +1,33 @@
 
 # 🚀 VideoMaster AI - Setup Guide (Hindi)
 
-Aapka app ready hai! API Key dhundhne ke liye ye steps follow karein:
+Aapka app live aane ke liye bilkul tayyar hai! Bas ye 2 zaruri settings kar lijiye:
 
 ---
 
-### 🔑 API Key Kaise Nikalein?
+### 🔑 1. Firebase API Key Kaise Dalein?
 1.  **[Firebase Console](https://console.firebase.google.com/)** par jayein.
-2.  Apne Project par click karein.
-3.  Upar left mein gear icon ⚙️ par click karke **Project Settings** chunein.
-4.  Niche scroll karein "Your apps" section mein.
-5.  Wahan aapko ek code milega (Snippet), usme `apiKey: "..."` likha hoga.
-6.  Usko copy karke `src/firebase/config.ts` mein paste kar dein.
+2.  **Project Settings** (Gear icon ⚙️) par click karein.
+3.  Niche scroll karein aur **Web App** (</> icon) section mein jayein.
+4.  Wahan aapko `apiKey: "AIza..."` jaisa ek code milega.
+5.  Usko copy karein aur is file mein paste kar dein: `src/firebase/config.ts`.
 
 ---
 
-### 🛠️ App Ko Chalane Ke Liye Checklist:
-- [ ] **Authentication**: Firebase Console mein jaakar **Build > Authentication** chalu karein (Google/Email).
-- [ ] **Firestore**: **Build > Firestore Database** par jayein aur **Create Database** (Test Mode) par click karein.
-- [ ] **Gemini Key**: AI features ke liye `.env` file mein apni Gemini key dalein.
+### 🛠️ 2. Firebase Services Kaise Chalu Karein?
+App ko chalane ke liye Firebase Console mein ye do cheezein enable karna zaruri hai:
+
+*   **Authentication**: Console mein **Build > Authentication** par jayein aur **Get Started** par click karein. Phir "Email/Password" aur "Google" ko enable kar dein.
+*   **Firestore Database**: Console mein **Build > Firestore Database** par jayein aur **Create Database** par click karein (Start in Test Mode chunein).
 
 ---
 
-### 🛠️ App Kaise Check Karein?
-Browser mein `/test-connection` page par jayein. Agar sab **Green** hai, toh aapka app perfect hai!
+### 📱 3. APK Kaise Banayein?
+Agar aap mobile ke liye APK banana chahte hain:
+1. Terminal mein `npm run mobile:sync` chalayein.
+2. `npm run mobile:open` se Android Studio kholein.
+3. Android Studio mein **Build > Build APK** par click karein.
+
+---
+
+**Tip**: Agar kuch samajh na aaye toh `/test-connection` page par jaakar check karein ki kaunsi service pending hai!

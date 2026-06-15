@@ -2,15 +2,17 @@
 /**
  * Firebase configuration object for VideoMaster AI.
  * 
- * 🗝️ API KEY KAHAN HAI?
- * 1. Firebase Console (https://console.firebase.google.com/) kholiye.
- * 2. Settings (⚙️ icon) -> Project Settings mein jaiye.
- * 3. Niche 'Your apps' section mein 'Web App' ke andar aapko ye saari details milengi.
+ * 🗝️ API KEY KAHAN SE MILEGI? (Follow these steps):
+ * 1. Firebase Console (https://console.firebase.google.com/) par jayein.
+ * 2. Apne project par click karein.
+ * 3. Left side mein upar Gear icon (⚙️) par click karke 'Project Settings' chunein.
+ * 4. Niche scroll karein 'Your apps' section tak. 
+ * 5. Wahan 'Web App' ke code snippet mein aapko 'apiKey' milegi.
  * 
- * 👇 Niche wali 'apiKey' ko badaliye 👇
+ * 👇 Niche wali 'apiKey' ki jagah apni real key paste karein 👇
  */
 export const firebaseConfig = {
-  apiKey: "AIzaSyB_APNI_REAL_KEY_YAHA_DALEIN", // <-- YAHAN APNI KEY PASTE KAREIN
+  apiKey: "YAHAN_APNI_FIREBASE_API_KEY_PASTE_KAREIN", 
   authDomain: "videomaster-ai.firebaseapp.com",
   projectId: "videomaster-ai",
   storageBucket: "videomaster-ai.appspot.com",
