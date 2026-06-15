@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, useEffect, useMemo, useRef } from "react";
@@ -40,7 +39,6 @@ export default function EditorPage() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
 
-  // Use a stable ID to prevent hydration mismatches
   const [projectId, setProjectId] = useState<string | null>(projectIdFromUrl);
   const [isNewProject, setIsNewProject] = useState(!projectIdFromUrl);
   
@@ -55,7 +53,6 @@ export default function EditorPage() {
   const [voiceoverText, setVoiceoverText] = useState("");
   const [generatedVoiceover, setGeneratedVoiceover] = useState<string | null>(null);
 
-  // Generate ID on client only to avoid hydration mismatch
   useEffect(() => {
     if (!projectId && !projectIdFromUrl) {
       const newId = "new-" + Math.random().toString(36).substring(2, 9);
@@ -371,14 +368,14 @@ export default function EditorPage() {
 
   if (projectLoading || !projectId) {
     return (
-      <div className="h-screen flex items-center justify-center bg-black">
+      <div className="h-screen flex items-center justify-center bg-background">
         <Loader2 className="w-8 h-8 animate-spin text-primary" />
       </div>
     );
   }
 
   return (
-    <div className="h-screen bg-black flex flex-col md:pt-20">
+    <div className="h-screen bg-background flex flex-col md:pt-20">
       <Navbar />
       
       <div className="bg-background border-b px-4 py-2 flex items-center justify-between z-10">
@@ -408,9 +405,9 @@ export default function EditorPage() {
       </div>
 
       <div className="flex-1 flex flex-col lg:flex-row overflow-hidden">
-        <div className="flex-1 bg-black flex flex-col relative group">
+        <div className="flex-1 bg-muted/20 flex flex-col relative group">
           <div className="flex-1 relative flex items-center justify-center">
-            <div className="aspect-video w-full max-w-4xl bg-[#1a1a1a] shadow-2xl relative flex items-center justify-center cursor-pointer overflow-hidden" onClick={handleFileClick}>
+            <div className="aspect-video w-full max-w-4xl bg-black shadow-2xl relative flex items-center justify-center cursor-pointer overflow-hidden" onClick={handleFileClick}>
                <input type="file" ref={fileInputRef} className="hidden" accept="video/*" onChange={handleFileChange} />
                {!selectedVideoData ? (
                  <div className="flex flex-col items-center gap-4 text-white/20">
@@ -465,19 +462,6 @@ export default function EditorPage() {
                 <Button variant="outline" className="h-20 flex-col gap-2 rounded-xl text-foreground"><Crop className="w-5 h-5" /> Crop</Button>
                 <Button variant="outline" className="h-20 flex-col gap-2 rounded-xl text-foreground"><Gauge className="w-5 h-5" /> Speed</Button>
                 <Button variant="outline" className="h-20 flex-col gap-2 rounded-xl text-foreground"><Filter className="w-5 h-5" /> Filters</Button>
-              </div>
-              <div className="p-4 bg-muted/30 rounded-2xl border border-dashed text-center">
-                 <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-widest mb-2">Editor Stats</p>
-                 <div className="grid grid-cols-2 gap-2">
-                    <div className="bg-background p-2 rounded-xl shadow-sm">
-                       <p className="text-lg font-bold">1080p</p>
-                       <p className="text-[8px] text-muted-foreground">Quality</p>
-                    </div>
-                    <div className="bg-background p-2 rounded-xl shadow-sm">
-                       <p className="text-lg font-bold">30fps</p>
-                       <p className="text-[8px] text-muted-foreground">Frame Rate</p>
-                    </div>
-                 </div>
               </div>
             </TabsContent>
 
@@ -555,15 +539,6 @@ export default function EditorPage() {
                      <Button variant="ghost" size="sm" className="h-7 text-destructive" onClick={() => setGeneratedVoiceover(null)}>Delete</Button>
                    </div>
                  )}
-                 {[1, 2].map(i => (
-                   <div key={i} className="flex items-center justify-between p-2 rounded-lg bg-muted/50">
-                     <div className="flex items-center gap-3">
-                       <Music className="w-4 h-4 text-primary" />
-                       <span className="text-xs font-medium text-foreground">BGM Track 0{i}.mp3</span>
-                     </div>
-                     <Button variant="ghost" size="sm" className="h-7 text-[10px]">Add</Button>
-                   </div>
-                 ))}
                </div>
             </TabsContent>
           </Tabs>
@@ -571,11 +546,11 @@ export default function EditorPage() {
       </div>
 
       {isProcessing && (
-        <div className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-8">
+        <div className="fixed inset-0 z-[100] bg-background/95 flex items-center justify-center p-8">
            <div className="max-w-md w-full text-center space-y-6">
              <Loader2 className="w-12 h-12 animate-spin text-primary mx-auto" />
              <div className="space-y-2">
-               <h3 className="text-2xl font-headline font-bold text-white uppercase tracking-tighter">AI Processing</h3>
+               <h3 className="text-2xl font-headline font-bold text-foreground uppercase tracking-tighter">AI Processing</h3>
                <p className="text-muted-foreground text-sm">Our neural networks are weaving their magic...</p>
              </div>
              <Progress value={exportProgress || 45} className="h-1.5" />
