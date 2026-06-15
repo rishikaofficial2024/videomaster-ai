@@ -5,46 +5,25 @@
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 255 20% 5%;
+    --foreground: 224 71% 4%;
     --card: 0 0% 100%;
-    --card-foreground: 255 20% 5%;
+    --card-foreground: 224 71% 4%;
     --popover: 0 0% 100%;
-    --popover-foreground: 255 20% 5%;
-    --primary: 259 81% 59%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 255 10% 90%;
-    --secondary-foreground: 255 20% 5%;
-    --muted: 255 10% 95%;
-    --muted-foreground: 255 5% 40%;
-    --accent: 230 100% 72%;
-    --accent-foreground: 255 20% 5%;
+    --popover-foreground: 224 71% 4%;
+    --primary: 263.4 70% 50.4%;
+    --primary-foreground: 210 20% 98%;
+    --secondary: 220 14.3% 95.9%;
+    --secondary-foreground: 220.9 39.3% 11%;
+    --muted: 220 14.3% 95.9%;
+    --muted-foreground: 220 8.9% 46.1%;
+    --accent: 262.1 83.3% 57.8%;
+    --accent-foreground: 210 20% 98%;
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 255 10% 90%;
-    --input: 255 10% 90%;
-    --ring: 259 81% 59%;
-    --radius: 0.75rem;
-  }
-  .dark {
-    --background: 255 18% 8%;
-    --foreground: 255 10% 98%;
-    --card: 255 15% 10%;
-    --card-foreground: 255 10% 98%;
-    --popover: 255 15% 10%;
-    --popover-foreground: 255 10% 98%;
-    --primary: 259 81% 59%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 255 10% 15%;
-    --secondary-foreground: 255 10% 98%;
-    --muted: 255 10% 15%;
-    --muted-foreground: 255 5% 65%;
-    --accent: 230 100% 72%;
-    --accent-foreground: 255 10% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 255 10% 20%;
-    --input: 255 10% 20%;
-    --ring: 259 81% 59%;
+    --destructive-foreground: 210 20% 98%;
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 263.4 70% 50.4%;
+    --radius: 1rem;
   }
 }
 
@@ -56,14 +35,26 @@
     @apply bg-background text-foreground font-body antialiased selection:bg-primary/20;
   }
   h1, h2, h3, h4, h5, h6 {
-    @apply font-headline;
+    @apply font-headline tracking-tight;
   }
 }
 
-/* Custom Video Timeline Styles */
-.timeline-scrubber {
-  @apply relative h-2 bg-muted rounded-full overflow-hidden;
+.glass-card {
+  @apply bg-white/70 backdrop-blur-md border border-white/20 shadow-xl;
 }
-.timeline-handle {
-  @apply absolute top-1/2 -translate-y-1/2 h-4 w-1 bg-primary rounded-full;
+
+.hero-gradient {
+  background: radial-gradient(circle at top right, hsla(263, 70%, 50%, 0.1), transparent),
+              radial-gradient(circle at bottom left, hsla(230, 100%, 72%, 0.1), transparent);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-muted rounded-full hover:bg-muted-foreground/20 transition-colors;
 }

@@ -1,4 +1,3 @@
-
 "use client";
 
 import Link from "next/link";
@@ -31,25 +30,25 @@ export function Navbar() {
   const { data: profile } = useDoc(profileRef);
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-t md:top-0 md:bottom-auto md:border-t-0 md:border-b h-16 md:h-20 flex items-center justify-center px-4">
-      <div className="w-full max-w-4xl flex items-center justify-between">
-        <div className="hidden md:flex items-center gap-4">
-          <div className="flex items-center gap-2">
-            <div className="bg-primary rounded-lg p-1">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-background/60 backdrop-blur-2xl border-t md:top-0 md:bottom-auto md:border-t-0 md:border-b h-20 flex items-center justify-center px-6">
+      <div className="w-full max-w-6xl flex items-center justify-between">
+        <div className="hidden md:flex items-center gap-6">
+          <Link href="/dashboard" className="flex items-center gap-3 group">
+            <div className="bg-primary rounded-xl p-1.5 shadow-lg shadow-primary/20 group-hover:scale-110 transition-transform">
               <Video className="text-white w-6 h-6" />
             </div>
-            <span className="font-headline font-bold text-xl tracking-tight">VideoMaster <span className="text-primary">AI</span></span>
-          </div>
+            <span className="font-headline font-bold text-2xl tracking-tighter">VideoMaster<span className="text-primary">AI</span></span>
+          </Link>
           
           {user && !profile?.isPremium && (
-            <div className="flex items-center gap-1.5 bg-orange-100 dark:bg-orange-900/30 px-3 py-1 rounded-full border border-orange-200 dark:border-orange-800">
-              <Coins className="w-3.5 h-3.5 text-orange-600 dark:text-orange-400" />
-              <span className="text-xs font-bold text-orange-700 dark:text-orange-300">{profile?.credits ?? 0} Credits</span>
+            <div className="flex items-center gap-2 bg-orange-50 px-4 py-1.5 rounded-full border border-orange-100 shadow-sm">
+              <Coins className="w-4 h-4 text-orange-600" />
+              <span className="text-xs font-bold text-orange-700">{profile?.credits ?? 0} Credits</span>
             </div>
           )}
         </div>
         
-        <div className="flex-1 flex justify-around md:justify-end md:gap-8">
+        <div className="flex-1 flex justify-around md:justify-end md:gap-4 lg:gap-8">
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive = pathname === item.href;
@@ -58,12 +57,19 @@ export function Navbar() {
                 key={item.name}
                 href={item.href}
                 className={cn(
-                  "flex flex-col md:flex-row items-center gap-1 transition-colors hover:text-primary p-2",
-                  isActive ? "text-primary" : "text-muted-foreground"
+                  "flex flex-col md:flex-row items-center gap-1.5 transition-all p-3 rounded-2xl group",
+                  isActive 
+                    ? "text-primary bg-primary/5 md:bg-transparent" 
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
                 )}
               >
-                <Icon className={cn("w-5 h-5 md:w-4 md:h-4", isActive && "fill-current")} />
-                <span className="text-[10px] md:text-sm font-medium">{item.name}</span>
+                <div className={cn(
+                  "p-1 rounded-lg transition-colors",
+                  isActive ? "bg-primary/10 text-primary" : "text-muted-foreground group-hover:text-foreground"
+                )}>
+                  <Icon className={cn("w-6 h-6 md:w-5 md:h-5", isActive && "fill-current")} />
+                </div>
+                <span className="text-[10px] md:text-sm font-bold tracking-tight">{item.name}</span>
               </Link>
             );
           })}

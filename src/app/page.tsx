@@ -1,7 +1,6 @@
-
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Video, ArrowRight, Sparkles, Wand2, Smartphone, Download, Apple, Play } from "lucide-react";
+import { Video, ArrowRight, Sparkles, Wand2, Smartphone, Download, Apple, Play, Zap } from "lucide-react";
 import Image from "next/image";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 
@@ -9,146 +8,115 @@ export default function LandingPage() {
   const heroImg = PlaceHolderImages.find(img => img.id === "hero-bg");
 
   return (
-    <div className="flex flex-col min-h-screen">
-      <header className="px-4 lg:px-6 h-14 flex items-center border-b fixed top-0 w-full bg-background/80 backdrop-blur-md z-50">
-        <Link className="flex items-center justify-center gap-2" href="/">
-          <Video className="h-6 w-6 text-primary" />
-          <span className="font-headline font-bold text-xl">VideoMaster AI</span>
+    <div className="flex flex-col min-h-screen hero-gradient">
+      <header className="px-6 lg:px-12 h-20 flex items-center border-b fixed top-0 w-full bg-background/60 backdrop-blur-xl z-50">
+        <Link className="flex items-center justify-center gap-3" href="/">
+          <div className="bg-primary p-1.5 rounded-xl shadow-lg shadow-primary/30">
+            <Video className="h-6 w-6 text-white" />
+          </div>
+          <span className="font-headline font-bold text-2xl tracking-tighter">VideoMaster<span className="text-primary">AI</span></span>
         </Link>
-        <nav className="ml-auto flex gap-4 sm:gap-6">
-          <Link className="text-sm font-medium hover:underline underline-offset-4" href="/login">
-            Login
+        <nav className="ml-auto flex gap-6">
+          <Link className="text-sm font-semibold hover:text-primary transition-colors" href="/login">
+            Sign In
           </Link>
-          <Link className="text-sm font-medium hover:underline underline-offset-4" href="/signup">
-            Sign Up
-          </Link>
+          <Button asChild size="sm" className="rounded-full px-6">
+            <Link href="/signup">Get Started</Link>
+          </Button>
         </nav>
       </header>
-      <main className="flex-1 mt-14">
-        <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48 bg-background">
-          <div className="container px-4 md:px-6 mx-auto">
-            <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px] items-center">
-              <div className="flex flex-col justify-center space-y-4">
-                <div className="space-y-2">
-                  <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none font-headline">
-                    Create Cinematic Magic with <span className="text-primary">AI Reasoning</span>
-                  </h1>
-                  <p className="max-w-[600px] text-muted-foreground md:text-xl">
-                    The professional video editor that does the heavy lifting for you. Trim, filter, and optimize your content with the power of AI.
-                  </p>
-                </div>
-                <div className="flex flex-col gap-2 min-[400px]:flex-row">
-                  <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-white gap-2 h-12 px-8">
-                    <Link href="/signup">Get Started <ArrowRight className="w-4 h-4" /></Link>
-                  </Button>
-                  <Button asChild variant="outline" size="lg" className="h-12 px-8">
-                    <Link href="/login">Watch Demo</Link>
-                  </Button>
-                </div>
-                <div className="flex items-center gap-4 pt-4">
-                  <div className="flex -space-x-2">
-                    {[1, 2, 3, 4].map((i) => (
-                      <div key={i} className="w-8 h-8 rounded-full border-2 border-background overflow-hidden relative">
-                        <Image src={`https://picsum.photos/seed/user-${i}/64/64`} alt="User" fill />
-                      </div>
-                    ))}
-                  </div>
-                  <p className="text-xs text-muted-foreground">
-                    Joined by <span className="text-foreground font-bold">10k+</span> creators worldwide
-                  </p>
-                </div>
+      
+      <main className="flex-1 mt-20">
+        <section className="w-full py-20 lg:py-32">
+          <div className="container px-6 mx-auto">
+            <div className="flex flex-col items-center text-center space-y-8 mb-16">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold uppercase tracking-wider animate-in fade-in slide-in-from-bottom-3 duration-1000">
+                <Sparkles className="w-3.5 h-3.5" /> Next-Gen AI Video Studio
               </div>
-              <div className="relative group">
-                <div className="absolute -inset-1 bg-gradient-to-r from-primary to-accent rounded-xl blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
+              <h1 className="text-5xl md:text-7xl font-bold tracking-tighter font-headline max-w-4xl leading-[1.1]">
+                Turn your ideas into <span className="text-primary italic">cinematic</span> masterpieces
+              </h1>
+              <p className="max-w-[700px] text-muted-foreground text-lg md:text-xl font-medium">
+                The world's first AI video editor with deep reasoning. Automate captions, voiceovers, and content optimization in seconds.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Button asChild size="lg" className="h-14 px-10 rounded-2xl text-lg font-bold shadow-xl shadow-primary/20 hover:scale-105 transition-transform">
+                  <Link href="/signup">Start Creating Free <ArrowRight className="ml-2 w-5 h-5" /></Link>
+                </Button>
+                <Button variant="outline" size="lg" className="h-14 px-10 rounded-2xl text-lg font-bold hover:bg-muted/50 transition-colors">
+                  <Play className="mr-2 w-5 h-5 fill-current" /> Watch Demo
+                </Button>
+              </div>
+            </div>
+
+            <div className="relative max-w-6xl mx-auto">
+              <div className="absolute -inset-4 bg-gradient-to-r from-primary/20 to-accent/20 rounded-[3rem] blur-3xl opacity-50"></div>
+              <div className="relative rounded-[2.5rem] overflow-hidden border border-white/20 shadow-2xl">
                 {heroImg && (
                   <Image
-                    alt="VideoMaster Hero"
-                    className="relative mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center sm:w-full shadow-2xl"
-                    height={600}
+                    alt="AI Video Editor Preview"
+                    className="w-full aspect-video object-cover"
+                    height={720}
                     src={heroImg.imageUrl}
-                    width={800}
-                    data-ai-hint="video editing studio"
+                    width={1280}
                   />
                 )}
-              </div>
-            </div>
-          </div>
-        </section>
-        
-        <section className="w-full py-12 md:py-24 bg-muted/30">
-          <div className="container px-4 md:px-6 mx-auto">
-            <div className="flex flex-col items-center text-center space-y-4 mb-12">
-              <h2 className="text-3xl font-headline font-bold">Everything you need to go viral</h2>
-              <p className="text-muted-foreground max-w-[600px]">Powerful AI tools built into a professional timeline editor.</p>
-            </div>
-            <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-3">
-              <div className="flex flex-col items-center space-y-4 text-center p-6 rounded-2xl bg-card border shadow-sm">
-                <div className="p-4 bg-primary/10 rounded-full">
-                  <Wand2 className="h-8 w-8 text-primary" />
-                </div>
-                <h3 className="text-xl font-bold font-headline">AI Auto Captions</h3>
-                <p className="text-muted-foreground">
-                  Transform audio into perfectly timed subtitles instantly using our advanced AI reasoning tools.
-                </p>
-              </div>
-              <div className="flex flex-col items-center space-y-4 text-center p-6 rounded-2xl bg-card border shadow-sm">
-                <div className="p-4 bg-accent/10 rounded-full">
-                  <Sparkles className="h-8 w-8 text-accent" />
-                </div>
-                <h3 className="text-xl font-bold font-headline">Content Alchemist</h3>
-                <p className="text-muted-foreground">
-                  Optimize your social reach with AI-generated hashtags, titles, and descriptions tailored to your video.
-                </p>
-              </div>
-              <div className="flex flex-col items-center space-y-4 text-center p-6 rounded-2xl bg-card border shadow-sm">
-                <div className="p-4 bg-primary/10 rounded-full">
-                  <Smartphone className="h-8 w-8 text-primary" />
-                </div>
-                <h3 className="text-xl font-bold font-headline">Cloud Sync</h3>
-                <p className="text-muted-foreground">
-                  Start editing on your phone, finish on your tablet. Your projects are always safe in the cloud.
-                </p>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* App Download Section */}
-        <section className="w-full py-12 md:py-24 bg-primary text-primary-foreground">
-          <div className="container px-4 md:px-6 mx-auto text-center space-y-8">
-            <h2 className="text-3xl md:text-5xl font-headline font-bold">Edit on the go</h2>
-            <p className="text-primary-foreground/80 max-w-lg mx-auto md:text-lg">
-              Download our professional mobile app to access the AI Studio anytime, anywhere.
-            </p>
-            <div className="flex flex-col sm:flex-row justify-center gap-4 pt-4">
-              <Button size="lg" variant="secondary" className="h-16 px-8 gap-3 rounded-2xl">
-                <Apple className="w-6 h-6 fill-current" />
-                <div className="text-left">
-                  <div className="text-[10px] font-bold opacity-70 uppercase tracking-widest">Download on the</div>
-                  <div className="text-lg font-bold">App Store</div>
+        <section className="w-full py-24 bg-white">
+          <div className="container px-6 mx-auto">
+            <div className="grid gap-8 lg:grid-cols-3">
+              {[
+                { 
+                  icon: Wand2, 
+                  title: "AI Video Generation", 
+                  desc: "Create 4K cinematic clips from simple text prompts using Google Veo.",
+                  color: "bg-purple-500/10 text-purple-600"
+                },
+                { 
+                  icon: Zap, 
+                  title: "Magic SEO", 
+                  desc: "Get viral-ready hashtags, titles, and descriptions tailored to your content.",
+                  color: "bg-orange-500/10 text-orange-600"
+                },
+                { 
+                  icon: Apple, 
+                  title: "Cross-Platform", 
+                  desc: "Edit seamlessly across Web, Android, and iOS with full cloud sync.",
+                  color: "bg-blue-500/10 text-blue-600"
+                }
+              ].map((feature, i) => (
+                <div key={i} className="group p-8 rounded-[2rem] border bg-card hover:shadow-2xl hover:-translate-y-2 transition-all duration-500">
+                  <div className={`p-4 rounded-2xl w-fit mb-6 ${feature.color}`}>
+                    <feature.icon className="w-8 h-8" />
+                  </div>
+                  <h3 className="text-2xl font-bold mb-3 font-headline">{feature.title}</h3>
+                  <p className="text-muted-foreground font-medium leading-relaxed">{feature.desc}</p>
                 </div>
-              </Button>
-              <Button size="lg" variant="secondary" className="h-16 px-8 gap-3 rounded-2xl">
-                <Play className="w-6 h-6 fill-current" />
-                <div className="text-left">
-                  <div className="text-[10px] font-bold opacity-70 uppercase tracking-widest">Get it on</div>
-                  <div className="text-lg font-bold">Google Play</div>
-                </div>
-              </Button>
+              ))}
             </div>
           </div>
         </section>
       </main>
-      <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t">
-        <p className="text-xs text-muted-foreground">© 2024 VideoMaster AI. All rights reserved.</p>
-        <nav className="sm:ml-auto flex gap-4 sm:gap-6">
-          <Link className="text-xs hover:underline underline-offset-4" href="#">
-            Terms of Service
-          </Link>
-          <Link className="text-xs hover:underline underline-offset-4" href="#">
-            Privacy
-          </Link>
-        </nav>
+
+      <footer className="py-12 px-6 border-t bg-white">
+        <div className="container mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+          <div className="flex items-center gap-2">
+            <Video className="h-6 w-6 text-primary" />
+            <span className="font-headline font-bold text-xl">VideoMaster AI</span>
+          </div>
+          <div className="flex gap-8 text-sm font-medium text-muted-foreground">
+            <Link href="#" className="hover:text-primary">Twitter</Link>
+            <Link href="#" className="hover:text-primary">YouTube</Link>
+            <Link href="#" className="hover:text-primary">Terms</Link>
+            <Link href="#" className="hover:text-primary">Privacy</Link>
+          </div>
+          <p className="text-xs text-muted-foreground">© 2024 VideoMaster AI. Made for Creators.</p>
+        </div>
       </footer>
     </div>
   );

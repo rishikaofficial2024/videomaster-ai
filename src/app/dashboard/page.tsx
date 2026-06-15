@@ -1,10 +1,9 @@
-
 "use client";
 
 import { Navbar } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Plus, Play, Sparkles, Wand2, History, ChevronRight, Loader2, Crown, Coins, Zap } from "lucide-react";
+import { Plus, Play, Sparkles, Wand2, History, ChevronRight, Loader2, Crown, Coins, Zap, MoreVertical } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
@@ -28,18 +27,12 @@ export default function Dashboard() {
     return query(
       collection(db, "users", user.uid, "projects"),
       orderBy("createdAt", "desc"),
-      limit(5)
+      limit(6)
     );
   }, [db, user]);
 
   const { data: projects, loading: projectsLoading } = useCollection(projectsQuery);
   const templates = PlaceHolderImages.filter(img => img.id.includes("template"));
-
-  const [clientDate, setClientDate] = useState<string>("");
-
-  useEffect(() => {
-    setClientDate(new Date().toLocaleDateString());
-  }, []);
 
   const formatDate = (timestamp: any) => {
     if (!timestamp) return "Just now";
@@ -60,145 +53,129 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen pb-20 md:pt-20 bg-background">
+    <div className="min-h-screen pb-24 md:pt-24 bg-background hero-gradient">
       <Navbar />
-      <main className="max-w-4xl mx-auto p-4 space-y-8">
-        {/* Mobile Header Card */}
-        <section className="bg-primary rounded-3xl p-6 text-white shadow-xl shadow-primary/20 relative overflow-hidden">
-          <div className="absolute top-[-20%] right-[-10%] w-48 h-48 bg-white/10 rounded-full blur-3xl"></div>
-          <div className="relative z-10 flex flex-col gap-4">
-            <div>
-              <p className="text-primary-foreground/70 text-sm font-medium">Welcome back,</p>
-              <h1 className="text-3xl font-headline font-bold">{user?.displayName?.split(' ')[0] || 'Creator'}</h1>
-            </div>
-            
-            <div className="flex items-center gap-6">
-              <div className="flex flex-col">
-                <span className="text-[10px] uppercase font-bold tracking-widest opacity-60">Credits</span>
-                <div className="flex items-center gap-1">
-                  <Coins className="w-4 h-4" />
+      <main className="max-w-6xl mx-auto p-6 space-y-12">
+        {/* Welcome Section */}
+        <header className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
+          <div className="space-y-1">
+            <h1 className="text-4xl md:text-5xl font-headline font-bold tracking-tighter">
+              Hello, <span className="text-primary">{user?.displayName?.split(' ')[0] || 'Creator'}!</span>
+            </h1>
+            <p className="text-muted-foreground font-medium text-lg">Your creative studio is ready for magic.</p>
+          </div>
+          
+          <div className="flex items-center gap-3 bg-white/50 backdrop-blur-md p-2 rounded-2xl border shadow-sm">
+             <div className="flex flex-col px-4 border-r">
+                <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">AI Credits</span>
+                <div className="flex items-center gap-1.5">
+                  <Coins className="w-4 h-4 text-orange-500" />
                   <span className="text-xl font-bold font-headline">{profile?.credits ?? 0}</span>
                 </div>
-              </div>
-              <div className="w-px h-8 bg-white/20"></div>
-              <div className="flex flex-col">
-                <span className="text-[10px] uppercase font-bold tracking-widest opacity-60">Status</span>
-                <div className="flex items-center gap-1">
-                  {profile?.isPremium ? (
-                    <span className="flex items-center gap-1 text-sm font-bold bg-white/20 px-2 py-0.5 rounded-full"><Crown className="w-3 h-3" /> PRO</span>
-                  ) : (
-                    <span className="text-sm font-bold">Standard</span>
-                  )}
-                </div>
-              </div>
-            </div>
-
-            <Button size="lg" className="w-full bg-white text-primary hover:bg-white/90 rounded-2xl h-14 font-bold gap-2 mt-2" asChild>
-              <Link href="/editor">
-                <Plus className="w-5 h-5" /> New Project
-              </Link>
-            </Button>
+             </div>
+             <Button className="rounded-xl font-bold px-6 shadow-lg shadow-primary/20" asChild>
+                <Link href="/editor"><Plus className="w-5 h-5 mr-1" /> Create New</Link>
+             </Button>
           </div>
+        </header>
+
+        {/* Quick AI Actions */}
+        <section className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          {[
+            { icon: Wand2, label: "AI Video", href: "/editor?tool=gen", color: "text-purple-600 bg-purple-50", desc: "Veo 2.0 Generation" },
+            { icon: Zap, label: "AI Captions", href: "/editor?tool=captions", color: "text-blue-600 bg-blue-50", desc: "Auto Transcribe" },
+            { icon: Sparkles, label: "Magic SEO", href: "/editor?tool=optimization", color: "text-orange-600 bg-orange-50", desc: "Viral Optimizer" },
+            { icon: Crown, label: "Upgrade", href: "/premium", color: "text-yellow-600 bg-yellow-50", desc: "Unlimited Credits" },
+          ].map((item, i) => (
+            <Link key={i} href={item.href} className="group p-6 rounded-[2rem] bg-white border hover:shadow-xl hover:border-primary/20 transition-all duration-300">
+              <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-4 transition-transform group-hover:scale-110 ${item.color}`}>
+                <item.icon className="w-6 h-6" />
+              </div>
+              <h3 className="font-bold text-lg">{item.label}</h3>
+              <p className="text-xs text-muted-foreground font-medium">{item.desc}</p>
+            </Link>
+          ))}
         </section>
 
-        {/* AI Quick Tools */}
-        <section className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <Button variant="outline" className="h-24 flex flex-col gap-2 rounded-2xl bg-card border-none shadow-sm" asChild>
-            <Link href="/editor?tool=captions">
-              <Zap className="text-primary w-6 h-6" />
-              <span className="text-xs font-bold text-foreground">AI Captions</span>
-            </Link>
-          </Button>
-          <Button variant="outline" className="h-24 flex flex-col gap-2 rounded-2xl bg-card border-none shadow-sm" asChild>
-             <Link href="/editor?tool=optimization">
-              <Sparkles className="text-accent w-6 h-6" />
-              <span className="text-xs font-bold text-foreground">Magic SEO</span>
-            </Link>
-          </Button>
-          <Button variant="outline" className="h-24 flex flex-col gap-2 rounded-2xl bg-card border-none shadow-sm" asChild>
-            <Link href="/projects">
-              <Play className="text-green-500 w-6 h-6" />
-              <span className="text-xs font-bold text-foreground">My Videos</span>
-            </Link>
-          </Button>
-          <Button variant="outline" className="h-24 flex flex-col gap-2 rounded-2xl bg-card border-none shadow-sm" asChild>
-            <Link href="/premium">
-              <Crown className="text-orange-400 w-6 h-6" />
-              <span className="text-xs font-bold text-foreground">Upgrade</span>
-            </Link>
-          </Button>
-        </section>
-
-        {/* Recent Projects */}
-        <section className="space-y-4">
-          <div className="flex justify-between items-center px-1">
-            <h2 className="text-xl font-headline font-bold text-foreground">Recent Studio</h2>
-            <Link href="/projects" className="text-sm text-primary font-bold flex items-center gap-1">
-              All <ChevronRight className="w-4 h-4" />
+        {/* Recent Studio */}
+        <section className="space-y-6">
+          <div className="flex justify-between items-center">
+            <h2 className="text-2xl font-headline font-bold">Recent Projects</h2>
+            <Link href="/projects" className="text-sm font-bold text-primary flex items-center hover:underline">
+              View All Studio <ChevronRight className="ml-1 w-4 h-4" />
             </Link>
           </div>
           
           {projectsLoading ? (
-            <div className="flex gap-4 py-4 overflow-x-auto">
-              {[1, 2].map(i => <div key={i} className="min-w-[280px] h-48 bg-muted animate-pulse rounded-3xl" />)}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {[1, 2, 3].map(i => <div key={i} className="h-56 bg-muted animate-pulse rounded-[2rem]" />)}
             </div>
           ) : projects && projects.length > 0 ? (
-            <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {projects.map((project: any) => (
-                <Card key={project.id} className="min-w-[280px] group cursor-pointer overflow-hidden border-none shadow-lg bg-card/50 rounded-3xl">
+                <Card key={project.id} className="group overflow-hidden rounded-[2rem] border-none shadow-lg hover:shadow-2xl transition-all duration-500 bg-white">
                   <Link href={`/editor?id=${project.id}`}>
-                    <div className="aspect-video relative">
+                    <div className="aspect-video relative overflow-hidden">
                       <Image
                         src={project.thumbnailUrl || `https://picsum.photos/seed/${project.id}/600/400`}
                         alt={project.title}
                         fill
-                        className="object-cover transition-transform group-hover:scale-105"
+                        className="object-cover transition-transform duration-700 group-hover:scale-110"
                       />
-                      <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                        <Play className="w-10 h-10 text-white fill-white" />
+                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                        <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-xl">
+                          <Play className="w-6 h-6 text-primary fill-current" />
+                        </div>
                       </div>
                     </div>
-                    <CardContent className="p-4">
-                      <p className="font-bold truncate text-foreground">{project.title}</p>
-                      <p className="text-xs text-muted-foreground mt-0.5">
-                        {formatDate(project.updatedAt || project.createdAt)}
-                      </p>
+                    <CardContent className="p-6">
+                      <div className="flex justify-between items-start">
+                        <div className="space-y-1">
+                          <h3 className="font-bold text-lg truncate group-hover:text-primary transition-colors">{project.title}</h3>
+                          <p className="text-xs text-muted-foreground font-medium">{formatDate(project.updatedAt || project.createdAt)}</p>
+                        </div>
+                        <Button variant="ghost" size="icon" className="rounded-full h-8 w-8 text-muted-foreground"><MoreVertical className="w-4 h-4" /></Button>
+                      </div>
                     </CardContent>
                   </Link>
                 </Card>
               ))}
             </div>
           ) : (
-            <div className="bg-card/30 border-2 border-dashed border-muted rounded-3xl p-12 text-center">
-              <p className="text-muted-foreground mb-4">Your studio is empty. Ready to create?</p>
-              <Button variant="secondary" className="rounded-xl font-bold" asChild>
+            <div className="bg-white/50 backdrop-blur-md border-2 border-dashed rounded-[3rem] p-16 text-center">
+              <div className="w-20 h-20 bg-muted rounded-full flex items-center justify-center mx-auto mb-6">
+                <Video className="w-10 h-10 text-muted-foreground opacity-20" />
+              </div>
+              <h3 className="text-xl font-bold mb-2">Your Studio is Empty</h3>
+              <p className="text-muted-foreground mb-8 max-w-xs mx-auto">Ready to create your first viral masterpiece? The AI is waiting.</p>
+              <Button className="rounded-2xl h-12 px-8 font-bold" asChild>
                 <Link href="/editor">Launch Studio</Link>
               </Button>
             </div>
           )}
         </section>
 
-        {/* Templates */}
-        <section className="space-y-4">
-          <div className="flex justify-between items-center px-1">
-            <h2 className="text-xl font-headline font-bold text-foreground">Pro Templates</h2>
-            <Link href="/templates" className="text-sm text-primary font-bold flex items-center gap-1">
-              More <ChevronRight className="w-4 h-4" />
+        {/* Pro Templates */}
+        <section className="space-y-6">
+          <div className="flex justify-between items-center">
+            <h2 className="text-2xl font-headline font-bold">Inspiration Gallery</h2>
+            <Link href="/templates" className="text-sm font-bold text-primary flex items-center hover:underline">
+              Explore Templates <ChevronRight className="ml-1 w-4 h-4" />
             </Link>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {templates.slice(0, 4).map((template) => (
-              <div key={template.id} className="relative aspect-[9/16] rounded-3xl overflow-hidden group shadow-md">
+              <Link key={template.id} href={`/editor?templateId=${template.id}`} className="relative aspect-[9/16] rounded-[2rem] overflow-hidden group shadow-md hover:shadow-xl transition-all">
                 <Image
                   src={template.imageUrl}
                   alt={template.description}
                   fill
-                  className="object-cover transition-transform group-hover:scale-110"
+                  className="object-cover transition-transform duration-700 group-hover:scale-110"
                 />
-                <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent">
-                  <p className="text-white text-xs font-bold line-clamp-1">{template.description}</p>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent p-5 flex flex-col justify-end">
+                  <p className="text-white text-xs font-bold leading-tight">{template.description}</p>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </section>

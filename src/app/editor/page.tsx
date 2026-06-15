@@ -26,6 +26,7 @@ import { doc, setDoc, updateDoc, serverTimestamp, increment } from "firebase/fir
 import Image from "next/image";
 import { errorEmitter } from "@/firebase/error-emitter";
 import { FirestorePermissionError } from "@/firebase/errors";
+import { cn } from "@/lib/utils";
 
 export default function EditorPage() {
   const searchParams = useSearchParams();
@@ -147,7 +148,7 @@ export default function EditorPage() {
       toast({
         variant: "destructive",
         title: "Insufficient Credits",
-        description: `This action costs ${cost} credits. Please upgrade to PRO for unlimited access.`,
+        description: `This action costs ${cost} credits. Please upgrade for unlimited access.`,
         action: <Button variant="outline" size="sm" asChild><Link href="/premium">Upgrade</Link></Button>
       });
       return false;
@@ -197,7 +198,7 @@ export default function EditorPage() {
 
           toast({
             title: "Export Complete!",
-            description: "Video saved to your cloud studio in 1080p.",
+            description: "Video saved to your cloud studio.",
           });
           return 100;
         }
@@ -375,44 +376,48 @@ export default function EditorPage() {
   }
 
   return (
-    <div className="h-screen bg-background flex flex-col md:pt-20">
+    <div className="h-screen bg-background flex flex-col md:pt-20 overflow-hidden">
       <Navbar />
       
-      <div className="bg-background border-b px-4 py-2 flex items-center justify-between z-10">
-        <div className="flex items-center gap-2">
-          <Link href="/dashboard" className="p-1 hover:bg-muted rounded-full text-foreground">
-            <ChevronLeft className="w-6 h-6" />
+      {/* Top Bar */}
+      <div className="bg-background/80 backdrop-blur-xl border-b px-6 py-4 flex items-center justify-between z-10 shadow-sm">
+        <div className="flex items-center gap-4">
+          <Link href="/dashboard" className="p-2 hover:bg-muted rounded-xl text-foreground transition-colors">
+            <ChevronLeft className="w-5 h-5" />
           </Link>
           <input 
             value={title} 
             onChange={(e) => setTitle(e.target.value)}
             onBlur={() => handleSave()}
-            className="bg-transparent font-headline font-bold focus:outline-none border-b border-transparent focus:border-primary px-1 text-foreground"
+            className="bg-transparent font-headline font-bold text-lg focus:outline-none border-b border-transparent focus:border-primary px-1 text-foreground placeholder:text-muted-foreground w-48 md:w-64"
           />
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-4">
           {!profile?.isPremium && (
-            <div className="hidden sm:flex items-center gap-1.5 px-3 py-1 bg-primary/10 rounded-full border border-primary/20">
-              <Coins className="w-3.5 h-3.5 text-primary" />
-              <span className="text-xs font-bold text-primary">{profile?.credits ?? 0}</span>
+            <div className="hidden sm:flex items-center gap-2 px-4 py-1.5 bg-orange-50 rounded-full border border-orange-200">
+              <Coins className="w-4 h-4 text-orange-600" />
+              <span className="text-sm font-bold text-orange-600">{profile?.credits ?? 0}</span>
             </div>
           )}
-          <Button size="sm" className="bg-primary hover:bg-primary/90 text-white gap-2" onClick={handleExport} disabled={isProcessing}>
-            <Download className="w-4 h-4" />
-            {isProcessing ? "Wait..." : "Export"}
+          <Button size="sm" className="bg-primary hover:bg-primary/90 text-white rounded-xl h-10 px-6 font-bold shadow-lg shadow-primary/20" onClick={handleExport} disabled={isProcessing}>
+            <Download className="w-4 h-4 mr-2" />
+            {isProcessing ? "Processing..." : "Export"}
           </Button>
         </div>
       </div>
 
-      <div className="flex-1 flex flex-col lg:flex-row overflow-hidden">
-        <div className="flex-1 bg-muted/20 flex flex-col relative group">
+      <div className="flex-1 flex flex-col lg:flex-row overflow-hidden bg-[#fafafa]">
+        {/* Main Preview Area */}
+        <div className="flex-1 flex flex-col relative group overflow-hidden p-6">
           <div className="flex-1 relative flex items-center justify-center">
-            <div className="aspect-video w-full max-w-4xl bg-black shadow-2xl relative flex items-center justify-center cursor-pointer overflow-hidden" onClick={handleFileClick}>
+            <div className="aspect-video w-full max-w-5xl bg-black rounded-[2.5rem] shadow-2xl relative flex items-center justify-center cursor-pointer overflow-hidden border-8 border-white" onClick={handleFileClick}>
                <input type="file" ref={fileInputRef} className="hidden" accept="video/*" onChange={handleFileChange} />
                {!selectedVideoData ? (
-                 <div className="flex flex-col items-center gap-4 text-white/20">
-                    <Upload className="w-16 h-16" />
-                    <span className="text-sm font-medium">Upload or Generate Video</span>
+                 <div className="flex flex-col items-center gap-6 text-white/30 group-hover:text-white/50 transition-colors">
+                    <div className="p-8 rounded-full bg-white/5 border border-white/10">
+                      <Upload className="w-12 h-12" />
+                    </div>
+                    <span className="text-lg font-bold font-headline">Upload or AI Generate Video</span>
                  </div>
                ) : (
                  <>
@@ -425,8 +430,8 @@ export default function EditorPage() {
                      onClick={togglePlayback}
                    />
                    {subtitles && isPlaying && (
-                     <div className="absolute bottom-12 left-0 right-0 text-center px-4 pointer-events-none">
-                       <span className="bg-black/80 text-white px-3 py-1 rounded-md text-sm font-medium shadow-lg border border-white/20">
+                     <div className="absolute bottom-16 left-0 right-0 text-center px-8 pointer-events-none animate-in fade-in slide-in-from-bottom-4">
+                       <span className="bg-black/90 text-white px-4 py-2 rounded-xl text-lg font-bold shadow-2xl border border-white/20 backdrop-blur-xl">
                          {subtitles.split('\n')[3] || "Captions applied..."}
                        </span>
                      </div>
@@ -439,121 +444,168 @@ export default function EditorPage() {
             </div>
           </div>
           
-          <div className="absolute bottom-4 left-0 right-0 flex justify-center items-center gap-6 text-white bg-black/40 backdrop-blur-md py-4 translate-y-full group-hover:translate-y-0 transition-transform">
-            <Button variant="ghost" size="icon" className="hover:bg-white/10 rounded-full"><SkipBack className="w-6 h-6" /></Button>
-            <Button size="icon" className="w-12 h-12 bg-primary hover:bg-primary/90 rounded-full shadow-lg" onClick={togglePlayback}>
-              {isPlaying ? <Pause className="w-6 h-6 fill-white" /> : <Play className="w-6 h-6 fill-white" />}
+          {/* Controls Bar */}
+          <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex justify-center items-center gap-8 text-white bg-black/60 backdrop-blur-2xl px-10 py-5 rounded-[2rem] border border-white/10 opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500 shadow-2xl">
+            <Button variant="ghost" size="icon" className="hover:bg-white/10 rounded-full h-10 w-10"><SkipBack className="w-6 h-6" /></Button>
+            <Button size="icon" className="w-14 h-14 bg-white text-black hover:bg-white/90 rounded-full shadow-xl transition-transform active:scale-95" onClick={togglePlayback}>
+              {isPlaying ? <Pause className="w-7 h-7 fill-current" /> : <Play className="w-7 h-7 fill-current" />}
             </Button>
-            <Button variant="ghost" size="icon" className="hover:bg-white/10 rounded-full"><SkipForward className="w-6 h-6" /></Button>
+            <Button variant="ghost" size="icon" className="hover:bg-white/10 rounded-full h-10 w-10"><SkipForward className="w-6 h-6" /></Button>
           </div>
         </div>
 
-        <div className="w-full lg:w-80 bg-background border-l overflow-y-auto">
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="w-full h-12 rounded-none grid grid-cols-3 bg-muted/50">
-              <TabsTrigger value="tools">Tools</TabsTrigger>
-              <TabsTrigger value="ai">AI</TabsTrigger>
-              <TabsTrigger value="audio">Audio</TabsTrigger>
+        {/* Sidebar Tools */}
+        <div className="w-full lg:w-[400px] bg-white border-l overflow-hidden flex flex-col shadow-2xl">
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full flex-1 flex flex-col">
+            <TabsList className="w-full h-16 rounded-none grid grid-cols-3 bg-muted/30 p-2 gap-2">
+              <TabsTrigger value="tools" className="rounded-xl data-[state=active]:shadow-md font-bold">Studio</TabsTrigger>
+              <TabsTrigger value="ai" className="rounded-xl data-[state=active]:shadow-md font-bold text-primary">AI Magic</TabsTrigger>
+              <TabsTrigger value="audio" className="rounded-xl data-[state=active]:shadow-md font-bold">Audio</TabsTrigger>
             </TabsList>
             
-            <TabsContent value="tools" className="p-4 space-y-6">
-              <div className="grid grid-cols-2 gap-3">
-                <Button variant="outline" className="h-20 flex-col gap-2 rounded-xl text-foreground"><Scissors className="w-5 h-5" /> Trim</Button>
-                <Button variant="outline" className="h-20 flex-col gap-2 rounded-xl text-foreground"><Crop className="w-5 h-5" /> Crop</Button>
-                <Button variant="outline" className="h-20 flex-col gap-2 rounded-xl text-foreground"><Gauge className="w-5 h-5" /> Speed</Button>
-                <Button variant="outline" className="h-20 flex-col gap-2 rounded-xl text-foreground"><Filter className="w-5 h-5" /> Filters</Button>
-              </div>
-            </TabsContent>
-
-            <TabsContent value="ai" className="p-4 space-y-4">
-              <div className="space-y-4">
-                <div className="p-4 border rounded-xl bg-primary/5 space-y-3">
-                  <div className="flex items-center gap-2">
-                    <Zap className="w-5 h-5 text-primary" />
-                    <h4 className="font-bold text-sm text-foreground">Veo Video Gen</h4>
-                  </div>
-                  <Input 
-                    placeholder="e.g. A dragon flying over a forest" 
-                    value={videoPrompt}
-                    onChange={(e) => setVideoPrompt(e.target.value)}
-                    className="bg-background"
-                  />
-                  <Button className="w-full gap-2" size="sm" onClick={handleMagicVideo} disabled={isProcessing}>
-                    Generate (10c)
-                  </Button>
+            <div className="flex-1 overflow-y-auto p-6 custom-scrollbar">
+              <TabsContent value="tools" className="mt-0 space-y-6">
+                <div className="grid grid-cols-2 gap-4">
+                  {[
+                    { icon: Scissors, label: "Trim" },
+                    { icon: Crop, label: "Crop" },
+                    { icon: Gauge, label: "Speed" },
+                    { icon: Filter, label: "Filters" },
+                    { icon: Type, label: "Text" },
+                    { icon: Music, label: "Music" }
+                  ].map((tool, i) => (
+                    <Button key={i} variant="outline" className="h-28 flex-col gap-3 rounded-3xl border-muted bg-[#fcfcfc] hover:bg-white hover:border-primary/30 transition-all hover:shadow-lg">
+                      <div className="p-3 bg-muted/50 rounded-2xl group-hover:bg-primary/10 transition-colors">
+                        <tool.icon className="w-6 h-6 text-foreground group-hover:text-primary" />
+                      </div>
+                      <span className="font-bold text-sm">{tool.label}</span>
+                    </Button>
+                  ))}
                 </div>
+              </TabsContent>
 
-                <div className="p-4 border rounded-xl bg-accent/5 space-y-3">
-                  <div className="flex items-center gap-2">
-                    <Mic className="w-5 h-5 text-accent" />
-                    <h4 className="font-bold text-sm text-foreground">AI Voiceover</h4>
+              <TabsContent value="ai" className="mt-0 space-y-6">
+                <div className="space-y-6">
+                  {/* AI Generation */}
+                  <div className="p-6 border rounded-[2rem] bg-primary/[0.03] border-primary/10 space-y-4">
+                    <div className="flex items-center gap-2">
+                      <div className="p-2 bg-primary/10 rounded-xl">
+                        <Zap className="w-5 h-5 text-primary" />
+                      </div>
+                      <h4 className="font-bold text-foreground">Veo 2.0 Video Gen</h4>
+                    </div>
+                    <textarea 
+                      placeholder="Describe your cinematic vision..." 
+                      value={videoPrompt}
+                      onChange={(e) => setVideoPrompt(e.target.value)}
+                      className="w-full bg-white border rounded-2xl p-4 text-sm h-24 focus:ring-2 focus:ring-primary focus:outline-none transition-all placeholder:text-muted-foreground"
+                    />
+                    <Button className="w-full h-12 rounded-xl font-bold gap-2" size="sm" onClick={handleMagicVideo} disabled={isProcessing}>
+                      Generate AI Video (10c)
+                    </Button>
                   </div>
-                  <textarea 
-                    placeholder="Enter script for AI to speak..." 
-                    value={voiceoverText}
-                    onChange={(e) => setVoiceoverText(e.target.value)}
-                    className="w-full bg-background border rounded-lg p-2 text-xs h-20 focus:ring-1 focus:ring-accent"
-                  />
-                  <Button variant="outline" className="w-full border-accent text-accent hover:bg-accent hover:text-white" size="sm" onClick={handleVoiceover} disabled={isProcessing}>
-                    Add Voiceover (4c)
-                  </Button>
+
+                  {/* AI Voiceover */}
+                  <div className="p-6 border rounded-[2rem] bg-accent/[0.03] border-accent/10 space-y-4">
+                    <div className="flex items-center gap-2">
+                      <div className="p-2 bg-accent/10 rounded-xl">
+                        <Mic className="w-5 h-5 text-accent" />
+                      </div>
+                      <h4 className="font-bold text-foreground">AI Voiceover</h4>
+                    </div>
+                    <textarea 
+                      placeholder="Paste script for neural voice narration..." 
+                      value={voiceoverText}
+                      onChange={(e) => setVoiceoverText(e.target.value)}
+                      className="w-full bg-white border rounded-2xl p-4 text-sm h-24 focus:ring-2 focus:ring-accent focus:outline-none transition-all placeholder:text-muted-foreground"
+                    />
+                    <Button variant="outline" className="w-full h-12 rounded-xl border-accent text-accent hover:bg-accent hover:text-white font-bold" size="sm" onClick={handleVoiceover} disabled={isProcessing}>
+                      Create Voiceover (4c)
+                    </Button>
+                  </div>
+
+                  <div className="grid grid-cols-1 gap-3">
+                    <Button 
+                      variant="outline" 
+                      className="w-full h-16 justify-start gap-4 px-5 rounded-2xl border-muted bg-[#fcfcfc] hover:bg-white hover:border-primary/30 transition-all"
+                      onClick={handleAutoCaptions}
+                      disabled={isProcessing}
+                    >
+                      <div className="p-2 bg-blue-50 rounded-xl">
+                        <Captions className="w-5 h-5 text-blue-600" />
+                      </div>
+                      <div className="text-left">
+                        <p className="text-sm font-bold">Auto-Captions</p>
+                        <p className="text-[10px] text-muted-foreground uppercase tracking-widest font-bold">3 Credits</p>
+                      </div>
+                    </Button>
+                    
+                    <Button 
+                      variant="outline" 
+                      className="w-full h-16 justify-start gap-4 px-5 rounded-2xl border-muted bg-[#fcfcfc] hover:bg-white hover:border-primary/30 transition-all"
+                      onClick={handleAIAnalyze}
+                      disabled={isProcessing}
+                    >
+                      <div className="p-2 bg-orange-50 rounded-xl">
+                        <Sparkles className="w-5 h-5 text-orange-600" />
+                      </div>
+                      <div className="text-left">
+                        <p className="text-sm font-bold">Optimize for Viral</p>
+                        <p className="text-[10px] text-muted-foreground uppercase tracking-widest font-bold">2 Credits</p>
+                      </div>
+                    </Button>
+                  </div>
                 </div>
+              </TabsContent>
 
-                <Button 
-                  variant="outline" 
-                  className="w-full h-14 justify-start gap-3 px-4 rounded-xl border-accent/20 bg-accent/5 hover:bg-accent/10"
-                  onClick={handleAutoCaptions}
-                  disabled={isProcessing}
-                >
-                  <Captions className="w-5 h-5 text-accent" />
-                  <div className="text-left">
-                    <p className="text-xs font-bold text-foreground">Auto-Captions</p>
-                    <p className="text-[10px] text-muted-foreground">3 Credits</p>
-                  </div>
-                </Button>
-                
-                <Button 
-                  variant="outline" 
-                  className="w-full h-14 justify-start gap-3 px-4 rounded-xl border-primary/20 bg-primary/5 hover:bg-primary/10"
-                  onClick={handleAIAnalyze}
-                  disabled={isProcessing}
-                >
-                  <Sparkles className="w-5 h-5 text-primary" />
-                  <div className="text-left">
-                    <p className="text-xs font-bold text-foreground">Optimize SEO</p>
-                    <p className="text-[10px] text-muted-foreground">2 Credits</p>
-                  </div>
-                </Button>
-              </div>
-            </TabsContent>
-
-            <TabsContent value="audio" className="p-4 space-y-4">
-               <h4 className="text-sm font-semibold text-foreground">Scene Audio</h4>
-               <div className="space-y-2">
-                 {generatedVoiceover && (
-                   <div className="flex items-center justify-between p-3 rounded-xl bg-accent/10 border border-accent/20">
-                     <div className="flex items-center gap-3">
-                       <Volume2 className="w-4 h-4 text-accent" />
-                       <span className="text-xs font-bold text-foreground">AI Narration</span>
+              <TabsContent value="audio" className="mt-0 space-y-4">
+                 <h4 className="text-sm font-bold text-foreground uppercase tracking-wider px-1">Scene Soundtrack</h4>
+                 <div className="space-y-3">
+                   {generatedVoiceover ? (
+                     <div className="flex items-center justify-between p-4 rounded-3xl bg-accent/5 border border-accent/10 animate-in zoom-in-95">
+                       <div className="flex items-center gap-4">
+                         <div className="p-2 bg-accent/10 rounded-xl">
+                            <Volume2 className="w-4 h-4 text-accent" />
+                         </div>
+                         <div>
+                            <span className="text-sm font-bold block">AI Narration</span>
+                            <span className="text-[10px] text-muted-foreground uppercase font-bold">Active</span>
+                         </div>
+                       </div>
+                       <Button variant="ghost" size="sm" className="h-8 rounded-lg text-destructive hover:bg-destructive/5" onClick={() => setGeneratedVoiceover(null)}>Remove</Button>
                      </div>
-                     <Button variant="ghost" size="sm" className="h-7 text-destructive" onClick={() => setGeneratedVoiceover(null)}>Delete</Button>
-                   </div>
-                 )}
-               </div>
-            </TabsContent>
+                   ) : (
+                     <div className="py-12 text-center text-muted-foreground">
+                        <Music className="w-8 h-8 mx-auto mb-3 opacity-20" />
+                        <p className="text-xs font-medium">No audio layers added yet</p>
+                     </div>
+                   )}
+                 </div>
+              </TabsContent>
+            </div>
           </Tabs>
         </div>
       </div>
 
+      {/* Fullscreen Overlay Loader */}
       {isProcessing && (
-        <div className="fixed inset-0 z-[100] bg-background/95 flex items-center justify-center p-8">
-           <div className="max-w-md w-full text-center space-y-6">
-             <Loader2 className="w-12 h-12 animate-spin text-primary mx-auto" />
-             <div className="space-y-2">
-               <h3 className="text-2xl font-headline font-bold text-foreground uppercase tracking-tighter">AI Processing</h3>
-               <p className="text-muted-foreground text-sm">Our neural networks are weaving their magic...</p>
+        <div className="fixed inset-0 z-[100] bg-white/95 backdrop-blur-sm flex items-center justify-center p-8">
+           <div className="max-w-md w-full text-center space-y-8 animate-in fade-in zoom-in-95 duration-500">
+             <div className="relative w-24 h-24 mx-auto">
+                <Loader2 className="w-24 h-24 animate-spin text-primary opacity-20" />
+                <Sparkles className="absolute inset-0 m-auto w-10 h-10 text-primary animate-pulse" />
              </div>
-             <Progress value={exportProgress || 45} className="h-1.5" />
+             <div className="space-y-2">
+               <h3 className="text-3xl font-headline font-bold text-foreground tracking-tighter">AI IN PROGRESS</h3>
+               <p className="text-muted-foreground font-medium text-lg">Weaving neural networks to create magic...</p>
+             </div>
+             <div className="relative h-2 bg-muted rounded-full overflow-hidden w-full max-w-sm mx-auto">
+                <div 
+                  className="absolute inset-y-0 left-0 bg-primary transition-all duration-500 rounded-full"
+                  style={{ width: `${exportProgress || 30}%` }}
+                />
+             </div>
+             <p className="text-xs font-bold uppercase tracking-widest text-primary/60">{exportProgress || 30}% COMPLETE</p>
            </div>
         </div>
       )}
