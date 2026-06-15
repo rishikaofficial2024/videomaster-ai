@@ -2,11 +2,11 @@
 /**
  * Firebase configuration object for VideoMaster AI.
  * 
- * I have pre-filled your Project ID and App ID. 
- * You just need to paste your API Key below.
+ * IMPORTANT: Replace 'AIzaSy...' with your actual Web API Key 
+ * from Firebase Project Settings > General.
  */
 export const firebaseConfig = {
-  apiKey: "REPLACE_WITH_YOUR_FIREBASE_API_KEY", // Get this from Firebase Project Settings
+  apiKey: "AIzaSyB_REPLACE_WITH_ACTUAL_KEY", 
   authDomain: "videomaster-ai.firebaseapp.com",
   projectId: "videomaster-ai",
   storageBucket: "videomaster-ai.appspot.com",

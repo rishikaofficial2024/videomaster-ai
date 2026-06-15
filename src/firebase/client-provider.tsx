@@ -16,11 +16,18 @@ export const FirebaseClientProvider = ({ children }: { children: React.ReactNode
   } | null>(null);
 
   useEffect(() => {
+    // Only initialize on the client
     const instances = initializeFirebase();
     setFirebase(instances);
   }, []);
 
-  if (!firebase) return null;
+  if (!firebase) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="animate-pulse text-primary font-bold">Connecting to Services...</div>
+      </div>
+    );
+  }
 
   return (
     <FirebaseProvider {...firebase}>

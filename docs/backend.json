@@ -40,11 +40,11 @@
   "firestore": {
     "/users/{userId}": {
       "schema": "UserProfile",
-      "description": "The user's root profile document"
+      "description": "The user's root profile document. Rules: Read/Write if request.auth.uid == userId"
     },
     "/users/{userId}/projects/{projectId}": {
       "schema": "VideoProject",
-      "description": "Collection of video projects owned by the user"
+      "description": "Collection of video projects owned by the user. Rules: Read/Write if request.auth.uid == userId"
     }
   }
 }
