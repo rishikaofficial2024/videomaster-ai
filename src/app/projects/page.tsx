@@ -9,7 +9,7 @@ import {
   Plus, Play, Search, Filter, MoreVertical, 
   Trash2, Copy, Edit3, Loader2, Video 
 } from "lucide-react";
-import Link from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useUser, useFirestore, useCollection } from "@/firebase";
 import { collection, query, orderBy, deleteDoc, doc } from "firebase/firestore";

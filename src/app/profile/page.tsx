@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { 
   User, Settings, Shield, Bell, HelpCircle, LogOut, 
-  ChevronRight, CreditCard, Smartphone, Cloud, Loader2
+  ChevronRight, CreditCard, Smartphone, Cloud, Loader2, Zap
 } from "lucide-react";
 import Link from "next/link";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
@@ -89,6 +89,13 @@ export default function ProfilePage() {
                       <span className="font-medium">Personal Information</span>
                       <span className="text-xs text-muted-foreground">{user?.email}</span>
                     </div>
+                  </div>
+                  <ChevronRight className="w-4 h-4 text-muted-foreground" />
+                </div>
+                <div className="flex items-center justify-between p-4 hover:bg-muted/50 cursor-pointer transition-colors" onClick={() => router.push('/test-connection')}>
+                  <div className="flex items-center gap-3">
+                    <Zap className="w-5 h-5 text-yellow-500" />
+                    <span className="font-medium text-yellow-600 dark:text-yellow-400">System Diagnostics</span>
                   </div>
                   <ChevronRight className="w-4 h-4 text-muted-foreground" />
                 </div>

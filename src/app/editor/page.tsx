@@ -37,6 +37,7 @@ export default function EditorPage() {
   const db = useFirestore();
   const { toast } = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
 
   const [title, setTitle] = useState("Untitled Project");
@@ -139,6 +140,19 @@ export default function EditorPage() {
       return false;
     }
     return true;
+  };
+
+  const togglePlayback = () => {
+    if (videoRef.current) {
+      if (isPlaying) {
+        videoRef.current.pause();
+        if (audioRef.current) audioRef.current.pause();
+      } else {
+        videoRef.current.play();
+        if (audioRef.current) audioRef.current.play();
+      }
+      setIsPlaying(!isPlaying);
+    }
   };
 
   const handleExport = () => {
@@ -383,7 +397,14 @@ export default function EditorPage() {
                  </div>
                ) : (
                  <>
-                   <video src={selectedVideoData} className="w-full h-full object-contain" controls={isPlaying} />
+                   <video 
+                     ref={videoRef}
+                     src={selectedVideoData} 
+                     className="w-full h-full object-contain" 
+                     onPlay={() => setIsPlaying(true)}
+                     onPause={() => setIsPlaying(false)}
+                     onClick={togglePlayback}
+                   />
                    {subtitles && isPlaying && (
                      <div className="absolute bottom-12 left-0 right-0 text-center px-4 pointer-events-none">
                        <span className="bg-black/80 text-white px-3 py-1 rounded-md text-sm font-medium shadow-lg border border-white/20">
@@ -401,10 +422,7 @@ export default function EditorPage() {
           
           <div className="absolute bottom-4 left-0 right-0 flex justify-center items-center gap-6 text-white bg-black/40 backdrop-blur-md py-4 translate-y-full group-hover:translate-y-0 transition-transform">
             <Button variant="ghost" size="icon" className="hover:bg-white/10 rounded-full"><SkipBack className="w-6 h-6" /></Button>
-            <Button size="icon" className="w-12 h-12 bg-primary hover:bg-primary/90 rounded-full shadow-lg" onClick={() => {
-              setIsPlaying(!isPlaying);
-              if (!isPlaying && audioRef.current) audioRef.current.play();
-            }}>
+            <Button size="icon" className="w-12 h-12 bg-primary hover:bg-primary/90 rounded-full shadow-lg" onClick={togglePlayback}>
               {isPlaying ? <Pause className="w-6 h-6 fill-white" /> : <Play className="w-6 h-6 fill-white" />}
             </Button>
             <Button variant="ghost" size="icon" className="hover:bg-white/10 rounded-full"><SkipForward className="w-6 h-6" /></Button>
