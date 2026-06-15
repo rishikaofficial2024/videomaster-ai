@@ -1,34 +1,28 @@
 
-# 🚀 VideoMaster AI - Setup Guide (Hindi)
+# 🚀 VideoMaster AI - Final Launch Checklist
 
-Aapka app live aane ke liye bilkul tayyar hai! Bas ye 2 zaruri settings kar lijiye:
-
----
-
-### 🔑 1. Firebase API Key Kaise Dalein?
-1.  **[Firebase Console](https://console.firebase.google.com/)** par jayein.
-2.  **videomaster-ai** project par click karein.
-3.  **Project Settings** (Gear icon ⚙️) par click karein.
-4.  Niche scroll karein aur **Your apps** section mein jayein.
-5.  Wahan aapko `apiKey: "AIza..."` jaisa ek code milega.
-6.  Usko copy karein aur is file mein paste kar dein: `src/firebase/config.ts`.
+Aapka app coding aur design ke hisaab se 100% complete hai. Ise live (active) karne ke liye bas ye 3 steps pure karein:
 
 ---
 
-### 🛠️ 2. Firebase Services Kaise Chalu Karein?
-App ko chalane ke liye Firebase Console mein ye do cheezein enable karna zaruri hai:
+### 🔑 1. Firebase API Key Update (Sabse Zaruri)
+- **Kahan milegi?**: [Firebase Console](https://console.firebase.google.com/) > Project Settings > Your Apps.
+- **Kya karna hai?**: `src/firebase/config.ts` file mein `YOUR_REAL_API_KEY_HERE` ko apni real key se replace karein.
 
-*   **Authentication**: Console mein **Build > Authentication** par jayein aur **Get Started** par click karein. Phir "Email/Password" aur "Google" ko enable kar dein.
-*   **Firestore Database**: Console mein **Build > Firestore Database** par jayein aur **Create Database** par click karein (Start in Test Mode chunein).
+### 🛠️ 2. Firebase Console Settings
+- **Authentication**: `Build > Authentication` mein jayein aur "Email/Password" aur "Google" provider ko Enable karein.
+- **Firestore**: `Build > Firestore Database` mein jayein aur "Create Database" par click karein (Start in Test Mode).
 
----
-
-### 📱 3. APK Kaise Banayein?
-Agar aap mobile ke liye APK banana chahte hain:
-1. Terminal mein `npm run mobile:sync` chalayein.
-2. `npm run mobile:open` se Android Studio kholein.
-3. Android Studio mein **Build > Build APK** par click karein.
+### 🤖 3. AI Features Setup (Gemini Key)
+- **Kahan milegi?**: [Google AI Studio](https://aistudio.google.com/app/apikey) se apni API Key lein.
+- **Kya karna hai?**: Is key ko apni deployment settings ya local `.env` file mein `GEMINI_API_KEY` ke naam se save karein.
 
 ---
 
-**Tip**: Agar kuch samajh na aaye toh `/test-connection` page par jaakar check karein ki kaunsi service pending hai!
+### 📱 Mobile APK Kaise Banayein?
+- Terminal mein `npm run mobile:build-apk` chalayein.
+- Isse Android Studio khulega jahan se aap final APK nikal sakte hain.
+
+---
+
+**Tip**: Agar app login nahi ho raha ya data save nahi kar raha, toh `/test-connection` page par jaakar check karein ki kaunsi service pending hai!
