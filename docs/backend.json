@@ -39,12 +39,12 @@
   },
   "firestore": {
     "/users/{userId}": {
-      "schema": "UserProfile",
-      "description": "The user's root profile document. Rules: Read/Write if request.auth.uid == userId"
+      "schema": { "$ref": "#/backend/entities/UserProfile" },
+      "description": "The user's root profile document."
     },
     "/users/{userId}/projects/{projectId}": {
-      "schema": "VideoProject",
-      "description": "Collection of video projects owned by the user. Rules: Read/Write if request.auth.uid == userId"
+      "schema": { "$ref": "#/backend/entities/VideoProject" },
+      "description": "Collection of video projects owned by the user."
     }
   }
 }

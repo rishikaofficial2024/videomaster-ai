@@ -5,10 +5,10 @@
 
 @layer base {
   :root {
-    /* Refined Light Blue Palette - All surfaces now match */
+    /* Refined Light Blue Palette - Monochromatic look */
     --background: 210 100% 98.5%; /* Airy Light Blue */
     --foreground: 224 71% 4%;
-    --card: 210 100% 98.5%; /* Matched with Background */
+    --card: 210 100% 98.5%; /* Matched with Background for seamless look */
     --card-foreground: 224 71% 4%;
     --popover: 210 100% 98.5%; /* Matched with Background */
     --popover-foreground: 224 71% 4%;
@@ -25,7 +25,7 @@
     --border: 214 32% 91%;
     --input: 214 32% 91%;
     --ring: 217 91% 60%;
-    --radius: 1.25rem;
+    --radius: 1.5rem; /* Smoother corners */
   }
 }
 
@@ -42,7 +42,7 @@
 }
 
 .glass-card {
-  @apply bg-background/80 backdrop-blur-xl border border-white/40 shadow-xl;
+  @apply bg-white/40 backdrop-blur-xl border border-white/40 shadow-xl;
 }
 
 .hero-gradient {
@@ -51,7 +51,7 @@
 }
 
 .blue-glow {
-  box-shadow: 0 10px 40px -10px hsla(217, 91%, 60%, 0.1);
+  box-shadow: 0 10px 40px -10px hsla(217, 91%, 60%, 0.15);
 }
 
 /* Custom Scrollbar */
