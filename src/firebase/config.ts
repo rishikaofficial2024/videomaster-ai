@@ -2,11 +2,9 @@
 /**
  * Firebase configuration object for VideoMaster AI.
  * 
- * 🗝️ FINAL STEP BEFORE LIVE:
- * 1. Go to: https://console.firebase.google.com/project/videomaster-ai/settings/general/
- * 2. Copy the 'Web API Key' value.
- * 3. It MUST start with 'AIza...'.
- * 4. Replace the 'apiKey' value below with your real key.
+ * 🗝️ FINAL STATUS:
+ * API Key has been integrated. Ensure Auth and Firestore are enabled 
+ * in the Firebase Console for this project.
  */
 export const firebaseConfig = {
   apiKey: "AIzaSyCz-pMZtY7_OVr9IyyHiIqwPWnpP3Lb21w",
