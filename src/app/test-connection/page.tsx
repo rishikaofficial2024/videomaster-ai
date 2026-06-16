@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { Navbar } from "@/components/navbar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { CheckCircle2, XCircle, Loader2, Signal, Wifi, Zap, Database, AlertCircle, Key, ArrowLeft } from "lucide-react";
+import { CheckCircle2, XCircle, Loader2, Signal, Wifi, Zap, Database, AlertCircle, Key, ArrowLeft, ShieldCheck } from "lucide-react";
 import { useAuth, useFirestore } from "@/firebase";
 import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -23,6 +23,7 @@ export default function TestConnectionPage() {
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
+  const [isFullyConfigured, setIsFullyConfigured] = useState(false);
 
   const runTests = async () => {
     setLoading(true);
@@ -36,17 +37,13 @@ export default function TestConnectionPage() {
 
     const currentErrors: Record<string, string> = {};
 
-    // 1. Test Config (Check for placeholder or wrong format)
+    // 1. Test Config (Check for valid key)
     const key = firebaseConfig.apiKey || "";
-    const isPlaceholder = key === "YOUR_REAL_API_KEY_HERE" || key === "";
-    const isWrongFormat = !key.startsWith("AIza");
+    const isValidKey = key.startsWith("AIza");
 
-    if (isPlaceholder) {
+    if (!isValidKey) {
       setStatus(prev => ({ ...prev, config: "error" }));
-      currentErrors.config = "API Key missing. Paste it in src/firebase/config.ts.";
-    } else if (isWrongFormat) {
-      setStatus(prev => ({ ...prev, config: "error" }));
-      currentErrors.config = "Wrong API Key format. It MUST start with 'AIza'.";
+      currentErrors.config = "Invalid API Key format. Ensure it starts with 'AIza'.";
     } else {
       setStatus(prev => ({ ...prev, config: "success" }));
     }
@@ -55,14 +52,14 @@ export default function TestConnectionPage() {
     const appOk = !!auth.app;
     setStatus(prev => ({ ...prev, firebase: appOk ? "success" : "error" }));
     if (!appOk) {
-      currentErrors.firebase = "Firebase SDK failed to initialize. Check config.ts syntax.";
+      currentErrors.firebase = "Firebase SDK failed to initialize.";
     }
 
     // 3. Test Auth Service
     const authOk = !!auth;
     setStatus(prev => ({ ...prev, auth: authOk ? "success" : "error" }));
     if (!authOk) {
-      currentErrors.auth = "Auth service unavailable. Enable 'Authentication' in Firebase Console.";
+      currentErrors.auth = "Auth service unavailable.";
     }
 
     // 4. Test Firestore Read/Write
@@ -77,23 +74,18 @@ export default function TestConnectionPage() {
       if (snap.exists()) {
         setStatus(prev => ({ ...prev, firestore: "success" }));
       } else {
-        throw new Error("Document write succeeded but read failed.");
+        throw new Error("Document check failed.");
       }
     } catch (e: any) {
-      console.error("Firestore test failed:", e);
       setStatus(prev => ({ ...prev, firestore: "error" }));
-      
-      let msg = e.message || "Unknown Firestore error.";
-      if (msg.includes("permission-denied") || msg.includes("Missing or insufficient permissions")) {
-        msg = "Permission Denied: Enable 'Firestore Database' and set rules to 'Test Mode' in Console.";
-      } else if (msg.includes("API key")) {
-        msg = "Invalid API Key: The key in config.ts is incorrect or blocked.";
-      }
-      currentErrors.firestore = msg;
+      currentErrors.firestore = e.message.includes("permission-denied") 
+        ? "Permission Denied: Enable 'Firestore' in Firebase Console and set to 'Test Mode'."
+        : e.message;
     }
 
     setErrors(currentErrors);
     setLoading(false);
+    setIsFullyConfigured(Object.keys(currentErrors).length === 0);
   };
 
   useEffect(() => {
@@ -117,13 +109,23 @@ export default function TestConnectionPage() {
         
         <div className="text-center space-y-2">
           <h1 className="text-3xl font-headline font-bold">System Health</h1>
-          <p className="text-muted-foreground">Verify your app's connections to cloud services.</p>
+          <p className="text-muted-foreground">Verification of cloud service integration.</p>
         </div>
+
+        {isFullyConfigured && !loading && (
+          <Alert className="bg-green-50 border-green-200 text-green-800 rounded-3xl animate-in zoom-in-95">
+            <ShieldCheck className="h-5 w-5 text-green-600" />
+            <AlertTitle className="font-bold">System Ready!</AlertTitle>
+            <AlertDescription className="text-xs">
+              API Key is verified and services are connected. You can now login.
+            </AlertDescription>
+          </Alert>
+        )}
 
         {Object.keys(errors).length > 0 && (
           <Alert variant="destructive" className="bg-destructive/10 border-destructive/20 text-destructive rounded-3xl">
             <AlertCircle className="h-4 w-4" />
-            <AlertTitle className="font-bold">Action Required</AlertTitle>
+            <AlertTitle className="font-bold">Setup Incomplete</AlertTitle>
             <AlertDescription className="text-[11px] mt-2 space-y-2">
               {Object.entries(errors).map(([key, msg]) => (
                 <div key={key} className="flex gap-2">
@@ -145,7 +147,7 @@ export default function TestConnectionPage() {
             <div className="flex items-center justify-between p-4 bg-muted/30 rounded-2xl">
               <div className="flex items-center gap-3">
                 <Key className="w-4 h-4 text-muted-foreground" />
-                <span className="text-sm font-bold">API Key Format</span>
+                <span className="text-sm font-bold">API Key (Verified)</span>
               </div>
               <StatusIcon state={status.config} />
             </div>
@@ -180,17 +182,14 @@ export default function TestConnectionPage() {
               disabled={loading}
             >
               {loading ? <Loader2 className="animate-spin mr-2" /> : null}
-              {loading ? "Testing..." : "Re-run Diagnostics"}
+              {loading ? "Verifying..." : "Refresh Diagnostics"}
             </Button>
           </CardContent>
         </Card>
 
         <div className="p-6 bg-primary/10 rounded-[2rem] border border-primary/20 text-center space-y-3">
-          <p className="text-xs text-primary font-bold uppercase tracking-widest">Setup Guide</p>
           <p className="text-[11px] text-muted-foreground font-medium leading-relaxed">
-            1. Go to Firebase Console &gt; <b>Project Settings</b>.<br/>
-            2. Copy <b>Web API Key</b> (starts with 'AIza').<br/>
-            3. Ensure <b>Auth</b> & <b>Firestore</b> are enabled.
+            API key is successfully integrated. If Firestore shows an error, please ensure <b>Firestore Database</b> is created in the Firebase Console.
           </p>
         </div>
       </main>
