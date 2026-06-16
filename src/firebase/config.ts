@@ -4,12 +4,12 @@
  * 
  * 🗝️ FINAL STEP BEFORE LIVE:
  * 1. Go to: https://console.firebase.google.com/project/videomaster-ai/settings/general/
- * 2. Scroll down to 'Your apps' section.
- * 3. Copy the 'apiKey' value.
- * 4. Paste it below replacing 'YOUR_REAL_API_KEY_HERE'.
+ * 2. Copy the 'Web API Key' value.
+ * 3. It MUST start with 'AIza...'.
+ * 4. Replace the 'apiKey' value below with your real key.
  */
 export const firebaseConfig = {
-  apiKey: "AIzaSyCz-pMZtY7_OVr9IyyHiIqwPWnpP3Lb21w", // Paste your ABCD... key here
+  apiKey: "YOUR_REAL_API_KEY_HERE", // Example: "AIzaSy..."
   authDomain: "studio-9489287013-59986.firebaseapp.com",
   projectId: "studio-9489287013-59986",
   storageBucket: "studio-9489287013-59986.firebasestorage.app",

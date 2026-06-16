@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -6,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Video, Chrome, ArrowLeft, Sparkles } from "lucide-react";
+import { Video, Chrome, ArrowLeft, Sparkles, AlertTriangle } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
@@ -53,12 +54,17 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center p-6 bg-background hero-gradient">
-      <Link href="/" className="fixed top-8 left-8 flex items-center gap-2 font-bold text-muted-foreground hover:text-primary transition-colors group">
-        <div className="p-2 bg-white rounded-xl shadow-sm group-hover:shadow-md transition-all">
-          <ArrowLeft className="w-4 h-4" />
-        </div>
-        Back Home
-      </Link>
+      <div className="fixed top-8 left-8 flex items-center gap-4">
+        <Link href="/" className="flex items-center gap-2 font-bold text-muted-foreground hover:text-primary transition-colors group">
+          <div className="p-2 bg-white rounded-xl shadow-sm group-hover:shadow-md transition-all">
+            <ArrowLeft className="w-4 h-4" />
+          </div>
+          Back Home
+        </Link>
+        <Link href="/test-connection" className="flex items-center gap-2 px-4 py-2 bg-yellow-50 rounded-full border border-yellow-200 text-yellow-700 text-xs font-bold hover:bg-yellow-100 transition-all">
+          <AlertTriangle className="w-3 h-3" /> System Status
+        </Link>
+      </div>
 
       <Card className="w-full max-w-md border-white bg-white/80 backdrop-blur-xl shadow-2xl rounded-[3rem] overflow-hidden animate-in fade-in slide-in-from-bottom-10 duration-1000 blue-glow">
         <div className="h-2 bg-primary w-full" />
