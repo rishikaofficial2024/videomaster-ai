@@ -1,3 +1,4 @@
+
 "use client";
 
 import { Navbar } from "@/components/navbar";
@@ -69,7 +70,7 @@ export default function Dashboard() {
             <p className="text-muted-foreground font-medium text-xl">Your AI-powered video studio is waiting for magic.</p>
           </div>
           
-          <div className="flex items-center gap-4 bg-white/80 backdrop-blur-xl p-3 rounded-3xl border shadow-xl blue-glow">
+          <div className="flex items-center gap-4 bg-background/80 backdrop-blur-xl p-3 rounded-3xl border shadow-xl blue-glow">
              <div className="flex flex-col px-6 border-r border-primary/10">
                 <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-1">AI Credits</span>
                 <div className="flex items-center gap-2">
@@ -91,7 +92,7 @@ export default function Dashboard() {
             { icon: Sparkles, label: "Magic SEO", href: "/editor?tool=optimization", color: "text-indigo-600 bg-indigo-50", desc: "Viral Optimizer" },
             { icon: Crown, label: "Go Pro", href: "/premium", color: "text-primary bg-primary/10", desc: "Unlimited Credits" },
           ].map((item, i) => (
-            <Link key={i} href={item.href} className="group p-8 rounded-[2.5rem] bg-white border-2 border-white hover:border-primary/20 shadow-xl hover:shadow-2xl transition-all duration-500 blue-glow">
+            <Link key={i} href={item.href} className="group p-8 rounded-[2.5rem] bg-background border-2 border-primary/5 hover:border-primary/20 shadow-xl hover:shadow-2xl transition-all duration-500 blue-glow">
               <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-6 transition-transform group-hover:scale-110 group-hover:rotate-3 ${item.color} shadow-sm`}>
                 <item.icon className="w-7 h-7" />
               </div>
@@ -108,19 +109,19 @@ export default function Dashboard() {
                <h2 className="text-3xl font-headline font-bold tracking-tight">Recent Projects</h2>
                <p className="text-muted-foreground font-medium">Continue where you left off</p>
             </div>
-            <Link href="/projects" className="text-sm font-bold text-primary flex items-center hover:underline bg-white px-4 py-2 rounded-full border shadow-sm">
+            <Link href="/projects" className="text-sm font-bold text-primary flex items-center hover:underline bg-background px-4 py-2 rounded-full border shadow-sm">
               All Projects <ChevronRight className="ml-1 w-4 h-4" />
             </Link>
           </div>
           
           {projectsLoading ? (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {[1, 2, 3].map(i => <div key={i} className="h-64 bg-white animate-pulse rounded-[2.5rem] border" />)}
+              {[1, 2, 3].map(i => <div key={i} className="h-64 bg-background animate-pulse rounded-[2.5rem] border" />)}
             </div>
           ) : projects && projects.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {projects.map((project: any) => (
-                <Card key={project.id} className="group overflow-hidden rounded-[2.5rem] border-white bg-white shadow-xl hover:shadow-2xl transition-all duration-500 blue-glow">
+                <Card key={project.id} className="group overflow-hidden rounded-[2.5rem] border-primary/5 bg-background shadow-xl hover:shadow-2xl transition-all duration-500 blue-glow">
                   <Link href={`/editor?id=${project.id}`}>
                     <div className="aspect-video relative overflow-hidden">
                       <Image
@@ -130,7 +131,7 @@ export default function Dashboard() {
                         className="object-cover transition-transform duration-700 group-hover:scale-110"
                       />
                       <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
-                        <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-2xl transition-transform active:scale-90">
+                        <div className="w-16 h-16 bg-background rounded-full flex items-center justify-center shadow-2xl transition-transform active:scale-90">
                           <Play className="w-8 h-8 text-primary fill-current ml-1" />
                         </div>
                       </div>
@@ -149,8 +150,8 @@ export default function Dashboard() {
               ))}
             </div>
           ) : (
-            <div className="bg-white/40 backdrop-blur-xl border-4 border-dashed border-white rounded-[4rem] p-24 text-center blue-glow">
-              <div className="w-24 h-24 bg-white rounded-[2rem] flex items-center justify-center mx-auto mb-8 shadow-xl">
+            <div className="bg-background/40 backdrop-blur-xl border-4 border-dashed border-primary/20 rounded-[4rem] p-24 text-center blue-glow">
+              <div className="w-24 h-24 bg-background rounded-[2rem] flex items-center justify-center mx-auto mb-8 shadow-xl">
                 <Video className="w-12 h-12 text-primary opacity-30" />
               </div>
               <h3 className="text-2xl font-bold mb-3">Your Studio is Empty</h3>
@@ -162,20 +163,20 @@ export default function Dashboard() {
           )}
         </section>
 
-        {/* Pro Templates */}
+        {/* Inpiration Gallery */}
         <section className="space-y-8">
           <div className="flex justify-between items-end">
             <div className="space-y-1">
                <h2 className="text-3xl font-headline font-bold tracking-tight">Inspiration Gallery</h2>
                <p className="text-muted-foreground font-medium">Starter kits for viral content</p>
             </div>
-            <Link href="/templates" className="text-sm font-bold text-primary flex items-center hover:underline bg-white px-4 py-2 rounded-full border shadow-sm">
+            <Link href="/templates" className="text-sm font-bold text-primary flex items-center hover:underline bg-background px-4 py-2 rounded-full border shadow-sm">
               Explore Library <ChevronRight className="ml-1 w-4 h-4" />
             </Link>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {templates.slice(0, 4).map((template) => (
-              <Link key={template.id} href={`/editor?templateId=${template.id}`} className="relative aspect-[9/16] rounded-[2.5rem] overflow-hidden group shadow-xl hover:shadow-2xl transition-all border-4 border-white">
+              <Link key={template.id} href={`/editor?templateId=${template.id}`} className="relative aspect-[9/16] rounded-[2.5rem] overflow-hidden group shadow-xl hover:shadow-2xl transition-all border-4 border-background">
                 <Image
                   src={template.imageUrl}
                   alt={template.description}

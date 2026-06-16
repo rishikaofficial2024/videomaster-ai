@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect, useMemo, useRef } from "react";
@@ -406,11 +407,11 @@ export default function EditorPage() {
         </div>
       </div>
 
-      <div className="flex-1 flex flex-col lg:flex-row overflow-hidden bg-[#fafafa]">
+      <div className="flex-1 flex flex-col lg:flex-row overflow-hidden bg-background">
         {/* Main Preview Area */}
         <div className="flex-1 flex flex-col relative group overflow-hidden p-6">
           <div className="flex-1 relative flex items-center justify-center">
-            <div className="aspect-video w-full max-w-5xl bg-black rounded-[2.5rem] shadow-2xl relative flex items-center justify-center cursor-pointer overflow-hidden border-8 border-white" onClick={handleFileClick}>
+            <div className="aspect-video w-full max-w-5xl bg-black rounded-[2.5rem] shadow-2xl relative flex items-center justify-center cursor-pointer overflow-hidden border-8 border-background" onClick={handleFileClick}>
                <input type="file" ref={fileInputRef} className="hidden" accept="video/*" onChange={handleFileChange} />
                {!selectedVideoData ? (
                  <div className="flex flex-col items-center gap-6 text-white/30 group-hover:text-white/50 transition-colors">
@@ -455,7 +456,7 @@ export default function EditorPage() {
         </div>
 
         {/* Sidebar Tools */}
-        <div className="w-full lg:w-[400px] bg-white border-l overflow-hidden flex flex-col shadow-2xl">
+        <div className="w-full lg:w-[400px] bg-background border-l overflow-hidden flex flex-col shadow-2xl">
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full flex-1 flex flex-col">
             <TabsList className="w-full h-16 rounded-none grid grid-cols-3 bg-muted/30 p-2 gap-2">
               <TabsTrigger value="tools" className="rounded-xl data-[state=active]:shadow-md font-bold">Studio</TabsTrigger>
@@ -474,8 +475,8 @@ export default function EditorPage() {
                     { icon: Type, label: "Text" },
                     { icon: Music, label: "Music" }
                   ].map((tool, i) => (
-                    <Button key={i} variant="outline" className="h-28 flex-col gap-3 rounded-3xl border-muted bg-[#fcfcfc] hover:bg-white hover:border-primary/30 transition-all hover:shadow-lg">
-                      <div className="p-3 bg-muted/50 rounded-2xl group-hover:bg-primary/10 transition-colors">
+                    <Button key={i} variant="outline" className="h-28 flex-col gap-3 rounded-3xl border-primary/10 bg-background hover:bg-primary/5 hover:border-primary/30 transition-all hover:shadow-lg">
+                      <div className="p-3 bg-primary/5 rounded-2xl group-hover:bg-primary/10 transition-colors">
                         <tool.icon className="w-6 h-6 text-foreground group-hover:text-primary" />
                       </div>
                       <span className="font-bold text-sm">{tool.label}</span>
@@ -498,7 +499,7 @@ export default function EditorPage() {
                       placeholder="Describe your cinematic vision..." 
                       value={videoPrompt}
                       onChange={(e) => setVideoPrompt(e.target.value)}
-                      className="w-full bg-white border rounded-2xl p-4 text-sm h-24 focus:ring-2 focus:ring-primary focus:outline-none transition-all placeholder:text-muted-foreground"
+                      className="w-full bg-background border rounded-2xl p-4 text-sm h-24 focus:ring-2 focus:ring-primary focus:outline-none transition-all placeholder:text-muted-foreground"
                     />
                     <Button className="w-full h-12 rounded-xl font-bold gap-2" size="sm" onClick={handleMagicVideo} disabled={isProcessing}>
                       Generate AI Video (10c)
@@ -517,7 +518,7 @@ export default function EditorPage() {
                       placeholder="Paste script for neural voice narration..." 
                       value={voiceoverText}
                       onChange={(e) => setVoiceoverText(e.target.value)}
-                      className="w-full bg-white border rounded-2xl p-4 text-sm h-24 focus:ring-2 focus:ring-accent focus:outline-none transition-all placeholder:text-muted-foreground"
+                      className="w-full bg-background border rounded-2xl p-4 text-sm h-24 focus:ring-2 focus:ring-accent focus:outline-none transition-all placeholder:text-muted-foreground"
                     />
                     <Button variant="outline" className="w-full h-12 rounded-xl border-accent text-accent hover:bg-accent hover:text-white font-bold" size="sm" onClick={handleVoiceover} disabled={isProcessing}>
                       Create Voiceover (4c)
@@ -527,7 +528,7 @@ export default function EditorPage() {
                   <div className="grid grid-cols-1 gap-3">
                     <Button 
                       variant="outline" 
-                      className="w-full h-16 justify-start gap-4 px-5 rounded-2xl border-muted bg-[#fcfcfc] hover:bg-white hover:border-primary/30 transition-all"
+                      className="w-full h-16 justify-start gap-4 px-5 rounded-2xl border-primary/10 bg-background hover:bg-primary/5 hover:border-primary/30 transition-all"
                       onClick={handleAutoCaptions}
                       disabled={isProcessing}
                     >
@@ -542,7 +543,7 @@ export default function EditorPage() {
                     
                     <Button 
                       variant="outline" 
-                      className="w-full h-16 justify-start gap-4 px-5 rounded-2xl border-muted bg-[#fcfcfc] hover:bg-white hover:border-primary/30 transition-all"
+                      className="w-full h-16 justify-start gap-4 px-5 rounded-2xl border-primary/10 bg-background hover:bg-primary/5 hover:border-primary/30 transition-all"
                       onClick={handleAIAnalyze}
                       disabled={isProcessing}
                     >
@@ -589,7 +590,7 @@ export default function EditorPage() {
 
       {/* Fullscreen Overlay Loader */}
       {isProcessing && (
-        <div className="fixed inset-0 z-[100] bg-white/95 backdrop-blur-sm flex items-center justify-center p-8">
+        <div className="fixed inset-0 z-[100] bg-background/95 backdrop-blur-sm flex items-center justify-center p-8">
            <div className="max-w-md w-full text-center space-y-8 animate-in fade-in zoom-in-95 duration-500">
              <div className="relative w-24 h-24 mx-auto">
                 <Loader2 className="w-24 h-24 animate-spin text-primary opacity-20" />

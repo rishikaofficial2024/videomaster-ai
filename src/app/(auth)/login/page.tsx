@@ -56,7 +56,7 @@ export default function LoginPage() {
     <div className="min-h-screen flex items-center justify-center p-6 bg-background hero-gradient">
       <div className="fixed top-8 left-8 flex items-center gap-4">
         <Link href="/" className="flex items-center gap-2 font-bold text-muted-foreground hover:text-primary transition-colors group">
-          <div className="p-2 bg-white rounded-xl shadow-sm group-hover:shadow-md transition-all">
+          <div className="p-2 bg-background rounded-xl shadow-sm group-hover:shadow-md transition-all border">
             <ArrowLeft className="w-4 h-4" />
           </div>
           Back Home
@@ -66,7 +66,7 @@ export default function LoginPage() {
         </Link>
       </div>
 
-      <Card className="w-full max-w-md border-white bg-white/80 backdrop-blur-xl shadow-2xl rounded-[3rem] overflow-hidden animate-in fade-in slide-in-from-bottom-10 duration-1000 blue-glow">
+      <Card className="w-full max-w-md border-primary/10 bg-background/80 backdrop-blur-xl shadow-2xl rounded-[3rem] overflow-hidden animate-in fade-in slide-in-from-bottom-10 duration-1000 blue-glow">
         <div className="h-2 bg-primary w-full" />
         <CardHeader className="space-y-2 text-center pt-12 pb-8">
           <div className="flex justify-center mb-6">
@@ -88,7 +88,7 @@ export default function LoginPage() {
                 type="email" 
                 placeholder="name@example.com" 
                 required 
-                className="h-14 rounded-2xl bg-white border-white shadow-sm focus:ring-4 focus:ring-primary/10 transition-all text-lg" 
+                className="h-14 rounded-2xl bg-background border-primary/10 shadow-sm focus:ring-4 focus:ring-primary/10 transition-all text-lg" 
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
@@ -102,7 +102,7 @@ export default function LoginPage() {
                 id="password" 
                 type="password" 
                 required 
-                className="h-14 rounded-2xl bg-white border-white shadow-sm focus:ring-4 focus:ring-primary/10 transition-all text-lg" 
+                className="h-14 rounded-2xl bg-background border-primary/10 shadow-sm focus:ring-4 focus:ring-primary/10 transition-all text-lg" 
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
@@ -117,11 +117,11 @@ export default function LoginPage() {
               <span className="w-full border-t border-primary/10" />
             </div>
             <div className="relative flex justify-center text-[10px] uppercase font-bold tracking-widest">
-              <span className="bg-white/10 px-4 text-muted-foreground backdrop-blur-md rounded-full">Or Connect Via</span>
+              <span className="bg-background/10 px-4 text-muted-foreground backdrop-blur-md rounded-full">Or Connect Via</span>
             </div>
           </div>
           
-          <Button variant="outline" className="w-full h-16 rounded-2xl gap-4 font-bold border-white bg-white hover:bg-muted/30 transition-all shadow-sm" onClick={handleGoogleLogin}>
+          <Button variant="outline" className="w-full h-16 rounded-2xl gap-4 font-bold border-primary/10 bg-background hover:bg-primary/5 transition-all shadow-sm" onClick={handleGoogleLogin}>
             <Chrome className="w-6 h-6 text-red-500" />
             Google Workspace
           </Button>
