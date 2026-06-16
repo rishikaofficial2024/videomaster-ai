@@ -1,28 +1,28 @@
 
-# 🛠️ VideoMaster AI - Problem Solver Guide
+# 🛠️ VideoMaster AI - Live Setup Guide (Hindi)
 
-Agar aapka app "Connecting..." par atka hai ya error de raha hai, toh ye check karein:
+App ko chalane ke liye ye 3 kaam turant karein:
 
-### 1. Firebase API Key ki Problem
-- **Kahan milegi?**: Firebase Console -> Project Settings -> General -> Your Apps.
-- **Kahan dalni hai?**: `src/firebase/config.ts` file mein.
+### 1. API Key Kahan se layein?
+- [Firebase Console](https://console.firebase.google.com/) par jayein.
+- **Project Settings** (upar gear icon ⚙️) mein jayein.
+- Niche scroll karein aur **Web API Key** copy karein.
+- Is key ko `src/firebase/config.ts` file mein `apiKey` ki jagah daal dein.
 
-### 2. Login Nahi Ho Raha?
-- Firebase Console mein jayein.
-- **Build > Authentication** par click karein.
-- **Sign-in method** tab mein jayein aur **Email/Password** ko "Enable" karein.
+### 2. Login chalu karein (Authentication)
+- Firebase Console mein left side mein **Authentication** par click karein.
+- **Get Started** dabayein.
+- **Email/Password** ko "Enable" karke save karein.
+- Iske bina user login nahi kar payega.
 
-### 3. Data Save Nahi Ho Raha?
-- Firebase Console mein jayein.
-- **Build > Firestore Database** par click karein.
-- **Create Database** par click karke use "Test Mode" mein shuru karein.
+### 3. Database chalu karein (Firestore)
+- Firebase Console mein **Firestore Database** par click karein.
+- **Create Database** par click karein.
+- **Start in Test Mode** select karein taaki shuruat mein koi error na aaye.
+- Iske bina app ka data (projects, profile) save nahi hoga.
 
-### 4. AI Features (Captions/Video Gen) Kaam Nahi Kar Rahe?
-- `.env` file mein apni **Gemini API Key** dalein.
-- Key yahan se milegi: [aistudio.google.com/app/apikey](https://aistudio.google.com/app/apikey)
+**AI Features ke liye:**
+- [aistudio.google.com](https://aistudio.google.com/app/apikey) se Gemini key lein.
+- Use apni `.env` file mein `GEMINI_API_KEY=Yahan_Apni_Key` karke likh dein.
 
-### 5. APK Kaise Banayein?
-- Terminal mein ye command chalayein: `npm run mobile:build-apk`
-- Isse Android Studio khulega jahan se aap APK nikal sakte hain.
-
-**Zaruri**: Jab tak aap Firebase Console mein Authentication aur Firestore Database ko "Enable" nahi karenge, tab tak app sahi se kaam nahi karega.
+Ab aapka app puri tarah se kaam karne ke liye taiyar hai!
