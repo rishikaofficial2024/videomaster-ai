@@ -1,3 +1,4 @@
+
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Video, ArrowRight, Sparkles, Wand2, Smartphone, Download, Apple, Play, Zap } from "lucide-react";
@@ -8,7 +9,7 @@ export default function LandingPage() {
   const heroImg = PlaceHolderImages.find(img => img.id === "hero-bg");
 
   return (
-    <div className="flex flex-col min-h-screen hero-gradient">
+    <div className="flex flex-col min-h-screen hero-gradient bg-background">
       <header className="px-6 lg:px-12 h-20 flex items-center border-b fixed top-0 w-full bg-background/80 backdrop-blur-xl z-50">
         <Link className="flex items-center justify-center gap-3" href="/">
           <div className="bg-primary p-1.5 rounded-xl shadow-lg shadow-primary/30">
@@ -43,7 +44,7 @@ export default function LandingPage() {
                 <Button asChild size="lg" className="h-16 px-12 rounded-2xl text-lg font-bold shadow-2xl shadow-primary/30 hover:scale-105 transition-all">
                   <Link href="/signup">Start Creating Now <ArrowRight className="ml-2 w-6 h-6" /></Link>
                 </Button>
-                <Button variant="outline" size="lg" className="h-16 px-12 rounded-2xl text-lg font-bold bg-white/50 backdrop-blur-sm border-white/40 hover:bg-white/80 transition-all">
+                <Button variant="outline" size="lg" className="h-16 px-12 rounded-2xl text-lg font-bold bg-background/50 backdrop-blur-sm border-primary/10 hover:bg-primary/5 transition-all">
                   <Play className="mr-2 w-5 h-5 fill-primary text-primary" /> Watch Demo
                 </Button>
               </div>
@@ -51,7 +52,7 @@ export default function LandingPage() {
 
             <div className="relative max-w-6xl mx-auto">
               <div className="absolute -inset-10 bg-primary/10 rounded-[4rem] blur-[120px] opacity-60"></div>
-              <div className="relative rounded-[3rem] overflow-hidden border-8 border-white shadow-2xl blue-glow">
+              <div className="relative rounded-[3rem] overflow-hidden border-8 border-background shadow-2xl blue-glow bg-background">
                 {heroImg && (
                   <Image
                     alt="AI Video Editor Preview"
@@ -61,14 +62,14 @@ export default function LandingPage() {
                     width={1280}
                   />
                 )}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
-                <div className="absolute bottom-10 left-10 p-4 bg-white/20 backdrop-blur-md rounded-2xl border border-white/30 hidden md:block">
+                <div className="absolute inset-0 bg-gradient-to-t from-primary/20 via-transparent to-transparent"></div>
+                <div className="absolute bottom-10 left-10 p-4 bg-background/40 backdrop-blur-md rounded-2xl border border-primary/20 hidden md:block">
                    <div className="flex items-center gap-3">
                       <div className="w-12 h-12 bg-primary rounded-xl flex items-center justify-center">
                         <Zap className="text-white w-6 h-6" />
                       </div>
-                      <div className="text-white">
-                        <p className="text-xs font-bold uppercase tracking-widest">AI Status</p>
+                      <div className="text-foreground">
+                        <p className="text-xs font-bold uppercase tracking-widest opacity-70">AI Status</p>
                         <p className="text-sm font-bold">Optimizing for Viral Growth...</p>
                       </div>
                    </div>
@@ -78,7 +79,7 @@ export default function LandingPage() {
           </div>
         </section>
 
-        <section className="w-full py-24 bg-white/60 backdrop-blur-md">
+        <section className="w-full py-24 bg-background/40 backdrop-blur-md">
           <div className="container px-6 mx-auto">
              <div className="text-center mb-16 space-y-4">
                 <h2 className="text-4xl font-bold font-headline">Built for the Modern Creator</h2>
@@ -90,22 +91,22 @@ export default function LandingPage() {
                   icon: Wand2, 
                   title: "AI Video Generation", 
                   desc: "Create 4K cinematic clips from simple text prompts using Google's Veo 2.0 reasoning engine.",
-                  color: "bg-blue-500/10 text-blue-600"
+                  color: "bg-primary/10 text-primary"
                 },
                 { 
                   icon: Zap, 
                   title: "Magic SEO & Discovery", 
                   desc: "Automatically generate viral-ready hashtags, titles, and descriptions tailored specifically for your target audience.",
-                  color: "bg-cyan-500/10 text-cyan-600"
+                  color: "bg-primary/10 text-primary"
                 },
                 { 
                   icon: Smartphone, 
                   title: "Cloud Studio Sync", 
                   desc: "Edit seamlessly across Web, Android, and iOS. Your projects are always safe and accessible in the cloud.",
-                  color: "bg-indigo-500/10 text-indigo-600"
+                  color: "bg-primary/10 text-primary"
                 }
               ].map((feature, i) => (
-                <div key={i} className="group p-10 rounded-[2.5rem] border-2 border-white bg-white/40 hover:bg-white hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 blue-glow">
+                <div key={i} className="group p-10 rounded-[2.5rem] border-2 border-primary/5 bg-background/50 hover:bg-background hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 blue-glow">
                   <div className={`p-5 rounded-2xl w-fit mb-8 ${feature.color} shadow-sm group-hover:scale-110 transition-transform`}>
                     <feature.icon className="w-8 h-8" />
                   </div>
@@ -118,7 +119,7 @@ export default function LandingPage() {
         </section>
       </main>
 
-      <footer className="py-20 px-6 border-t bg-white/80 backdrop-blur-xl">
+      <footer className="py-20 px-6 border-t bg-background/80 backdrop-blur-xl">
         <div className="container mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-start gap-12 mb-16">
             <div className="space-y-6">
