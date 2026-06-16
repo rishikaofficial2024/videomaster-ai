@@ -9,7 +9,7 @@
  * 4. Replace the 'apiKey' value below with your real key.
  */
 export const firebaseConfig = {
-  apiKey: "YOUR_REAL_API_KEY_HERE", // Example: "AIzaSy..."
+  apiKey: "AIzaSyCz-pMZtY7_OVr9IyyHiIqwPWnpP3Lb21w",
   authDomain: "studio-9489287013-59986.firebaseapp.com",
   projectId: "studio-9489287013-59986",
   storageBucket: "studio-9489287013-59986.firebasestorage.app",
