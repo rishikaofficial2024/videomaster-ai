@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, useEffect } from "react";
@@ -188,7 +187,7 @@ export default function TestConnectionPage() {
         <div className="p-6 bg-primary/10 rounded-[2rem] border border-primary/20 text-center space-y-3">
           <p className="text-xs text-primary font-bold uppercase tracking-widest">Setup Guide</p>
           <p className="text-[11px] text-muted-foreground font-medium leading-relaxed">
-            1. Go to Firebase Console > <b>Project Settings</b>.<br/>
+            1. Go to Firebase Console &gt; <b>Project Settings</b>.<br/>
             2. Copy <b>Web API Key</b> (starts with 'AIza').<br/>
             3. Ensure <b>Auth</b> & <b>Firestore</b> are enabled.
           </p>
