@@ -1,7 +1,7 @@
 
 'use server';
 /**
- * @fileOverview A Genkit flow for designing cinematic video thumbnails using Imagen.
+ * @fileOverview A Genkit flow for designing cinematic video thumbnails using Imagen 4.
  *
  * - generateAiThumbnail - Function to create thumbnail images from text descriptions.
  */
@@ -31,8 +31,8 @@ const thumbnailDesignerFlow = ai.defineFlow(
   },
   async (input) => {
     const { media } = await ai.generate({
-      model: googleAI.model('imagen-3.0-fast-generate-001'),
-      prompt: `Cinematic high-quality professional video thumbnail about: ${input.prompt}. Eye-catching, high contrast, 4k resolution, professional photography style.`,
+      model: googleAI.model('imagen-4.0-fast-generate-001'),
+      prompt: `Cinematic high-quality professional video thumbnail about: ${input.prompt}. Eye-catching, high contrast, 4k resolution, professional photography style, vibrant colors.`,
     });
 
     if (!media?.url) {

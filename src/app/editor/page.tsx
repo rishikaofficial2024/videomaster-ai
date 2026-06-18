@@ -20,7 +20,7 @@ import { generateAiVoiceover } from "@/ai/flows/ai-voiceover-generation-flow";
 import { generateAiScript } from "@/ai/flows/ai-script-writer-flow";
 import { generateAiThumbnail } from "@/ai/flows/ai-thumbnail-designer-flow";
 import { generateAutoCaptionsAndSubtitles } from "@/ai/flows/ai-auto-caption-and-subtitle-generation-flow";
-import Link from "next/link";
+import Link from "next/navigation";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useUser, useFirestore, useDoc, useMemoFirebase } from "@/firebase";
 import { doc, setDoc, updateDoc, serverTimestamp, increment } from "firebase/firestore";
@@ -91,11 +91,13 @@ export default function EditorPage() {
       setSubtitles(project.subtitles || null);
       setMediaAssets(project.mediaAssets || []);
       setAiScript(project.aiNotes ? { script: project.aiNotes } : null);
-      setSeoData({
-        title: project.optimizedTitle,
-        description: project.optimizedDescription,
-        hashtags: project.hashtags
-      });
+      if (project.optimizedTitle) {
+        setSeoData({
+          title: project.optimizedTitle,
+          description: project.optimizedDescription,
+          hashtags: project.hashtags
+        });
+      }
       setIsNewProject(false);
     }
   }, [project]);
@@ -114,7 +116,7 @@ export default function EditorPage() {
         variant: "destructive",
         title: "Credits Required",
         description: `This action costs ${cost} credits. Please top up your account.`,
-        action: <Button variant="secondary" size="sm" asChild><Link href="/premium">Upgrade Now</Link></Button>
+        action: <Button variant="secondary" size="sm" onClick={() => router.push("/premium")}>Upgrade Now</Button>
       });
       return false;
     }
@@ -188,7 +190,7 @@ export default function EditorPage() {
       handleSave({ aiNotes: result.script });
       toast({ title: "Success!", description: "Professional script generated." });
     } catch (e: any) {
-      toast({ variant: "destructive", title: "AI Error", description: "Please check your Gemini API key." });
+      toast({ variant: "destructive", title: "AI Error", description: "Failed to generate script. Check your API key." });
     } finally {
       setIsProcessing(false);
     }
@@ -205,7 +207,7 @@ export default function EditorPage() {
       handleSave({ thumbnailUrl: result.thumbnailDataUri });
       toast({ title: "Masterpiece Ready", description: "Your thumbnail has been designed." });
     } catch (e: any) {
-      toast({ variant: "destructive", title: "Design Error", description: "AI service failed. Check quota." });
+      toast({ variant: "destructive", title: "Design Error", description: "AI service failed. Check quota or safety filters." });
     } finally {
       setIsProcessing(false);
     }
@@ -222,7 +224,7 @@ export default function EditorPage() {
       handleSave({ videoDataUri: result.videoDataUri });
       toast({ title: "Clip Rendered", description: "Video successfully added." });
     } catch (e: any) {
-      toast({ variant: "destructive", title: "Rendering Failed", description: "AI service timed out." });
+      toast({ variant: "destructive", title: "Rendering Failed", description: "AI video generation is currently busy. Try again soon." });
     } finally {
       setIsProcessing(false);
     }
@@ -240,6 +242,28 @@ export default function EditorPage() {
       toast({ title: "Audio Ready", description: "Voiceover track generated." });
     } catch (e: any) {
       toast({ variant: "destructive", title: "Audio Error", description: "Failed to synthesize voice." });
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  const handleOptimizeContent = async () => {
+    const transcript = aiScript?.script || voiceText || "General video content";
+    if (!checkCredits(2)) return;
+    setIsProcessing(true);
+    setProcessingMessage("Analyzing content for viral SEO...");
+    try {
+      const result = await aiVideoContentOptimization({ videoTranscript: transcript });
+      setSeoData(result);
+      deductCredits(2);
+      handleSave({ 
+        optimizedTitle: result.title,
+        optimizedDescription: result.description,
+        hashtags: result.hashtags
+      });
+      toast({ title: "SEO Optimized", description: "Viral tags and titles added." });
+    } catch (e: any) {
+      toast({ variant: "destructive", title: "SEO Error", description: "Optimization engine failed." });
     } finally {
       setIsProcessing(false);
     }
