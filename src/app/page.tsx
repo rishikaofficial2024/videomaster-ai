@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
+import { cn } from "@/lib/utils";
 
 export default function LandingPage() {
   const heroImg = PlaceHolderImages.find(img => img.id === "hero-bg");
