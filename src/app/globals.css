@@ -89,6 +89,16 @@
   100% { transform: translateY(0px); }
 }
 
+@keyframes progress {
+  0% { width: 0%; }
+  50% { width: 70%; }
+  100% { width: 100%; }
+}
+
+.animate-progress {
+  animation: progress 10s linear infinite;
+}
+
 /* Skeleton override for dark theme */
 .animate-pulse {
   @apply bg-white/5;
