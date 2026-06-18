@@ -5,25 +5,15 @@ import { useState, useEffect, useMemo, useRef } from "react";
 import { Navbar } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Slider } from "@/components/ui/slider";
 import { 
   Play, Pause, SkipBack, SkipForward, Scissors, 
-  Music, Wand2, Download, Crop, Filter, Gauge, 
-  Type, Sparkles, ChevronLeft, Loader2, Video,
-  Zap, Captions, Mic, Volume2, Image as ImageIcon,
-  PenTool, Layout, Layers, Settings2, Share2,
-  Maximize2, VolumeX, List, History, MousePointer2,
-  CheckCircle2, AlertCircle
+  Music, Wand2, Download, Sparkles, ChevronLeft, Loader2, Video,
+  Zap, Volume2, Image as ImageIcon,
+  PenTool, Layers, MousePointer2,
+  Coins, Plus, RefreshCw, AlertCircle
 } from "lucide-react";
-import { 
-  Accordion, 
-  AccordionContent, 
-  AccordionItem, 
-  AccordionTrigger 
-} from "@/components/ui/accordion";
 import { useToast } from "@/hooks/use-toast";
 import { aiVideoContentOptimization } from "@/ai/flows/ai-video-content-optimization-flow";
-import { generateAutoCaptionsAndSubtitles } from "@/ai/flows/ai-auto-caption-and-subtitle-generation-flow";
 import { generateAiVideo } from "@/ai/flows/ai-video-generation-flow";
 import { generateAiVoiceover } from "@/ai/flows/ai-voiceover-generation-flow";
 import { generateAiScript } from "@/ai/flows/ai-script-writer-flow";
@@ -40,36 +30,45 @@ import { cn } from "@/lib/utils";
 export default function EditorPage() {
   const searchParams = useSearchParams();
   const projectIdFromUrl = searchParams.get("id");
+  const toolFromUrl = searchParams.get("tool");
   const router = useRouter();
   const { user } = useUser();
   const db = useFirestore();
   const { toast } = useToast();
   const videoRef = useRef<HTMLVideoElement>(null);
+  const audioRef = useRef<HTMLAudioElement>(null);
 
   const [projectId, setProjectId] = useState<string | null>(projectIdFromUrl);
   const [isNewProject, setIsNewProject] = useState(!projectIdFromUrl);
   
-  const [title, setTitle] = useState("Untitled Project");
+  const [title, setTitle] = useState("New Masterpiece");
   const [isPlaying, setIsPlaying] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [processingMessage, setProcessingMessage] = useState("");
-  const [activeTab, setActiveTab] = useState("tools");
-  const [selectedVideoData, setSelectedVideoData] = useState<string | null>(null);
+  const [activeTool, setActiveTool] = useState("select");
+  const [activeInspectorTab, setActiveInspectorTab] = useState(toolFromUrl === "gen" ? "ai" : "ai");
   
-  // AI States
+  // Media States
+  const [videoData, setVideoData] = useState<string | null>(null);
+  const [audioData, setAudioData] = useState<string | null>(null);
+  const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null);
+  
+  // AI Input/Output States
   const [scriptTopic, setScriptTopic] = useState("");
-  const [generatedScript, setGeneratedScript] = useState<any>(null);
   const [thumbnailPrompt, setThumbnailPrompt] = useState("");
-  const [generatedThumbnail, setGeneratedThumbnail] = useState<string | null>(null);
-  const [subtitles, setSubtitles] = useState<string | null>(null);
-  const [optimizedMetadata, setOptimizedMetadata] = useState<any>(null);
+  const [videoPrompt, setVideoPrompt] = useState("");
+  const [voiceText, setVoiceText] = useState("");
+  
+  const [aiScript, setAiScript] = useState<any>(null);
+  const [aiMetadata, setAiMetadata] = useState<any>(null);
 
-  useEffect(() => {
-    if (!projectId && !projectIdFromUrl) {
-      const newId = "prj-" + Math.random().toString(36).substring(2, 9);
-      setProjectId(newId);
-    }
-  }, [projectId, projectIdFromUrl]);
+  // Load project if exists
+  const projectRef = useMemo(() => {
+    if (!user || !projectId) return null;
+    return doc(db, "users", user.uid, "projects", projectId);
+  }, [user, db, projectId]);
+
+  const { data: project } = useDoc(projectRef);
 
   const userProfileRef = useMemo(() => {
     if (!user) return null;
@@ -78,31 +77,31 @@ export default function EditorPage() {
 
   const { data: profile } = useDoc(userProfileRef);
 
-  const projectRef = useMemo(() => {
-    if (!user || !projectId) return null;
-    return doc(db, "users", user.uid, "projects", projectId);
-  }, [user, db, projectId]);
-
-  const { data: project } = useDoc(projectIdFromUrl ? projectRef : null);
-
   useEffect(() => {
     if (project) {
       setTitle(project.title || "Untitled Project");
-      setSelectedVideoData(project.videoDataUri || null);
-      setSubtitles(project.subtitles || null);
-      setGeneratedThumbnail(project.thumbnailUrl || null);
-      setGeneratedScript({ script: project.aiNotes } || null);
+      setVideoData(project.videoDataUri || null);
+      setThumbnailUrl(project.thumbnailUrl || null);
+      setAiScript(project.aiNotes ? { script: project.aiNotes } : null);
       setIsNewProject(false);
     }
   }, [project]);
+
+  // Project ID Generation
+  useEffect(() => {
+    if (!projectId && !projectIdFromUrl) {
+      const newId = "prj-" + Math.random().toString(36).substring(2, 9);
+      setProjectId(newId);
+    }
+  }, [projectId, projectIdFromUrl]);
 
   const checkCredits = (cost: number) => {
     if (profile?.isPremium) return true;
     if ((profile?.credits ?? 0) < cost) {
       toast({
         variant: "destructive",
-        title: "Credits Exhausted",
-        description: `Upgrade to Pro to continue. (Action cost: ${cost}c)`,
+        title: "Insufficient Credits",
+        description: `This action costs ${cost} credits. Please upgrade.`,
         action: <Button variant="secondary" size="sm" asChild><Link href="/premium">Upgrade</Link></Button>
       });
       return false;
@@ -112,18 +111,10 @@ export default function EditorPage() {
 
   const deductCredits = async (cost: number) => {
     if (profile?.isPremium || !userProfileRef) return;
-    updateDoc(userProfileRef, {
-      credits: increment(-cost)
-    }).catch(e => {
-       errorEmitter.emit("permission-error", new FirestorePermissionError({
-         path: userProfileRef.path,
-         operation: "update",
-         requestResourceData: { credits: 'decrement' }
-       }));
-    });
+    updateDoc(userProfileRef, { credits: increment(-cost) }).catch(() => {});
   };
 
-  const handleSave = (extraData: any = {}) => {
+  const handleSave = async (extraData: any = {}) => {
     if (!user || !projectRef) return;
     const data: any = {
       title,
@@ -141,38 +132,27 @@ export default function EditorPage() {
         }));
       });
     } else {
-      setDoc(projectRef, {
+      await setDoc(projectRef, {
         ...data,
         createdAt: serverTimestamp(),
-        thumbnailUrl: data.thumbnailUrl || generatedThumbnail || `https://picsum.photos/seed/${projectRef.id}/600/400`,
-      }).then(() => {
-        setIsNewProject(false);
-        if (!projectIdFromUrl) {
-          router.replace(`/editor?id=${projectRef.id}`);
-        }
-      }).catch((e) => {
-        errorEmitter.emit("permission-error", new FirestorePermissionError({
-          path: projectRef.path,
-          operation: "create",
-          requestResourceData: data
-        }));
+        thumbnailUrl: data.thumbnailUrl || thumbnailUrl || `https://picsum.photos/seed/${projectRef.id}/600/400`,
       });
+      setIsNewProject(false);
+      if (!projectIdFromUrl) router.replace(`/editor?id=${projectRef.id}`);
     }
   };
 
-  // AI Feature Handlers
+  // AI Actions
   const handleGenerateScript = async () => {
-    if (!scriptTopic) return;
-    if (!checkCredits(2)) return;
-    
+    if (!scriptTopic || !checkCredits(2)) return;
     setIsProcessing(true);
-    setProcessingMessage("AI is crafting your viral script...");
+    setProcessingMessage("Orchestrating script architecture...");
     try {
       const result = await generateAiScript({ topic: scriptTopic, platform: 'YouTube' });
-      setGeneratedScript(result);
+      setAiScript(result);
       await deductCredits(2);
-      handleSave({ aiNotes: result.script });
-      toast({ title: "Script Generated!", description: "Check the AI Notes section." });
+      await handleSave({ aiNotes: result.script });
+      toast({ title: "Script Generated!", description: "Analysis complete." });
     } catch (e: any) {
       toast({ variant: "destructive", title: "AI Error", description: e.message });
     } finally {
@@ -181,17 +161,15 @@ export default function EditorPage() {
   };
 
   const handleGenerateThumbnail = async () => {
-    if (!thumbnailPrompt) return;
-    if (!checkCredits(5)) return;
-    
+    if (!thumbnailPrompt || !checkCredits(5)) return;
     setIsProcessing(true);
-    setProcessingMessage("Imagen 4 is designing your thumbnail...");
+    setProcessingMessage("Imagen 4 is crafting visuals...");
     try {
       const result = await generateAiThumbnail({ prompt: thumbnailPrompt });
-      setGeneratedThumbnail(result.thumbnailDataUri);
+      setThumbnailUrl(result.thumbnailDataUri);
       await deductCredits(5);
-      handleSave({ thumbnailUrl: result.thumbnailDataUri });
-      toast({ title: "Design Complete!", description: "Thumbnail updated." });
+      await handleSave({ thumbnailUrl: result.thumbnailDataUri });
+      toast({ title: "Thumbnail Ready", description: "Design applied to project." });
     } catch (e: any) {
       toast({ variant: "destructive", title: "AI Error", description: e.message });
     } finally {
@@ -199,47 +177,53 @@ export default function EditorPage() {
     }
   };
 
-  const handleOptimizeContent = async () => {
-    if (!generatedScript?.script) {
-       toast({ title: "Script Required", description: "Generate a script first for analysis." });
-       return;
-    }
-    if (!checkCredits(2)) return;
-    
+  const handleGenerateVideo = async () => {
+    if (!videoPrompt || !checkCredits(20)) return;
     setIsProcessing(true);
-    setProcessingMessage("Analyzing neural triggers for SEO...");
+    setProcessingMessage("Veo 2.0 is rendering cinematic clip...");
     try {
-      const result = await aiVideoContentOptimization({ videoTranscript: generatedScript.script });
-      setOptimizedMetadata(result);
-      await deductCredits(2);
-      setTitle(result.title);
-      handleSave({ optimizedTitle: result.title, optimizedDescription: result.description, hashtags: result.hashtags });
-      toast({ title: "Optimized!", description: "Metadata updated with viral keywords." });
+      const result = await generateAiVideo({ prompt: videoPrompt });
+      setVideoData(result.videoDataUri);
+      await deductCredits(20);
+      await handleSave({ videoDataUri: result.videoDataUri });
+      toast({ title: "Video Rendered!", description: "New clip added to workspace." });
     } catch (e: any) {
-      toast({ variant: "destructive", title: "AI Error", description: e.message });
+      toast({ variant: "destructive", title: "Video Error", description: "Veo is busy. Try a shorter prompt or try later." });
     } finally {
       setIsProcessing(false);
     }
   };
 
-  const togglePlayback = async () => {
+  const handleGenerateVoiceover = async () => {
+    if (!voiceText || !checkCredits(5)) return;
+    setIsProcessing(true);
+    setProcessingMessage("Synthesizing neural voiceover...");
+    try {
+      const result = await generateAiVoiceover({ text: voiceText, voiceName: 'Algenib' });
+      setAudioData(result.audioDataUri);
+      await deductCredits(5);
+      toast({ title: "Voiceover Complete", description: "Ready for timeline playback." });
+    } catch (e: any) {
+      toast({ variant: "destructive", title: "Audio Error", description: e.message });
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  const togglePlayback = () => {
     if (videoRef.current) {
-      if (isPlaying) {
-        videoRef.current.pause();
-        setIsPlaying(false);
-      } else {
-        await videoRef.current.play();
-        setIsPlaying(true);
-      }
+      if (isPlaying) videoRef.current.pause();
+      else videoRef.current.play();
+      setIsPlaying(!isPlaying);
     }
   };
 
   return (
-    <div className="h-screen bg-[#05070a] flex flex-col overflow-hidden text-[#e1e4e8]">
+    <div className="h-screen bg-[#05070a] flex flex-col overflow-hidden text-[#e1e4e8] font-body">
       <Navbar />
       
-      {/* Top Toolbar */}
-      <div className="h-14 border-b bg-[#0a0d14]/80 backdrop-blur-xl px-4 flex items-center justify-between z-40 shrink-0">
+      {/* Top Bar */}
+      <div className="h-14 border-b bg-[#0a0d14]/90 backdrop-blur-2xl px-4 flex items-center justify-between z-40 shrink-0">
         <div className="flex items-center gap-6">
           <Link href="/dashboard" className="p-1.5 hover:bg-white/5 rounded-lg transition-colors">
             <ChevronLeft className="w-5 h-5" />
@@ -251,107 +235,105 @@ export default function EditorPage() {
               onBlur={() => handleSave()}
               className="bg-transparent font-bold text-sm focus:outline-none border-b border-transparent focus:border-primary/50 w-48 truncate"
             />
-            <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest leading-none">V1.0.4-PRO • Cloud Synced</span>
+            <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest leading-none">Studio v2.4 • Neural Sync</span>
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
-          <Button size="sm" className="h-8 px-6 rounded-lg text-[11px] font-bold bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20 gap-2" disabled={isProcessing}>
-            <Download className="w-3.5 h-3.5" /> Export Project
-          </Button>
+        <div className="flex items-center gap-4">
+           <div className="hidden md:flex items-center gap-2 bg-primary/10 px-3 py-1 rounded-full border border-primary/20">
+              <Coins className="w-3.5 h-3.5 text-primary" />
+              <span className="text-[10px] font-bold text-primary tracking-widest">{profile?.credits ?? 0} CREDITS</span>
+           </div>
+           <Button size="sm" className="h-9 px-6 rounded-xl font-bold bg-primary shadow-xl shadow-primary/20 gap-2">
+             <Download className="w-4 h-4" /> Export 4K
+           </Button>
         </div>
       </div>
 
       <div className="flex-1 flex overflow-hidden">
-        {/* Left Side Tools */}
-        <div className="w-16 bg-[#0a0d14] border-r flex flex-col items-center py-4 gap-4 z-30 shrink-0">
+        {/* Tool Shelf */}
+        <div className="w-16 bg-[#0a0d14] border-r flex flex-col items-center py-6 gap-6 z-30 shrink-0">
            {[
              { icon: MousePointer2, id: 'select' },
              { icon: Scissors, id: 'cut' },
              { icon: Wand2, id: 'ai' },
              { icon: Music, id: 'audio' },
-             { icon: Type, id: 'text' },
              { icon: Layers, id: 'layers' }
            ].map((tool) => (
              <button key={tool.id} className={cn(
-               "p-3 rounded-xl transition-all",
-               activeTab === tool.id ? "bg-primary text-white shadow-lg shadow-primary/30" : "text-muted-foreground hover:bg-white/5 hover:text-white"
-             )} onClick={() => setActiveTab(tool.id)}>
+               "p-3 rounded-xl transition-all relative group",
+               activeTool === tool.id ? "bg-primary text-white shadow-2xl shadow-primary/40" : "text-muted-foreground hover:bg-white/5"
+             )} onClick={() => setActiveTool(tool.id)}>
                <tool.icon className="w-5 h-5" />
+               <div className="absolute left-full ml-4 px-2 py-1 bg-black text-[10px] font-bold rounded opacity-0 group-hover:opacity-100 pointer-events-none whitespace-nowrap z-50">
+                  {tool.id.toUpperCase()}
+               </div>
              </button>
            ))}
         </div>
 
         {/* Workspace */}
-        <div className="flex-1 flex flex-col min-w-0 bg-[#0c0f17]">
-          <div className="flex-1 relative flex items-center justify-center p-4">
-             <div className="aspect-video w-full max-w-4xl bg-black rounded-2xl shadow-[0_0_100px_rgba(0,0,0,0.5)] border border-white/5 relative overflow-hidden flex items-center justify-center">
-                {!selectedVideoData ? (
-                  <div className="text-center space-y-4">
-                     <div className="w-20 h-20 bg-white/5 rounded-3xl flex items-center justify-center mx-auto mb-6 border border-white/10">
-                        <Video className="w-10 h-10 text-white/20" />
+        <div className="flex-1 flex flex-col min-w-0 bg-[#0c0f17] relative">
+          <div className="flex-1 relative flex items-center justify-center p-8">
+             <div className="aspect-video w-full max-w-5xl bg-black rounded-3xl shadow-[0_0_120px_rgba(0,0,0,0.6)] border border-white/5 relative overflow-hidden flex items-center justify-center group/player">
+                {!videoData ? (
+                  <div className="text-center space-y-6">
+                     <div className="w-24 h-24 bg-primary/10 rounded-[2rem] flex items-center justify-center mx-auto mb-6 border border-primary/20 animate-float">
+                        <Video className="w-10 h-10 text-primary" />
                      </div>
-                     <p className="text-sm font-bold text-muted-foreground uppercase tracking-widest">Workspace Empty</p>
-                     <Button variant="outline" className="rounded-xl font-bold text-xs h-10 border-white/10" onClick={() => toast({ title: "Coming Soon", description: "Direct upload will be enabled in v1.1" })}>Import Media</Button>
+                     <h3 className="text-lg font-bold font-headline uppercase tracking-widest">Awaiting Vision</h3>
+                     <p className="text-xs text-muted-foreground max-w-xs mx-auto">Use the AI Studio on the right to generate your first cinematic clip.</p>
                   </div>
                 ) : (
                   <video 
                     ref={videoRef}
-                    src={selectedVideoData} 
+                    src={videoData} 
                     className="w-full h-full object-contain"
                     onPlay={() => setIsPlaying(true)}
                     onPause={() => setIsPlaying(false)}
                     onClick={togglePlayback}
                   />
                 )}
-                
-                {/* HUD */}
-                <div className="absolute top-4 right-4 flex gap-2">
-                   <div className="bg-black/60 backdrop-blur-md border border-white/10 px-3 py-1 rounded-lg text-[10px] font-bold font-mono">
-                      {profile?.isPremium ? '4K PRO' : '720p FREE'}
-                   </div>
-                </div>
-             </div>
 
-             {/* Playback Controls */}
-             <div className="absolute bottom-10 bg-[#161a25]/90 backdrop-blur-2xl border border-white/10 px-8 py-3 rounded-2xl flex items-center gap-8 shadow-2xl">
-                <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-white"><SkipBack className="w-5 h-5" /></Button>
-                <button 
-                  className="w-12 h-12 bg-white text-black rounded-full flex items-center justify-center shadow-xl active:scale-95 transition-transform"
-                  onClick={togglePlayback}
-                >
-                  {isPlaying ? <Pause className="w-6 h-6 fill-current" /> : <Play className="w-6 h-6 fill-current ml-1" />}
-                </button>
-                <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-white"><SkipForward className="w-5 h-5" /></Button>
+                {/* Video Controls HUD */}
+                <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-6 bg-black/40 backdrop-blur-xl border border-white/10 px-6 py-3 rounded-2xl opacity-0 group-hover/player:opacity-100 transition-opacity">
+                   <Button variant="ghost" size="icon" className="text-white/60 hover:text-white"><SkipBack className="w-4 h-4" /></Button>
+                   <button onClick={togglePlayback} className="w-12 h-12 bg-white text-black rounded-full flex items-center justify-center shadow-xl active:scale-95 transition-transform">
+                      {isPlaying ? <Pause className="w-5 h-5 fill-current" /> : <Play className="w-5 h-5 fill-current ml-1" />}
+                   </button>
+                   <Button variant="ghost" size="icon" className="text-white/60 hover:text-white"><SkipForward className="w-4 h-4" /></Button>
+                </div>
              </div>
           </div>
 
-          {/* Timeline */}
-          <div className="h-[320px] bg-[#0a0d14] border-t flex flex-col shrink-0">
-             <div className="h-10 bg-[#111621] flex items-center justify-between px-6 border-b">
-                <div className="flex gap-6 items-center">
-                   <div className="flex gap-2">
-                      <div className="w-3 h-3 rounded-full bg-red-500 animate-pulse" />
-                      <span className="text-[10px] font-bold uppercase tracking-widest">Master Track</span>
+          {/* Timeline Engine */}
+          <div className="h-[280px] bg-[#0a0d14] border-t flex flex-col shrink-0">
+             <div className="h-10 bg-[#111621]/80 px-6 flex items-center justify-between border-b">
+                <div className="flex items-center gap-4">
+                   <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+                      <span className="text-[10px] font-bold uppercase tracking-widest">Master 4K Engine</span>
                    </div>
                 </div>
+                <div className="text-[10px] font-mono text-muted-foreground font-bold">00:00:00:00</div>
              </div>
              
              <div className="flex-1 overflow-y-auto p-4 space-y-2 custom-scrollbar">
                 {[
-                  { label: "V1: MAIN FOOTAGE", color: "bg-primary/20 border-primary/40 text-primary", icon: Video, active: !!selectedVideoData },
-                  { label: "V2: AI OVERLAYS", color: "bg-indigo-500/10 border-indigo-500/20 text-indigo-400", icon: Sparkles, active: false },
-                  { label: "A1: NARRATION", color: "bg-cyan-500/10 border-cyan-500/20 text-cyan-400", icon: Volume2, active: false },
-                  { label: "T1: CAPTIONS", color: "bg-rose-500/10 border-rose-500/20 text-rose-400", icon: Type, active: !!subtitles }
+                  { label: "V1: AI GENERATION", active: !!videoData, icon: Sparkles, color: "bg-primary/20 border-primary/40 text-primary" },
+                  { label: "A1: NARRATION", active: !!audioData, icon: Volume2, color: "bg-indigo-500/20 border-indigo-500/40 text-indigo-400" },
+                  { label: "G1: THUMBNAIL", active: !!thumbnailUrl, icon: ImageIcon, color: "bg-rose-500/20 border-rose-500/40 text-rose-400" }
                 ].map((track, i) => (
-                  <div key={i} className="flex gap-3 h-12">
-                     <div className="w-32 shrink-0 bg-[#161a25] rounded-lg border border-white/5 flex items-center px-3 gap-2">
-                        <track.icon className="w-3.5 h-3.5 text-muted-foreground" />
-                        <span className="text-[9px] font-bold uppercase tracking-tight truncate">{track.label}</span>
+                  <div key={i} className="flex gap-4 h-14">
+                     <div className="w-40 shrink-0 bg-[#161a25] rounded-xl border border-white/5 flex items-center px-4 gap-3">
+                        <track.icon className="w-4 h-4 text-muted-foreground" />
+                        <span className="text-[9px] font-bold uppercase tracking-widest truncate">{track.label}</span>
                      </div>
-                     <div className="flex-1 bg-[#0c0f17] rounded-lg relative border border-white/5 overflow-hidden">
+                     <div className="flex-1 bg-[#0c0f17] rounded-xl relative border border-white/5 overflow-hidden">
                         {track.active && (
-                          <div className={cn("absolute inset-y-1 left-4 right-10 rounded-md border-x-4", track.color)}></div>
+                          <div className={cn("absolute inset-y-1 left-8 right-20 rounded-lg border-x-4", track.color)}>
+                             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent animate-shimmer" />
+                          </div>
                         )}
                      </div>
                   </div>
@@ -360,113 +342,122 @@ export default function EditorPage() {
           </div>
         </div>
 
-        {/* Sidebar Inspector */}
-        <div className="w-[360px] bg-[#0a0d14] border-l shrink-0 flex flex-col overflow-hidden">
-           <Tabs defaultValue="ai" className="flex-1 flex flex-col">
+        {/* Inspector Sidebar */}
+        <div className="w-[400px] bg-[#0a0d14] border-l shrink-0 flex flex-col overflow-hidden">
+           <Tabs value={activeInspectorTab} onValueChange={setActiveInspectorTab} className="flex-1 flex flex-col">
               <TabsList className="w-full h-14 bg-transparent border-b rounded-none grid grid-cols-2 p-0">
-                 <TabsTrigger value="inspector" className="rounded-none font-bold text-xs">Project Info</TabsTrigger>
-                 <TabsTrigger value="ai" className="rounded-none font-bold text-xs text-primary">AI Studio</TabsTrigger>
+                 <TabsTrigger value="ai" className="rounded-none font-bold text-xs data-[state=active]:text-primary">AI NEURAL ENGINE</TabsTrigger>
+                 <TabsTrigger value="project" className="rounded-none font-bold text-xs">METADATA</TabsTrigger>
               </TabsList>
               
-              <div className="flex-1 overflow-y-auto p-5 custom-scrollbar">
-                 <TabsContent value="inspector" className="mt-0 space-y-6">
-                    {generatedScript && (
-                      <div className="space-y-2">
-                         <h4 className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Generated Script</h4>
-                         <div className="p-4 bg-[#161a25] rounded-xl text-xs leading-relaxed border border-white/5">
-                            {generatedScript.script}
-                         </div>
-                      </div>
-                    )}
-                    {optimizedMetadata && (
-                      <div className="space-y-2">
-                         <h4 className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Viral Hashtags</h4>
-                         <div className="flex flex-wrap gap-2">
-                            {optimizedMetadata.hashtags.map((h: string, i: number) => (
-                              <span key={i} className="px-2 py-1 bg-primary/10 text-primary rounded-md text-[10px] font-bold">{h}</span>
-                            ))}
-                         </div>
-                      </div>
-                    )}
-                 </TabsContent>
-
-                 <TabsContent value="ai" className="mt-0 space-y-6">
-                    <div className="space-y-6">
-                       {/* AI Script Writer */}
-                       <div className="p-6 rounded-2xl bg-[#161a25] border border-indigo-500/20 space-y-4 shadow-xl">
+              <div className="flex-1 overflow-y-auto p-6 space-y-8 custom-scrollbar">
+                 <TabsContent value="ai" className="mt-0 space-y-8">
+                    {/* Script Tool */}
+                    <div className="p-6 rounded-3xl bg-[#161a25] border border-indigo-500/20 space-y-4 shadow-2xl">
+                       <div className="flex items-center justify-between">
                           <div className="flex items-center gap-3">
                              <PenTool className="w-4 h-4 text-indigo-400" />
                              <h4 className="text-xs font-bold uppercase tracking-widest text-indigo-400">Viral Script Writer</h4>
                           </div>
-                          <textarea 
-                            placeholder="What's your video about?" 
-                            className="w-full bg-[#0c0f17] border border-white/5 rounded-xl p-3 text-xs h-20 focus:ring-1 focus:ring-indigo-500 outline-none resize-none"
-                            value={scriptTopic}
-                            onChange={(e) => setScriptTopic(e.target.value)}
-                          />
-                          <Button 
-                            className="w-full h-10 rounded-xl font-bold bg-indigo-600 hover:bg-indigo-700 text-[10px]" 
-                            size="sm"
-                            onClick={handleGenerateScript}
-                            disabled={isProcessing || !scriptTopic}
-                          >
-                             {isProcessing && processingMessage.includes("script") ? <Loader2 className="animate-spin w-4 h-4 mr-2" /> : "Generate viral script (2c)"}
-                          </Button>
+                          <span className="text-[9px] font-bold text-muted-foreground uppercase">2 Credits</span>
                        </div>
+                       <textarea 
+                          placeholder="Project theme or video topic..." 
+                          className="w-full bg-[#0c0f17] border border-white/5 rounded-2xl p-4 text-xs h-24 focus:ring-1 focus:ring-indigo-500 outline-none resize-none transition-all"
+                          value={scriptTopic}
+                          onChange={(e) => setScriptTopic(e.target.value)}
+                       />
+                       <Button className="w-full h-12 rounded-2xl font-bold bg-indigo-600 hover:bg-indigo-700 text-xs shadow-xl shadow-indigo-500/20" onClick={handleGenerateScript} disabled={isProcessing || !scriptTopic}>
+                          {isProcessing && processingMessage.includes("script") ? <Loader2 className="animate-spin" /> : "Initiate Analysis"}
+                       </Button>
+                    </div>
 
-                       {/* AI Thumbnail Engine */}
-                       <div className="p-6 rounded-2xl bg-[#161a25] border border-rose-500/20 space-y-4 shadow-xl">
+                    {/* Veo 2.0 Video Gen */}
+                    <div className="p-6 rounded-3xl bg-[#161a25] border border-blue-500/20 space-y-4 shadow-2xl">
+                       <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-3">
+                             <Sparkles className="w-4 h-4 text-blue-400" />
+                             <h4 className="text-xs font-bold uppercase tracking-widest text-blue-400">Veo 2.0 Video Engine</h4>
+                          </div>
+                          <span className="text-[9px] font-bold text-muted-foreground uppercase">20 Credits</span>
+                       </div>
+                       <textarea 
+                          placeholder="Visual prompt for cinematic generation..." 
+                          className="w-full bg-[#0c0f17] border border-white/5 rounded-2xl p-4 text-xs h-24 focus:ring-1 focus:ring-blue-500 outline-none resize-none transition-all"
+                          value={videoPrompt}
+                          onChange={(e) => setVideoPrompt(e.target.value)}
+                       />
+                       <Button className="w-full h-12 rounded-2xl font-bold bg-blue-600 hover:bg-blue-700 text-xs shadow-xl shadow-blue-500/20" onClick={handleGenerateVideo} disabled={isProcessing || !videoPrompt}>
+                          {isProcessing && processingMessage.includes("rendering") ? <Loader2 className="animate-spin" /> : "Render Cinematic Clip"}
+                       </Button>
+                    </div>
+
+                    {/* Voiceover Tool */}
+                    <div className="p-6 rounded-3xl bg-[#161a25] border border-cyan-500/20 space-y-4 shadow-2xl">
+                       <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-3">
+                             <Volume2 className="w-4 h-4 text-cyan-400" />
+                             <h4 className="text-xs font-bold uppercase tracking-widest text-cyan-400">Neural Voiceover</h4>
+                          </div>
+                          <span className="text-[9px] font-bold text-muted-foreground uppercase">5 Credits</span>
+                       </div>
+                       <textarea 
+                          placeholder="Paste narration script here..." 
+                          className="w-full bg-[#0c0f17] border border-white/5 rounded-2xl p-4 text-xs h-24 focus:ring-1 focus:ring-cyan-500 outline-none resize-none transition-all"
+                          value={voiceText}
+                          onChange={(e) => setVoiceText(e.target.value)}
+                       />
+                       <Button className="w-full h-12 rounded-2xl font-bold bg-cyan-600 hover:bg-cyan-700 text-xs shadow-xl shadow-cyan-500/20" onClick={handleGenerateVoiceover} disabled={isProcessing || !voiceText}>
+                          {isProcessing && processingMessage.includes("neural") ? <Loader2 className="animate-spin" /> : "Synthesize Voice"}
+                       </Button>
+                       {audioData && (
+                         <div className="pt-2">
+                           <audio controls src={audioData} className="w-full h-10" />
+                         </div>
+                       )}
+                    </div>
+
+                    {/* Thumbnail Tool */}
+                    <div className="p-6 rounded-3xl bg-[#161a25] border border-rose-500/20 space-y-4 shadow-2xl">
+                       <div className="flex items-center justify-between">
                           <div className="flex items-center gap-3">
                              <ImageIcon className="w-4 h-4 text-rose-400" />
                              <h4 className="text-xs font-bold uppercase tracking-widest text-rose-400">Thumbnail Designer</h4>
                           </div>
-                          <textarea 
-                            placeholder="Describe your thumbnail visual..." 
-                            className="w-full bg-[#0c0f17] border border-white/5 rounded-xl p-3 text-xs h-20 focus:ring-1 focus:ring-rose-500 outline-none resize-none"
-                            value={thumbnailPrompt}
-                            onChange={(e) => setThumbnailPrompt(e.target.value)}
-                          />
-                          <Button 
-                            className="w-full h-10 rounded-xl font-bold bg-rose-600 hover:bg-rose-700 text-[10px]" 
-                            size="sm"
-                            onClick={handleGenerateThumbnail}
-                            disabled={isProcessing || !thumbnailPrompt}
-                          >
-                             {isProcessing && processingMessage.includes("thumbnail") ? <Loader2 className="animate-spin w-4 h-4 mr-2" /> : "Design from scratch (5c)"}
-                          </Button>
-                          {generatedThumbnail && (
-                             <div className="relative aspect-video rounded-lg overflow-hidden border border-white/10 mt-2">
-                                <Image src={generatedThumbnail} alt="Preview" fill className="object-cover" />
-                             </div>
-                          )}
+                          <span className="text-[9px] font-bold text-muted-foreground uppercase">5 Credits</span>
                        </div>
+                       <textarea 
+                          placeholder="Describe visual composition..." 
+                          className="w-full bg-[#0c0f17] border border-white/5 rounded-2xl p-4 text-xs h-24 focus:ring-1 focus:ring-rose-500 outline-none resize-none transition-all"
+                          value={thumbnailPrompt}
+                          onChange={(e) => setThumbnailPrompt(e.target.value)}
+                       />
+                       <Button className="w-full h-12 rounded-2xl font-bold bg-rose-600 hover:bg-rose-700 text-xs shadow-xl shadow-rose-500/20" onClick={handleGenerateThumbnail} disabled={isProcessing || !thumbnailPrompt}>
+                          {isProcessing && processingMessage.includes("designing") ? <Loader2 className="animate-spin" /> : "Generate Thumbnail"}
+                       </Button>
+                    </div>
+                 </TabsContent>
 
-                       {/* Content Optimizer */}
-                       <div className="grid grid-cols-1 gap-3">
-                          <Button 
-                            variant="outline" 
-                            className="w-full h-14 justify-start px-4 rounded-xl border-white/10 hover:bg-white/5 group"
-                            onClick={handleOptimizeContent}
-                            disabled={isProcessing || !generatedScript}
-                          >
-                             <Zap className="w-4 h-4 mr-3 text-orange-400" />
-                             <div className="text-left">
-                                <p className="text-[11px] font-bold">Viral SEO Magic</p>
-                                <p className="text-[9px] text-muted-foreground uppercase font-bold tracking-widest">2 Credits</p>
-                             </div>
-                          </Button>
-                          
-                          <Button 
-                            variant="outline" 
-                            className="w-full h-14 justify-start px-4 rounded-xl border-white/10 hover:bg-white/5 group"
-                            onClick={() => toast({ title: "Feature Locked", description: "Video generation is a Pro feature." })}
-                          >
-                             <Sparkles className="w-4 h-4 mr-3 text-blue-400" />
-                             <div className="text-left">
-                                <p className="text-[11px] font-bold">Veo 2.0 Video Gen</p>
-                                <p className="text-[9px] text-muted-foreground uppercase font-bold tracking-widest">10 Credits</p>
-                             </div>
-                          </Button>
+                 <TabsContent value="project" className="mt-0 space-y-8">
+                    {aiScript && (
+                      <div className="space-y-3">
+                         <h4 className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Neural Script</h4>
+                         <div className="p-5 bg-[#161a25] rounded-3xl text-[11px] leading-relaxed border border-white/5 font-medium">
+                            {aiScript.script}
+                         </div>
+                      </div>
+                    )}
+                    <div className="space-y-3">
+                       <h4 className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Project Specs</h4>
+                       <div className="grid grid-cols-2 gap-3">
+                          <div className="p-4 bg-[#161a25] rounded-2xl border border-white/5">
+                             <p className="text-[8px] font-bold text-muted-foreground uppercase tracking-widest">Resolution</p>
+                             <p className="text-xs font-bold">4K Ultra HD</p>
+                          </div>
+                          <div className="p-4 bg-[#161a25] rounded-2xl border border-white/5">
+                             <p className="text-[8px] font-bold text-muted-foreground uppercase tracking-widest">Frame Rate</p>
+                             <p className="text-xs font-bold">60 FPS</p>
+                          </div>
                        </div>
                     </div>
                  </TabsContent>
@@ -475,22 +466,22 @@ export default function EditorPage() {
         </div>
       </div>
 
-      {/* Global Processing Overlay */}
+      {/* Global Processing HUD */}
       {isProcessing && (
-        <div className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-xl flex items-center justify-center p-8">
-           <div className="max-w-md w-full text-center space-y-8 animate-in fade-in zoom-in-95 duration-500">
-             <div className="relative w-24 h-24 mx-auto">
-                <Loader2 className="w-24 h-24 animate-spin text-primary opacity-20" />
-                <div className="absolute inset-0 m-auto w-12 h-12 bg-primary rounded-2xl flex items-center justify-center shadow-[0_0_40px_rgba(59,130,246,0.5)]">
-                   <Sparkles className="w-6 h-6 text-white animate-pulse" />
+        <div className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-2xl flex items-center justify-center p-12">
+           <div className="max-w-md w-full text-center space-y-10 animate-in fade-in zoom-in-95 duration-500">
+             <div className="relative w-32 h-32 mx-auto">
+                <Loader2 className="w-32 h-32 animate-spin text-primary opacity-20" />
+                <div className="absolute inset-0 m-auto w-16 h-16 bg-primary rounded-3xl flex items-center justify-center shadow-[0_0_80px_rgba(59,130,246,0.5)]">
+                   <Sparkles className="w-8 h-8 text-white animate-pulse" />
                 </div>
              </div>
-             <div className="space-y-2">
-               <h3 className="text-2xl font-headline font-bold text-white tracking-tighter uppercase">AI Orchestration</h3>
-               <p className="text-muted-foreground font-medium text-sm leading-relaxed">{processingMessage}</p>
+             <div className="space-y-3">
+               <h3 className="text-3xl font-headline font-bold text-white tracking-tighter uppercase">AI Orchestration</h3>
+               <p className="text-muted-foreground font-medium text-base leading-relaxed">{processingMessage}</p>
              </div>
-             <div className="h-1 bg-white/5 rounded-full overflow-hidden w-full max-w-sm mx-auto">
-                <div className="h-full bg-primary animate-progress-indefinite shadow-[0_0_15px_rgba(59,130,246,0.8)]" />
+             <div className="h-1.5 bg-white/5 rounded-full overflow-hidden w-full max-w-sm mx-auto">
+                <div className="h-full bg-primary animate-progress-indefinite shadow-[0_0_20px_rgba(59,130,246,0.8)]" />
              </div>
            </div>
         </div>
