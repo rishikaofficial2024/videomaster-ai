@@ -51,7 +51,7 @@ export default function LandingPage() {
                 <Sparkles className="w-3.5 h-3.5" /> India's Elite AI Studio (.in)
               </div>
               <h1 className="text-5xl md:text-9xl font-bold tracking-tighter font-headline max-w-6xl leading-[0.9] animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-100">
-                Design <span className="text-primary italic">Viral Designs</span> with AI Precision.
+                Design <span className="text-primary italic">Viral Content</span> with AI Precision.
               </h1>
               <p className="max-w-[800px] text-muted-foreground text-lg md:text-2xl font-medium leading-relaxed animate-in fade-in slide-in-from-bottom-5 duration-1000 delay-200">
                 VideoMaster AI is a professional design studio for Indian creators. Generate scripts, thumbnails, and cinematic HD videos automatically on videomaster-ai.in.

@@ -11,7 +11,8 @@ import {
   Zap, Volume2, Image as ImageIcon,
   PenTool, Layers, MousePointer2,
   Coins, Plus, RefreshCw, ClipboardCheck, Cloud, X, Info,
-  LayoutTemplate, Type, Box, Upload, Palette, Maximize2, Search
+  LayoutTemplate, Type, Box, Upload, Palette, Maximize2, Search,
+  Tags, Subtitles, BarChart4, TrendingUp
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { aiVideoContentOptimization } from "@/ai/flows/ai-video-content-optimization-flow";
@@ -19,6 +20,7 @@ import { generateAiVideo } from "@/ai/flows/ai-video-generation-flow";
 import { generateAiVoiceover } from "@/ai/flows/ai-voiceover-generation-flow";
 import { generateAiScript } from "@/ai/flows/ai-script-writer-flow";
 import { generateAiThumbnail } from "@/ai/flows/ai-thumbnail-designer-flow";
+import { generateAutoCaptionsAndSubtitles } from "@/ai/flows/ai-auto-caption-and-subtitle-generation-flow";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useUser, useFirestore, useDoc } from "@/firebase";
@@ -52,6 +54,7 @@ export default function EditorPage() {
   const [videoData, setVideoData] = useState<string | null>(null);
   const [audioData, setAudioData] = useState<string | null>(null);
   const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null);
+  const [subtitles, setSubtitles] = useState<string | null>(null);
   
   const [scriptTopic, setScriptTopic] = useState("");
   const [thumbnailPrompt, setThumbnailPrompt] = useState("");
@@ -59,6 +62,7 @@ export default function EditorPage() {
   const [voiceText, setVoiceText] = useState("");
   
   const [aiScript, setAiScript] = useState<any>(null);
+  const [seoData, setSeoData] = useState<any>(null);
 
   const projectRef = useMemo(() => {
     if (!user || !projectId) return null;
@@ -79,7 +83,13 @@ export default function EditorPage() {
       setTitle(project.title || "Untitled Design");
       setVideoData(project.videoDataUri || null);
       setThumbnailUrl(project.thumbnailUrl || null);
+      setSubtitles(project.subtitles || null);
       setAiScript(project.aiNotes ? { script: project.aiNotes } : null);
+      setSeoData({
+        title: project.optimizedTitle,
+        description: project.optimizedDescription,
+        hashtags: project.hashtags
+      });
       setIsNewProject(false);
     }
   }, [project]);
@@ -90,14 +100,6 @@ export default function EditorPage() {
       setProjectId(newId);
     }
   }, [projectId, projectIdFromUrl]);
-
-  const handleExport = () => {
-    if (profile?.isPremium) {
-       toast({ title: "Export Started", description: "Your 4K HDR video is being compiled." });
-       return;
-    }
-    setShowInterstitial(true);
-  };
 
   const checkCredits = (cost: number) => {
     if (profile?.isPremium) return true;
@@ -230,6 +232,50 @@ export default function EditorPage() {
     }
   };
 
+  const handleAutoCaption = async () => {
+    if (!audioData || !checkCredits(10)) {
+       toast({ title: "Audio Required", description: "Please generate a voiceover first." });
+       return;
+    }
+    setIsProcessing(true);
+    setProcessingMessage("AI Transcriber is generating subtitles...");
+    try {
+      const result = await generateAutoCaptionsAndSubtitles({ audioDataUri: audioData });
+      setSubtitles(result.subtitles);
+      await deductCredits(10);
+      await handleSave({ subtitles: result.subtitles });
+      toast({ title: "Subtitles Generated", description: "WebVTT track added to project." });
+    } catch (e: any) {
+      toast({ variant: "destructive", title: "Subtitle Error", description: "AI transcription failed." });
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  const handleOptimizeContent = async () => {
+    if (!aiScript?.script || !checkCredits(5)) {
+       toast({ title: "Script Required", description: "Generate a script first for optimization." });
+       return;
+    }
+    setIsProcessing(true);
+    setProcessingMessage("Analyzing content for SEO dominance...");
+    try {
+      const result = await aiVideoContentOptimization({ videoTranscript: aiScript.script });
+      setSeoData(result);
+      await deductCredits(5);
+      await handleSave({ 
+        optimizedTitle: result.title, 
+        optimizedDescription: result.description, 
+        hashtags: result.hashtags 
+      });
+      toast({ title: "SEO Optimized", description: "Viral Title & Tags generated." });
+    } catch (e: any) {
+      toast({ variant: "destructive", title: "SEO Error", description: "AI analysis failed." });
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
   const togglePlayback = () => {
     if (videoRef.current) {
       if (isPlaying) videoRef.current.pause();
@@ -279,14 +325,14 @@ export default function EditorPage() {
               <Coins className="w-3.5 h-3.5 text-primary" />
               <span className="text-[10px] font-bold text-primary tracking-widest">{profile?.credits ?? 0} CREDITS</span>
            </div>
-           <Button onClick={handleExport} size="sm" className="h-9 px-6 rounded-xl font-bold bg-primary shadow-xl shadow-primary/20 gap-2 hover:scale-105 transition-all">
+           <Button onClick={() => setShowInterstitial(true)} size="sm" className="h-9 px-6 rounded-xl font-bold bg-primary shadow-xl shadow-primary/20 gap-2 hover:scale-105 transition-all">
              <Download className="w-4 h-4" /> Export Video
            </Button>
         </div>
       </div>
 
       <div className="flex-1 flex overflow-hidden">
-        {/* Left Side Navigation (Canva Style) */}
+        {/* Left Side Navigation */}
         <div className="w-20 bg-[#0a0d14] border-r border-white/5 flex flex-col items-center py-6 gap-6 z-30 shrink-0">
            {[
              { icon: LayoutTemplate, id: 'templates', label: 'Designs' },
@@ -320,16 +366,6 @@ export default function EditorPage() {
            </div>
            
            <div className="flex-1 overflow-y-auto p-4 custom-scrollbar">
-              {activeTab === 'templates' && (
-                <div className="grid grid-cols-2 gap-3">
-                   {[1,2,3,4,5,6].map(i => (
-                     <div key={i} className="aspect-[9/16] bg-white/5 rounded-xl border border-white/5 overflow-hidden group cursor-pointer hover:border-primary/50 transition-all">
-                        <Image src={`https://picsum.photos/seed/${i + 10}/200/350`} alt="Template" fill className="object-cover opacity-60 group-hover:opacity-100 transition-opacity" />
-                     </div>
-                   ))}
-                </div>
-              )}
-
               {activeTab === 'ai' && (
                  <div className="space-y-6">
                     <div className="p-5 rounded-2xl bg-primary/5 border border-primary/20 space-y-4">
@@ -363,55 +399,56 @@ export default function EditorPage() {
                           {isProcessing && processingMessage.includes("rendering") ? <Loader2 className="animate-spin mr-2 w-3 h-3" /> : "Generate Clip"}
                        </Button>
                     </div>
+
+                    <div className="p-5 rounded-2xl bg-emerald-500/5 border border-emerald-500/20 space-y-4">
+                       <div className="flex items-center gap-3">
+                          <Subtitles className="w-4 h-4 text-emerald-400" />
+                          <h4 className="text-[10px] font-bold uppercase tracking-widest text-emerald-400">Auto Captions</h4>
+                       </div>
+                       <p className="text-[9px] text-muted-foreground italic leading-relaxed">Generate VTT subtitles automatically from your project's audio track.</p>
+                       <Button className="w-full h-10 rounded-xl font-bold bg-emerald-600 text-[10px] uppercase" onClick={handleAutoCaption} disabled={isProcessing || !audioData}>
+                          {isProcessing && processingMessage.includes("Transcriber") ? <Loader2 className="animate-spin mr-2 w-3 h-3" /> : "Transcribe Video"}
+                       </Button>
+                    </div>
                  </div>
               )}
 
-              {activeTab === 'text' && (
-                 <div className="space-y-4">
-                    <Button variant="outline" className="w-full h-12 justify-start px-4 text-sm font-bold border-white/10 hover:bg-white/5">Add a heading</Button>
-                    <Button variant="outline" className="w-full h-10 justify-start px-4 text-xs font-medium border-white/10 hover:bg-white/5">Add a subheading</Button>
-                    <div className="pt-4 grid grid-cols-2 gap-3">
-                       {['Neon', 'Retro', 'Glitch', 'Cinematic'].map(style => (
-                         <div key={style} className="h-20 bg-white/5 rounded-xl border border-white/5 flex items-center justify-center cursor-pointer hover:bg-white/10 transition-colors">
-                            <span className="text-[10px] font-bold uppercase tracking-widest">{style}</span>
-                         </div>
-                       ))}
-                    </div>
-                 </div>
+              {/* Other tabs placeholders */}
+              {activeTab !== 'ai' && (
+                <div className="flex flex-col items-center justify-center h-full text-center opacity-30 space-y-4 py-20">
+                   <Info className="w-10 h-10" />
+                   <p className="text-xs font-bold uppercase tracking-widest">Library Loading...</p>
+                </div>
               )}
            </div>
         </div>
 
         {/* Main Canvas Area */}
         <div className="flex-1 flex flex-col min-w-0 bg-[#0c0f17] relative">
-          {/* Canvas Toolbar */}
           <div className="h-10 bg-[#0a0d14]/50 border-b border-white/5 flex items-center px-6 gap-6">
              <div className="flex items-center gap-2">
                 <Button variant="ghost" size="icon" className="h-7 w-7"><Plus className="w-3.5 h-3.5" /></Button>
                 <div className="h-4 w-px bg-white/10 mx-2" />
-                <Button variant="ghost" size="sm" className="h-7 text-[10px] font-bold uppercase px-3 hover:bg-white/5">Edit Photo</Button>
-                <Button variant="ghost" size="sm" className="h-7 text-[10px] font-bold uppercase px-3 hover:bg-white/5">Animate</Button>
+                <Button variant="ghost" size="sm" className="h-7 text-[10px] font-bold uppercase px-3 hover:bg-white/5">Edit Style</Button>
+                <Button variant="ghost" size="sm" className="h-7 text-[10px] font-bold uppercase px-3 hover:bg-white/5">Neural Link</Button>
              </div>
           </div>
 
           <div className="flex-1 relative flex items-center justify-center p-12 overflow-hidden">
-             {/* Studio Workstation Background */}
              <div className="absolute inset-0 opacity-10 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, #3b82f6 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
              
-             {/* The Actual Canvas Document */}
-             <div className="aspect-[9/16] h-[90%] bg-black rounded-lg shadow-[0_0_120px_rgba(0,0,0,0.8)] border-4 border-white/5 relative overflow-hidden flex items-center justify-center group/canvas group/player">
+             <div className="aspect-[9/16] h-[90%] bg-black rounded-lg shadow-[0_0_120px_rgba(0,0,0,0.8)] border-4 border-white/5 relative overflow-hidden flex items-center justify-center group/canvas">
                 {!videoData && !thumbnailUrl ? (
-                  <div className="text-center space-y-4 z-10 animate-in fade-in duration-1000">
-                     <div className="w-20 h-20 bg-primary/10 rounded-[2rem] flex items-center justify-center mx-auto mb-6 border border-primary/20 animate-float shadow-[0_0_40px_rgba(59,130,246,0.2)]">
+                  <div className="text-center space-y-4 z-10">
+                     <div className="w-20 h-20 bg-primary/10 rounded-[2rem] flex items-center justify-center mx-auto mb-6 border border-primary/20 animate-float">
                         <Video className="w-8 h-8 text-primary" />
                      </div>
-                     <h3 className="text-sm font-bold font-headline uppercase tracking-[0.3em] text-white">Empty Canvas</h3>
-                     <p className="text-[10px] text-muted-foreground max-w-[200px] mx-auto leading-relaxed italic">Drag a template or use AI magic to start designing your viral content.</p>
+                     <h3 className="text-sm font-bold font-headline uppercase tracking-[0.3em] text-white">Empty Workspace</h3>
                   </div>
                 ) : (
                   <>
                     {thumbnailUrl && !isPlaying && (
-                      <Image src={thumbnailUrl} alt="Thumbnail" fill className="object-cover animate-in fade-in duration-700" />
+                      <Image src={thumbnailUrl} alt="Thumbnail" fill className="object-cover" />
                     )}
                     {videoData && (
                       <video 
@@ -423,13 +460,19 @@ export default function EditorPage() {
                         onClick={togglePlayback}
                       />
                     )}
+                    {subtitles && isPlaying && (
+                       <div className="absolute bottom-16 left-0 right-0 px-6 text-center">
+                          <span className="bg-black/80 text-white text-xs font-bold px-4 py-2 rounded-xl border border-white/10 backdrop-blur-md">
+                             [Subtitles Active: WebVTT Track Running]
+                          </span>
+                       </div>
+                    )}
                   </>
                 )}
 
-                {/* Canvas Controls Overlay */}
-                <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-6 bg-black/60 backdrop-blur-2xl border border-white/10 px-6 py-3 rounded-full opacity-0 group-hover/canvas:opacity-100 transition-all duration-300 shadow-2xl">
+                <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-6 bg-black/60 backdrop-blur-2xl border border-white/10 px-6 py-3 rounded-full opacity-0 group-hover/canvas:opacity-100 transition-all duration-300">
                    <Button variant="ghost" size="icon" className="text-white/60 hover:text-white"><SkipBack className="w-4 h-4" /></Button>
-                   <button onClick={togglePlayback} className="w-12 h-12 bg-white text-black rounded-full flex items-center justify-center shadow-xl transition-transform hover:scale-110 active:scale-95">
+                   <button onClick={togglePlayback} className="w-12 h-12 bg-white text-black rounded-full flex items-center justify-center shadow-xl transition-transform hover:scale-110">
                       {isPlaying ? <Pause className="w-5 h-5 fill-current" /> : <Play className="w-5 h-5 fill-current ml-1" />}
                    </button>
                    <Button variant="ghost" size="icon" className="text-white/60 hover:text-white"><SkipForward className="w-4 h-4" /></Button>
@@ -437,34 +480,35 @@ export default function EditorPage() {
              </div>
           </div>
 
-          {/* New Modern Timeline */}
+          {/* Advanced Timeline */}
           <div className="h-48 bg-[#0a0d14] border-t border-white/5 flex flex-col shrink-0 z-40">
              <div className="h-10 bg-[#111621]/90 px-6 flex items-center justify-between border-b border-white/5">
                 <div className="flex items-center gap-4">
                    <div className="flex items-center gap-2">
-                      <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-                      <span className="text-[9px] font-bold uppercase tracking-widest text-primary">Live Rendering System</span>
+                      <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                      <span className="text-[9px] font-bold uppercase tracking-widest text-emerald-500">Processing Node: Active</span>
                    </div>
                 </div>
-                <div className="text-[10px] font-mono text-muted-foreground font-bold tracking-widest bg-white/5 px-3 py-1 rounded-lg border border-white/5">00:00:00:00</div>
+                <div className="text-[10px] font-mono text-muted-foreground font-bold tracking-widest bg-white/5 px-3 py-1 rounded-lg">00:00:00:00</div>
              </div>
              
              <div className="flex-1 overflow-y-auto p-4 space-y-1.5 custom-scrollbar">
                 {[
                   { label: "V1: AI VIDEO", active: !!videoData, icon: Sparkles, color: "bg-primary/20 border-primary/40 text-primary" },
                   { label: "A1: VOICE OVER", active: !!audioData, icon: Volume2, color: "bg-indigo-500/20 border-indigo-500/40 text-indigo-400" },
-                  { label: "G1: THUMBNAIL", active: !!thumbnailUrl, icon: ImageIcon, color: "bg-rose-500/20 border-rose-500/40 text-rose-400" }
+                  { label: "G1: THUMBNAIL", active: !!thumbnailUrl, icon: ImageIcon, color: "bg-rose-500/20 border-rose-500/40 text-rose-400" },
+                  { label: "S1: SUBTITLES", active: !!subtitles, icon: Subtitles, color: "bg-emerald-500/20 border-emerald-500/40 text-emerald-400" }
                 ].map((track, i) => (
                   <div key={i} className="flex gap-3 h-10">
                      <div className="w-32 shrink-0 bg-[#161a25]/60 rounded-lg border border-white/5 flex items-center px-3 gap-2">
                         <track.icon className="w-3 h-3 text-muted-foreground" />
                         <span className="text-[8px] font-bold uppercase tracking-widest truncate">{track.label}</span>
                      </div>
-                     <div className="flex-1 bg-black/20 rounded-lg relative border border-white/5 overflow-hidden">
+                     <div className="flex-1 bg-black/20 rounded-lg relative border border-white/5">
                         {track.active && (
-                          <div className={cn("absolute inset-y-1 left-4 right-12 rounded border-x-2 flex items-center px-3 overflow-hidden animate-in slide-in-from-left-2", track.color)}>
-                             <div className="flex items-center gap-2 opacity-50 w-full">
-                                {[...Array(30)].map((_, j) => (
+                          <div className={cn("absolute inset-y-1 left-4 right-12 rounded border-x-2 flex items-center px-3", track.color)}>
+                             <div className="flex items-center gap-1 opacity-50 w-full">
+                                {[...Array(40)].map((_, j) => (
                                   <div key={j} className="w-0.5 h-3 bg-current rounded-full" style={{ height: `${Math.random() * 80 + 20}%` }} />
                                 ))}
                              </div>
@@ -481,78 +525,87 @@ export default function EditorPage() {
         <div className="w-80 bg-[#0a0d14] border-l border-white/5 shrink-0 flex flex-col overflow-hidden">
            <Tabs value={activeInspectorTab} onValueChange={setActiveInspectorTab} className="flex-1 flex flex-col">
               <TabsList className="w-full h-14 bg-transparent border-b border-white/5 rounded-none grid grid-cols-2 p-0">
-                 <TabsTrigger value="ai" className="rounded-none font-bold text-[9px] tracking-widest data-[state=active]:text-primary data-[state=active]:border-b-2 data-[state=active]:border-primary transition-all">PROPERTIES</TabsTrigger>
-                 <TabsTrigger value="project" className="rounded-none font-bold text-[9px] tracking-widest">ADVANCED</TabsTrigger>
+                 <TabsTrigger value="ai" className="rounded-none font-bold text-[9px] tracking-widest data-[state=active]:text-primary data-[state=active]:border-b-2 data-[state=active]:border-primary transition-all uppercase">Design Tools</TabsTrigger>
+                 <TabsTrigger value="seo" className="rounded-none font-bold text-[9px] tracking-widest uppercase">Viral SEO</TabsTrigger>
               </TabsList>
               
               <div className="flex-1 overflow-y-auto p-6 space-y-8 custom-scrollbar">
                  <TabsContent value="ai" className="mt-0 space-y-8">
-                    {/* Visual Preview of Elements */}
-                    <div className="space-y-4">
-                       <h4 className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground ml-1">Current Visuals</h4>
-                       <div className="grid grid-cols-1 gap-4">
-                          <div className="aspect-video bg-black rounded-2xl border border-white/10 overflow-hidden relative group">
-                             {thumbnailUrl ? (
-                               <Image src={thumbnailUrl} alt="Preview" fill className="object-cover group-hover:scale-110 transition-transform duration-500" />
-                             ) : (
-                               <div className="flex items-center justify-center h-full text-[9px] text-muted-foreground italic">No thumbnail generated</div>
-                             )}
-                             <div className="absolute top-3 right-3 p-1.5 bg-black/60 backdrop-blur-md rounded-lg opacity-0 group-hover:opacity-100 transition-opacity">
-                                <Plus className="w-3 h-3 text-white" />
-                             </div>
-                          </div>
-                       </div>
-                    </div>
-
                     <div className="p-6 rounded-[2rem] bg-indigo-500/5 border border-indigo-500/20 space-y-4">
-                       <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-3">
-                             <Palette className="w-4 h-4 text-indigo-400" />
-                             <h4 className="text-[10px] font-bold uppercase tracking-widest text-indigo-400">Design Assistant</h4>
-                          </div>
+                       <div className="flex items-center gap-3">
+                          <Palette className="w-4 h-4 text-indigo-400" />
+                          <h4 className="text-[10px] font-bold uppercase tracking-widest text-indigo-400">Thumbnail Style AI</h4>
                        </div>
                        <textarea 
-                          placeholder="Describe the style for your thumbnail..." 
-                          className="w-full bg-black/40 border border-white/5 rounded-2xl p-4 text-[11px] h-24 focus:ring-1 focus:ring-indigo-500 outline-none resize-none transition-all placeholder:text-muted-foreground/30"
+                          placeholder="Describe the aesthetic style..." 
+                          className="w-full bg-black/40 border border-white/5 rounded-2xl p-4 text-[11px] h-24 focus:ring-1 focus:ring-indigo-500 outline-none resize-none transition-all"
                           value={thumbnailPrompt}
                           onChange={(e) => setThumbnailPrompt(e.target.value)}
                        />
-                       <Button className="w-full h-12 rounded-2xl font-bold bg-indigo-600 hover:bg-indigo-700 text-[11px] uppercase shadow-xl shadow-indigo-500/20" onClick={handleGenerateThumbnail} disabled={isProcessing || !thumbnailPrompt}>
-                          {isProcessing && processingMessage.includes("designing") ? <Loader2 className="animate-spin mr-2" /> : "Design Thumbnail"}
+                       <Button className="w-full h-12 rounded-2xl font-bold bg-indigo-600 text-[11px] uppercase" onClick={handleGenerateThumbnail} disabled={isProcessing || !thumbnailPrompt}>
+                          {isProcessing && processingMessage.includes("designing") ? <Loader2 className="animate-spin mr-2" /> : "Design Masterpiece"}
                        </Button>
                     </div>
 
                     <div className="p-6 rounded-[2rem] bg-emerald-500/5 border border-emerald-500/20 space-y-4">
                        <div className="flex items-center gap-3">
                           <Volume2 className="w-4 h-4 text-emerald-400" />
-                          <h4 className="text-[10px] font-bold uppercase tracking-widest text-emerald-400">Audio Sync</h4>
+                          <h4 className="text-[10px] font-bold uppercase tracking-widest text-emerald-400">Pro Narrator</h4>
                        </div>
                        <textarea 
-                          placeholder="Voiceover script..." 
+                          placeholder="Script for voiceover..." 
                           className="w-full bg-black/40 border border-white/5 rounded-2xl p-4 text-[11px] h-24 focus:ring-1 focus:ring-emerald-500 outline-none resize-none transition-all"
                           value={voiceText}
                           onChange={(e) => setVoiceText(e.target.value)}
                        />
-                       <Button className="w-full h-12 rounded-2xl font-bold bg-emerald-600 hover:bg-emerald-700 text-[11px] uppercase" onClick={handleGenerateVoiceover} disabled={isProcessing || !voiceText}>
-                          {isProcessing && processingMessage.includes("synthesizing") ? <Loader2 className="animate-spin mr-2" /> : "Sync Audio"}
+                       <Button className="w-full h-12 rounded-2xl font-bold bg-emerald-600 text-[11px] uppercase" onClick={handleGenerateVoiceover} disabled={isProcessing || !voiceText}>
+                          {isProcessing && processingMessage.includes("synthesizing") ? <Loader2 className="animate-spin mr-2" /> : "Synthesize Audio"}
                        </Button>
                     </div>
                  </TabsContent>
 
-                 <TabsContent value="project" className="mt-0 space-y-6">
-                    <div className="p-5 rounded-2xl bg-white/5 border border-white/10 space-y-3">
-                       <h5 className="text-[10px] font-bold uppercase tracking-widest text-white/60">Export Quality</h5>
-                       <div className="grid grid-cols-2 gap-2">
-                          <Button variant="outline" className="h-10 text-[10px] border-white/5 bg-white/5 text-primary border-primary/50">4K HDR</Button>
-                          <Button variant="outline" className="h-10 text-[10px] border-white/5 opacity-50">1080p</Button>
+                 <TabsContent value="seo" className="mt-0 space-y-8">
+                    <div className="space-y-6">
+                       <div className="flex items-center justify-between">
+                          <h4 className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Optimization Hub</h4>
+                          <Button size="sm" variant="outline" className="h-8 rounded-full text-[10px] font-bold uppercase border-primary/20 text-primary hover:bg-primary/5" onClick={handleOptimizeContent}>
+                             <TrendingUp className="w-3 h-3 mr-2" /> Run AI Audit
+                          </Button>
                        </div>
-                    </div>
 
-                    <div className="space-y-4">
-                       <h4 className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground ml-2">Design Notes</h4>
-                       <div className="p-5 bg-white/5 rounded-2xl text-[10px] leading-relaxed border border-white/5 italic text-muted-foreground">
-                          {aiScript?.script || "No AI notes yet. Use the Magic tools to generate scripts and design recommendations."}
-                       </div>
+                       {seoData ? (
+                         <div className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-500">
+                            <div className="p-5 rounded-[1.5rem] bg-primary/5 border border-primary/20 space-y-3">
+                               <div className="flex items-center gap-2">
+                                  <BarChart4 className="w-3.5 h-3.5 text-primary" />
+                                  <span className="text-[10px] font-bold uppercase tracking-widest text-primary">Viral Title Suggestion</span>
+                               </div>
+                               <p className="text-xs font-bold leading-relaxed">{seoData.title}</p>
+                            </div>
+
+                            <div className="p-5 rounded-[1.5rem] bg-white/5 border border-white/10 space-y-3">
+                               <div className="flex items-center gap-2">
+                                  <Tags className="w-3.5 h-3.5 text-muted-foreground" />
+                                  <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Strategic Hashtags</span>
+                               </div>
+                               <div className="flex flex-wrap gap-2">
+                                  {seoData.hashtags?.map((tag: string, i: number) => (
+                                    <span key={i} className="text-[9px] bg-white/5 px-2 py-1 rounded-full border border-white/5 text-muted-foreground font-mono">#{tag}</span>
+                                  ))}
+                               </div>
+                            </div>
+
+                            <div className="p-5 rounded-[1.5rem] bg-white/5 border border-white/10 space-y-3">
+                               <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground block">Optimized Description</span>
+                               <p className="text-[10px] text-muted-foreground leading-relaxed italic">{seoData.description}</p>
+                            </div>
+                         </div>
+                       ) : (
+                         <div className="p-12 text-center space-y-4 bg-white/5 rounded-[2rem] border border-dashed border-white/10">
+                            <BarChart4 className="w-10 h-10 text-muted-foreground mx-auto opacity-20" />
+                            <p className="text-[10px] text-muted-foreground font-medium italic">Generate a script first, then run the AI Audit to unlock viral SEO features.</p>
+                         </div>
+                       )}
                     </div>
                  </TabsContent>
               </div>
@@ -563,7 +616,7 @@ export default function EditorPage() {
       {/* Modern Processing Overlay */}
       {isProcessing && (
         <div className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-3xl flex items-center justify-center p-12">
-           <div className="max-w-md w-full text-center space-y-10 animate-in fade-in zoom-in-95 duration-500">
+           <div className="max-w-md w-full text-center space-y-10">
              <div className="relative w-40 h-40 mx-auto">
                 <Loader2 className="w-40 h-40 animate-spin text-primary opacity-10" />
                 <div className="absolute inset-0 m-auto w-20 h-20 bg-primary rounded-3xl flex items-center justify-center shadow-[0_0_100px_rgba(59,130,246,0.5)]">
@@ -571,11 +624,8 @@ export default function EditorPage() {
                 </div>
              </div>
              <div className="space-y-4">
-               <h3 className="text-4xl font-headline font-bold text-white tracking-tighter uppercase italic">Neural Engine Processing</h3>
-               <p className="text-muted-foreground font-medium text-lg leading-relaxed italic">{processingMessage}</p>
-             </div>
-             <div className="w-full bg-white/5 h-1.5 rounded-full overflow-hidden max-w-[200px] mx-auto">
-                <div className="h-full bg-primary animate-progress" />
+               <h3 className="text-4xl font-headline font-bold text-white tracking-tighter uppercase italic">AI Neural Processing</h3>
+               <p className="text-muted-foreground font-medium text-lg italic">{processingMessage}</p>
              </div>
            </div>
         </div>
@@ -584,28 +634,21 @@ export default function EditorPage() {
       {/* Interstitial Ad Layer */}
       {showInterstitial && (
         <div className="fixed inset-0 z-[200] bg-black/98 backdrop-blur-2xl flex items-center justify-center p-6">
-           <div className="max-w-4xl w-full bg-[#0a0d14] rounded-[3rem] border border-primary/20 overflow-hidden relative shadow-[0_0_120px_rgba(59,130,246,0.3)] animate-in slide-in-from-bottom-10 duration-700">
-              <button onClick={() => setShowInterstitial(false)} className="absolute top-10 right-10 p-2.5 bg-white/5 hover:bg-white/10 rounded-full transition-all z-50"><X className="w-6 h-6" /></button>
+           <div className="max-w-4xl w-full bg-[#0a0d14] rounded-[3rem] border border-primary/20 overflow-hidden relative shadow-[0_0_120px_rgba(59,130,246,0.3)] animate-in slide-in-from-bottom-10">
+              <button onClick={() => setShowInterstitial(false)} className="absolute top-10 right-10 p-2.5 bg-white/5 rounded-full z-50"><X className="w-6 h-6" /></button>
               <div className="p-16 md:p-24 text-center space-y-12">
                  <div className="flex items-center justify-center gap-3 mb-4">
                     <Zap className="w-8 h-8 text-primary fill-primary" />
-                    <span className="text-sm font-bold uppercase tracking-[0.5em] text-primary">Exclusive Preview</span>
+                    <span className="text-sm font-bold uppercase tracking-[0.5em] text-primary">Pro Rendering Active</span>
                  </div>
-                 <div className="space-y-6">
-                    <h3 className="text-5xl md:text-7xl font-headline font-bold text-white tracking-tighter">Exporting Your 4K Masterpiece...</h3>
-                    <p className="text-muted-foreground text-xl max-w-2xl mx-auto font-medium leading-relaxed italic opacity-80">Ads keep our elite AI engine free for all Indian creators. Thank you for your support!</p>
-                 </div>
-                 <div className="aspect-video w-full max-w-2xl mx-auto bg-white/5 rounded-[2.5rem] border border-white/10 flex flex-col items-center justify-center gap-8 shadow-2xl relative overflow-hidden group">
-                    <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                 <h3 className="text-5xl md:text-7xl font-headline font-bold text-white tracking-tighter">Exporting Your 4K Masterpiece...</h3>
+                 <p className="text-muted-foreground text-xl max-w-2xl mx-auto italic opacity-80">Ads keep our elite AI engine free for all Indian creators.</p>
+                 <div className="aspect-video w-full max-w-2xl mx-auto bg-white/5 rounded-[2.5rem] border border-white/10 flex flex-col items-center justify-center gap-8 shadow-2xl">
                     <MonitorPlay className="w-20 h-20 text-primary animate-pulse" />
                     <div className="space-y-3 z-10">
                        <p className="text-xl font-bold text-white">Sponsor: VideoMaster Pro</p>
-                       <p className="text-xs text-muted-foreground font-bold uppercase tracking-[0.2em]">Remove all ads & get 8K exports</p>
                     </div>
                     <Button variant="secondary" className="rounded-full h-14 px-12 font-bold shadow-xl">Join the Elite</Button>
-                 </div>
-                 <div className="pt-10 flex flex-col items-center gap-6">
-                    <Button variant="ghost" onClick={() => setShowInterstitial(false)} className="text-xs font-bold text-muted-foreground uppercase tracking-[0.3em] hover:text-white transition-colors">Skip to Export (5s)</Button>
                  </div>
               </div>
            </div>
