@@ -9,7 +9,7 @@ import {
   Music, Wand2, Download, Sparkles, ChevronLeft, Loader2, Video,
   Zap, Volume2, Image as ImageIcon,
   PenTool, Layers, MousePointer2,
-  Coins, Plus, RefreshCw, AlertCircle, Cloud, ClipboardCheck
+  Coins, Plus, RefreshCw, AlertCircle, ClipboardCheck, Cloud
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { aiVideoContentOptimization } from "@/ai/flows/ai-video-content-optimization-flow";
