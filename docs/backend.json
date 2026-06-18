@@ -62,7 +62,7 @@
     }
   },
   "auth": {
-    "providers": ["google.com", "password"]
+    "providers": ["google.com", "facebook.com", "phone", "password"]
   },
   "firestore": {
     "/users/{userId}": {
