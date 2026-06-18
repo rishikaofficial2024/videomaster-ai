@@ -1,27 +1,25 @@
 
-# 📱 GitHub Se APK Kaise Banayein? (Full Guide)
+# 📱 GitHub Se APK Kaise Banayein? (Ultimate Guide)
 
-Aapka app ab mobile-ready hai. Maine APK banane ka poora logic aur configurations set kar di hain. Niche diye gaye steps follow karein:
+Aapka Next.js code hi aapka Android app hai. Maine aisi setting kar di hai ki GitHub khud ek Android project banayega aur aapko APK de dega.
 
-### 1. Code Preparation ✅
-Maine aapke project mein ye zaroori files update kar di hain:
-- **`next.config.ts`**: Static export enable kiya gaya hai (`output: export`).
-- **`capacitor.config.ts`**: Mobile paths configure kar diye hain.
-- **`.github/workflows/android-build.yml`**: APK build pipeline setup hai.
+### Step 1: Code Push Karein ✅
+Is poore project ko apne GitHub account par upload (Push) karein. 
+- Maine `.github/workflows/android-build.yml` mein saara logic likh diya hai.
 
-### 2. Aapko Kya Karna Hai? (Step-by-Step)
-1. **GitHub Par Push Karein**: Is poore project ko apne GitHub account par upload (Push) karein.
-2. **Actions Tab Check Karein**: 
-   - Apne GitHub repository mein upar **"Actions"** tab par click karein.
-   - Wahan aapko **"Build Android APK (Cloud Build)"** chalta hua dikhega (Yellow circle 🟡).
-   - Isme lagbhag 5-7 minute lagenge.
-3. **APK Download Karein**:
-   - Jab build Green ✅ ho jaye, toh uspar click karein.
-   - Niche **"Artifacts"** section mein aapko `VideoMaster-AI-Debug-APK` dikhega.
-   - Usse download karein, apne phone mein transfer karein aur install karein!
+### Step 2: GitHub Actions Tab Mein Jayein 🚀
+1. Apni repository mein upar **"Actions"** tab par click karein.
+2. Left side mein **"Build Android APK (Cloud Build)"** par click karein.
+3. Wahan aapko ek workflow chalta hua dikhega (Yellow circle 🟡).
+4. Isme 5-8 minute lagenge kyunki GitHub aapka Android project zero se build kar raha hai.
 
-### ⚠️ Zaroori Baat:
-- Maine build fail hone ke saare potential reasons (missing `cn`, icons mismatch) ko fix kar diya hai.
-- Agar aapko Play Store par dalna hai, toh aapko **Production Key** generate karni hogi (abhi ye Debug APK hai).
+### Step 3: APK Download Karein 📥
+1. Jab build Green ✅ ho jaye, toh uspar click karein.
+2. Sabse niche **"Artifacts"** section mein aapko `VideoMaster-AI-Final-APK` naam ki file milegi.
+3. Usey download karein, phone mein transfer karein aur install karein!
+
+### ⚠️ Important Note:
+- Maine build process ko "Automatic Scaffold" mode mein set kiya hai. Iska matlab hai ki aapko computer par Android Studio ki zaroorat nahi hai.
+- Agar koi error aaye, toh Dashboard par **"System Diagnostics"** run karein.
 
 **Aapka App ab ek professional Android App banne ke liye bilkul taiyar hai!** 🚀📲
