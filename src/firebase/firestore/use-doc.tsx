@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import {
   DocumentReference,
   onSnapshot,
@@ -13,18 +13,31 @@ import { FirestorePermissionError } from '../errors';
 
 /**
  * useDoc hook for real-time Firestore document updates.
- * Correctly handles permission errors using the central error architecture.
+ * Optimized to prevent infinite render loops using path-based stabilization.
  */
 export function useDoc<T = DocumentData>(ref: DocumentReference<T> | null) {
   const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
+  
+  // Use a ref to track the last path to avoid redundant re-subscriptions
+  const lastPathRef = useRef<string | null>(null);
 
   useEffect(() => {
+    const currentPath = ref?.path || null;
+    
     if (!ref) {
-      setLoading(false);
+      if (lastPathRef.current !== null) {
+        setData(null);
+        setLoading(false);
+        lastPathRef.current = null;
+      }
       return;
     }
+
+    // Only re-subscribe if the path has actually changed
+    if (lastPathRef.current === currentPath) return;
+    lastPathRef.current = currentPath;
 
     setLoading(true);
     const unsubscribe = onSnapshot(
@@ -35,15 +48,12 @@ export function useDoc<T = DocumentData>(ref: DocumentReference<T> | null) {
         setError(null);
       },
       async (serverError) => {
-        // Construct detailed permission error for the dev overlay
         const permissionError = new FirestorePermissionError({
           path: ref.path,
           operation: 'get',
         });
         
-        // Emit for the global listener
         errorEmitter.emit('permission-error', permissionError);
-        
         setError(permissionError);
         setLoading(false);
       }

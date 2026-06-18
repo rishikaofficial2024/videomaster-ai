@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import {
   Query,
   onSnapshot,
@@ -13,15 +13,20 @@ import { FirestorePermissionError } from '../errors';
 
 /**
  * useCollection hook for real-time Firestore collection updates.
- * Correctly handles permission errors using the central error architecture.
+ * Optimized to prevent infinite render loops.
  */
 export function useCollection<T = DocumentData>(query: Query<T> | null) {
   const [data, setData] = useState<T[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
+  
+  // Track the query to avoid redundant subscriptions
+  // For queries, we can use the internal query string if available or a hash
+  const queryRef = useRef<string | null>(null);
 
   useEffect(() => {
     if (!query) {
+      setData(null);
       setLoading(false);
       return;
     }
@@ -39,15 +44,12 @@ export function useCollection<T = DocumentData>(query: Query<T> | null) {
         setError(null);
       },
       async (serverError) => {
-        // Construct detailed permission error for the dev overlay
         const permissionError = new FirestorePermissionError({
-          path: (query as any)._query?.path?.segments?.join('/') || 'collection',
+          path: 'collection_query',
           operation: 'list',
         });
         
-        // Emit for the global listener
         errorEmitter.emit('permission-error', permissionError);
-        
         setError(permissionError);
         setLoading(false);
       }

@@ -5,6 +5,7 @@ import { initializeApp, getApps, getApp, FirebaseApp } from 'firebase/app';
 import { getAuth, Auth } from 'firebase/auth';
 import { getFirestore, Firestore } from 'firebase/firestore';
 import { firebaseConfig } from './config';
+import { useMemo, DependencyList } from 'react';
 
 let app: FirebaseApp;
 let auth: Auth;
@@ -12,7 +13,6 @@ let firestore: Firestore;
 
 /**
  * Initializes Firebase services and returns the instances.
- * This function handles idempotent initialization correctly on the client.
  */
 export function initializeFirebase() {
   if (getApps().length > 0) {
@@ -25,6 +25,15 @@ export function initializeFirebase() {
   firestore = getFirestore(app);
   
   return { app, auth, firestore };
+}
+
+/**
+ * useMemoFirebase stabilizes Firestore references or queries.
+ * Essential to prevent infinite re-render loops in useDoc/useCollection.
+ */
+export function useMemoFirebase<T>(factory: () => T, deps: DependencyList): T {
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  return useMemo(factory, deps);
 }
 
 export { FirebaseProvider, useFirebase, useFirebaseApp, useFirestore, useAuth } from './provider';

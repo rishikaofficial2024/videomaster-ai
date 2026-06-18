@@ -13,9 +13,9 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useUser, useFirestore, useCollection, useDoc } from "@/firebase";
+import { useUser, useFirestore, useCollection, useDoc, useMemoFirebase } from "@/firebase";
 import { collection, query, orderBy, limit, doc, updateDoc, increment } from "firebase/firestore";
-import { useMemo, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
@@ -32,21 +32,23 @@ export default function Dashboard() {
     setMounted(true);
   }, []);
 
-  const userProfileRef = useMemo(() => {
-    if (!user) return null;
+  // Use useMemoFirebase to stabilize the Firestore reference
+  const userProfileRef = useMemoFirebase(() => {
+    if (!user || !db) return null;
     return doc(db, "users", user.uid);
-  }, [user, db]);
+  }, [user?.uid, db]);
 
   const { data: profile } = useDoc(userProfileRef);
 
-  const projectsQuery = useMemo(() => {
+  // Use useMemoFirebase to stabilize the Firestore query
+  const projectsQuery = useMemoFirebase(() => {
     if (!db || !user) return null;
     return query(
       collection(db, "users", user.uid, "projects"),
       orderBy("createdAt", "desc"),
       limit(6)
     );
-  }, [db, user]);
+  }, [db, user?.uid]);
 
   const { data: projects, loading: projectsLoading } = useCollection(projectsQuery);
 
