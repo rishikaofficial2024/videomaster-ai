@@ -9,19 +9,23 @@ import {
   ChevronRight, Loader2, Crown, Coins, 
   Zap, MoreVertical, Video, ArrowUpRight, 
   ShieldCheck, BarChart3, Clock, Layout,
-  Cpu, Activity, Globe, ExternalLink
+  Cpu, Activity, Globe, ExternalLink, MonitorPlay
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useUser, useFirestore, useCollection, useDoc } from "@/firebase";
-import { collection, query, orderBy, limit, doc } from "firebase/firestore";
-import { useMemo } from "react";
+import { collection, query, orderBy, limit, doc, updateDoc, increment } from "firebase/firestore";
+import { useMemo, useState } from "react";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
+import { useToast } from "@/hooks/use-toast";
+import { AdBanner } from "@/components/ads/ad-banner";
 
 export default function Dashboard() {
   const { user, loading: userLoading } = useUser();
   const db = useFirestore();
+  const { toast } = useToast();
+  const [adLoading, setAdLoading] = useState(false);
 
   const userProfileRef = useMemo(() => {
     if (!user) return null;
@@ -40,6 +44,27 @@ export default function Dashboard() {
   }, [db, user]);
 
   const { data: projects, loading: projectsLoading } = useCollection(projectsQuery);
+
+  const handleWatchAd = async () => {
+    if (!userProfileRef) return;
+    setAdLoading(true);
+    // Simulate watching a rewarded video ad
+    toast({
+      title: "Loading Reward Ad...",
+      description: "Please wait 5 seconds to earn your 10 free credits.",
+    });
+
+    setTimeout(async () => {
+      await updateDoc(userProfileRef, {
+        credits: increment(10)
+      });
+      setAdLoading(false);
+      toast({
+        title: "Credits Added! 💰",
+        description: "10 AI Credits have been added to your account for watching an ad.",
+      });
+    }, 5000);
+  };
 
   const formatDate = (timestamp: any) => {
     if (!timestamp) return "Just now";
@@ -103,27 +128,25 @@ export default function Dashboard() {
           </div>
         </header>
 
-        {/* Live Status Bar */}
-        <section className="bg-primary/5 border border-primary/10 p-6 rounded-[2rem] flex flex-col md:flex-row items-center justify-between gap-4">
-           <div className="flex items-center gap-4">
-              <div className="p-3 bg-primary/10 rounded-2xl">
-                 <Globe className="w-6 h-6 text-primary" />
+        {/* Ad Reward Section */}
+        <section className="bg-gradient-to-r from-indigo-500/10 to-primary/10 border border-white/10 p-8 rounded-[3rem] blue-glow flex flex-col md:flex-row items-center justify-between gap-6">
+           <div className="flex items-center gap-6">
+              <div className="w-16 h-16 bg-white/5 rounded-[1.5rem] flex items-center justify-center border border-white/10">
+                 <MonitorPlay className="w-8 h-8 text-primary" />
               </div>
-              <div>
-                 <h4 className="font-bold text-sm">Aapka App Live Hai!</h4>
-                 <p className="text-xs text-muted-foreground">Ye aapka public link hai jise aap share kar sakte hain.</p>
+              <div className="space-y-1">
+                 <h3 className="text-xl font-bold font-headline">Paisa Kamane Ke Liye Ads Dekhein</h3>
+                 <p className="text-sm text-muted-foreground font-medium">Har ad dekhne par aapko milenge <span className="text-primary font-bold">+10 Free Credits</span></p>
               </div>
            </div>
-           <div className="flex items-center gap-3">
-              <code className="bg-black/40 px-4 py-2 rounded-xl text-xs font-mono text-primary border border-primary/20">
-                 https://studio-9489287013-59986.web.app
-              </code>
-              <Button size="sm" variant="outline" className="rounded-xl border-primary/20 hover:bg-primary/10" asChild>
-                 <a href="https://studio-9489287013-59986.web.app" target="_blank" rel="noopener noreferrer">
-                    <ExternalLink className="w-4 h-4" />
-                 </a>
-              </Button>
-           </div>
+           <Button 
+             onClick={handleWatchAd} 
+             disabled={adLoading}
+             className="h-14 px-10 rounded-2xl bg-white text-black hover:bg-primary hover:text-white font-bold transition-all shadow-xl"
+           >
+              {adLoading ? <Loader2 className="animate-spin mr-2" /> : <Zap className="w-4 h-4 mr-2" />}
+              {adLoading ? "Processing Reward..." : "Watch Ad & Earn Credits"}
+           </Button>
         </section>
 
         {/* Global Analytics Overview */}
@@ -169,6 +192,8 @@ export default function Dashboard() {
               </div>
            </Card>
         </section>
+
+        <AdBanner provider="AdMob Mobile Ads" />
 
         {/* Recent Projects */}
         <section className="space-y-8">

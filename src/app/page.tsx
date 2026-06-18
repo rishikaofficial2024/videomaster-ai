@@ -1,14 +1,17 @@
 
+"use client";
+
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { 
   Video, ArrowRight, Sparkles, Wand2, Smartphone, 
   Download, Play, Zap, ShieldCheck, Star, 
-  CheckCircle2, Globe, Cpu, BarChart3, Crown, Check
+  CheckCircle2, Globe, Cpu, BarChart3, Crown, Check, MonitorPlay
 } from "lucide-react";
 import Image from "next/image";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 import { cn } from "@/lib/utils";
+import { AdBanner } from "@/components/ads/ad-banner";
 
 export default function LandingPage() {
   const heroImg = PlaceHolderImages.find(img => img.id === "hero-bg");
@@ -80,6 +83,10 @@ export default function LandingPage() {
               </div>
             </div>
           </div>
+        </section>
+
+        <section className="container mx-auto px-6">
+          <AdBanner provider="Google AdSense" />
         </section>
 
         {/* Features Section */}
