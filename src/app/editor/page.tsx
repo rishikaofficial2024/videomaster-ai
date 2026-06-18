@@ -10,7 +10,7 @@ import {
   Music, Wand2, Download, Sparkles, ChevronLeft, Loader2, Video,
   Zap, Volume2, Image as ImageIcon,
   PenTool, Layers, MousePointer2,
-  Coins, Plus, RefreshCw, AlertCircle, CloudCheck, Cloud
+  Coins, Plus, RefreshCw, AlertCircle, Cloud
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { aiVideoContentOptimization } from "@/ai/flows/ai-video-content-optimization-flow";
@@ -247,7 +247,7 @@ export default function EditorPage() {
                  </div>
                ) : (
                  <div className="flex items-center gap-1">
-                   <Activity className="w-2.5 h-2.5 text-emerald-500" />
+                   <Zap className="w-2.5 h-2.5 text-emerald-500" />
                    <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest">Neural Link Active</span>
                  </div>
                )}
@@ -462,7 +462,7 @@ export default function EditorPage() {
                  <TabsContent value="project" className="mt-0 space-y-8">
                     <div className="p-6 rounded-[2rem] bg-emerald-500/5 border border-emerald-500/20 space-y-4">
                        <div className="flex items-center gap-3">
-                          <CloudCheck className="w-5 h-5 text-emerald-500" />
+                          <Cloud className="w-5 h-5 text-emerald-500" />
                           <h4 className="text-xs font-bold uppercase tracking-widest text-emerald-500">Cloud Status</h4>
                        </div>
                        <p className="text-[10px] text-muted-foreground leading-relaxed">All changes are automatically synced to your secure cloud workspace. You can pick up where you left off on any device.</p>
