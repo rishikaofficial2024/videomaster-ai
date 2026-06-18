@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect, useRef } from "react";
@@ -10,7 +11,7 @@ import {
   Coins, Plus, RefreshCw, Cloud, Info,
   LayoutTemplate, Type, Box, Upload, Palette,
   Volume2, Image as ImageIcon, PenTool, Layers,
-  Subtitles, BarChart4, TrendingUp, Tags, Music, Trash2, X
+  Subtitles, BarChart4, TrendingUp, Tags, Music, Trash2, X, AlertTriangle
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { aiVideoContentOptimization } from "@/ai/flows/ai-video-content-optimization-flow";
@@ -48,7 +49,7 @@ export default function EditorPage() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [processingMessage, setProcessingMessage] = useState("");
-  const [activeTab, setActiveTab] = useState("ai"); // Default to AI for easier access
+  const [activeTab, setActiveTab] = useState("ai");
   const [activeInspectorTab, setActiveInspectorTab] = useState("ai");
   
   const [videoData, setVideoData] = useState<string | null>(null);
@@ -189,7 +190,7 @@ export default function EditorPage() {
       handleSave({ aiNotes: result.script });
       toast({ title: "Success!", description: "Professional script generated." });
     } catch (e: any) {
-      toast({ variant: "destructive", title: "AI Generation Error", description: e.message || "Failed to generate script. Check your API key or quota." });
+      toast({ variant: "destructive", title: "AI Generation Error", description: e.message });
     } finally {
       setIsProcessing(false);
     }
@@ -206,7 +207,7 @@ export default function EditorPage() {
       handleSave({ thumbnailUrl: result.thumbnailDataUri });
       toast({ title: "Masterpiece Ready", description: "Your thumbnail has been designed." });
     } catch (e: any) {
-      toast({ variant: "destructive", title: "Design Error", description: e.message || "AI design failed. Check API key or quota." });
+      toast({ variant: "destructive", title: "Design Error", description: e.message });
     } finally {
       setIsProcessing(false);
     }
@@ -223,7 +224,17 @@ export default function EditorPage() {
       handleSave({ videoDataUri: result.videoDataUri });
       toast({ title: "Clip Rendered", description: "Video successfully added." });
     } catch (e: any) {
-      toast({ variant: "destructive", title: "Rendering Failed", description: e.message || "Video generation failed. Check API key." });
+      const msg = e.message || "";
+      if (msg.includes("billing") || msg.includes("400")) {
+        toast({ 
+          variant: "destructive", 
+          title: "⚠️ Billing Required for Video", 
+          description: "Video generation (Veo 2.0) ke liye Google Cloud par Billing chalu karna zaroori hai. Please check INSTRUCTIONS_HINDI.md for steps.",
+          duration: 10000
+        });
+      } else {
+        toast({ variant: "destructive", title: "Rendering Failed", description: msg });
+      }
     } finally {
       setIsProcessing(false);
     }
@@ -240,7 +251,7 @@ export default function EditorPage() {
       handleSave({ audioDataUri: result.audioDataUri });
       toast({ title: "Audio Ready", description: "Voiceover track generated." });
     } catch (e: any) {
-      toast({ variant: "destructive", title: "Audio Error", description: e.message || "Failed to synthesize voice." });
+      toast({ variant: "destructive", title: "Audio Error", description: e.message });
     } finally {
       setIsProcessing(false);
     }
@@ -262,7 +273,7 @@ export default function EditorPage() {
       });
       toast({ title: "SEO Optimized", description: "Viral tags and titles added." });
     } catch (e: any) {
-      toast({ variant: "destructive", title: "SEO Error", description: e.message || "Optimization failed." });
+      toast({ variant: "destructive", title: "SEO Error", description: e.message });
     } finally {
       setIsProcessing(false);
     }
@@ -282,7 +293,7 @@ export default function EditorPage() {
       handleSave({ subtitles: result.subtitles });
       toast({ title: "Subtitles Generated", description: "WebVTT track added to project." });
     } catch (e: any) {
-      toast({ variant: "destructive", title: "Subtitle Error", description: e.message || "AI transcription failed." });
+      toast({ variant: "destructive", title: "Subtitle Error", description: e.message });
     } finally {
       setIsProcessing(false);
     }
@@ -442,6 +453,10 @@ export default function EditorPage() {
                        <div className="flex items-center gap-3">
                           <Sparkles className="w-4 h-4 text-indigo-400" />
                           <h4 className="text-[10px] font-bold uppercase tracking-widest text-indigo-400">Cinematic Veo 2.0</h4>
+                       </div>
+                       <div className="bg-orange-500/10 border border-orange-500/20 p-2 rounded-lg flex items-start gap-2 mb-2">
+                          <AlertTriangle className="w-3 h-3 text-orange-400 shrink-0 mt-0.5" />
+                          <span className="text-[8px] text-orange-200">Veo 2.0 requires active GCP Billing.</span>
                        </div>
                        <textarea 
                           placeholder="Describe your scene for video generation..." 
