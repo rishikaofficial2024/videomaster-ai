@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, useEffect, useMemo, useRef } from "react";
@@ -10,7 +9,7 @@ import {
   Music, Wand2, Download, Sparkles, ChevronLeft, Loader2, Video,
   Zap, Volume2, Image as ImageIcon,
   PenTool, Layers, MousePointer2,
-  Coins, Plus, RefreshCw, AlertCircle, Cloud
+  Coins, Plus, RefreshCw, AlertCircle, Cloud, ClipboardCheck
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { aiVideoContentOptimization } from "@/ai/flows/ai-video-content-optimization-flow";
@@ -30,7 +29,6 @@ import { cn } from "@/lib/utils";
 export default function EditorPage() {
   const searchParams = useSearchParams();
   const projectIdFromUrl = searchParams.get("id");
-  const toolFromUrl = searchParams.get("tool");
   const router = useRouter();
   const { user } = useUser();
   const db = useFirestore();
@@ -48,12 +46,10 @@ export default function EditorPage() {
   const [activeTool, setActiveTool] = useState("ai");
   const [activeInspectorTab, setActiveInspectorTab] = useState("ai");
   
-  // Media States
   const [videoData, setVideoData] = useState<string | null>(null);
   const [audioData, setAudioData] = useState<string | null>(null);
   const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null);
   
-  // AI Input/Output States
   const [scriptTopic, setScriptTopic] = useState("");
   const [thumbnailPrompt, setThumbnailPrompt] = useState("");
   const [videoPrompt, setVideoPrompt] = useState("");
@@ -61,7 +57,6 @@ export default function EditorPage() {
   
   const [aiScript, setAiScript] = useState<any>(null);
 
-  // Load project if exists
   const projectRef = useMemo(() => {
     if (!user || !projectId) return null;
     return doc(db, "users", user.uid, "projects", projectId);
@@ -86,7 +81,6 @@ export default function EditorPage() {
     }
   }, [project]);
 
-  // Project ID Generation
   useEffect(() => {
     if (!projectId && !projectIdFromUrl) {
       const newId = "prj-" + Math.random().toString(36).substring(2, 9);
@@ -146,7 +140,6 @@ export default function EditorPage() {
     }
   };
 
-  // AI Actions
   const handleGenerateScript = async () => {
     if (!scriptTopic || !checkCredits(2)) return;
     setIsProcessing(true);
@@ -158,7 +151,7 @@ export default function EditorPage() {
       await handleSave({ aiNotes: result.script });
       toast({ title: "Script Optimized", description: "Project notes updated." });
     } catch (e: any) {
-      toast({ variant: "destructive", title: "AI Error", description: e.message });
+      toast({ variant: "destructive", title: "AI Error", description: "API Key invalid or quota exceeded. Check your .env file." });
     } finally {
       setIsProcessing(false);
     }
@@ -175,7 +168,7 @@ export default function EditorPage() {
       await handleSave({ thumbnailUrl: result.thumbnailDataUri });
       toast({ title: "Thumbnail Ready", description: "Master design applied." });
     } catch (e: any) {
-      toast({ variant: "destructive", title: "Design Error", description: e.message });
+      toast({ variant: "destructive", title: "Design Error", description: "Failed to design thumbnail. Check API Key." });
     } finally {
       setIsProcessing(false);
     }
@@ -192,7 +185,7 @@ export default function EditorPage() {
       await handleSave({ videoDataUri: result.videoDataUri });
       toast({ title: "Clip Rendered", description: "Successfully added to project." });
     } catch (e: any) {
-      toast({ variant: "destructive", title: "Engine Error", description: "Connection timeout. Please retry." });
+      toast({ variant: "destructive", title: "Engine Error", description: "Connection timeout or invalid key. Please retry." });
     } finally {
       setIsProcessing(false);
     }
@@ -208,7 +201,7 @@ export default function EditorPage() {
       await deductCredits(5);
       toast({ title: "Audio Ready", description: "Narration track generated." });
     } catch (e: any) {
-      toast({ variant: "destructive", title: "Audio Error", description: e.message });
+      toast({ variant: "destructive", title: "Audio Error", description: "Failed to generate audio. Check key." });
     } finally {
       setIsProcessing(false);
     }
@@ -226,7 +219,6 @@ export default function EditorPage() {
     <div className="h-screen bg-[#05070a] flex flex-col overflow-hidden text-[#e1e4e8] font-body">
       <Navbar />
       
-      {/* Top Bar */}
       <div className="h-14 border-b bg-[#0a0d14]/90 backdrop-blur-2xl px-4 flex items-center justify-between z-40 shrink-0">
         <div className="flex items-center gap-6">
           <Link href="/dashboard" className="p-1.5 hover:bg-white/5 rounded-lg transition-colors">
@@ -267,7 +259,6 @@ export default function EditorPage() {
       </div>
 
       <div className="flex-1 flex overflow-hidden">
-        {/* Tool Shelf */}
         <div className="w-16 bg-[#0a0d14] border-r flex flex-col items-center py-6 gap-6 z-30 shrink-0">
            {[
              { icon: MousePointer2, id: 'select' },
@@ -281,14 +272,10 @@ export default function EditorPage() {
                activeTool === tool.id ? "bg-primary text-white shadow-2xl shadow-primary/40" : "text-muted-foreground hover:bg-white/5"
              )} onClick={() => setActiveTool(tool.id)}>
                <tool.icon className="w-5 h-5" />
-               <div className="absolute left-full ml-4 px-2 py-1 bg-black text-[10px] font-bold rounded opacity-0 group-hover:opacity-100 pointer-events-none whitespace-nowrap z-50 shadow-2xl">
-                  {tool.id.toUpperCase()}
-               </div>
              </button>
            ))}
         </div>
 
-        {/* Workspace */}
         <div className="flex-1 flex flex-col min-w-0 bg-[#0c0f17] relative">
           <div className="flex-1 relative flex items-center justify-center p-8">
              <div className="aspect-video w-full max-w-5xl bg-black rounded-[2.5rem] shadow-[0_0_120px_rgba(0,0,0,0.6)] border border-white/5 relative overflow-hidden flex items-center justify-center group/player">
@@ -311,7 +298,6 @@ export default function EditorPage() {
                   />
                 )}
 
-                {/* Video Controls HUD */}
                 <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-6 bg-black/40 backdrop-blur-xl border border-white/10 px-6 py-3 rounded-2xl opacity-0 group-hover/player:opacity-100 transition-opacity">
                    <Button variant="ghost" size="icon" className="text-white/60 hover:text-white"><SkipBack className="w-4 h-4" /></Button>
                    <button onClick={togglePlayback} className="w-12 h-12 bg-white text-black rounded-full flex items-center justify-center shadow-xl active:scale-95 transition-transform">
@@ -322,7 +308,6 @@ export default function EditorPage() {
              </div>
           </div>
 
-          {/* Timeline Engine */}
           <div className="h-[280px] bg-[#0a0d14] border-t flex flex-col shrink-0">
              <div className="h-10 bg-[#111621]/80 px-6 flex items-center justify-between border-b">
                 <div className="flex items-center gap-4">
@@ -353,7 +338,6 @@ export default function EditorPage() {
                                   <div key={j} className="w-1 bg-current rounded-full" style={{ height: `${h * 10}%` }} />
                                 ))}
                              </div>
-                             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent animate-shimmer" />
                           </div>
                         )}
                      </div>
@@ -363,7 +347,6 @@ export default function EditorPage() {
           </div>
         </div>
 
-        {/* Inspector Sidebar */}
         <div className="w-[400px] bg-[#0a0d14] border-l shrink-0 flex flex-col overflow-hidden">
            <Tabs value={activeInspectorTab} onValueChange={setActiveInspectorTab} className="flex-1 flex flex-col">
               <TabsList className="w-full h-14 bg-transparent border-b rounded-none grid grid-cols-2 p-0">
@@ -373,7 +356,6 @@ export default function EditorPage() {
               
               <div className="flex-1 overflow-y-auto p-6 space-y-8 custom-scrollbar">
                  <TabsContent value="ai" className="mt-0 space-y-8">
-                    {/* Script Tool */}
                     <div className="p-6 rounded-[2rem] bg-[#161a25] border border-indigo-500/20 space-y-4 shadow-2xl">
                        <div className="flex items-center justify-between">
                           <div className="flex items-center gap-3">
@@ -389,11 +371,10 @@ export default function EditorPage() {
                           onChange={(e) => setScriptTopic(e.target.value)}
                        />
                        <Button className="w-full h-12 rounded-2xl font-bold bg-indigo-600 hover:bg-indigo-700 text-xs shadow-xl shadow-indigo-500/20" onClick={handleGenerateScript} disabled={isProcessing || !scriptTopic}>
-                          {isProcessing && processingMessage.includes("script") ? <Loader2 className="animate-spin" /> : "Initiate Analysis"}
+                          {isProcessing && processingMessage.includes("narrative") ? <Loader2 className="animate-spin" /> : "Initiate Analysis"}
                        </Button>
                     </div>
 
-                    {/* Veo 2.0 Video Gen */}
                     <div className="p-6 rounded-[2rem] bg-[#161a25] border border-blue-500/20 space-y-4 shadow-2xl">
                        <div className="flex items-center justify-between">
                           <div className="flex items-center gap-3">
@@ -413,7 +394,6 @@ export default function EditorPage() {
                        </Button>
                     </div>
 
-                    {/* Voiceover Tool */}
                     <div className="p-6 rounded-[2rem] bg-[#161a25] border border-cyan-500/20 space-y-4 shadow-2xl">
                        <div className="flex items-center justify-between">
                           <div className="flex items-center gap-3">
@@ -429,7 +409,7 @@ export default function EditorPage() {
                           onChange={(e) => setVoiceText(e.target.value)}
                        />
                        <Button className="w-full h-12 rounded-2xl font-bold bg-cyan-600 hover:bg-cyan-700 text-xs shadow-xl shadow-cyan-500/20" onClick={handleGenerateVoiceover} disabled={isProcessing || !voiceText}>
-                          {isProcessing && processingMessage.includes("neural") ? <Loader2 className="animate-spin" /> : "Synthesize Voice"}
+                          {isProcessing && processingMessage.includes("synthesizing") ? <Loader2 className="animate-spin" /> : "Synthesize Voice"}
                        </Button>
                        {audioData && (
                          <div className="pt-2">
@@ -438,7 +418,6 @@ export default function EditorPage() {
                        )}
                     </div>
 
-                    {/* Thumbnail Tool */}
                     <div className="p-6 rounded-[2rem] bg-[#161a25] border border-rose-500/20 space-y-4 shadow-2xl">
                        <div className="flex items-center justify-between">
                           <div className="flex items-center gap-3">
@@ -462,8 +441,8 @@ export default function EditorPage() {
                  <TabsContent value="project" className="mt-0 space-y-8">
                     <div className="p-6 rounded-[2rem] bg-emerald-500/5 border border-emerald-500/20 space-y-4">
                        <div className="flex items-center gap-3">
-                          <Cloud className="w-5 h-5 text-emerald-500" />
-                          <h4 className="text-xs font-bold uppercase tracking-widest text-emerald-500">Cloud Status</h4>
+                          <ClipboardCheck className="w-5 h-5 text-emerald-500" />
+                          <h4 className="text-xs font-bold uppercase tracking-widest text-emerald-500">Cloud Sync Status</h4>
                        </div>
                        <p className="text-[10px] text-muted-foreground leading-relaxed">All changes are automatically synced to your secure cloud workspace. You can pick up where you left off on any device.</p>
                     </div>
@@ -482,7 +461,6 @@ export default function EditorPage() {
         </div>
       </div>
 
-      {/* Global Processing HUD */}
       {isProcessing && (
         <div className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-2xl flex items-center justify-center p-12">
            <div className="max-w-md w-full text-center space-y-10 animate-in fade-in zoom-in-95 duration-500">
@@ -495,9 +473,6 @@ export default function EditorPage() {
              <div className="space-y-3">
                <h3 className="text-3xl font-headline font-bold text-white tracking-tighter uppercase">AI Processing</h3>
                <p className="text-muted-foreground font-medium text-base leading-relaxed italic">{processingMessage}</p>
-             </div>
-             <div className="h-1 bg-white/5 rounded-full overflow-hidden w-full max-w-sm mx-auto">
-                <div className="h-full bg-primary animate-progress-indefinite shadow-[0_0_20px_rgba(59,130,246,0.8)]" />
              </div>
            </div>
         </div>
