@@ -1,4 +1,3 @@
-
 "use client";
 
 import Link from "next/link";
@@ -23,7 +22,7 @@ export default function LandingPage() {
           <div className="bg-primary p-1.5 rounded-xl shadow-lg shadow-primary/30">
             <Video className="h-6 w-6 text-white" />
           </div>
-          <span className="font-headline font-bold text-2xl tracking-tighter">VideoMaster<span className="text-primary">AI</span></span>
+          <span className="font-headline font-bold text-2xl tracking-tighter">VideoMaster<span className="text-primary">AI.in</span></span>
         </Link>
         <nav className="ml-auto flex items-center gap-8">
           <div className="hidden md:flex gap-8">
@@ -48,13 +47,13 @@ export default function LandingPage() {
           <div className="container px-6 mx-auto">
             <div className="flex flex-col items-center text-center space-y-10 mb-20">
               <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-bold uppercase tracking-[0.2em] animate-in fade-in slide-in-from-bottom-3 duration-1000">
-                <Sparkles className="w-3.5 h-3.5" /> India's Leading AI Video Generator
+                <Sparkles className="w-3.5 h-3.5" /> India's Leading AI Video Generator (.in)
               </div>
               <h1 className="text-5xl md:text-9xl font-bold tracking-tighter font-headline max-w-6xl leading-[0.9] animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-100">
                 Create <span className="text-primary italic">Viral Reels</span> with India's Best AI Studio.
               </h1>
               <p className="max-w-[800px] text-muted-foreground text-lg md:text-2xl font-medium leading-relaxed animate-in fade-in slide-in-from-bottom-5 duration-1000 delay-200">
-                VideoMaster AI is the ultimate viral reels maker and script writer for Indian creators. Generate scripts, thumbnails, and cinematic HD videos automatically.
+                VideoMaster AI is the ultimate viral reels maker and script writer for Indian creators. Generate scripts, thumbnails, and cinematic HD videos automatically on videomaster-ai.in.
               </p>
               <div className="flex flex-col sm:flex-row gap-5 animate-in fade-in slide-in-from-bottom-6 duration-1000 delay-300">
                 <Button asChild size="lg" className="h-16 px-12 rounded-2xl text-lg font-bold shadow-2xl shadow-primary/30 hover:scale-105 transition-all">
@@ -225,7 +224,7 @@ export default function LandingPage() {
               <nav className="flex flex-col gap-4 text-muted-foreground font-medium text-sm">
                 <Link href="#" className="hover:text-primary transition-colors">About Us</Link>
                 <Link href="#" className="hover:text-primary transition-colors">Contact Support</Link>
-                <p className="text-xs text-muted-foreground">Email: support@videomaster-ai.web.app</p>
+                <p className="text-xs text-muted-foreground">Email: support@videomaster-ai.in</p>
               </nav>
             </div>
           </div>

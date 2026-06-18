@@ -1,11 +1,10 @@
-
 import type {Metadata} from 'next';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
 import { FirebaseClientProvider } from '@/firebase';
 
 export const metadata: Metadata = {
-  title: 'VideoMaster AI - India\'s #1 Professional AI Video Studio & Script Writer',
+  title: 'VideoMaster AI - India\'s #1 Professional AI Video Studio & Script Writer (.in)',
   description: 'Create viral YouTube, TikTok, and Reels 10x faster with VideoMaster AI. The best AI video generator for creators in India. Features: AI Script Writer, Cinematic Thumbnail Maker, and Veo 2.0 Video Generation. Get 100 free credits and start earning today!',
   keywords: [
     'AI Video Generator India', 
@@ -19,14 +18,14 @@ export const metadata: Metadata = {
     'YouTube Automation Tool'
   ],
   authors: [{ name: 'VideoMaster AI Global' }],
-  metadataBase: new URL('https://studio-9489287013-59986.web.app'),
+  metadataBase: new URL('https://videomaster-ai.in'),
   alternates: {
     canonical: '/',
   },
   openGraph: {
     title: 'VideoMaster AI - Create Viral Videos in Seconds',
     description: 'The all-in-one AI video studio built to help Indian creators earn more and work less. Join 50,000+ creators today.',
-    url: 'https://studio-9489287013-59986.web.app',
+    url: 'https://videomaster-ai.in',
     siteName: 'VideoMaster AI',
     locale: 'en_IN',
     type: 'website',
