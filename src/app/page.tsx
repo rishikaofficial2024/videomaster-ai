@@ -152,7 +152,7 @@ export default function LandingPage() {
                 { name: "Agency", price: "₹499", features: ["Everything in Pro", "Team Collaboration", "Priority AI Queue", "API Access"] }
               ].map((plan, i) => (
                 <div key={i} className={cn(
-                  "p-12 rounded-[3.5rem] border bg-background/50 flex flex-col space-y-8 relative overflow-hidden transition-all hover:scale-105",
+                  "p-12 rounded-[3.5rem] border bg-card/40 backdrop-blur-xl flex flex-col space-y-8 relative overflow-hidden transition-all hover:scale-105",
                   plan.popular ? "border-primary blue-glow" : "border-white/5"
                 )}>
                   {plan.popular && <div className="absolute top-8 right-8 bg-primary text-white text-[9px] font-bold px-4 py-1.5 rounded-full uppercase tracking-widest">Best Value</div>}
@@ -181,7 +181,7 @@ export default function LandingPage() {
 
         <section className="w-full py-32">
           <div className="container px-6 mx-auto">
-            <div className="bg-primary p-16 md:p-32 rounded-[5rem] text-center text-white relative overflow-hidden shadow-2xl shadow-primary/40">
+            <div className="bg-primary p-16 md:p-32 rounded-[5rem] text-white relative overflow-hidden shadow-2xl shadow-primary/40 text-center">
                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.25),transparent)]"></div>
                <div className="relative z-10 space-y-12">
                   <h2 className="text-5xl md:text-8xl font-bold font-headline tracking-tighter leading-tight">Your Viral Channel <br/> Starts Here</h2>

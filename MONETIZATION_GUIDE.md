@@ -24,7 +24,11 @@ Aapka app ab ek asli "Ad-Revenue Engine" ban chuka hai. Maine sabhi modern ad fo
 ---
 
 ### ⚠️ Zaroori Setup Steps (AdSense ID: pub-8946933317699938)
-1. **Domain Link**: Apna domain `studio-9489287013-59986.web.app` AdSense dashboard mein add karein.
+
+Google AdSense mein apna account verify karne ke liye ye URL use karein:
+👉 **URL**: `https://studio-9489287013-59986.web.app`
+
+1. **Domain Link**: Apna upar diya gaya domain AdSense dashboard mein add karein.
 2. **Transparent Setting**: "Account Settings" mein jakar visibility ko "Transparent" chunein.
 3. **App-ads.txt**: Google AdSense ke dashboard se ye file download karke root folder mein add karein (Maine codes set kar diye hain).
 

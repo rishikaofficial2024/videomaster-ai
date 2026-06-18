@@ -6,7 +6,7 @@ Aapka app coding aur design ke hisaab se **100% complete** hai.
 ---
 
 ### 🌐 LIVE LINK: [https://studio-9489287013-59986.web.app](https://studio-9489287013-59986.web.app)
-(Is link ko aap apne dosto aur users ko share kar sakte hain.)
+(Is link ko aap AdSense mein add karein aur apne dosto ko share karein.)
 
 ---
 
@@ -22,14 +22,14 @@ Aapka app coding aur design ke hisaab se **100% complete** hai.
 ### 🔑 1. Gemini AI Key (.env File)
 AI features ko active karein:
 1. **Key Lein**: [Google AI Studio](https://aistudio.google.com/app/apikey) se Gemini API Key generate karein.
-2. **Setup**: `.env` file mein apni key paste karein:
-   `GEMINI_API_KEY=Aapki_Key_Yahan`
+2. **Setup**: `.env` file mein apni key paste karein.
 
 ---
 
 ### 💰 2. AdSense (Earning Status)
 - **ID Active**: Aapki ID `pub-8946933317699938` code mein set hai.
-- **Next Step**: Google AdSense dashboard mein jakar domain verify karein.
+- **URL for AdSense**: `https://studio-9489287013-59986.web.app`
+- **Next Step**: Google AdSense dashboard mein jakar upar wala domain verify karein.
 
 ---
 
