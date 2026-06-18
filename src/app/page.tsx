@@ -149,7 +149,7 @@ export default function LandingPage() {
             <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
               {[
                 { name: "Starter", price: "₹0", features: ["100 Free Credits", "720p Exports", "Basic AI Editor"] },
-                { name: "Pro Studio", price: "₹99", features: ["Unlimited AI Clips", "4K Ultra HD", "No Watermark"], popular: true },
+                { name: "Pro Studio", price: "₹99", features: ["Unlimited AI Credits", "4K Ultra HD", "No Watermark"], popular: true },
                 { name: "Agency", price: "₹499", features: ["Priority AI Queue", "Team Access", "API Access"] }
               ].map((plan, i) => (
                 <div key={i} className={cn(
