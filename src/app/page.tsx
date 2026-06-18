@@ -150,7 +150,7 @@ export default function LandingPage() {
               {[
                 { name: "Starter", price: "₹0", features: ["100 Free Credits", "720p Exports", "Basic AI Editor"] },
                 { name: "Pro Studio", price: "₹99", features: ["Unlimited AI Credits", "4K Ultra HD", "No Watermark"], popular: true },
-                { name: "Agency", price: "₹499", features: ["Priority AI Queue", "Team Access", "API Access"] }
+                { name: "Agency", price: "₹499", features: ["Everything in Pro", "Team Collaboration", "Priority AI Queue", "API Access"] }
               ].map((plan, i) => (
                 <div key={i} className={cn(
                   "p-10 rounded-[3rem] border bg-background/50 flex flex-col space-y-8 relative overflow-hidden transition-all hover:scale-105",
