@@ -4,16 +4,16 @@ import { googleAI } from '@genkit-ai/google-genai';
 /**
  * Genkit initialization for VideoMaster AI.
  * 
- * This reads the GEMINI_API_KEY from the environment.
- * We use a single centralized instance to ensure the API key is 
- * correctly applied to all AI operations.
+ * We read the GEMINI_API_KEY from the environment and clean it.
+ * This centralized instance ensures the API key is correctly applied 
+ * to all AI operations across server actions.
  */
-const apiKey = (process.env.GEMINI_API_KEY || '').trim().replace(/^["']|["']$/g, '').trim();
+
+const rawKey = process.env.GEMINI_API_KEY || '';
+const apiKey = rawKey.trim().replace(/^["']|["']$/g, '').trim();
 
 if (!apiKey) {
-  console.warn("⚠️ AI WARNING: GEMINI_API_KEY is missing in environment variables.");
-} else {
-  console.log(`✅ AI SERVICE: Configured with key starting with ${apiKey.substring(0, 6)}...`);
+  console.warn("⚠️ AI CONFIG WARNING: GEMINI_API_KEY is not set in .env file.");
 }
 
 export const ai = genkit({
@@ -22,8 +22,12 @@ export const ai = genkit({
       apiKey: apiKey,
     }),
   ],
-  // Default configuration for all model calls
-  model: 'googleai/gemini-flash-latest',
 });
+
+// Exporting model references to ensure consistency across flows
+export const geminiModel = googleAI.model('gemini-flash-latest');
+export const imagenModel = googleAI.model('imagen-4.0-fast-generate-001');
+export const veoModel = googleAI.model('veo-2.0-generate-001');
+export const ttsModel = googleAI.model('gemini-2.5-flash-preview-tts');
 
 export { z } from 'genkit';

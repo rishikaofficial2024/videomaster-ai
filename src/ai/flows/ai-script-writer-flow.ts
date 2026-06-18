@@ -1,11 +1,9 @@
 'use server';
 /**
  * @fileOverview A Genkit flow for generating professional video scripts.
- *
- * - generateAiScript - Function to generate scripts based on topic and platform.
  */
 
-import { ai, z } from '@/ai/genkit';
+import { ai, geminiModel, z } from '@/ai/genkit';
 
 const ScriptWriterInputSchema = z.object({
   topic: z.string().describe('The main topic or subject of the video'),
@@ -33,7 +31,7 @@ const scriptWriterFlow = ai.defineFlow(
   },
   async (input) => {
     const { output } = await ai.generate({
-      model: 'googleai/gemini-flash-latest',
+      model: geminiModel,
       prompt: `You are a world-class social media content strategist and script writer. 
       Create a viral-ready script for ${input.platform} about "${input.topic}". 
       Tone: ${input.tone || 'energetic and engaging'}.
@@ -50,7 +48,7 @@ const scriptWriterFlow = ai.defineFlow(
     });
     
     if (!output) {
-      throw new Error('AI failed to generate a script. Please check your prompt or API quota.');
+      throw new Error('AI engine returned an empty response. This usually happens if the prompt violates safety filters or the API key is invalid.');
     }
     
     return output;

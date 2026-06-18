@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, useEffect, useRef } from "react";
@@ -49,7 +48,7 @@ export default function EditorPage() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [processingMessage, setProcessingMessage] = useState("");
-  const [activeTab, setActiveTab] = useState("templates");
+  const [activeTab, setActiveTab] = useState("ai"); // Default to AI for easier access
   const [activeInspectorTab, setActiveInspectorTab] = useState("ai");
   
   const [videoData, setVideoData] = useState<string | null>(null);
@@ -115,8 +114,8 @@ export default function EditorPage() {
       toast({
         variant: "destructive",
         title: "Credits Required",
-        description: `This action costs ${cost} credits. Please top up your account.`,
-        action: <Button variant="secondary" size="sm" onClick={() => router.push("/premium")}>Upgrade Now</Button>
+        description: `This action costs ${cost} credits. Please watch an ad or upgrade.`,
+        action: <Button variant="secondary" size="sm" onClick={() => router.push("/premium")}>Upgrade</Button>
       });
       return false;
     }
@@ -190,7 +189,7 @@ export default function EditorPage() {
       handleSave({ aiNotes: result.script });
       toast({ title: "Success!", description: "Professional script generated." });
     } catch (e: any) {
-      toast({ variant: "destructive", title: "AI Error", description: "Failed to generate script. Check your API key." });
+      toast({ variant: "destructive", title: "AI Generation Error", description: e.message || "Failed to generate script. Check your API key or quota." });
     } finally {
       setIsProcessing(false);
     }
@@ -207,7 +206,7 @@ export default function EditorPage() {
       handleSave({ thumbnailUrl: result.thumbnailDataUri });
       toast({ title: "Masterpiece Ready", description: "Your thumbnail has been designed." });
     } catch (e: any) {
-      toast({ variant: "destructive", title: "Design Error", description: "AI service failed. Check quota or safety filters." });
+      toast({ variant: "destructive", title: "Design Error", description: e.message || "AI design failed. Check API key or quota." });
     } finally {
       setIsProcessing(false);
     }
@@ -224,7 +223,7 @@ export default function EditorPage() {
       handleSave({ videoDataUri: result.videoDataUri });
       toast({ title: "Clip Rendered", description: "Video successfully added." });
     } catch (e: any) {
-      toast({ variant: "destructive", title: "Rendering Failed", description: "AI video generation is currently busy. Try again soon." });
+      toast({ variant: "destructive", title: "Rendering Failed", description: e.message || "Video generation failed. Check API key." });
     } finally {
       setIsProcessing(false);
     }
@@ -241,7 +240,7 @@ export default function EditorPage() {
       handleSave({ audioDataUri: result.audioDataUri });
       toast({ title: "Audio Ready", description: "Voiceover track generated." });
     } catch (e: any) {
-      toast({ variant: "destructive", title: "Audio Error", description: "Failed to synthesize voice." });
+      toast({ variant: "destructive", title: "Audio Error", description: e.message || "Failed to synthesize voice." });
     } finally {
       setIsProcessing(false);
     }
@@ -263,7 +262,7 @@ export default function EditorPage() {
       });
       toast({ title: "SEO Optimized", description: "Viral tags and titles added." });
     } catch (e: any) {
-      toast({ variant: "destructive", title: "SEO Error", description: "Optimization engine failed." });
+      toast({ variant: "destructive", title: "SEO Error", description: e.message || "Optimization failed." });
     } finally {
       setIsProcessing(false);
     }
@@ -283,7 +282,7 @@ export default function EditorPage() {
       handleSave({ subtitles: result.subtitles });
       toast({ title: "Subtitles Generated", description: "WebVTT track added to project." });
     } catch (e: any) {
-      toast({ variant: "destructive", title: "Subtitle Error", description: "AI transcription failed." });
+      toast({ variant: "destructive", title: "Subtitle Error", description: e.message || "AI transcription failed." });
     } finally {
       setIsProcessing(false);
     }
@@ -305,7 +304,7 @@ export default function EditorPage() {
       const updatedAssets = [...mediaAssets, newAsset];
       setMediaAssets(updatedAssets);
       handleSave({ mediaAssets: updatedAssets });
-      toast({ title: "Uploaded", description: `${file.name} added to your library.` });
+      toast({ title: "Uploaded", description: `${file.name} added to library.` });
     };
     reader.readAsDataURL(file);
   };
@@ -386,10 +385,10 @@ export default function EditorPage() {
       <div className="flex-1 flex overflow-hidden">
         <div className="w-20 bg-[#0a0d14] border-r border-white/5 flex flex-col items-center py-6 gap-6 z-30 shrink-0">
            {[
+             { icon: Wand2, id: 'ai', label: 'AI Magic' },
              { icon: LayoutTemplate, id: 'templates', label: 'Designs' },
              { icon: Box, id: 'elements', label: 'Elements' },
              { icon: Music, id: 'audio', label: 'Audio' },
-             { icon: Wand2, id: 'ai', label: 'AI Magic' },
              { icon: Upload, id: 'uploads', label: 'Uploads' },
              { icon: Layers, id: 'layers', label: 'Layers' }
            ].map((item) => (
@@ -429,7 +428,7 @@ export default function EditorPage() {
                           <h4 className="text-[10px] font-bold uppercase tracking-widest text-primary">Viral Script AI</h4>
                        </div>
                        <textarea 
-                          placeholder="What is your video about?" 
+                          placeholder="What is your video about? (e.g., Comedy, Tech, Vlog)" 
                           className="w-full bg-black/40 border border-white/5 rounded-xl p-3 text-[11px] h-24 focus:ring-1 focus:ring-primary outline-none resize-none transition-all placeholder:text-muted-foreground/30"
                           value={scriptTopic}
                           onChange={(e) => setScriptTopic(e.target.value)}
@@ -445,7 +444,7 @@ export default function EditorPage() {
                           <h4 className="text-[10px] font-bold uppercase tracking-widest text-indigo-400">Cinematic Veo 2.0</h4>
                        </div>
                        <textarea 
-                          placeholder="Describe your scene..." 
+                          placeholder="Describe your scene for video generation..." 
                           className="w-full bg-black/40 border border-white/5 rounded-xl p-3 text-[11px] h-24 focus:ring-1 focus:ring-indigo-500 outline-none resize-none transition-all"
                           value={videoPrompt}
                           onChange={(e) => setVideoPrompt(e.target.value)}
@@ -514,7 +513,7 @@ export default function EditorPage() {
                      <div className="w-20 h-20 bg-primary/10 rounded-[2rem] flex items-center justify-center mx-auto mb-6 border border-primary/20 animate-float">
                         <Video className="w-8 h-8 text-primary" />
                      </div>
-                     <h3 className="text-sm font-bold font-headline uppercase tracking-[0.3em] text-white">Empty Workspace</h3>
+                     <h3 className="text-sm font-bold font-headline uppercase tracking-[0.3em] text-white">Neural Canvas Ready</h3>
                   </div>
                 ) : (
                   <>
@@ -551,7 +550,7 @@ export default function EditorPage() {
                 <div className="flex items-center gap-4">
                    <div className="flex items-center gap-2">
                       <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                      <span className="text-[9px] font-bold uppercase tracking-widest text-emerald-500">Processing Node: Active</span>
+                      <span className="text-[9px] font-bold uppercase tracking-widest text-emerald-500">Processing Engine: Operational</span>
                    </div>
                 </div>
                 <div className="text-[10px] font-mono text-muted-foreground font-bold tracking-widest bg-white/5 px-3 py-1 rounded-lg">00:00:00:00</div>
@@ -581,6 +580,7 @@ export default function EditorPage() {
                                if (track.label.includes("MUSIC")) { setBgMusicUrl(null); handleSave({ backgroundMusicUrl: null }); }
                                if (track.label.includes("VIDEO")) { setVideoData(null); handleSave({ videoDataUri: null }); }
                                if (track.label.includes("VOICE")) { setAudioData(null); handleSave({ audioDataUri: null }); }
+                               if (track.label.includes("SUBTITLES")) { setSubtitles(null); handleSave({ subtitles: null }); }
                              }}>
                                <Trash2 className="w-3 h-3" />
                              </button>
@@ -605,32 +605,32 @@ export default function EditorPage() {
                     <div className="p-6 rounded-[2rem] bg-indigo-500/5 border border-indigo-500/20 space-y-4">
                        <div className="flex items-center gap-3">
                           <Palette className="w-4 h-4 text-indigo-400" />
-                          <h4 className="text-[10px] font-bold uppercase tracking-widest text-indigo-400">Thumbnail Style AI</h4>
+                          <h4 className="text-[10px] font-bold uppercase tracking-widest text-indigo-400">Thumbnail Design AI</h4>
                        </div>
                        <textarea 
-                          placeholder="Describe the aesthetic style..." 
+                          placeholder="Visual prompt for thumbnail generation..." 
                           className="w-full bg-black/40 border border-white/5 rounded-2xl p-4 text-[11px] h-24 focus:ring-1 focus:ring-indigo-500 outline-none resize-none transition-all"
                           value={thumbnailPrompt}
                           onChange={(e) => setThumbnailPrompt(e.target.value)}
                        />
                        <Button className="w-full h-12 rounded-2xl font-bold bg-indigo-600 text-[11px] uppercase" onClick={handleGenerateThumbnail} disabled={isProcessing || !thumbnailPrompt}>
-                          {isProcessing && processingMessage.includes("designing") ? <Loader2 className="animate-spin mr-2" /> : "Design Masterpiece"}
+                          {isProcessing && processingMessage.includes("designing") ? <Loader2 className="animate-spin mr-2" /> : "Generate Thumbnail"}
                        </Button>
                     </div>
 
                     <div className="p-6 rounded-[2rem] bg-emerald-500/5 border border-emerald-500/20 space-y-4">
                        <div className="flex items-center gap-3">
                           <Volume2 className="w-4 h-4 text-emerald-400" />
-                          <h4 className="text-[10px] font-bold uppercase tracking-widest text-emerald-400">Pro Narrator</h4>
+                          <h4 className="text-[10px] font-bold uppercase tracking-widest text-emerald-400">AI Voiceover</h4>
                        </div>
                        <textarea 
-                          placeholder="Script for voiceover..." 
+                          placeholder="Paste text for professional narration..." 
                           className="w-full bg-black/40 border border-white/5 rounded-2xl p-4 text-[11px] h-24 focus:ring-1 focus:ring-emerald-500 outline-none resize-none transition-all"
                           value={voiceText}
                           onChange={(e) => setVoiceText(e.target.value)}
                        />
                        <Button className="w-full h-12 rounded-2xl font-bold bg-emerald-600 text-[11px] uppercase" onClick={handleGenerateVoiceover} disabled={isProcessing || !voiceText}>
-                          {isProcessing && processingMessage.includes("synthesizing") ? <Loader2 className="animate-spin mr-2" /> : "Synthesize Audio"}
+                          {isProcessing && processingMessage.includes("synthesizing") ? <Loader2 className="animate-spin mr-2" /> : "Generate Voiceover"}
                        </Button>
                     </div>
                  </TabsContent>
@@ -638,7 +638,7 @@ export default function EditorPage() {
                  <TabsContent value="seo" className="mt-0 space-y-8">
                     <div className="space-y-6">
                        <div className="flex items-center justify-between">
-                          <h4 className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Optimization Hub</h4>
+                          <h4 className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Viral Hub</h4>
                           <Button size="sm" variant="outline" className="h-8 rounded-full text-[10px] font-bold uppercase border-primary/20 text-primary hover:bg-primary/5" onClick={handleOptimizeContent}>
                              <TrendingUp className="w-3 h-3 mr-2" /> Run AI Audit
                           </Button>
@@ -657,7 +657,7 @@ export default function EditorPage() {
                             <div className="p-5 rounded-[1.5rem] bg-white/5 border border-white/10 space-y-3">
                                <div className="flex items-center gap-2">
                                   <Tags className="w-3.5 h-3.5 text-muted-foreground" />
-                                  <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Strategic Hashtags</span>
+                                  <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Hashtags</span>
                                </div>
                                <div className="flex flex-wrap gap-2">
                                   {seoData.hashtags?.map((tag: string, i: number) => (
@@ -669,7 +669,7 @@ export default function EditorPage() {
                        ) : (
                          <div className="p-12 text-center space-y-4 bg-white/5 rounded-[2rem] border border-dashed border-white/10">
                             <BarChart4 className="w-10 h-10 text-muted-foreground mx-auto opacity-20" />
-                            <p className="text-[10px] text-muted-foreground font-medium italic">Generate a script first, then run the AI Audit.</p>
+                            <p className="text-[10px] text-muted-foreground font-medium italic">Audit needs a script or voiceover to analyze.</p>
                          </div>
                        )}
                     </div>
@@ -689,7 +689,7 @@ export default function EditorPage() {
                 </div>
              </div>
              <div className="space-y-4">
-               <h3 className="text-4xl font-headline font-bold text-white tracking-tighter uppercase italic">AI Neural Processing</h3>
+               <h3 className="text-4xl font-headline font-bold text-white tracking-tighter uppercase italic">Neural Processing</h3>
                <p className="text-muted-foreground font-medium text-lg italic">{processingMessage}</p>
              </div>
            </div>
