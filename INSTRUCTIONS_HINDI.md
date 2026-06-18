@@ -1,16 +1,16 @@
 
-# 🛠️ VideoMaster AI - Problem Fix Guide
+# 🛠️ .env File Setup Guide (Sabse Aasan Tarika)
 
-Aapke app mein "Invalid API Key" ka error aa raha hai kyunki aapko **do alag keys** chahiye:
+Agar aapko AI tools use karte waqt error aa raha hai, toh uska matlab hai ki `.env` file mein key nahi hai.
 
-### 1. Firebase Key (Jo aapne pehle daali)
-- **Kahan jati hai**: `src/firebase/config.ts` mein.
-- **Kya karti hai**: Login aur Database chalti hai.
+### .env File Kahan Hai?
+1. Apne code editor (VS Code ya Studio) ke **Left Sidebar** mein dekhein.
+2. Sabse niche files ki list mein `.env` naam ki ek file hogi.
+3. Us par click karke usey kholein.
 
-### 2. Gemini AI Key (Jo abhi missing hai)
-- **Kahan milti hai**: [aistudio.google.com](https://aistudio.google.com/app/apikey) par.
-- **Kahan dalni hai**: Project ki `.env` file mein.
-- **Kya karti hai**: AI Script, AI Thumbnail aur AI Video banati hai.
+### Key Kaise Dalein?
+1. [Google AI Studio](https://aistudio.google.com/app/apikey) se apni key copy karein.
+2. `.env` file mein jahan `GEMINI_API_KEY=YOUR_GEMINI_API_KEY_HERE` likha hai, wahan `YOUR_GEMINI_API_KEY_HERE` ko hata kar apni key paste kar dein.
+3. File ko **Save** (Ctrl+S) karein.
 
-**Error Kaise Hatayein?**
-Bas Gemini AI Studio se key lekar apni `.env` file mein `GEMINI_API_KEY=your_key` likh dein. Iske baad aapka app "Draft Viral Script" aur "Design Thumbnail" perfectly karne lagega.
+**Bas itna hi!** Iske baad app ko refresh karein, AI features jaadu ki tarah kaam karne lagenge.
