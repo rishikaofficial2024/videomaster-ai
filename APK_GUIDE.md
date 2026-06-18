@@ -1,27 +1,27 @@
 
-# 📱 GitHub Se APK Kaise Banayein? (Step-by-Step Guide)
+# 📱 GitHub Se APK Kaise Banayein? (Full Guide)
 
-Aapka app mobile par chalne ke liye bilkul taiyar hai. Maine GitHub Actions ka automated system set kar diya hai. APK download karne ke liye ye steps follow karein:
+Aapko alag se koi code dhoondhne ki zaroorat nahi hai. Maine APK banane ka poora logic aapke app mein pehle se hi set kar diya hai.
 
-### Step 1: Code Ko GitHub Par Dalein
-1. Apne code ko GitHub repository mein **Push** karein.
-2. Maine `.github/workflows/android-build.yml` file pehle se bana di hai, jo ye sab handle karegi.
+### 1. Code Kahan Hai?
+APK banane ka asli code is file mein hai:
+👉 `.github/workflows/android-build.yml`
+Ye file GitHub ko batati hai ki Android environment kaise set karna hai aur APK kaise generate karna hai.
 
-### Step 2: GitHub Actions Tab Par Jayein
-1. Apne GitHub repository mein upar diye gaye **"Actions"** tab par click karein.
-2. Wahan aapko **"Build Android APK (Cloud Build)"** naam ka workflow dikhega.
+### 2. Aapko Kya Karna Hai? (Step-by-Step)
+1. **GitHub Par Repository Banayein**: GitHub par ek naya blank project (Repository) banayein.
+2. **Code Push Karein**: Is poore project (saari files) ko apne GitHub account par upload (Push) karein.
+3. **Automatic Build**: Jaise hi aap code upload karenge, GitHub Actions apne aap kaam shuru kar dega.
+4. **Actions Tab Check Karein**: 
+   - Apne GitHub repository mein upar **"Actions"** tab par click karein.
+   - Wahan aapko **"Build Android APK (Cloud Build)"** chalta hua dikhega (Yellow circle 🟡).
+   - Jab wo poora ho jaye (Green check ✅), toh uspar click karein.
+5. **APK Download Karein**:
+   - Niche **"Artifacts"** section mein aapko `VideoMaster-AI-Debug-APK` dikhega.
+   - Usse download karein aur apne phone mein install karein!
 
-### Step 3: Build Shuru Karein
-- Ye build har baar jab aap code push karenge, tab **automatic** shuru ho jayega.
-- Aap ise manually bhi chala sakte hain: **Actions > Build Android APK > Run workflow**.
+### ⚠️ Pro Tip:
+- Maine `capacitor.config.ts` aur `next.config.ts` ko pehle hi mobile-ready (`output: export`) kar diya hai.
+- Agar build fail ho, toh Actions log mein check karein, lekin maine saare potential errors (jaise `cn` reference) theek kar diye hain.
 
-### Step 4: APK Download Karein
-1. Jab build pura ho jaye (green check mark ✅), toh usi build par click karein.
-2. Niche **"Artifacts"** section mein aapko `VideoMaster-AI-Debug-APK` dikhega.
-3. Uspar click karke file download karein aur apne phone mein install karein!
-
-### ⚠️ Zaroori Settings
-- **Icon**: Maine icons stabilize kar diye hain taaki build error na aaye.
-- **Production URL**: Jab aapka domain live ho jaye, toh usey `capacitor.config.ts` mein update kar dena.
-
-**Aapka mobile app ab sirf ek click ki duri par hai!** 🚀📲
+**Aapka App ab GitHub ke zariye Play Store ke liye bilkul taiyar hai!** 🚀📲
