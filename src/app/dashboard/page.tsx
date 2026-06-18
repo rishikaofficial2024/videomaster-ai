@@ -9,7 +9,7 @@ import {
   ChevronRight, Loader2, Crown, Coins, 
   Zap, MoreVertical, Video, ArrowUpRight, 
   ShieldCheck, BarChart3, Clock, Layout,
-  Cpu, Activity, Globe, ExternalLink, MonitorPlay
+  Cpu, Activity, Globe, ExternalLink, MonitorPlay, AlertTriangle
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -48,7 +48,6 @@ export default function Dashboard() {
   const handleWatchAd = async () => {
     if (!userProfileRef) return;
     setAdLoading(true);
-    // Simulate watching a rewarded video ad
     toast({
       title: "Loading Reward Ad...",
       description: "Please wait 5 seconds to earn your 10 free credits.",
@@ -105,6 +104,12 @@ export default function Dashboard() {
                    Live: studio-9489287013-59986.web.app
                  </span>
               </div>
+              <Link href="/test-connection" className="flex items-center gap-2 px-3 py-1 bg-yellow-500/10 rounded-full border border-yellow-500/20 w-fit hover:bg-yellow-500/20 transition-all">
+                 <AlertTriangle className="w-3 h-3 text-yellow-500" />
+                 <span className="text-[10px] font-bold text-yellow-500 uppercase tracking-[0.2em]">
+                   Run System Diagnostics
+                 </span>
+              </Link>
             </div>
             <h1 className="text-5xl md:text-7xl font-headline font-bold tracking-tighter">
               Welcome, <span className="text-primary italic">{user?.displayName?.split(' ')[0] || 'Creator'}</span>
@@ -135,8 +140,8 @@ export default function Dashboard() {
                  <MonitorPlay className="w-8 h-8 text-primary" />
               </div>
               <div className="space-y-1">
-                 <h3 className="text-xl font-bold font-headline">Paisa Kamane Ke Liye Ads Dekhein</h3>
-                 <p className="text-sm text-muted-foreground font-medium">Har ad dekhne par aapko milenge <span className="text-primary font-bold">+10 Free Credits</span></p>
+                 <h3 className="text-xl font-bold font-headline">Earn Credits with Ads</h3>
+                 <p className="text-sm text-muted-foreground font-medium">Watch a quick ad to get <span className="text-primary font-bold">+10 Free Credits</span></p>
               </div>
            </div>
            <Button 
@@ -145,7 +150,7 @@ export default function Dashboard() {
              className="h-14 px-10 rounded-2xl bg-white text-black hover:bg-primary hover:text-white font-bold transition-all shadow-xl"
            >
               {adLoading ? <Loader2 className="animate-spin mr-2" /> : <Zap className="w-4 h-4 mr-2" />}
-              {adLoading ? "Processing Reward..." : "Watch Ad & Earn Credits"}
+              {adLoading ? "Processing..." : "Watch Ad & Earn Credits"}
            </Button>
         </section>
 
