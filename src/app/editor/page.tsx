@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect, useRef } from "react";
@@ -10,7 +11,7 @@ import {
   Coins, Plus, RefreshCw, Cloud, Info,
   LayoutTemplate, Type, Box, Upload, Palette,
   Volume2, Image as ImageIcon, PenTool, Layers,
-  Subtitles, BarChart4, TrendingUp, Tags
+  Subtitles, BarChart4, TrendingUp, Tags, Music, Trash2, X
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { aiVideoContentOptimization } from "@/ai/flows/ai-video-content-optimization-flow";
@@ -27,6 +28,7 @@ import Image from "next/image";
 import { errorEmitter } from "@/firebase/error-emitter";
 import { FirestorePermissionError, type SecurityRuleContext } from "@/firebase/errors";
 import { cn } from "@/lib/utils";
+import audioDataPlaceholder from "@/app/lib/placeholder-audio.json";
 
 export default function EditorPage() {
   const searchParams = useSearchParams();
@@ -36,6 +38,8 @@ export default function EditorPage() {
   const db = useFirestore();
   const { toast } = useToast();
   const videoRef = useRef<HTMLVideoElement>(null);
+  const audioRef = useRef<HTMLAudioElement>(null);
+  const bgMusicRef = useRef<HTMLAudioElement>(null);
   
   const [projectId, setProjectId] = useState<string | null>(projectIdFromUrl);
   const [isNewProject, setIsNewProject] = useState(!projectIdFromUrl);
@@ -50,8 +54,10 @@ export default function EditorPage() {
   
   const [videoData, setVideoData] = useState<string | null>(null);
   const [audioData, setAudioData] = useState<string | null>(null);
+  const [bgMusicUrl, setBgMusicUrl] = useState<string | null>(null);
   const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null);
   const [subtitles, setSubtitles] = useState<string | null>(null);
+  const [mediaAssets, setMediaAssets] = useState<any[]>([]);
   
   const [scriptTopic, setScriptTopic] = useState("");
   const [thumbnailPrompt, setThumbnailPrompt] = useState("");
@@ -79,8 +85,11 @@ export default function EditorPage() {
     if (project) {
       setTitle(project.title || "Untitled Design");
       setVideoData(project.videoDataUri || null);
+      setAudioData(project.audioDataUri || null);
+      setBgMusicUrl(project.backgroundMusicUrl || null);
       setThumbnailUrl(project.thumbnailUrl || null);
       setSubtitles(project.subtitles || null);
+      setMediaAssets(project.mediaAssets || []);
       setAiScript(project.aiNotes ? { script: project.aiNotes } : null);
       setSeoData({
         title: project.optimizedTitle,
@@ -227,6 +236,7 @@ export default function EditorPage() {
       const result = await generateAiVoiceover({ text: voiceText, voiceName: 'Algenib' });
       setAudioData(result.audioDataUri);
       deductCredits(5);
+      handleSave({ audioDataUri: result.audioDataUri });
       toast({ title: "Audio Ready", description: "Voiceover track generated." });
     } catch (e: any) {
       toast({ variant: "destructive", title: "Audio Error", description: "Failed to synthesize voice." });
@@ -255,34 +265,50 @@ export default function EditorPage() {
     }
   };
 
-  const handleOptimizeContent = async () => {
-    if (!aiScript?.script || !checkCredits(5)) {
-       toast({ title: "Script Required", description: "Generate a script first for optimization." });
-       return;
-    }
-    setIsProcessing(true);
-    setProcessingMessage("Analyzing content for SEO dominance...");
-    try {
-      const result = await aiVideoContentOptimization({ videoTranscript: aiScript.script });
-      setSeoData(result);
-      deductCredits(5);
-      handleSave({ 
-        optimizedTitle: result.title, 
-        optimizedDescription: result.description, 
-        hashtags: result.hashtags 
-      });
-      toast({ title: "SEO Optimized", description: "Viral Title & Tags generated." });
-    } catch (e: any) {
-      toast({ variant: "destructive", title: "SEO Error", description: "AI analysis failed." });
-    } finally {
-      setIsProcessing(false);
-    }
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const dataUri = event.target?.result as string;
+      const newAsset = {
+        id: "asset-" + Math.random().toString(36).substring(2, 9),
+        url: dataUri,
+        type: file.type.startsWith('image') ? 'image' : 'video',
+        label: file.name
+      };
+      const updatedAssets = [...mediaAssets, newAsset];
+      setMediaAssets(updatedAssets);
+      handleSave({ mediaAssets: updatedAssets });
+      toast({ title: "Uploaded", description: `${file.name} added to your library.` });
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const deleteAsset = (id: string) => {
+    const updatedAssets = mediaAssets.filter(a => a.id !== id);
+    setMediaAssets(updatedAssets);
+    handleSave({ mediaAssets: updatedAssets });
+  };
+
+  const addMusic = (url: string) => {
+    setBgMusicUrl(url);
+    handleSave({ backgroundMusicUrl: url });
+    toast({ title: "Music Added", description: "Background track synchronized." });
   };
 
   const togglePlayback = () => {
     if (videoRef.current) {
-      if (isPlaying) videoRef.current.pause();
-      else videoRef.current.play();
+      if (isPlaying) {
+        videoRef.current.pause();
+        audioRef.current?.pause();
+        bgMusicRef.current?.pause();
+      } else {
+        videoRef.current.play();
+        audioRef.current?.play();
+        bgMusicRef.current?.play();
+      }
       setIsPlaying(!isPlaying);
     }
   };
@@ -338,7 +364,7 @@ export default function EditorPage() {
            {[
              { icon: LayoutTemplate, id: 'templates', label: 'Designs' },
              { icon: Box, id: 'elements', label: 'Elements' },
-             { icon: Type, id: 'text', label: 'Text' },
+             { icon: Music, id: 'audio', label: 'Audio' },
              { icon: Wand2, id: 'ai', label: 'AI Magic' },
              { icon: Upload, id: 'uploads', label: 'Uploads' },
              { icon: Layers, id: 'layers', label: 'Layers' }
@@ -362,6 +388,12 @@ export default function EditorPage() {
         <div className="w-72 bg-[#0a0d14]/50 backdrop-blur-xl border-r border-white/5 flex flex-col shrink-0 overflow-hidden">
            <div className="p-6 border-b border-white/5 flex items-center justify-between">
               <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-white">{activeTab} Studio</h3>
+              {activeTab === 'uploads' && (
+                <label className="cursor-pointer">
+                  <Plus className="w-4 h-4 text-primary" />
+                  <input type="file" className="hidden" onChange={handleFileUpload} accept="image/*,video/*" />
+                </label>
+              )}
            </div>
            
            <div className="flex-1 overflow-y-auto p-4 custom-scrollbar">
@@ -398,18 +430,52 @@ export default function EditorPage() {
                           {isProcessing && processingMessage.includes("rendering") ? <Loader2 className="animate-spin mr-2 w-3 h-3" /> : "Generate Clip"}
                        </Button>
                     </div>
-
-                    <div className="p-5 rounded-2xl bg-emerald-500/5 border border-emerald-500/20 space-y-4">
-                       <div className="flex items-center gap-3">
-                          <Subtitles className="w-4 h-4 text-emerald-400" />
-                          <h4 className="text-[10px] font-bold uppercase tracking-widest text-emerald-400">Auto Captions</h4>
-                       </div>
-                       <p className="text-[9px] text-muted-foreground italic leading-relaxed">Generate VTT subtitles automatically from your project's audio track.</p>
-                       <Button className="w-full h-10 rounded-xl font-bold bg-emerald-600 text-[10px] uppercase" onClick={handleAutoCaption} disabled={isProcessing || !audioData}>
-                          {isProcessing && processingMessage.includes("Transcriber") ? <Loader2 className="animate-spin mr-2 w-3 h-3" /> : "Transcribe Video"}
-                       </Button>
-                    </div>
                  </div>
+              )}
+
+              {activeTab === 'audio' && (
+                <div className="space-y-3">
+                  {audioDataPlaceholder.tracks.map((track) => (
+                    <div key={track.id} className="group p-3 rounded-xl bg-white/5 border border-transparent hover:border-primary/20 transition-all flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className="p-2 bg-primary/10 rounded-lg group-hover:bg-primary/20">
+                          <Music className="w-4 h-4 text-primary" />
+                        </div>
+                        <div className="flex flex-col">
+                          <span className="text-[10px] font-bold text-white truncate w-32">{track.title}</span>
+                          <span className="text-[8px] text-muted-foreground uppercase">{track.genre} • {track.duration}</span>
+                        </div>
+                      </div>
+                      <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full opacity-0 group-hover:opacity-100" onClick={() => addMusic(track.url)}>
+                        <Plus className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {activeTab === 'uploads' && (
+                <div className="grid grid-cols-2 gap-3">
+                  {mediaAssets.map((asset) => (
+                    <div key={asset.id} className="group relative aspect-square rounded-xl overflow-hidden border border-white/5 bg-black/40">
+                      {asset.type === 'image' ? (
+                        <Image src={asset.url} alt={asset.label} fill className="object-cover" />
+                      ) : (
+                        <div className="flex items-center justify-center h-full">
+                          <Video className="w-6 h-6 text-muted-foreground opacity-20" />
+                        </div>
+                      )}
+                      <button className="absolute top-1 right-1 p-1 bg-black/60 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity" onClick={() => deleteAsset(asset.id)}>
+                        <X className="w-3 h-3 text-red-400" />
+                      </button>
+                    </div>
+                  ))}
+                  <label className="aspect-square rounded-xl border-2 border-dashed border-white/5 flex flex-col items-center justify-center gap-2 cursor-pointer hover:bg-white/5 transition-all">
+                    <Plus className="w-5 h-5 text-muted-foreground" />
+                    <span className="text-[8px] font-bold uppercase tracking-widest text-muted-foreground">Upload</span>
+                    <input type="file" className="hidden" onChange={handleFileUpload} accept="image/*,video/*" />
+                  </label>
+                </div>
               )}
            </div>
         </div>
@@ -441,6 +507,8 @@ export default function EditorPage() {
                         onClick={togglePlayback}
                       />
                     )}
+                    {audioData && <audio ref={audioRef} src={audioData} hidden />}
+                    {bgMusicUrl && <audio ref={bgMusicRef} src={bgMusicUrl} loop hidden />}
                   </>
                 )}
 
@@ -469,7 +537,7 @@ export default function EditorPage() {
                 {[
                   { label: "V1: AI VIDEO", active: !!videoData, icon: Sparkles, color: "bg-primary/20 border-primary/40 text-primary" },
                   { label: "A1: VOICE OVER", active: !!audioData, icon: Volume2, color: "bg-indigo-500/20 border-indigo-500/40 text-indigo-400" },
-                  { label: "G1: THUMBNAIL", active: !!thumbnailUrl, icon: ImageIcon, color: "bg-rose-500/20 border-rose-500/40 text-rose-400" },
+                  { label: "A2: BG MUSIC", active: !!bgMusicUrl, icon: Music, color: "bg-purple-500/20 border-purple-500/40 text-purple-400" },
                   { label: "S1: SUBTITLES", active: !!subtitles, icon: Subtitles, color: "bg-emerald-500/20 border-emerald-500/40 text-emerald-400" }
                 ].map((track, i) => (
                   <div key={i} className="flex gap-3 h-10">
@@ -485,6 +553,13 @@ export default function EditorPage() {
                                   <div key={j} className="w-0.5 h-3 bg-current rounded-full" style={{ height: `${Math.random() * 80 + 20}%` }} />
                                 ))}
                              </div>
+                             <button className="absolute right-2 opacity-40 hover:opacity-100" onClick={() => {
+                               if (track.label.includes("MUSIC")) { setBgMusicUrl(null); handleSave({ backgroundMusicUrl: null }); }
+                               if (track.label.includes("VIDEO")) { setVideoData(null); handleSave({ videoDataUri: null }); }
+                               if (track.label.includes("VOICE")) { setAudioData(null); handleSave({ audioDataUri: null }); }
+                             }}>
+                               <Trash2 className="w-3 h-3" />
+                             </button>
                           </div>
                         )}
                      </div>

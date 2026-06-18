@@ -25,7 +25,7 @@
     },
     "VideoProject": {
       "title": "Video Project",
-      "description": "Professional video project metadata and AI analysis",
+      "description": "Professional video project metadata including AI assets and multi-track media",
       "type": "object",
       "properties": {
         "title": { "type": "string" },
@@ -41,6 +41,20 @@
         "hashtags": { "type": "array", "items": { "type": "string" } },
         "thumbnailUrl": { "type": "string" },
         "videoDataUri": { "type": "string" },
+        "audioDataUri": { "type": "string", "description": "Primary voiceover track" },
+        "backgroundMusicUrl": { "type": "string", "description": "Active background music track" },
+        "mediaAssets": { 
+          "type": "array", 
+          "items": { 
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "url": { "type": "string" },
+              "type": { "type": "string", "enum": ["image", "video", "audio"] },
+              "label": { "type": "string" }
+            }
+          }
+        },
         "subtitles": { "type": "string" },
         "aiNotes": { "type": "string", "description": "AI recommendations for the video" }
       },
