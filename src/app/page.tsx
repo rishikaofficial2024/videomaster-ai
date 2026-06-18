@@ -214,17 +214,16 @@ export default function LandingPage() {
               <nav className="flex flex-col gap-4 text-muted-foreground font-medium text-sm">
                 <Link href="/editor" className="hover:text-primary transition-colors">AI Video Editor India</Link>
                 <Link href="/templates" className="hover:text-primary transition-colors">Viral Video Templates</Link>
-                <Link href="/ai-gen" className="hover:text-primary transition-colors">AI Script Writer</Link>
-                <Link href="/pricing" className="hover:text-primary transition-colors">Affordable AI Plans</Link>
+                <Link href="/privacy" className="hover:text-primary transition-colors">Privacy Policy</Link>
+                <Link href="/terms" className="hover:text-primary transition-colors">Terms of Service</Link>
               </nav>
             </div>
             <div className="space-y-6">
               <h4 className="font-bold text-xs uppercase tracking-[0.2em] text-primary">Company</h4>
               <nav className="flex flex-col gap-4 text-muted-foreground font-medium text-sm">
                 <Link href="#" className="hover:text-primary transition-colors">About Us</Link>
-                <Link href="#" className="hover:text-primary transition-colors">Privacy Policy</Link>
-                <Link href="#" className="hover:text-primary transition-colors">Terms of Service</Link>
                 <Link href="#" className="hover:text-primary transition-colors">Contact Support</Link>
+                <p className="text-xs text-muted-foreground">Email: support@videomaster-ai.web.app</p>
               </nav>
             </div>
           </div>

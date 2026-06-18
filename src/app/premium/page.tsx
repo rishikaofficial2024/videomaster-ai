@@ -12,6 +12,7 @@ import { useToast } from "@/hooks/use-toast";
 import { errorEmitter } from "@/firebase/error-emitter";
 import { FirestorePermissionError } from "@/firebase/errors";
 import { cn } from "@/lib/utils";
+import { AdBanner } from "@/components/ads/ad-banner";
 
 export default function PremiumPage() {
   const { user } = useUser();
@@ -181,6 +182,8 @@ export default function PremiumPage() {
             </Card>
           ))}
         </div>
+
+        <AdBanner provider="AdMob Premium" />
 
         <div className="grid md:grid-cols-4 gap-8 py-10">
           {[
