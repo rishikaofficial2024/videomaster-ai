@@ -16,6 +16,7 @@ import { useUser, useFirestore, useCollection, useDoc } from "@/firebase";
 import { collection, query, orderBy, limit, doc } from "firebase/firestore";
 import { useMemo } from "react";
 import { Progress } from "@/components/ui/progress";
+import { cn } from "@/lib/utils";
 
 export default function Dashboard() {
   const { user, loading: userLoading } = useUser();
