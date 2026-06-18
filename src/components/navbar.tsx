@@ -30,7 +30,7 @@ export function Navbar() {
   const { data: profile } = useDoc(profileRef);
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-background/60 backdrop-blur-2xl border-t md:top-0 md:bottom-auto md:border-t-0 md:border-b h-20 flex items-center justify-center px-6">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-2xl border-t md:top-0 md:bottom-auto md:border-t-0 md:border-b h-20 flex items-center justify-center px-6">
       <div className="w-full max-w-6xl flex items-center justify-between">
         <div className="hidden md:flex items-center gap-6">
           <Link href="/dashboard" className="flex items-center gap-3 group">
@@ -40,10 +40,12 @@ export function Navbar() {
             <span className="font-headline font-bold text-2xl tracking-tighter">VideoMaster<span className="text-primary">AI</span></span>
           </Link>
           
-          {user && !profile?.isPremium && (
-            <div className="flex items-center gap-2 bg-orange-50 px-4 py-1.5 rounded-full border border-orange-100 shadow-sm">
-              <Coins className="w-4 h-4 text-orange-600" />
-              <span className="text-xs font-bold text-orange-700">{profile?.credits ?? 0} Credits</span>
+          {user && (
+            <div className="flex items-center gap-2 bg-primary/10 px-4 py-1.5 rounded-full border border-primary/20 shadow-sm animate-in fade-in zoom-in duration-500">
+              <Coins className="w-4 h-4 text-primary animate-pulse" />
+              <span className="text-xs font-bold text-primary tracking-tight">
+                {profile?.isPremium ? 'UNLIMITED' : `${profile?.credits ?? 0} Credits`}
+              </span>
             </div>
           )}
         </div>
@@ -57,7 +59,7 @@ export function Navbar() {
                 key={item.name}
                 href={item.href}
                 className={cn(
-                  "flex flex-col md:flex-row items-center gap-1.5 transition-all p-3 rounded-2xl group",
+                  "flex flex-col md:flex-row items-center gap-1.5 transition-all p-3 rounded-2xl group relative",
                   isActive 
                     ? "text-primary bg-primary/5 md:bg-transparent" 
                     : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
@@ -70,6 +72,9 @@ export function Navbar() {
                   <Icon className={cn("w-6 h-6 md:w-5 md:h-5", isActive && "fill-current")} />
                 </div>
                 <span className="text-[10px] md:text-sm font-bold tracking-tight">{item.name}</span>
+                {isActive && (
+                  <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-primary rounded-full md:hidden" />
+                )}
               </Link>
             );
           })}
