@@ -61,7 +61,13 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
         <meta name="theme-color" content="#05070a" />
-        {/* Google AdSense Integration Slot */}
+        
+        {/* 
+            💰 ADSENSE SETUP GUIDE:
+            1. Go to adsense.google.com
+            2. Get your Publisher ID (e.g., pub-123456789)
+            3. Replace 'ca-pub-PLACEHOLDER' below with your ID (e.g., ca-pub-123456789)
+        */}
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-PLACEHOLDER" crossOrigin="anonymous"></script>
       </head>
       <body className="font-body antialiased bg-background text-foreground">
