@@ -6,11 +6,11 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { 
   Users, DollarSign, BarChart3, Settings, 
-  ShieldCheck, Loader2, ArrowUpRight, TrendingUp,
-  Cpu, Activity, Database, AlertTriangle, UserPlus,
+  Loader2, ArrowUpRight, TrendingUp,
+  Cpu, Activity, Database, AlertTriangle,
   RefreshCw, Lock
 } from "lucide-react";
-import { useUser, useFirestore, useCollection, useMemoFirebase } from "@/firebase";
+import { useFirestore, useCollection, useMemoFirebase } from "@/firebase";
 import { collection, query, limit, orderBy } from "firebase/firestore";
 import { useState, useEffect } from "react";
 import { Progress } from "@/components/ui/progress";
@@ -23,9 +23,9 @@ import {
   TableRow 
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
 
 export default function AdminDashboard() {
-  const { user } = useUser();
   const db = useFirestore();
   const [mounted, setMounted] = useState(false);
 
@@ -121,7 +121,7 @@ export default function AdminDashboard() {
                             <TableCell>
                                <Badge variant={u.isPremium ? 'default' : 'secondary'} className="rounded-full text-[9px] uppercase tracking-widest">
                                   {u.subscriptionPlan?.toUpperCase() || 'FREE'}
-                               </Badge>
+                                </Badge>
                             </TableCell>
                             <TableCell className="font-mono text-xs">{u.credits || 0}</TableCell>
                             <TableCell className="text-right px-8">

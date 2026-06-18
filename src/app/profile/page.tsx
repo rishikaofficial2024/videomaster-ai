@@ -7,13 +7,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { 
   User, Settings, Shield, Bell, HelpCircle, LogOut, 
-  ChevronRight, CreditCard, Smartphone, Cloud, Loader2, Zap
+  ChevronRight, CreditCard, Cloud, Loader2, Zap
 } from "lucide-react";
 import Link from "next/link";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
-import { useUser, useFirestore, useDoc } from "@/firebase";
+import { useUser, useFirestore, useDoc, useMemoFirebase } from "@/firebase";
 import { doc } from "firebase/firestore";
-import { useMemo } from "react";
 import { signOut } from "firebase/auth";
 import { useAuth } from "@/firebase";
 import { useRouter } from "next/navigation";
@@ -26,10 +25,10 @@ export default function ProfilePage() {
   
   const userAvatar = PlaceHolderImages.find(img => img.id === "avatar-user");
 
-  const profileRef = useMemo(() => {
-    if (!user) return null;
+  const profileRef = useMemoFirebase(() => {
+    if (!user || !db) return null;
     return doc(db, "users", user.uid);
-  }, [user, db]);
+  }, [user?.uid, db]);
 
   const { data: profile, loading: profileLoading } = useDoc(profileRef);
 

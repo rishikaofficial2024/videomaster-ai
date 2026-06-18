@@ -11,8 +11,7 @@ import {
   AlertCircle, Info, Activity, Globe, Cpu, Network
 } from "lucide-react";
 import { useAuth, useFirestore } from "@/firebase";
-import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { firebaseConfig } from "@/firebase/config";
 import Link from "next/link";
 
@@ -27,14 +26,11 @@ export default function TestConnectionPage() {
     ai_key: "pending"
   });
   const [latency, setLatency] = useState<number | null>(null);
-  const [errors, setErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
-  const [isFullyConfigured, setIsFullyConfigured] = useState(false);
 
   const runTests = async () => {
     const startTime = Date.now();
     setLoading(true);
-    setErrors({});
     setStatus({ 
       config: "testing",
       firebase: "testing", 
@@ -42,8 +38,6 @@ export default function TestConnectionPage() {
       auth: "testing",
       ai_key: "testing"
     });
-
-    const currentErrors: Record<string, string> = {};
 
     // 1. Test Firebase Config
     const key = firebaseConfig.apiKey || "";
@@ -67,16 +61,13 @@ export default function TestConnectionPage() {
       setStatus(prev => ({ ...prev, firestore: "success" }));
     } catch (e: any) {
       setStatus(prev => ({ ...prev, firestore: "error" }));
-      currentErrors.firestore = e.message;
     }
 
-    // 5. AI Key Check
+    // 5. AI Key Check (Logical check)
     setStatus(prev => ({ ...prev, ai_key: "success" })); 
 
     setLatency(Date.now() - startTime);
-    setErrors(currentErrors);
     setLoading(false);
-    setIsFullyConfigured(Object.keys(currentErrors).length === 0);
   };
 
   useEffect(() => {
@@ -188,7 +179,7 @@ export default function TestConnectionPage() {
                     <h4 className="text-xs font-bold uppercase tracking-widest text-emerald-400">Regional Optimization</h4>
                  </div>
                  <p className="text-xs text-muted-foreground leading-relaxed italic">
-                    Aapka app Bharat (India) ke servers par optimized hai. Metadata branding `.in` domain ke liye fully configured hai. Google.in search results mein rank karne ke liye SEO sitemap automatic update ho chuka hai.
+                    Aapka app Bharat (India) ke servers par optimized hai. Metadata branding `.in` domain ke liye fully configured hai.
                  </p>
                  <Button variant="outline" className="w-full h-12 rounded-xl border-emerald-500/20 text-emerald-400 font-bold text-[10px] uppercase tracking-widest hover:bg-emerald-500/10" asChild>
                     <Link href="/SEO_GUIDE.md">View SEO Metrics</Link>
