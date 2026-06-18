@@ -3,33 +3,27 @@
 
 Aapka app ab ek asli "Ad-Revenue Engine" ban chuka hai. Maine sabhi modern ad formats ismein integrate kar diye hain.
 
-### 1. Rewarded Video Ads (Highest Earning) ✅
+### 1. Verification Checklist (Sabse Zaroori) ✅
+1. **app-ads.txt**: Maine `public/app-ads.txt` add kar di hai. Google AdSense ise check karega.
+2. **Domain Status**: [Google AdSense](https://adsense.google.com) mein jayein aur apna domain `studio-9489287013-59986.web.app` add karein.
+3. **Review Time**: Google usually 2 se 14 din leta hai site approve karne mein.
+
+### 2. Rewarded Video Ads (Highest Earning) ✅
 - **Kahan Hai?**: Dashboard par "Watch Video & Get Credits" section.
 - **Kaise Kaam Karta Hai?**: User 15 second ka video ad dekhega aur use +20 AI Credits milenge.
-- **Fayda**: Iska CPM (Paisa) sabse zyada milta hai kyunki user pura ad dekhta hai.
+- **Fayda**: Iska CPM sabse zyada milta hai.
 
-### 2. Interstitial Ads (Full-Screen Ads) ✅
+### 3. Interstitial Ads (Full-Screen Ads) ✅
 - **Kahan Hai?**: Editor mein "Export" button dabane par.
 - **Kaise Kaam Karta Hai?**: Jab user video export karta hai, usse pehle ek bada ad dikhega.
-- **Fayda**: Ye ads transitions ke waqt dikhte hain aur inki click-rate bahut high hoti hai.
 
-### 3. Smart Banner Ads ✅
-- **Kahan Hai?**: Dashboard, Premium, aur Templates pages ke niche.
-- **Kaise Kaam Karta Hai?**: Ye hamesha screen par dikhte rehte hain aur impression ke paise dete hain.
-
-### 4. Subscription Upsell (Ad-Free Experience) ✅
-- **Kahan Hai?**: Premium page.
-- **Kaise Kaam Karta Hai?**: User ₹99/mo dekar ads hata sakta hai. Aapko ads se bhi kamai hogi aur agar koi subscription le toh direct bank mein bhi.
+### 4. Smart Banner Ads ✅
+- **Kahan Hai?**: Dashboard aur Templates pages ke niche.
+- **Status**: Maine `AdBanner` component ko upgrade kar diya hai taaki wo real ads dikhane ke liye taiyar rahe.
 
 ---
 
-### ⚠️ Zaroori Setup Steps (AdSense ID: pub-8946933317699938)
+### ⚠️ Zaroori Jankari (Publisher ID: pub-8946933317699938)
+Aapka Publisher ID `pub-8946933317699938` poore code mein (layout, ads, metadata) sahi se set hai. Aapko bas AdSense dashboard mein jakar domain approve karwana hai.
 
-Google AdSense mein apna account verify karne ke liye ye URL use karein:
-👉 **URL**: `https://studio-9489287013-59986.web.app`
-
-1. **Domain Link**: Apna upar diya gaya domain AdSense dashboard mein add karein.
-2. **Transparent Setting**: "Account Settings" mein jakar visibility ko "Transparent" chunein.
-3. **App-ads.txt**: Google AdSense ke dashboard se ye file download karke root folder mein add karein (Maine codes set kar diye hain).
-
-**Aapka App ab ek asli Business ban gaya hai jo sotey waqt bhi paise kamayega!** 🚀💸
+**Aapka App ab ek asli Business ban gaya hai!** 🚀💸
