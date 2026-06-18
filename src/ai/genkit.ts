@@ -5,8 +5,7 @@ import { googleAI } from '@genkit-ai/google-genai';
  * Genkit initialization for VideoMaster AI.
  * 
  * We read the GEMINI_API_KEY from the environment and clean it.
- * This centralized instance ensures the API key is correctly applied 
- * to all AI operations across server actions.
+ * Centralized instance ensures the API key is correctly applied.
  */
 
 const rawKey = process.env.GEMINI_API_KEY || '';
@@ -24,8 +23,8 @@ export const ai = genkit({
   ],
 });
 
-// Exporting model references to ensure consistency across flows
-export const geminiModel = googleAI.model('gemini-flash-latest');
+// Using gemini-1.5-flash for better stability during high demand spikes
+export const geminiModel = googleAI.model('gemini-1.5-flash');
 export const imagenModel = googleAI.model('imagen-4.0-fast-generate-001');
 export const veoModel = googleAI.model('veo-2.0-generate-001');
 export const ttsModel = googleAI.model('gemini-2.5-flash-preview-tts');

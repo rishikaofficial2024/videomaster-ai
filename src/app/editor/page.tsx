@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, useEffect, useRef } from "react";
@@ -179,6 +178,17 @@ export default function EditorPage() {
     setTimeout(() => setIsSaving(false), 500);
   };
 
+  const formatAiError = (error: any) => {
+    const msg = error.message || "";
+    if (msg.includes("503") || msg.includes("UNAVAILABLE")) {
+      return "⚠️ Google AI servers par bohot bheed hai. Please 1 minute wait karein aur phir se try karein. (503 Service Unavailable)";
+    }
+    if (msg.includes("400") || msg.includes("billing")) {
+      return "⚠️ Video/Design ke liye Google Billing zaroori hai. Please instructions padhein.";
+    }
+    return msg || "Something went wrong with AI generation.";
+  };
+
   const handleGenerateScript = async () => {
     if (!scriptTopic || !checkCredits(2)) return;
     setIsProcessing(true);
@@ -190,7 +200,7 @@ export default function EditorPage() {
       handleSave({ aiNotes: result.script });
       toast({ title: "Success!", description: "Professional script generated." });
     } catch (e: any) {
-      toast({ variant: "destructive", title: "AI Generation Error", description: e.message });
+      toast({ variant: "destructive", title: "AI Error", description: formatAiError(e) });
     } finally {
       setIsProcessing(false);
     }
@@ -216,7 +226,7 @@ export default function EditorPage() {
         toast({ title: "Masterpiece Ready", description: "Your thumbnail has been designed by AI." });
       }
     } catch (e: any) {
-      toast({ variant: "destructive", title: "Design Error", description: e.message });
+      toast({ variant: "destructive", title: "Design Error", description: formatAiError(e) });
     } finally {
       setIsProcessing(false);
     }
@@ -233,17 +243,7 @@ export default function EditorPage() {
       handleSave({ videoDataUri: result.videoDataUri });
       toast({ title: "Clip Rendered", description: "Video successfully added." });
     } catch (e: any) {
-      const msg = e.message || "";
-      if (msg.includes("billing") || msg.includes("400")) {
-        toast({ 
-          variant: "destructive", 
-          title: "⚠️ Billing Required for Video", 
-          description: "Video generation (Veo 2.0) ke liye Google Cloud par Billing chalu karna zaroori hai. Please check INSTRUCTIONS_HINDI.md for steps.",
-          duration: 10000
-        });
-      } else {
-        toast({ variant: "destructive", title: "Rendering Failed", description: msg });
-      }
+      toast({ variant: "destructive", title: "Rendering Error", description: formatAiError(e) });
     } finally {
       setIsProcessing(false);
     }
@@ -260,7 +260,7 @@ export default function EditorPage() {
       handleSave({ audioDataUri: result.audioDataUri });
       toast({ title: "Audio Ready", description: "Voiceover track generated." });
     } catch (e: any) {
-      toast({ variant: "destructive", title: "Audio Error", description: e.message });
+      toast({ variant: "destructive", title: "Audio Error", description: formatAiError(e) });
     } finally {
       setIsProcessing(false);
     }
@@ -282,7 +282,7 @@ export default function EditorPage() {
       });
       toast({ title: "SEO Optimized", description: "Viral tags and titles added." });
     } catch (e: any) {
-      toast({ variant: "destructive", title: "SEO Error", description: e.message });
+      toast({ variant: "destructive", title: "SEO Error", description: formatAiError(e) });
     } finally {
       setIsProcessing(false);
     }
@@ -302,7 +302,7 @@ export default function EditorPage() {
       handleSave({ subtitles: result.subtitles });
       toast({ title: "Subtitles Generated", description: "WebVTT track added to project." });
     } catch (e: any) {
-      toast({ variant: "destructive", title: "Subtitle Error", description: e.message });
+      toast({ variant: "destructive", title: "Subtitle Error", description: formatAiError(e) });
     } finally {
       setIsProcessing(false);
     }
