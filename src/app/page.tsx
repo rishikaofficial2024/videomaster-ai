@@ -5,8 +5,8 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { 
   Video, ArrowRight, Sparkles, Wand2, Smartphone, 
-  Download, Play, Zap, ShieldCheck, Star, 
-  CheckCircle2, Globe, Cpu, BarChart3, Crown, Check, MonitorPlay
+  Download, Play, Zap, Star, 
+  Globe, Cpu, BarChart3, Crown, Check
 } from "lucide-react";
 import Image from "next/image";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
@@ -43,7 +43,6 @@ export default function LandingPage() {
       </header>
       
       <main className="flex-1 mt-20">
-        {/* Hero Section */}
         <section className="w-full py-20 lg:py-32 overflow-hidden">
           <div className="container px-6 mx-auto">
             <div className="flex flex-col items-center text-center space-y-10 mb-20">
@@ -89,7 +88,6 @@ export default function LandingPage() {
           <AdBanner provider="Google AdSense & AdMob" />
         </section>
 
-        {/* Features Section */}
         <section id="features" className="w-full py-32">
           <div className="container px-6 mx-auto">
             <div className="text-center mb-24 space-y-4">
@@ -137,7 +135,6 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* Pricing Section */}
         <section id="pricing" className="w-full py-32 bg-[#0a0d14]/40">
           <div className="container px-6 mx-auto">
             <div className="text-center mb-20 space-y-4">
@@ -182,7 +179,6 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* Call to Action */}
         <section className="w-full py-32">
           <div className="container px-6 mx-auto">
             <div className="bg-primary p-16 md:p-32 rounded-[5rem] text-center text-white relative overflow-hidden shadow-2xl shadow-primary/40">

@@ -6,7 +6,7 @@ import { Navbar } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
-  Play, Pause, SkipBack, SkipForward, Scissors, 
+  Pause, Play, SkipBack, SkipForward, Scissors, 
   Music, Wand2, Download, Sparkles, ChevronLeft, Loader2, Video,
   Zap, Volume2, Image as ImageIcon,
   PenTool, Layers, MousePointer2,
@@ -288,7 +288,6 @@ export default function EditorPage() {
     <div className="h-screen bg-[#05070a] flex flex-col overflow-hidden text-[#e1e4e8] font-body selection:bg-primary/30">
       <Navbar />
       
-      {/* Top Studio Bar */}
       <div className="h-14 border-b bg-[#0a0d14]/95 backdrop-blur-2xl px-4 flex items-center justify-between z-40 shrink-0 border-white/5">
         <div className="flex items-center gap-6">
           <Link href="/dashboard" className="p-1.5 hover:bg-white/5 rounded-lg transition-colors group">
@@ -332,7 +331,6 @@ export default function EditorPage() {
       </div>
 
       <div className="flex-1 flex overflow-hidden">
-        {/* Left Side Navigation */}
         <div className="w-20 bg-[#0a0d14] border-r border-white/5 flex flex-col items-center py-6 gap-6 z-30 shrink-0">
            {[
              { icon: LayoutTemplate, id: 'templates', label: 'Designs' },
@@ -358,11 +356,9 @@ export default function EditorPage() {
            ))}
         </div>
 
-        {/* Dynamic Sidebar Content */}
         <div className="w-72 bg-[#0a0d14]/50 backdrop-blur-xl border-r border-white/5 flex flex-col shrink-0 overflow-hidden">
            <div className="p-6 border-b border-white/5 flex items-center justify-between">
               <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-white">{activeTab} Studio</h3>
-              <Button variant="ghost" size="icon" className="h-6 w-6"><Maximize2 className="w-3 h-3" /></Button>
            </div>
            
            <div className="flex-1 overflow-y-auto p-4 custom-scrollbar">
@@ -412,8 +408,6 @@ export default function EditorPage() {
                     </div>
                  </div>
               )}
-
-              {/* Other tabs placeholders */}
               {activeTab !== 'ai' && (
                 <div className="flex flex-col items-center justify-center h-full text-center opacity-30 space-y-4 py-20">
                    <Info className="w-10 h-10" />
@@ -423,17 +417,7 @@ export default function EditorPage() {
            </div>
         </div>
 
-        {/* Main Canvas Area */}
         <div className="flex-1 flex flex-col min-w-0 bg-[#0c0f17] relative">
-          <div className="h-10 bg-[#0a0d14]/50 border-b border-white/5 flex items-center px-6 gap-6">
-             <div className="flex items-center gap-2">
-                <Button variant="ghost" size="icon" className="h-7 w-7"><Plus className="w-3.5 h-3.5" /></Button>
-                <div className="h-4 w-px bg-white/10 mx-2" />
-                <Button variant="ghost" size="sm" className="h-7 text-[10px] font-bold uppercase px-3 hover:bg-white/5">Edit Style</Button>
-                <Button variant="ghost" size="sm" className="h-7 text-[10px] font-bold uppercase px-3 hover:bg-white/5">Neural Link</Button>
-             </div>
-          </div>
-
           <div className="flex-1 relative flex items-center justify-center p-12 overflow-hidden">
              <div className="absolute inset-0 opacity-10 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, #3b82f6 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
              
@@ -460,13 +444,6 @@ export default function EditorPage() {
                         onClick={togglePlayback}
                       />
                     )}
-                    {subtitles && isPlaying && (
-                       <div className="absolute bottom-16 left-0 right-0 px-6 text-center">
-                          <span className="bg-black/80 text-white text-xs font-bold px-4 py-2 rounded-xl border border-white/10 backdrop-blur-md">
-                             [Subtitles Active: WebVTT Track Running]
-                          </span>
-                       </div>
-                    )}
                   </>
                 )}
 
@@ -480,7 +457,6 @@ export default function EditorPage() {
              </div>
           </div>
 
-          {/* Advanced Timeline */}
           <div className="h-48 bg-[#0a0d14] border-t border-white/5 flex flex-col shrink-0 z-40">
              <div className="h-10 bg-[#111621]/90 px-6 flex items-center justify-between border-b border-white/5">
                 <div className="flex items-center gap-4">
@@ -521,7 +497,6 @@ export default function EditorPage() {
           </div>
         </div>
 
-        {/* Right Smart Inspector */}
         <div className="w-80 bg-[#0a0d14] border-l border-white/5 shrink-0 flex flex-col overflow-hidden">
            <Tabs value={activeInspectorTab} onValueChange={setActiveInspectorTab} className="flex-1 flex flex-col">
               <TabsList className="w-full h-14 bg-transparent border-b border-white/5 rounded-none grid grid-cols-2 p-0">
@@ -594,16 +569,11 @@ export default function EditorPage() {
                                   ))}
                                </div>
                             </div>
-
-                            <div className="p-5 rounded-[1.5rem] bg-white/5 border border-white/10 space-y-3">
-                               <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground block">Optimized Description</span>
-                               <p className="text-[10px] text-muted-foreground leading-relaxed italic">{seoData.description}</p>
-                            </div>
                          </div>
                        ) : (
                          <div className="p-12 text-center space-y-4 bg-white/5 rounded-[2rem] border border-dashed border-white/10">
                             <BarChart4 className="w-10 h-10 text-muted-foreground mx-auto opacity-20" />
-                            <p className="text-[10px] text-muted-foreground font-medium italic">Generate a script first, then run the AI Audit to unlock viral SEO features.</p>
+                            <p className="text-[10px] text-muted-foreground font-medium italic">Generate a script first, then run the AI Audit.</p>
                          </div>
                        )}
                     </div>
@@ -613,7 +583,6 @@ export default function EditorPage() {
         </div>
       </div>
 
-      {/* Modern Processing Overlay */}
       {isProcessing && (
         <div className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-3xl flex items-center justify-center p-12">
            <div className="max-w-md w-full text-center space-y-10">
@@ -627,30 +596,6 @@ export default function EditorPage() {
                <h3 className="text-4xl font-headline font-bold text-white tracking-tighter uppercase italic">AI Neural Processing</h3>
                <p className="text-muted-foreground font-medium text-lg italic">{processingMessage}</p>
              </div>
-           </div>
-        </div>
-      )}
-
-      {/* Interstitial Ad Layer */}
-      {showInterstitial && (
-        <div className="fixed inset-0 z-[200] bg-black/98 backdrop-blur-2xl flex items-center justify-center p-6">
-           <div className="max-w-4xl w-full bg-[#0a0d14] rounded-[3rem] border border-primary/20 overflow-hidden relative shadow-[0_0_120px_rgba(59,130,246,0.3)] animate-in slide-in-from-bottom-10">
-              <button onClick={() => setShowInterstitial(false)} className="absolute top-10 right-10 p-2.5 bg-white/5 rounded-full z-50"><X className="w-6 h-6" /></button>
-              <div className="p-16 md:p-24 text-center space-y-12">
-                 <div className="flex items-center justify-center gap-3 mb-4">
-                    <Zap className="w-8 h-8 text-primary fill-primary" />
-                    <span className="text-sm font-bold uppercase tracking-[0.5em] text-primary">Pro Rendering Active</span>
-                 </div>
-                 <h3 className="text-5xl md:text-7xl font-headline font-bold text-white tracking-tighter">Exporting Your 4K Masterpiece...</h3>
-                 <p className="text-muted-foreground text-xl max-w-2xl mx-auto italic opacity-80">Ads keep our elite AI engine free for all Indian creators.</p>
-                 <div className="aspect-video w-full max-w-2xl mx-auto bg-white/5 rounded-[2.5rem] border border-white/10 flex flex-col items-center justify-center gap-8 shadow-2xl">
-                    <MonitorPlay className="w-20 h-20 text-primary animate-pulse" />
-                    <div className="space-y-3 z-10">
-                       <p className="text-xl font-bold text-white">Sponsor: VideoMaster Pro</p>
-                    </div>
-                    <Button variant="secondary" className="rounded-full h-14 px-12 font-bold shadow-xl">Join the Elite</Button>
-                 </div>
-              </div>
            </div>
         </div>
       )}

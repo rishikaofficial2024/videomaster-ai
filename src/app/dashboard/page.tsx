@@ -58,7 +58,6 @@ export default function Dashboard() {
       description: "Ad started. Please watch for 15 seconds to earn +20 credits.",
     });
 
-    // Simulated Rewarded Ad logic
     setTimeout(async () => {
       updateDoc(userProfileRef, {
         credits: increment(20)
@@ -66,7 +65,7 @@ export default function Dashboard() {
       setAdLoading(false);
       toast({
         title: "Success! +20 Credits",
-        description: "Your reward has been added. You can watch another in 1 hour.",
+        description: "Your reward has been added.",
       });
     }, 15000);
   };
@@ -94,8 +93,6 @@ export default function Dashboard() {
     <div className="min-h-screen pb-32 md:pt-24 bg-[#05070a] hero-gradient">
       <Navbar />
       <main className="max-w-7xl mx-auto p-6 space-y-12">
-        
-        {/* Welcome Section */}
         <header className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8">
           <div className="space-y-4">
             <div className="flex flex-wrap gap-2">
@@ -105,22 +102,15 @@ export default function Dashboard() {
                    {profile?.subscriptionPlan === 'pro' ? 'PRO STUDIO ACTIVE' : 'STARTER WORKSPACE'}
                  </span>
               </div>
-              <div className="flex items-center gap-2 px-3 py-1 bg-emerald-500/10 rounded-full border border-emerald-500/20 w-fit">
-                 <Globe className="w-3 h-3 text-emerald-500" />
-                 <span className="text-[10px] font-bold text-emerald-500 uppercase tracking-[0.2em]">
-                   {user?.displayName?.split(' ')[0]}'s Studio
-                 </span>
-              </div>
             </div>
             <h1 className="text-5xl md:text-7xl font-headline font-bold tracking-tighter">
               Welcome, <span className="text-primary italic">{user?.displayName?.split(' ')[0] || 'Creator'}</span>
             </h1>
-            <p className="text-muted-foreground font-medium text-xl">Ready for another masterpiece?</p>
           </div>
           
           <div className="flex items-center gap-6 bg-[#0a0d14]/80 backdrop-blur-2xl p-4 rounded-[2rem] border border-white/5 shadow-2xl">
              <div className="flex flex-col px-6 border-r border-white/10">
-                <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-1">Available Credits</span>
+                <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-1">AI Credits</span>
                 <div className="flex items-center gap-2">
                   <Coins className="w-4 h-4 text-primary" />
                   <span className="text-3xl font-bold font-headline">
@@ -134,70 +124,44 @@ export default function Dashboard() {
           </div>
         </header>
 
-        {/* REWARDED AD SECTION - HIGH CONVERSION FOR ADS */}
         <section className="relative overflow-hidden group">
-          <div className="absolute inset-0 bg-primary/20 blur-[100px] opacity-20 group-hover:opacity-40 transition-opacity"></div>
           <Card className="rounded-[3rem] bg-[#0a0d14] border-primary/20 p-8 md:p-12 relative z-10 blue-glow">
             <div className="flex flex-col md:flex-row items-center justify-between gap-8">
                <div className="flex items-center gap-8 text-center md:text-left">
-                  <div className="w-20 h-20 bg-primary/10 rounded-[1.5rem] flex items-center justify-center border border-primary/20 shadow-xl">
+                  <div className="w-20 h-20 bg-primary/10 rounded-[1.5rem] flex items-center justify-center border border-primary/20">
                      <Gift className="w-10 h-10 text-primary animate-bounce" />
                   </div>
                   <div className="space-y-2">
-                     <h3 className="text-3xl font-bold font-headline">Earn +20 AI Credits</h3>
-                     <p className="text-muted-foreground font-medium max-w-sm">Watch a short video ad and fuel your creativity for free. <span className="text-primary font-bold">Recommended for daily users.</span></p>
+                     <h3 className="text-3xl font-bold font-headline">Earn +20 Credits</h3>
+                     <p className="text-muted-foreground font-medium">Watch a short video ad and fuel your creativity.</p>
                   </div>
                </div>
                <Button 
                  onClick={handleWatchAd} 
                  disabled={adLoading || profile?.isPremium}
-                 className="h-20 px-12 rounded-2xl bg-primary hover:bg-primary/90 text-white font-bold transition-all shadow-2xl shadow-primary/40 active:scale-95 text-lg"
+                 className="h-20 px-12 rounded-2xl bg-primary font-bold shadow-2xl shadow-primary/40 text-lg"
                >
                   {adLoading ? <Loader2 className="animate-spin mr-3 w-6 h-6" /> : <MonitorPlay className="w-6 h-6 mr-3" />}
-                  {adLoading ? "Ad playing..." : "Watch Video & Get Credits"}
+                  {adLoading ? "Ad playing..." : "Watch Ad & Earn"}
                </Button>
             </div>
           </Card>
         </section>
 
-        {/* Global Analytics Overview */}
         <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
            <Card className="rounded-[2.5rem] bg-[#0a0d14] border-white/5 p-8 blue-glow space-y-6">
               <div className="flex items-center justify-between">
-                 <div className="p-3 bg-primary/10 rounded-2xl">
-                    <Activity className="w-5 h-5 text-primary" />
-                 </div>
-                 <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Efficiency Rate</span>
+                 <div className="p-3 bg-primary/10 rounded-2xl"><Activity className="w-5 h-5 text-primary" /></div>
+                 <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Efficiency</span>
               </div>
-              <div className="space-y-1">
-                 <h3 className="text-3xl font-bold font-headline">98.5%</h3>
-                 <p className="text-xs text-muted-foreground font-medium">AI rendering speed optimization</p>
-              </div>
+              <h3 className="text-3xl font-bold font-headline">98.5%</h3>
               <Progress value={98} className="h-1.5 bg-white/5" />
            </Card>
 
-           <Card className="rounded-[2.5rem] bg-[#0a0d14] border-white/5 p-8 blue-glow space-y-6">
-              <div className="flex items-center justify-between">
-                 <div className="p-3 bg-orange-500/10 rounded-2xl">
-                    <Video className="w-5 h-5 text-orange-500" />
-                 </div>
-                 <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Total Projects</span>
-              </div>
-              <div className="space-y-1">
-                 <h3 className="text-3xl font-bold font-headline">{projects?.length || 0}</h3>
-                 <p className="text-xs text-muted-foreground font-medium">Cloud saved video drafts</p>
-              </div>
-              <Progress value={projects?.length ? (projects.length / 50) * 100 : 0} className="h-1.5 bg-white/5" />
-           </Card>
-
            <Card className="rounded-[2.5rem] bg-primary border-none p-8 text-white relative overflow-hidden shadow-2xl shadow-primary/20">
-              <div className="absolute top-0 right-0 p-8 opacity-10">
-                 <Crown className="w-32 h-32 rotate-12" />
-              </div>
               <div className="relative z-10 space-y-6">
                  <h3 className="text-2xl font-bold font-headline leading-tight">Elite <br/> Creator Hub</h3>
-                 <p className="text-xs font-medium text-primary-foreground/80">Remove all ads & get 4K exports.</p>
-                 <Button variant="secondary" className="w-full rounded-xl font-bold h-12 shadow-lg" asChild>
+                 <Button variant="secondary" className="w-full rounded-xl font-bold h-12" asChild>
                     <Link href="/premium">Go Ad-Free <ArrowUpRight className="ml-2 w-4 h-4" /></Link>
                  </Button>
               </div>
@@ -206,26 +170,22 @@ export default function Dashboard() {
 
         <AdBanner provider="Premium AdMob Network" />
 
-        {/* Recent Projects */}
         <section className="space-y-8">
           <div className="flex justify-between items-end">
-            <div className="space-y-1">
-               <h2 className="text-2xl font-headline font-bold tracking-tight">Project Library</h2>
-               <p className="text-xs text-muted-foreground font-bold uppercase tracking-widest">Access your cinematic history</p>
-            </div>
-            <Link href="/projects" className="text-xs font-bold text-primary flex items-center hover:underline bg-[#0a0d14] px-4 py-2 rounded-xl border border-white/5">
+            <h2 className="text-2xl font-headline font-bold">Project Library</h2>
+            <Link href="/projects" className="text-xs font-bold text-primary flex items-center hover:underline">
               Browse All <ChevronRight className="ml-1 w-4 h-4" />
             </Link>
           </div>
           
           {projectsLoading ? (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {[1, 2, 3].map(i => <div key={i} className="h-64 bg-[#0a0d14] animate-pulse rounded-[2.5rem] border border-white/5" />)}
+              {[1, 2, 3].map(i => <div key={i} className="h-64 bg-[#0a0d14] animate-pulse rounded-[2.5rem]" />)}
             </div>
           ) : projects && projects.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {projects.map((project: any) => (
-                <Card key={project.id} className="group overflow-hidden rounded-[2.5rem] border-white/5 bg-[#0a0d14] shadow-xl hover:shadow-2xl transition-all duration-500">
+                <Card key={project.id} className="group overflow-hidden rounded-[2.5rem] border-white/5 bg-[#0a0d14] shadow-xl transition-all duration-500">
                   <Link href={`/editor?id=${project.id}`}>
                     <div className="aspect-video relative overflow-hidden">
                       <Image
@@ -234,24 +194,10 @@ export default function Dashboard() {
                         fill
                         className="object-cover transition-transform duration-700 group-hover:scale-110"
                       />
-                      <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
-                        <div className="w-14 h-14 bg-white text-black rounded-full flex items-center justify-center shadow-2xl">
-                          <Play className="w-6 h-6 fill-current ml-1" />
-                        </div>
-                      </div>
                     </div>
                     <CardContent className="p-6">
-                      <div className="flex justify-between items-center">
-                        <div className="space-y-1 flex-1 min-w-0">
-                          <h3 className="font-bold text-lg truncate group-hover:text-primary transition-colors">{project.title}</h3>
-                          <div className="flex items-center gap-3 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-                             <span>{formatDate(project.updatedAt || project.createdAt)}</span>
-                             <span>•</span>
-                             <span className="text-primary">4K HDR</span>
-                          </div>
-                        </div>
-                        <Button variant="ghost" size="icon" className="rounded-xl h-10 w-10 hover:bg-white/5"><MoreVertical className="w-5 h-5" /></Button>
-                      </div>
+                       <h3 className="font-bold text-lg truncate group-hover:text-primary transition-colors">{project.title}</h3>
+                       <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">{formatDate(project.updatedAt || project.createdAt)}</p>
                     </CardContent>
                   </Link>
                 </Card>
@@ -259,12 +205,7 @@ export default function Dashboard() {
             </div>
           ) : (
             <div className="bg-[#0a0d14] border-2 border-dashed border-white/5 rounded-[4rem] p-24 text-center">
-              <div className="w-20 h-20 bg-[#0c0f17] rounded-[2rem] flex items-center justify-center mx-auto mb-8">
-                <Video className="w-8 h-8 text-primary opacity-20" />
-              </div>
-              <h3 className="text-xl font-bold mb-3">Your Studio is Empty</h3>
-              <p className="text-muted-foreground mb-8 max-w-xs mx-auto text-sm font-medium leading-relaxed">It's time to build something legendary. Launch the editor to start.</p>
-              <Button className="rounded-2xl h-14 px-10 font-bold shadow-2xl shadow-primary/30" asChild>
+              <Button className="rounded-2xl h-14 px-10 font-bold" asChild>
                 <Link href="/editor">Launch New Session</Link>
               </Button>
             </div>
