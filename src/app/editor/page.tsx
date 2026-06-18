@@ -94,8 +94,8 @@ export default function EditorPage() {
       toast({
         variant: "destructive",
         title: "Credits Required",
-        description: `This action costs ${cost} credits. Please top up.`,
-        action: <Button variant="secondary" size="sm" asChild><Link href="/premium">Upgrade</Link></Button>
+        description: `This action costs ${cost} credits. Please top up your account.`,
+        action: <Button variant="secondary" size="sm" asChild><Link href="/premium">Upgrade Now</Link></Button>
       });
       return false;
     }
@@ -143,15 +143,15 @@ export default function EditorPage() {
   const handleGenerateScript = async () => {
     if (!scriptTopic || !checkCredits(2)) return;
     setIsProcessing(true);
-    setProcessingMessage("Generating narrative structure...");
+    setProcessingMessage("AI is crafting your viral script...");
     try {
       const result = await generateAiScript({ topic: scriptTopic, platform: 'YouTube' });
       setAiScript(result);
       await deductCredits(2);
       await handleSave({ aiNotes: result.script });
-      toast({ title: "Script Optimized", description: "Project notes updated." });
+      toast({ title: "Success!", description: "Professional script generated." });
     } catch (e: any) {
-      toast({ variant: "destructive", title: "AI Error", description: "API Key invalid or quota exceeded. Check your .env file." });
+      toast({ variant: "destructive", title: "AI Limit Reached", description: "Please check your Gemini API key in .env file." });
     } finally {
       setIsProcessing(false);
     }
@@ -166,9 +166,9 @@ export default function EditorPage() {
       setThumbnailUrl(result.thumbnailDataUri);
       await deductCredits(5);
       await handleSave({ thumbnailUrl: result.thumbnailDataUri });
-      toast({ title: "Thumbnail Ready", description: "Master design applied." });
+      toast({ title: "Masterpiece Ready", description: "Your thumbnail has been designed." });
     } catch (e: any) {
-      toast({ variant: "destructive", title: "Design Error", description: "Failed to design thumbnail. Check API Key." });
+      toast({ variant: "destructive", title: "Design Error", description: "Failed to connect to Imagen. Check API key." });
     } finally {
       setIsProcessing(false);
     }
@@ -177,15 +177,15 @@ export default function EditorPage() {
   const handleGenerateVideo = async () => {
     if (!videoPrompt || !checkCredits(20)) return;
     setIsProcessing(true);
-    setProcessingMessage("Veo 2.0 is rendering visual clip...");
+    setProcessingMessage("Veo 2.0 is rendering your cinematic clip...");
     try {
       const result = await generateAiVideo({ prompt: videoPrompt });
       setVideoData(result.videoDataUri);
       await deductCredits(20);
       await handleSave({ videoDataUri: result.videoDataUri });
-      toast({ title: "Clip Rendered", description: "Successfully added to project." });
+      toast({ title: "Clip Rendered", description: "Video successfully added to project." });
     } catch (e: any) {
-      toast({ variant: "destructive", title: "Engine Error", description: "Connection timeout or invalid key. Please retry." });
+      toast({ variant: "destructive", title: "Rendering Failed", description: "AI service timed out. Please try again." });
     } finally {
       setIsProcessing(false);
     }
@@ -194,14 +194,14 @@ export default function EditorPage() {
   const handleGenerateVoiceover = async () => {
     if (!voiceText || !checkCredits(5)) return;
     setIsProcessing(true);
-    setProcessingMessage("Synthesizing neural voice...");
+    setProcessingMessage("Synthesizing professional narration...");
     try {
       const result = await generateAiVoiceover({ text: voiceText, voiceName: 'Algenib' });
       setAudioData(result.audioDataUri);
       await deductCredits(5);
-      toast({ title: "Audio Ready", description: "Narration track generated." });
+      toast({ title: "Audio Ready", description: "Neural voiceover track generated." });
     } catch (e: any) {
-      toast({ variant: "destructive", title: "Audio Error", description: "Failed to generate audio. Check key." });
+      toast({ variant: "destructive", title: "Audio Error", description: "Failed to synthesize voice." });
     } finally {
       setIsProcessing(false);
     }
@@ -235,12 +235,12 @@ export default function EditorPage() {
                {isSaving ? (
                  <div className="flex items-center gap-1">
                    <RefreshCw className="w-2.5 h-2.5 animate-spin text-primary" />
-                   <span className="text-[9px] font-bold text-primary uppercase tracking-widest">Saving to Cloud</span>
+                   <span className="text-[9px] font-bold text-primary uppercase tracking-widest">Auto-Saving</span>
                  </div>
                ) : (
                  <div className="flex items-center gap-1">
                    <Zap className="w-2.5 h-2.5 text-emerald-500" />
-                   <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest">Neural Link Active</span>
+                   <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest">Cloud Sync Active</span>
                  </div>
                )}
             </div>
@@ -250,10 +250,10 @@ export default function EditorPage() {
         <div className="flex items-center gap-4">
            <div className="hidden md:flex items-center gap-2 bg-primary/10 px-3 py-1 rounded-full border border-primary/20">
               <Coins className="w-3.5 h-3.5 text-primary" />
-              <span className="text-[10px] font-bold text-primary tracking-widest">{profile?.credits ?? 0} STUDIO CREDITS</span>
+              <span className="text-[10px] font-bold text-primary tracking-widest">{profile?.credits ?? 0} CREDITS</span>
            </div>
            <Button size="sm" className="h-9 px-6 rounded-xl font-bold bg-primary shadow-xl shadow-primary/20 gap-2">
-             <Download className="w-4 h-4" /> Export 4K
+             <Download className="w-4 h-4" /> Export Video
            </Button>
         </div>
       </div>
@@ -284,8 +284,8 @@ export default function EditorPage() {
                      <div className="w-24 h-24 bg-primary/10 rounded-[2.5rem] flex items-center justify-center mx-auto mb-6 border border-primary/20 animate-float">
                         <Video className="w-10 h-10 text-primary" />
                      </div>
-                     <h3 className="text-lg font-bold font-headline uppercase tracking-widest text-white">Visual Engine Ready</h3>
-                     <p className="text-xs text-muted-foreground max-w-xs mx-auto leading-relaxed">Initiate AI generation from the sidebar to create cinematic visuals.</p>
+                     <h3 className="text-lg font-bold font-headline uppercase tracking-widest text-white">Studio Preview</h3>
+                     <p className="text-xs text-muted-foreground max-w-xs mx-auto leading-relaxed">Use AI tools in the right panel to generate cinematic content.</p>
                   </div>
                 ) : (
                   <video 
@@ -313,7 +313,7 @@ export default function EditorPage() {
                 <div className="flex items-center gap-4">
                    <div className="flex items-center gap-2">
                       <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-                      <span className="text-[10px] font-bold uppercase tracking-widest">Neural Timeline v2.4</span>
+                      <span className="text-[10px] font-bold uppercase tracking-widest text-primary">Neural Timeline</span>
                    </div>
                 </div>
                 <div className="text-[10px] font-mono text-muted-foreground font-bold tracking-widest">00:00:00:00</div>
@@ -321,8 +321,8 @@ export default function EditorPage() {
              
              <div className="flex-1 overflow-y-auto p-4 space-y-2 custom-scrollbar">
                 {[
-                  { label: "V1: VIDEO GEN", active: !!videoData, icon: Sparkles, color: "bg-primary/20 border-primary/40 text-primary" },
-                  { label: "A1: NARRATION", active: !!audioData, icon: Volume2, color: "bg-indigo-500/20 border-indigo-500/40 text-indigo-400" },
+                  { label: "V1: AI VIDEO", active: !!videoData, icon: Sparkles, color: "bg-primary/20 border-primary/40 text-primary" },
+                  { label: "A1: VOICE OVER", active: !!audioData, icon: Volume2, color: "bg-indigo-500/20 border-indigo-500/40 text-indigo-400" },
                   { label: "G1: THUMBNAIL", active: !!thumbnailUrl, icon: ImageIcon, color: "bg-rose-500/20 border-rose-500/40 text-rose-400" }
                 ].map((track, i) => (
                   <div key={i} className="flex gap-4 h-14">
@@ -350,8 +350,8 @@ export default function EditorPage() {
         <div className="w-[400px] bg-[#0a0d14] border-l shrink-0 flex flex-col overflow-hidden">
            <Tabs value={activeInspectorTab} onValueChange={setActiveInspectorTab} className="flex-1 flex flex-col">
               <TabsList className="w-full h-14 bg-transparent border-b rounded-none grid grid-cols-2 p-0">
-                 <TabsTrigger value="ai" className="rounded-none font-bold text-[10px] tracking-widest data-[state=active]:text-primary">AI NEURAL ENGINE</TabsTrigger>
-                 <TabsTrigger value="project" className="rounded-none font-bold text-[10px] tracking-widest">PROJECT SYNC</TabsTrigger>
+                 <TabsTrigger value="ai" className="rounded-none font-bold text-[10px] tracking-widest data-[state=active]:text-primary">AI TOOLS</TabsTrigger>
+                 <TabsTrigger value="project" className="rounded-none font-bold text-[10px] tracking-widest">DETAILS</TabsTrigger>
               </TabsList>
               
               <div className="flex-1 overflow-y-auto p-6 space-y-8 custom-scrollbar">
@@ -371,7 +371,7 @@ export default function EditorPage() {
                           onChange={(e) => setScriptTopic(e.target.value)}
                        />
                        <Button className="w-full h-12 rounded-2xl font-bold bg-indigo-600 hover:bg-indigo-700 text-xs shadow-xl shadow-indigo-500/20" onClick={handleGenerateScript} disabled={isProcessing || !scriptTopic}>
-                          {isProcessing && processingMessage.includes("narrative") ? <Loader2 className="animate-spin" /> : "Initiate Analysis"}
+                          {isProcessing && processingMessage.includes("script") ? <Loader2 className="animate-spin mr-2" /> : "Write Script"}
                        </Button>
                     </div>
 
@@ -379,18 +379,18 @@ export default function EditorPage() {
                        <div className="flex items-center justify-between">
                           <div className="flex items-center gap-3">
                              <Sparkles className="w-4 h-4 text-blue-400" />
-                             <h4 className="text-xs font-bold uppercase tracking-widest text-blue-400">Veo 2.0 Visual Gen</h4>
+                             <h4 className="text-xs font-bold uppercase tracking-widest text-blue-400">AI Video Gen (Veo)</h4>
                           </div>
                           <span className="text-[9px] font-bold text-muted-foreground uppercase">20 Credits</span>
                        </div>
                        <textarea 
-                          placeholder="Describe your cinematic scene..." 
+                          placeholder="Describe your scene (e.g. A sunset in space)..." 
                           className="w-full bg-[#0c0f17] border border-white/5 rounded-2xl p-4 text-xs h-24 focus:ring-1 focus:ring-blue-500 outline-none resize-none transition-all placeholder:text-muted-foreground/30"
                           value={videoPrompt}
                           onChange={(e) => setVideoPrompt(e.target.value)}
                        />
                        <Button className="w-full h-12 rounded-2xl font-bold bg-blue-600 hover:bg-blue-700 text-xs shadow-xl shadow-blue-500/20" onClick={handleGenerateVideo} disabled={isProcessing || !videoPrompt}>
-                          {isProcessing && processingMessage.includes("rendering") ? <Loader2 className="animate-spin" /> : "Render Clip"}
+                          {isProcessing && processingMessage.includes("rendering") ? <Loader2 className="animate-spin mr-2" /> : "Generate Video"}
                        </Button>
                     </div>
 
@@ -398,18 +398,18 @@ export default function EditorPage() {
                        <div className="flex items-center justify-between">
                           <div className="flex items-center gap-3">
                              <Volume2 className="w-4 h-4 text-cyan-400" />
-                             <h4 className="text-xs font-bold uppercase tracking-widest text-cyan-400">Neural Voiceover</h4>
+                             <h4 className="text-xs font-bold uppercase tracking-widest text-cyan-400">AI Voiceover</h4>
                           </div>
                           <span className="text-[9px] font-bold text-muted-foreground uppercase">5 Credits</span>
                        </div>
                        <textarea 
-                          placeholder="Paste narration script..." 
+                          placeholder="Type your voiceover text here..." 
                           className="w-full bg-[#0c0f17] border border-white/5 rounded-2xl p-4 text-xs h-24 focus:ring-1 focus:ring-cyan-500 outline-none resize-none transition-all placeholder:text-muted-foreground/30"
                           value={voiceText}
                           onChange={(e) => setVoiceText(e.target.value)}
                        />
                        <Button className="w-full h-12 rounded-2xl font-bold bg-cyan-600 hover:bg-cyan-700 text-xs shadow-xl shadow-cyan-500/20" onClick={handleGenerateVoiceover} disabled={isProcessing || !voiceText}>
-                          {isProcessing && processingMessage.includes("synthesizing") ? <Loader2 className="animate-spin" /> : "Synthesize Voice"}
+                          {isProcessing && processingMessage.includes("synthesizing") ? <Loader2 className="animate-spin mr-2" /> : "Generate Audio"}
                        </Button>
                        {audioData && (
                          <div className="pt-2">
@@ -422,18 +422,18 @@ export default function EditorPage() {
                        <div className="flex items-center justify-between">
                           <div className="flex items-center gap-3">
                              <ImageIcon className="w-4 h-4 text-rose-400" />
-                             <h4 className="text-xs font-bold uppercase tracking-widest text-rose-400">Thumbnail Designer</h4>
+                             <h4 className="text-xs font-bold uppercase tracking-widest text-rose-400">Thumbnail Maker</h4>
                           </div>
                           <span className="text-[9px] font-bold text-muted-foreground uppercase">5 Credits</span>
                        </div>
                        <textarea 
-                          placeholder="Visual composition description..." 
+                          placeholder="Describe your thumbnail design..." 
                           className="w-full bg-[#0c0f17] border border-white/5 rounded-2xl p-4 text-xs h-24 focus:ring-1 focus:ring-rose-500 outline-none resize-none transition-all placeholder:text-muted-foreground/30"
                           value={thumbnailPrompt}
                           onChange={(e) => setThumbnailPrompt(e.target.value)}
                        />
                        <Button className="w-full h-12 rounded-2xl font-bold bg-rose-600 hover:bg-rose-700 text-xs shadow-xl shadow-rose-500/20" onClick={handleGenerateThumbnail} disabled={isProcessing || !thumbnailPrompt}>
-                          {isProcessing && processingMessage.includes("designing") ? <Loader2 className="animate-spin" /> : "Generate Cover"}
+                          {isProcessing && processingMessage.includes("designing") ? <Loader2 className="animate-spin mr-2" /> : "Design Thumbnail"}
                        </Button>
                     </div>
                  </TabsContent>
@@ -442,14 +442,14 @@ export default function EditorPage() {
                     <div className="p-6 rounded-[2rem] bg-emerald-500/5 border border-emerald-500/20 space-y-4">
                        <div className="flex items-center gap-3">
                           <ClipboardCheck className="w-5 h-5 text-emerald-500" />
-                          <h4 className="text-xs font-bold uppercase tracking-widest text-emerald-500">Cloud Sync Status</h4>
+                          <h4 className="text-xs font-bold uppercase tracking-widest text-emerald-500">Auto-Save Status</h4>
                        </div>
-                       <p className="text-[10px] text-muted-foreground leading-relaxed">All changes are automatically synced to your secure cloud workspace. You can pick up where you left off on any device.</p>
+                       <p className="text-[10px] text-muted-foreground leading-relaxed">Your project is synced with our high-speed cloud. Every AI generation is safe.</p>
                     </div>
 
                     {aiScript && (
                       <div className="space-y-3">
-                         <h4 className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground ml-2">Generated Script</h4>
+                         <h4 className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground ml-2">Generated Content</h4>
                          <div className="p-6 bg-[#161a25] rounded-[2rem] text-[11px] leading-relaxed border border-white/5 font-medium text-white/80">
                             {aiScript.script}
                          </div>
@@ -471,7 +471,7 @@ export default function EditorPage() {
                 </div>
              </div>
              <div className="space-y-3">
-               <h3 className="text-3xl font-headline font-bold text-white tracking-tighter uppercase">AI Processing</h3>
+               <h3 className="text-3xl font-headline font-bold text-white tracking-tighter uppercase">AI Neural Processing</h3>
                <p className="text-muted-foreground font-medium text-base leading-relaxed italic">{processingMessage}</p>
              </div>
            </div>
