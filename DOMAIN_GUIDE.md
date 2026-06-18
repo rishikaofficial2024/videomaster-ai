@@ -1,33 +1,16 @@
-# 🌐 Sasta & Achha Domain Guide (.in Domain)
+# 🌐 Professional Branding (.in Domain Guide)
 
-Aapka app ab `.in` branding ke liye taiyar hai. Sasta domain kharidne aur setup karne ke liye ye guide follow karein:
+Aapka app ab `.in` branding ke liye taiyar hai. Ek sasta domain (₹149-₹499) kharid kar aap apne app ko "Big Brand" bana sakte hain.
 
-### 1. Kahan se khareidein? (Top 3 Options)
-- **GoDaddy (Most Popular)**: 
-  - Price: ₹149 - ₹399 (Pehle saal ke liye).
-  - Best for: Jab budget kam ho aur turant shuru karna ho.
-- **Hostinger (Best Value)**: 
-  - Price: ₹499 (Renewal price achha hai).
-  - Best for: Long-term business aur achha support.
-- **BigRock (Indian Choice)**: 
-  - Price: ₹299 - ₹499.
-  - Best for: Indian payment methods (UPI/NetBanking) support.
+### 1. Kahan se khareidein?
+- **GoDaddy** ya **Hostinger** se `videomaster-ai.in` ya koi bhi achha naam khareidein.
 
-### 2. Domain Kharidne ke Tips
-- **Keyword Rakhein**: Koshish karein ki domain mein `ai` ya `video` word ho (jaise `videomasterai.in`).
-- **Short Name**: Jitna chota naam, utna yaad rakhna aasaan.
-- **.in hi kyun?**: India mein rank karne ke liye `.in` sabse powerful hai.
-
-### 3. Setup Kaise Karein? (5 Minute Step)
-Jab aap domain khareed lein, toh usey apne app se aise jodein:
+### 2. Setup Kaise Karein? (5 Minute Step)
 1. **Firebase Console** par jayein.
 2. **Hosting > Add Custom Domain** par click karein.
-3. Apna naya domain (`videomaster-ai.in`) dalein.
-4. Google aapko kuch **A Records** aur **TXT values** dega.
-5. In values ko GoDaddy/Hostinger ke **DNS Settings** mein paste kar dein.
-6. **24-48 ghante** mein aapki site `.in` par live ho jayegi!
+3. Apna naya domain dalein.
+4. Google aapko kuch **DNS values** dega. Unhe GoDaddy/Hostinger ke panel mein paste kar dein.
 
-### 4. Important Check
-Maine aapke code mein Branding aur SEO ko `.in` ke hisaab se update kar diya hai. Jaise hi aap domain jodeinge, Google aapko "Professional Indian Business" ki tarah treat karega.
+Maine code mein pehle se hi `.in` branding ke SEO tags daal diye hain, toh jaise hi aap domain jodeinge, woh turant rank karne lagega.
 
 **Aapka Business ab Global Level par jane ke liye taiyar hai!** 🚀💰
