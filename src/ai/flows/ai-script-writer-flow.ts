@@ -1,6 +1,6 @@
 'use server';
 /**
- * @fileOverview A Genkit flow for generating professional video scripts.
+ * @fileOverview A robust Genkit flow for generating professional video scripts with auto-retry logic.
  */
 
 import { ai, geminiModel, z } from '@/ai/genkit';
@@ -30,7 +30,7 @@ const scriptWriterFlow = ai.defineFlow(
     outputSchema: ScriptWriterOutputSchema,
   },
   async (input) => {
-    // Basic retry logic for 503/server busy errors
+    // STABILITY PATCH: 3-Stage Auto-Retry for 503 Server Busy errors
     let attempts = 0;
     const maxAttempts = 3;
 
@@ -38,35 +38,20 @@ const scriptWriterFlow = ai.defineFlow(
       try {
         const { output } = await ai.generate({
           model: geminiModel,
-          prompt: `You are a world-class social media content strategist and script writer. 
-          Create a viral-ready script for ${input.platform} about "${input.topic}". 
-          Tone: ${input.tone || 'energetic and engaging'}.
-          Format the output to include clear Scene Descriptions and Narration/Dialogue.`,
+          prompt: `You are a world-class viral video strategist. Create a script for ${input.platform} about "${input.topic}". 
+          Tone: ${input.tone || 'energetic'}. Include a killer hook.`,
           output: { schema: ScriptWriterOutputSchema },
-          config: {
-            safetySettings: [
-              { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_ONLY_HIGH' },
-              { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_ONLY_HIGH' },
-              { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_ONLY_HIGH' },
-              { category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT', threshold: 'BLOCK_ONLY_HIGH' },
-            ]
-          }
         });
         
-        if (!output) {
-          throw new Error('AI engine returned an empty response.');
-        }
-        
+        if (!output) throw new Error('AI returned an empty response.');
         return output;
       } catch (e: any) {
         attempts++;
-        if (attempts === maxAttempts || !e.message.includes('503')) {
-          throw e;
-        }
-        // Wait 2 seconds before retrying
+        console.warn(`AI Attempt ${attempts} failed: ${e.message}`);
+        if (attempts === maxAttempts || !e.message.includes('503')) throw e;
         await new Promise(resolve => setTimeout(resolve, 2000));
       }
     }
-    throw new Error('Failed to generate script after multiple attempts due to high server demand.');
+    throw new Error('AI Servers are currently overloaded. Please try again in 1 minute.');
   }
 );

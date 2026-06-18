@@ -4,36 +4,26 @@ import { Toaster } from "@/components/ui/toaster";
 import { FirebaseClientProvider } from '@/firebase';
 
 export const metadata: Metadata = {
-  title: 'VideoMaster AI - India\'s #1 Professional AI Video Studio & Script Writer (.in)',
-  description: 'Create viral YouTube, TikTok, and Reels 10x faster with VideoMaster AI. The best AI video generator for creators in India. Features: AI Script Writer, Cinematic Thumbnail Maker, and Veo 2.0 Video Generation. Get 100 free credits and start earning today!',
+  title: 'VideoMaster AI - India\'s No.1 AI Video Studio & Viral Script Maker (.in)',
+  description: 'Create viral YouTube Shorts and Reels 10x faster. VideoMaster AI is the most stable AI video studio for Indian creators. Get 100 FREE credits on signup! Generate scripts, thumbnails, and cinematic clips automatically.',
   keywords: [
     'AI Video Generator India', 
     'Viral Reels Maker AI', 
-    'Best AI Script Writer for YouTube', 
-    'Cinematic Thumbnail Designer AI', 
-    'VideoMaster AI India',
-    'Text to Video AI Free India',
-    'Automated Video Subtitles AI',
-    'AI Video Editor Online',
-    'YouTube Automation Tool'
+    'Best AI Script Writer YouTube', 
+    'Cinematic Thumbnail Maker AI', 
+    'VideoMaster AI Studio',
+    'Text to Video AI India Free',
+    'VideoMaster.ai.in'
   ],
-  authors: [{ name: 'VideoMaster AI Global' }],
   metadataBase: new URL('https://studio-9489287013-59986.web.app'),
-  alternates: {
-    canonical: '/',
-  },
+  alternates: { canonical: '/' },
   openGraph: {
-    title: 'VideoMaster AI - Create Viral Videos in Seconds',
-    description: 'The all-in-one AI video studio built to help Indian creators earn more and work less. Join 50,000+ creators today.',
+    title: 'VideoMaster AI - Viral Studio for Indian Creators',
+    description: 'Transform your ideas into professional videos with AI. 100 Free Credits inside!',
     url: 'https://studio-9489287013-59986.web.app',
     siteName: 'VideoMaster AI',
     locale: 'en_IN',
     type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'VideoMaster AI - The Future of Video Creation',
-    description: 'Turn text into viral videos in seconds with our elite AI engine.',
   },
   robots: {
     index: true,
@@ -41,9 +31,7 @@ export const metadata: Metadata = {
     googleBot: {
       index: true,
       follow: true,
-      'max-video-preview': -1,
       'max-image-preview': 'large',
-      'max-snippet': -1,
     },
   }
 };
@@ -54,14 +42,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="dark">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
         <meta name="theme-color" content="#05070a" />
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8946933317699938" crossOrigin="anonymous"></script>
-        {/* AdSense Verification Tag */}
         <meta name="google-adsense-account" content="ca-pub-8946933317699938" />
       </head>
       <body className="font-body antialiased bg-background text-foreground">

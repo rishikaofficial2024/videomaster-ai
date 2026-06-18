@@ -7,10 +7,9 @@ service cloud.firestore {
     }
 
     function isOwner(userId) {
-      return request.auth.uid == userId;
+      return isAuthenticated() && request.auth.uid == userId;
     }
     
-    // Safer isAdmin check that doesn't fail if the document doesn't exist
     function isAdmin() {
       return isAuthenticated() && 
              exists(/databases/$(database)/documents/users/$(request.auth.uid)) && 
@@ -19,13 +18,11 @@ service cloud.firestore {
 
     // User Profile rules
     match /users/{userId} {
-      // Allow users to read/write their own profile, or admins
-      allow read, write: if isAuthenticated() && (isOwner(userId) || isAdmin());
+      allow read, write: if isOwner(userId) || isAdmin();
       
       // Projects sub-collection
       match /projects/{projectId} {
-        // Strict owner check for projects
-        allow read, write: if isAuthenticated() && (isOwner(userId) || isAdmin());
+        allow read, write: if isOwner(userId) || isAdmin();
       }
     }
 
@@ -34,10 +31,10 @@ service cloud.firestore {
       allow read, write: if true;
     }
     
-    // Allow admins to list all users
+    // Global User Listing for Admins
     match /users {
-      allow list: if isAuthenticated() && isAdmin();
+      allow list: if isAdmin();
     }
   }
 }
-// Triggered security rules update for VideoMaster AI
+// Final Security Audit & Stability Patch for VideoMaster AI
