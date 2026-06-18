@@ -108,22 +108,22 @@ export default function TestConnectionPage() {
         </Link>
         
         <div className="text-center space-y-2">
-          <h1 className="text-3xl font-headline font-bold">System Health</h1>
-          <p className="text-muted-foreground">Verification of cloud service integration.</p>
+          <h1 className="text-4xl font-headline font-bold">System Health</h1>
+          <p className="text-muted-foreground font-medium">Verification of cloud service integration.</p>
         </div>
 
         {isFullyConfigured && !loading && (
-          <Alert className="bg-green-50 border-green-200 text-green-800 rounded-3xl animate-in zoom-in-95">
+          <Alert className="bg-green-50 border-green-200 text-green-800 rounded-[2.5rem] animate-in zoom-in-95 shadow-lg border-2">
             <ShieldCheck className="h-5 w-5 text-green-600" />
-            <AlertTitle className="font-bold">System Ready!</AlertTitle>
+            <AlertTitle className="font-bold">System Fully Operational!</AlertTitle>
             <AlertDescription className="text-xs">
-              API Key is verified and services are connected. You can now login.
+              Firebase configuration is verified and services are connected. You can now start creating.
             </AlertDescription>
           </Alert>
         )}
 
         {Object.keys(errors).length > 0 && (
-          <Alert variant="destructive" className="bg-destructive/10 border-destructive/20 text-destructive rounded-3xl">
+          <Alert variant="destructive" className="bg-destructive/10 border-destructive/20 text-destructive rounded-[2rem]">
             <AlertCircle className="h-4 w-4" />
             <AlertTitle className="font-bold">Setup Incomplete</AlertTitle>
             <AlertDescription className="text-[11px] mt-2 space-y-2">
@@ -137,30 +137,30 @@ export default function TestConnectionPage() {
           </Alert>
         )}
 
-        <Card className="border-white shadow-2xl bg-white/80 backdrop-blur-xl rounded-[2.5rem] overflow-hidden blue-glow">
+        <Card className="border-white shadow-2xl bg-white/80 backdrop-blur-xl rounded-[3rem] overflow-hidden blue-glow">
           <CardHeader className="pt-8 px-8">
             <CardTitle className="text-xl flex items-center gap-2 font-headline font-bold">
-              <Zap className="w-5 h-5 text-primary" /> Connectivity Status
+              <Zap className="w-5 h-5 text-primary" /> Service Status
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4 px-8 pb-8">
-            <div className="flex items-center justify-between p-4 bg-muted/30 rounded-2xl">
+            <div className="flex items-center justify-between p-4 bg-muted/30 rounded-2xl border">
               <div className="flex items-center gap-3">
                 <Key className="w-4 h-4 text-muted-foreground" />
-                <span className="text-sm font-bold">API Key (Verified)</span>
+                <span className="text-sm font-bold">Web API Key</span>
               </div>
               <StatusIcon state={status.config} />
             </div>
 
-            <div className="flex items-center justify-between p-4 bg-muted/30 rounded-2xl">
+            <div className="flex items-center justify-between p-4 bg-muted/30 rounded-2xl border">
               <div className="flex items-center gap-3">
                 <Wifi className="w-4 h-4 text-muted-foreground" />
-                <span className="text-sm font-bold">Firebase SDK</span>
+                <span className="text-sm font-bold">Firebase Core</span>
               </div>
               <StatusIcon state={status.firebase} />
             </div>
 
-            <div className="flex items-center justify-between p-4 bg-muted/30 rounded-2xl">
+            <div className="flex items-center justify-between p-4 bg-muted/30 rounded-2xl border">
               <div className="flex items-center gap-3">
                 <Database className="w-4 h-4 text-muted-foreground" />
                 <span className="text-sm font-bold">Firestore DB</span>
@@ -168,7 +168,7 @@ export default function TestConnectionPage() {
               <StatusIcon state={status.firestore} />
             </div>
 
-            <div className="flex items-center justify-between p-4 bg-muted/30 rounded-2xl">
+            <div className="flex items-center justify-between p-4 bg-muted/30 rounded-2xl border">
               <div className="flex items-center gap-3">
                 <Signal className="w-4 h-4 text-muted-foreground" />
                 <span className="text-sm font-bold">Auth Service</span>
@@ -177,7 +177,7 @@ export default function TestConnectionPage() {
             </div>
 
             <Button 
-              className="w-full mt-4 h-14 font-bold rounded-2xl shadow-xl shadow-primary/20" 
+              className="w-full mt-4 h-16 font-bold rounded-2xl shadow-xl shadow-primary/20 transition-all active:scale-95" 
               onClick={runTests} 
               disabled={loading}
             >
@@ -187,9 +187,12 @@ export default function TestConnectionPage() {
           </CardContent>
         </Card>
 
-        <div className="p-6 bg-primary/10 rounded-[2rem] border border-primary/20 text-center space-y-3">
+        <div className="p-8 bg-primary/5 rounded-[2.5rem] border border-primary/20 text-center space-y-4">
+          <p className="text-xs font-bold uppercase text-primary tracking-widest">Setup Guide</p>
           <p className="text-[11px] text-muted-foreground font-medium leading-relaxed">
-            API key is successfully integrated. If Firestore shows an error, please ensure <b>Firestore Database</b> is created in the Firebase Console.
+            1. Go to Firebase Console &gt; <b>Project Settings</b>.<br/>
+            2. Copy <b>Web API Key</b> (starts with &apos;AIza&apos;).<br/>
+            3. Ensure <b>Auth</b> &amp; <b>Firestore</b> are enabled in the build menu.
           </p>
         </div>
       </main>

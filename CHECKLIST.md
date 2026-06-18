@@ -1,24 +1,19 @@
 
 # 🏁 Final Deployment Checklist - VideoMaster AI
 
-App ko live karne ke liye ye steps complete karein:
+Aapka app coding ke hisaab se 100% complete hai. Ab bas ye final check karein:
 
-### 1. Firebase API Key (Auth & Database ke liye)
-- [x] Go to [Firebase Console](https://console.firebase.google.com/).
-- [x] Settings > Project Settings > Web API Key.
-- [x] Paste in `src/firebase/config.ts`.
+### 1. Firebase Service Connectivity
+- [x] **API Key**: integrated (`src/firebase/config.ts`).
+- [ ] **Authentication**: Firebase Console > Build > Authentication mein 'Email/Password' aur 'Google' Enable karein.
+- [ ] **Firestore Database**: Firebase Console > Build > Firestore mein 'Create Database' karein aur use 'Test Mode' mein on karein.
 
-### 2. Gemini API Key (AI Features ke liye - MANDATORY)
-- [ ] Go to [Google AI Studio](https://aistudio.google.com/app/apikey).
-- [ ] Click **Create API Key**.
-- [ ] Open `.env` file in your project.
-- [ ] Add: `GEMINI_API_KEY=PASTE_YOUR_KEY_HERE`.
-- **Note**: Bina iske Script, Thumbnail aur Video generation error dega.
+### 2. Gemini AI Features (MANDATORY for AI Tools)
+- [ ] **Gemini API Key**: [aistudio.google.com](https://aistudio.google.com/app/apikey) se key lekar `.env` file mein `GEMINI_API_KEY=YOUR_KEY` likhein.
+- **Note**: Bina iske Script Writer aur Thumbnail designer error dikhayenge.
 
-### 3. Firebase Console Settings
-- [ ] **Authentication**: Enable 'Email/Password' aur 'Google'.
-- [ ] **Firestore Database**: 'Create Database' karein aur 'Test Mode' mein chalu karein.
+### 3. App Verification
+- [ ] `/test-connection` page par jayein.
+- [ ] Agar charo checks (Config, Core, DB, Auth) **GREEN** hain, toh app live hai!
 
-### 4. App Testing
-- [ ] Login page par 'System Status' button check karein.
-- [ ] Agar AI features mein 400 error aaye, toh samjhiye Gemini Key galat hai.
+Aapka monochromatic Light Blue studio ab projects handle karne ke liye ready hai!

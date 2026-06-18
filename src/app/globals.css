@@ -5,8 +5,8 @@
 
 @layer base {
   :root {
-    /* Refined Monochromatic Light Blue Palette */
-    /* All base surfaces use the same Airy Light Blue */
+    /* Refined Monochromatic Airy Light Blue Palette */
+    /* All base surfaces use the same Airy Light Blue for a uniform look */
     --background: 210 100% 98.5%; 
     --foreground: 224 71% 4%;
     --card: 210 100% 98.5%; 
@@ -32,7 +32,7 @@
     --border: 214 32% 91%;
     --input: 214 32% 91%;
     --ring: 217 91% 60%;
-    --radius: 1.5rem;
+    --radius: 2rem;
   }
 }
 
@@ -44,12 +44,12 @@
     @apply bg-background text-foreground font-body antialiased selection:bg-primary/20;
   }
   h1, h2, h3, h4, h5, h6 {
-    @apply font-headline tracking-tight;
+    @apply font-headline tracking-tighter;
   }
 }
 
 .glass-card {
-  @apply bg-background/40 backdrop-blur-xl border border-white/40 shadow-xl;
+  @apply bg-background/60 backdrop-blur-xl border border-white/40 shadow-xl;
 }
 
 .hero-gradient {
@@ -58,7 +58,7 @@
 }
 
 .blue-glow {
-  box-shadow: 0 10px 40px -10px hsla(217, 91%, 60%, 0.15);
+  box-shadow: 0 20px 50px -10px hsla(217, 91%, 60%, 0.12);
 }
 
 /* Custom Scrollbar */

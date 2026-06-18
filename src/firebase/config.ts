@@ -3,7 +3,6 @@
  * Firebase configuration object for VideoMaster AI.
  * 
  * ✅ STATUS: API Key Integrated and Verified.
- * Key starts with 'AIza', which is the correct format for production.
  */
 export const firebaseConfig = {
   apiKey: "AIzaSyCz-pMZtY7_OVr9IyyHiIqwPWnpP3Lb21w",
