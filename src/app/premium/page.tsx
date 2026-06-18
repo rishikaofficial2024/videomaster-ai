@@ -10,7 +10,7 @@ import { useUser, useFirestore, useDoc } from "@/firebase";
 import { doc, updateDoc } from "firebase/firestore";
 import { useToast } from "@/hooks/use-toast";
 import { errorEmitter } from "@/firebase/error-emitter";
-import { FirestorePermissionError } from "@/firebase/errors";
+import { FirestorePermissionError, type SecurityRuleContext } from "@/firebase/errors";
 import { cn } from "@/lib/utils";
 import { AdBanner } from "@/components/ads/ad-banner";
 
@@ -60,9 +60,6 @@ export default function PremiumPage() {
     if (!user || planId === "free") return;
     setLoadingPlan(planId);
     
-    // NOTE: For real payments, you would redirect to Razorpay/Stripe here.
-    // The instructions for this are in BANK_TRANSFER_GUIDE.md
-    
     const userRef = doc(db, "users", user.uid);
     const data = {
       isPremium: true,
@@ -75,12 +72,14 @@ export default function PremiumPage() {
       // Simulation of a payment gateway delay
       await new Promise(resolve => setTimeout(resolve, 2000));
       
-      await updateDoc(userRef, data).catch(async (e) => {
-        errorEmitter.emit("permission-error", new FirestorePermissionError({
+      // Non-blocking mutation
+      updateDoc(userRef, data).catch(async (e) => {
+        const permissionError = new FirestorePermissionError({
           path: userRef.path,
           operation: "update",
           requestResourceData: data
-        }));
+        } satisfies SecurityRuleContext);
+        errorEmitter.emit("permission-error", permissionError);
       });
       
       setShowSuccess(true);
@@ -88,11 +87,11 @@ export default function PremiumPage() {
         title: "Welcome to Pro Studio!",
         description: "Your account has been upgraded successfully.",
       });
-    } catch (e) {
+    } catch (e: any) {
       toast({
         variant: "destructive",
         title: "Transaction Failed",
-        description: "Please try again later.",
+        description: e.message || "Please try again later.",
       });
     } finally {
       setLoadingPlan(null);
@@ -198,7 +197,7 @@ export default function PremiumPage() {
               </div>
            </div>
            <Button variant="outline" className="h-14 px-10 rounded-2xl border-indigo-500/30 font-bold hover:bg-indigo-500/10" asChild>
-              <a href="/BANK_TRANSFER_GUIDE.md">Read Setup Guide <ShieldCheck className="ml-2 w-4 h-4" /></a>
+              <Link href="/premium">Read Setup Guide <ShieldCheck className="ml-2 w-4 h-4" /></Link>
            </Button>
         </section>
 

@@ -1,3 +1,4 @@
+
 'use server';
 /**
  * @fileOverview A Genkit flow for designing cinematic video thumbnails using Imagen.
@@ -29,22 +30,17 @@ const thumbnailDesignerFlow = ai.defineFlow(
     outputSchema: ThumbnailDesignerOutputSchema,
   },
   async (input) => {
-    try {
-      const { media } = await ai.generate({
-        model: googleAI.model('imagen-3.0-fast-generate-001'),
-        prompt: `Cinematic high-quality professional video thumbnail about: ${input.prompt}. Eye-catching, high contrast, 4k resolution, professional photography style.`,
-      });
+    const { media } = await ai.generate({
+      model: googleAI.model('imagen-3.0-fast-generate-001'),
+      prompt: `Cinematic high-quality professional video thumbnail about: ${input.prompt}. Eye-catching, high contrast, 4k resolution, professional photography style.`,
+    });
 
-      if (!media?.url) {
-        throw new Error('AI generated the response but no image was returned. Check your API quota.');
-      }
-
-      return {
-        thumbnailDataUri: media.url,
-      };
-    } catch (error: any) {
-      console.error('Thumbnail Generation Error:', error);
-      throw new Error(error.message || 'Failed to generate thumbnail. Ensure your GEMINI_API_KEY is valid and has Imagen access.');
+    if (!media?.url) {
+      throw new Error('AI generated the response but no image was returned. Check your API quota or safety filters.');
     }
+
+    return {
+      thumbnailDataUri: media.url,
+    };
   }
 );

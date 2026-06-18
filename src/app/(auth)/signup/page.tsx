@@ -13,6 +13,8 @@ import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { useAuth, useFirestore } from "@/firebase";
 import { useToast } from "@/hooks/use-toast";
+import { errorEmitter } from "@/firebase/error-emitter";
+import { FirestorePermissionError, type SecurityRuleContext } from "@/firebase/errors";
 
 export default function SignupPage() {
   const [loading, setLoading] = useState(false);
@@ -36,7 +38,9 @@ export default function SignupPage() {
       await updateProfile(user, { displayName });
 
       // Create user profile in Firestore with 100 default credits
-      await setDoc(doc(db, "users", user.uid), {
+      // Non-blocking mutation as per guidelines
+      const userRef = doc(db, "users", user.uid);
+      const profileData = {
         email: user.email,
         displayName: displayName,
         isPremium: false,
@@ -44,7 +48,17 @@ export default function SignupPage() {
         credits: 100,
         photoURL: "",
         createdAt: new Date().toISOString()
-      });
+      };
+
+      setDoc(userRef, profileData)
+        .catch(async (serverError) => {
+          const permissionError = new FirestorePermissionError({
+            path: userRef.path,
+            operation: 'create',
+            requestResourceData: profileData
+          } satisfies SecurityRuleContext);
+          errorEmitter.emit('permission-error', permissionError);
+        });
 
       router.push("/dashboard");
     } catch (error: any) {

@@ -1,12 +1,12 @@
+
 "use client";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Video, LayoutTemplate, FolderOpen, User, Crown, LayoutDashboard, Coins } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useUser, useFirestore, useDoc } from "@/firebase";
+import { useUser, useFirestore, useDoc, useMemoFirebase } from "@/firebase";
 import { doc } from "firebase/firestore";
-import { useMemo } from "react";
 
 const navItems = [
   { name: "Home", href: "/dashboard", icon: LayoutDashboard },
@@ -22,10 +22,11 @@ export function Navbar() {
   const { user } = useUser();
   const db = useFirestore();
 
-  const profileRef = useMemo(() => {
-    if (!user) return null;
+  // Stabilize reference to prevent infinite loops
+  const profileRef = useMemoFirebase(() => {
+    if (!user || !db) return null;
     return doc(db, "users", user.uid);
-  }, [user, db]);
+  }, [user?.uid, db]);
 
   const { data: profile } = useDoc(profileRef);
 
