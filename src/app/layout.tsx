@@ -8,14 +8,14 @@ export const metadata: Metadata = {
   description: 'Create viral YouTube, TikTok, and Reels 10x faster with VideoMaster AI. The best AI video generator for creators. Features: AI Script Writer, Cinematic Thumbnail Maker, and Veo 2.0 Video Generation. Get 100 free credits and start earning today!',
   keywords: ['AI Video Editor', 'Video Generation', 'Thumbnail Maker', 'AI Scripts', 'YouTube Tools', 'TikTok Editor', 'Monetize Video', 'Viral Reels Maker', 'VideoMaster AI India'],
   authors: [{ name: 'VideoMaster AI Global' }],
-  metadataBase: new URL('https://videomaster-ai.web.app'),
+  metadataBase: new URL('https://studio-9489287013-59986.web.app'),
   alternates: {
     canonical: '/',
   },
   openGraph: {
     title: 'VideoMaster AI - Create Viral Videos in Seconds',
     description: 'The all-in-one AI video studio built to help creators earn more and work less. Join 50,000+ creators today.',
-    url: 'https://videomaster-ai.web.app',
+    url: 'https://studio-9489287013-59986.web.app',
     siteName: 'VideoMaster AI',
     locale: 'en_IN',
     type: 'website',
