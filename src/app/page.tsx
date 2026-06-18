@@ -123,7 +123,9 @@ export default function LandingPage() {
                   color: "rose"
                 }
               ].map((feature, i) => (
-                <div key={i} className="group p-8 rounded-[2.5rem] border bg-background/50 hover:bg-background hover:shadow-2xl transition-all duration-500 blue-glow">
+                <div key={i} className={cn(
+                  "group p-8 rounded-[2.5rem] border bg-background/50 hover:bg-background hover:shadow-2xl transition-all duration-500 blue-glow",
+                )}>
                   <div className={`p-4 rounded-2xl w-fit mb-6 bg-primary/5 text-primary shadow-sm group-hover:scale-110 transition-transform`}>
                     <feature.icon className="w-6 h-6" />
                   </div>
