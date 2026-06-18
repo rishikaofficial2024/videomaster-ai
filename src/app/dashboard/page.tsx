@@ -4,7 +4,7 @@
 import { Navbar } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Plus, Play, Sparkles, Wand2, History, ChevronRight, Loader2, Crown, Coins, Zap, MoreVertical, Video, ArrowUpRight } from "lucide-react";
+import { Plus, Play, Sparkles, Wand2, History, ChevronRight, Loader2, Crown, Coins, Zap, MoreVertical, Video, ArrowUpRight, ShieldCheck } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
@@ -34,7 +34,6 @@ export default function Dashboard() {
   }, [db, user]);
 
   const { data: projects, loading: projectsLoading } = useCollection(projectsQuery);
-  const templates = PlaceHolderImages.filter(img => img.id.includes("template"));
 
   const formatDate = (timestamp: any) => {
     if (!timestamp) return "Just now";
@@ -59,9 +58,22 @@ export default function Dashboard() {
       <Navbar />
       <main className="max-w-6xl mx-auto p-6 space-y-16">
         
+        {/* Diagnostic & Onboarding Alert */}
+        <div className="flex items-center justify-between px-6 py-3 bg-yellow-500/10 border border-yellow-500/20 rounded-2xl animate-in slide-in-from-top-2 duration-500">
+          <div className="flex items-center gap-3">
+            <ShieldCheck className="w-5 h-5 text-yellow-500" />
+            <p className="text-xs font-bold text-yellow-600 dark:text-yellow-400 uppercase tracking-widest">
+              System Ready? Check your AI & Cloud connection here:
+            </p>
+          </div>
+          <Button variant="link" size="sm" className="text-yellow-600 font-bold p-0 h-auto" asChild>
+            <Link href="/test-connection">Run Diagnostics <ChevronRight className="w-4 h-4 ml-1" /></Link>
+          </Button>
+        </div>
+
         {/* Monetization / Credits Bar */}
         {!profile?.isPremium && (
-          <div className="bg-primary/10 border border-primary/20 p-6 rounded-[2.5rem] flex flex-col md:flex-row items-center justify-between gap-6 animate-in slide-in-from-top-4 duration-500">
+          <div className="bg-primary/10 border border-primary/20 p-6 rounded-[2.5rem] flex flex-col md:flex-row items-center justify-between gap-6 animate-in slide-in-from-top-4 duration-500 shadow-2xl blue-glow">
              <div className="flex items-center gap-6">
                 <div className="w-16 h-16 bg-primary/20 rounded-2xl flex items-center justify-center">
                    <Crown className="w-8 h-8 text-primary" />
