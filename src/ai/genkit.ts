@@ -11,14 +11,15 @@ import { googleAI } from '@genkit-ai/google-genai';
 const getApiKey = () => {
   const rawKey = process.env.GEMINI_API_KEY || '';
   // Remove spaces, quotes, and any hidden characters that might cause 401 errors
+  // This is crucial to prevent "API key not valid" errors from common copy-paste issues
   return rawKey.trim().replace(/^["']|["']$/g, '').trim();
 };
 
 const apiKey = getApiKey();
 
 // Masked logging for debugging in the console
-if (!apiKey) {
-  console.error("❌ AI ERROR: GEMINI_API_KEY is missing from .env file.");
+if (!apiKey || apiKey.includes('PASTE_YOUR')) {
+  console.error("❌ AI ERROR: GEMINI_API_KEY is missing or invalid in .env file.");
 } else {
   console.log(`✅ AI SERVICE: Key detected (Starts with: ${apiKey.substring(0, 6)}...)`);
 }
