@@ -56,6 +56,7 @@ export default function Dashboard() {
       description: "Ad started. Please watch for 15 seconds to earn +20 credits.",
     });
 
+    // Simulate an ad interaction - once AdSense/AdMob is fully active, this logic would trigger from their SDK events
     setTimeout(() => {
       const updateData = { credits: increment(20) };
       updateDoc(userProfileRef, updateData)
@@ -71,7 +72,7 @@ export default function Dashboard() {
       setAdLoading(false);
       toast({
         title: "Success! +20 Credits",
-        description: "Your reward has been added.",
+        description: "Your reward has been added to your account.",
       });
     }, 15000);
   };
@@ -109,7 +110,7 @@ export default function Dashboard() {
                  </span>
               </div>
             </div>
-            <h1 className="text-5xl md:text-7xl font-headline font-bold tracking-tighter">
+            <h1 className="text-5xl md:text-7xl font-headline font-bold tracking-tighter text-white">
               Welcome, <span className="text-primary italic">{user?.displayName?.split(' ')[0] || 'Creator'}</span>
             </h1>
           </div>
@@ -119,7 +120,7 @@ export default function Dashboard() {
                 <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-1">AI Credits</span>
                 <div className="flex items-center gap-2">
                   <Coins className="w-4 h-4 text-primary" />
-                  <span className="text-3xl font-bold font-headline">
+                  <span className="text-3xl font-bold font-headline text-white">
                     {profile?.isPremium ? '∞' : (profile?.credits ?? 0)}
                   </span>
                 </div>
@@ -130,6 +131,7 @@ export default function Dashboard() {
           </div>
         </header>
 
+        {/* REWARDED AD SECTION - PAISA KAMANE KA RAASTA 1 */}
         <section className="relative overflow-hidden group">
           <Card className="rounded-[3rem] bg-[#0a0d14] border-primary/20 p-8 md:p-12 relative z-10 blue-glow">
             <div className="flex flex-col md:flex-row items-center justify-between gap-8">
@@ -138,14 +140,14 @@ export default function Dashboard() {
                      <Gift className="w-10 h-10 text-primary animate-float" />
                   </div>
                   <div className="space-y-2">
-                     <h3 className="text-3xl font-bold font-headline">Earn +20 Credits</h3>
-                     <p className="text-muted-foreground font-medium">Watch a short video ad and fuel your creativity.</p>
+                     <h3 className="text-3xl font-bold font-headline text-white">Earn +20 AI Credits</h3>
+                     <p className="text-muted-foreground font-medium">Watch a short video ad and fuel your creativity for free.</p>
                   </div>
                </div>
                <Button 
                  onClick={handleWatchAd} 
                  disabled={adLoading || profile?.isPremium}
-                 className="h-20 px-12 rounded-2xl bg-primary font-bold shadow-2xl shadow-primary/40 text-lg"
+                 className="h-20 px-12 rounded-2xl bg-primary font-bold shadow-2xl shadow-primary/40 text-lg hover:scale-105 transition-all"
                >
                   {adLoading ? <Loader2 className="animate-spin mr-3 w-6 h-6" /> : <MonitorPlay className="w-6 h-6 mr-3" />}
                   {adLoading ? "Ad playing..." : "Watch Ad & Earn"}
@@ -154,31 +156,36 @@ export default function Dashboard() {
           </Card>
         </section>
 
+        {/* DASHBOARD STATS */}
         <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
            <Card className="rounded-[2.5rem] bg-[#0a0d14] border-white/5 p-8 blue-glow space-y-6">
               <div className="flex items-center justify-between">
                  <div className="p-3 bg-primary/10 rounded-2xl"><Activity className="w-5 h-5 text-primary" /></div>
                  <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Efficiency</span>
               </div>
-              <h3 className="text-3xl font-bold font-headline">98.5%</h3>
+              <h3 className="text-3xl font-bold font-headline text-white">98.5%</h3>
               <Progress value={98} className="h-1.5 bg-white/5" />
            </Card>
 
+           {/* SUBSCRIPTION PROMPT - PAISA KAMANE KA RAASTA 2 */}
            <Card className="rounded-[2.5rem] bg-primary border-none p-8 text-white relative overflow-hidden shadow-2xl shadow-primary/20">
               <div className="relative z-10 space-y-6">
                  <h3 className="text-2xl font-bold font-headline leading-tight">Elite <br/> Creator Hub</h3>
-                 <Button variant="secondary" className="w-full rounded-xl font-bold h-12" asChild>
-                    <Link href="/premium">Go Ad-Free <ArrowUpRight className="ml-2 w-4 h-4" /></Link>
+                 <p className="text-white/80 text-sm font-medium">Unlock 4K exports and unlimited AI rendering for ₹99.</p>
+                 <Button variant="secondary" className="w-full rounded-xl font-bold h-12 hover:scale-105 transition-all" asChild>
+                    <Link href="/premium">Go Pro Studio <ArrowUpRight className="ml-2 w-4 h-4" /></Link>
                  </Button>
               </div>
            </Card>
         </section>
 
-        <AdBanner provider="Premium AdMob Network" />
+        {/* DISPLAY ADS - PAISA KAMANE KA RAASTA 3 */}
+        <AdBanner provider="Premium Creator Network" />
 
+        {/* PROJECT LIBRARY */}
         <section className="space-y-8">
           <div className="flex justify-between items-end">
-            <h2 className="text-2xl font-headline font-bold">Project Library</h2>
+            <h2 className="text-2xl font-headline font-bold text-white">Project Library</h2>
             <Link href="/projects" className="text-xs font-bold text-primary flex items-center hover:underline">
               Browse All <ChevronRight className="ml-1 w-4 h-4" />
             </Link>
@@ -202,7 +209,7 @@ export default function Dashboard() {
                       />
                     </div>
                     <CardContent className="p-6">
-                       <h3 className="font-bold text-lg truncate group-hover:text-primary transition-colors">{project.title}</h3>
+                       <h3 className="font-bold text-lg truncate group-hover:text-primary transition-colors text-white">{project.title}</h3>
                        <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">{formatDate(project.updatedAt || project.createdAt)}</p>
                     </CardContent>
                   </Link>
