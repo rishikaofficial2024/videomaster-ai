@@ -20,7 +20,7 @@ import { generateAiVoiceover } from "@/ai/flows/ai-voiceover-generation-flow";
 import { generateAiScript } from "@/ai/flows/ai-script-writer-flow";
 import { generateAiThumbnail } from "@/ai/flows/ai-thumbnail-designer-flow";
 import { generateAutoCaptionsAndSubtitles } from "@/ai/flows/ai-auto-caption-and-subtitle-generation-flow";
-import Link from "next/navigation";
+import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useUser, useFirestore, useDoc, useMemoFirebase } from "@/firebase";
 import { doc, setDoc, updateDoc, serverTimestamp, increment } from "firebase/firestore";
