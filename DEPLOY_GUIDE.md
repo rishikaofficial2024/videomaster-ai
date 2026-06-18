@@ -12,8 +12,8 @@ Ise aap Instagram bio, WhatsApp, aur YouTube descriptions mein share karein.
 ### 2. Google Par Kaise Show Hoga?
 Maine `robots.txt` aur `sitemap.xml` add kar diye hain. Google par jaldi aane ke liye:
 - [Google Search Console](https://search.google.com/search-console) par jayein.
-- Apni website ka URL (`https://studio-9489287013-59986.web.app`) dalein aur usey verify karein.
-- `sitemap.xml` ko submit karein. Maine code mein ise automate kar diya hai.
+- Apni website ka URL dalein aur usey verify karein.
+- `sitemap.xml` submit karein. Maine code mein ise automate kar diya hai.
 
 ### 3. Play Store Par Kaise Dalein?
 Mobile se APK banane ka system (GitHub Actions) maine set kar diya hai. Play Store par launch karne ke liye:

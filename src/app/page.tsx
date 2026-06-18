@@ -86,7 +86,7 @@ export default function LandingPage() {
         </section>
 
         <section className="container mx-auto px-6">
-          <AdBanner provider="Google AdSense" />
+          <AdBanner provider="Google AdSense & AdMob" />
         </section>
 
         {/* Features Section */}
