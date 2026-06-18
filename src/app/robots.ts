@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: ['/dashboard/', '/editor/', '/profile/'],
     },
-    sitemap: 'https://videomaster-ai.web.app/sitemap.xml',
+    sitemap: 'https://studio-9489287013-59986.web.app/sitemap.xml',
   }
 }
