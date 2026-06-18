@@ -18,14 +18,14 @@ export const metadata: Metadata = {
     'YouTube Automation Tool'
   ],
   authors: [{ name: 'VideoMaster AI Global' }],
-  metadataBase: new URL('https://videomaster-ai.in'),
+  metadataBase: new URL('https://studio-9489287013-59986.web.app'),
   alternates: {
     canonical: '/',
   },
   openGraph: {
     title: 'VideoMaster AI - Create Viral Videos in Seconds',
     description: 'The all-in-one AI video studio built to help Indian creators earn more and work less. Join 50,000+ creators today.',
-    url: 'https://videomaster-ai.in',
+    url: 'https://studio-9489287013-59986.web.app',
     siteName: 'VideoMaster AI',
     locale: 'en_IN',
     type: 'website',
@@ -61,6 +61,8 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
         <meta name="theme-color" content="#05070a" />
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8946933317699938" crossOrigin="anonymous"></script>
+        {/* AdSense Verification Tag */}
+        <meta name="google-adsense-account" content="ca-pub-8946933317699938" />
       </head>
       <body className="font-body antialiased bg-background text-foreground">
         <FirebaseClientProvider>

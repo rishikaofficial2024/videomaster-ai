@@ -221,7 +221,7 @@ export default function LandingPage() {
               <nav className="flex flex-col gap-5 text-muted-foreground font-medium text-base">
                 <Link href="#" className="hover:text-primary transition-colors">Help Center</Link>
                 <Link href="#" className="hover:text-primary transition-colors">Contact Expert</Link>
-                <p className="text-sm text-muted-foreground/60 italic">Email: support@videomaster-ai.in</p>
+                <p className="text-sm text-muted-foreground/60 italic">Email: support@videomaster-ai.web.app</p>
               </nav>
             </div>
           </div>
