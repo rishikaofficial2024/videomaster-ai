@@ -3,7 +3,7 @@
   "entities": {
     "UserProfile": {
       "title": "User Profile",
-      "description": "Stored user preferences, subscription status, and credit balance",
+      "description": "Comprehensive user profile including subscription metrics and usage data",
       "type": "object",
       "properties": {
         "displayName": { "type": "string" },
@@ -11,27 +11,38 @@
         "photoURL": { "type": "string" },
         "isPremium": { "type": "boolean" },
         "subscriptionPlan": { "type": "string", "enum": ["free", "pro", "business"] },
-        "credits": { "type": "number", "description": "AI processing credits balance" },
-        "totalSpent": { "type": "number", "description": "Total revenue from this user" }
+        "credits": { "type": "number", "description": "Available AI processing credits" },
+        "totalSpent": { "type": "number", "description": "Total lifetime revenue from user" },
+        "usageStats": {
+          "type": "object",
+          "properties": {
+            "totalVideos": { "type": "number" },
+            "aiGenerations": { "type": "number" }
+          }
+        }
       },
       "required": ["email"]
     },
     "VideoProject": {
       "title": "Video Project",
-      "description": "Metadata and AI analysis for a video project",
+      "description": "Professional video project metadata and AI analysis",
       "type": "object",
       "properties": {
         "title": { "type": "string" },
         "createdAt": { "type": "string", "format": "date-time" },
         "updatedAt": { "type": "string", "format": "date-time" },
-        "status": { "type": "string", "enum": ["draft", "processing", "completed"] },
+        "status": { "type": "string", "enum": ["draft", "processing", "completed", "error"] },
+        "category": { "type": "string", "enum": ["social", "business", "personal", "ads"] },
+        "duration": { "type": "number", "description": "Duration in seconds" },
+        "aspectRatio": { "type": "string", "enum": ["16:9", "9:16", "1:1"] },
         "transcript": { "type": "string" },
         "optimizedTitle": { "type": "string" },
         "optimizedDescription": { "type": "string" },
         "hashtags": { "type": "array", "items": { "type": "string" } },
         "thumbnailUrl": { "type": "string" },
         "videoDataUri": { "type": "string" },
-        "subtitles": { "type": "string" }
+        "subtitles": { "type": "string" },
+        "aiNotes": { "type": "string", "description": "AI recommendations for the video" }
       },
       "required": ["title", "createdAt", "status"]
     }
@@ -42,11 +53,11 @@
   "firestore": {
     "/users/{userId}": {
       "schema": { "$ref": "#/backend/entities/UserProfile" },
-      "description": "The user's root profile document."
+      "description": "The user's core profile and billing state."
     },
     "/users/{userId}/projects/{projectId}": {
       "schema": { "$ref": "#/backend/entities/VideoProject" },
-      "description": "Collection of video projects owned by the user."
+      "description": "User's video editing projects collection."
     }
   }
 }

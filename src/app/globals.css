@@ -5,24 +5,24 @@
 
 @layer base {
   :root {
-    /* Deep Cinematic Midnight Palette - Professional Studio Theme */
-    --background: 222 47% 4%; /* Deep Obsidian */
-    --foreground: 210 40% 98%; /* Off-white */
+    /* Refined Deep Cinematic Midnight Palette - High Density Studio Theme */
+    --background: 222 47% 4%; /* Deepest Obsidian */
+    --foreground: 210 40% 98%; 
     
-    --card: 222 47% 7%; /* Slightly lighter obsidian */
+    --card: 222 47% 6%; 
     --card-foreground: 210 40% 98%;
     
-    --popover: 222 47% 6%;
+    --popover: 222 47% 5%;
     --popover-foreground: 210 40% 98%;
     
-    --primary: 217 91% 60%; /* Electric Blue */
+    --primary: 217 91% 60%; /* Electric Primary Blue */
     --primary-foreground: 210 40% 98%;
     
-    --secondary: 215 27% 12%; /* Dark Slate */
+    --secondary: 215 27% 10%; 
     --secondary-foreground: 210 40% 98%;
     
-    --muted: 215 27% 10%;
-    --muted-foreground: 215 16% 60%; /* Muted Slate */
+    --muted: 215 27% 8%;
+    --muted-foreground: 215 16% 55%; 
     
     --accent: 217 91% 60%;
     --accent-foreground: 210 40% 98%;
@@ -30,10 +30,10 @@
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
     
-    --border: 215 27% 15%;
-    --input: 215 27% 15%;
+    --border: 215 27% 12%;
+    --input: 215 27% 12%;
     --ring: 217 91% 60%;
-    --radius: 1.5rem;
+    --radius: 1.25rem;
   }
 }
 
@@ -49,28 +49,26 @@
   }
 }
 
-.glass-card {
-  @apply bg-card/60 backdrop-blur-2xl border border-white/5 shadow-2xl;
-}
-
 .hero-gradient {
-  background: radial-gradient(circle at top right, hsla(217, 91%, 60%, 0.1), transparent),
-              radial-gradient(circle at bottom left, hsla(222, 47%, 4%, 1), transparent);
+  background: radial-gradient(circle at top right, hsla(217, 91%, 60%, 0.08), transparent 40%),
+              radial-gradient(circle at bottom left, hsla(217, 91%, 60%, 0.05), transparent 40%),
+              hsla(222, 47%, 4%, 1);
 }
 
 .blue-glow {
-  box-shadow: 0 20px 80px -20px hsla(217, 91%, 60%, 0.15);
+  box-shadow: 0 15px 60px -15px hsla(217, 91%, 60%, 0.1);
 }
 
-/* Custom Scrollbar for Studio feel */
+/* Elite Studio Scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 5px;
+  height: 5px;
 }
 ::-webkit-scrollbar-track {
   @apply bg-transparent;
 }
 ::-webkit-scrollbar-thumb {
-  @apply bg-primary/20 rounded-full hover:bg-primary/40 transition-colors;
+  @apply bg-white/10 rounded-full hover:bg-white/20 transition-colors;
 }
 
 .custom-scrollbar::-webkit-scrollbar {
@@ -80,13 +78,18 @@
   @apply bg-primary/10 rounded-full hover:bg-primary/20;
 }
 
-/* Animation for processing states */
-@keyframes shimmer {
-  0% { opacity: 0.5; }
-  50% { opacity: 1; }
-  100% { opacity: 0.5; }
+/* Animation utilities */
+.animate-float {
+  animation: float 6s ease-in-out infinite;
 }
 
-.animate-shimmer {
-  animation: shimmer 2s infinite ease-in-out;
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+/* Skeleton override for dark theme */
+.animate-pulse {
+  @apply bg-white/5;
 }
