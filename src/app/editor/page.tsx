@@ -105,7 +105,14 @@ export default function EditorPage() {
 
   const deductCredits = async (cost: number) => {
     if (profile?.isPremium || !userProfileRef) return;
-    updateDoc(userProfileRef, { credits: increment(-cost) }).catch(() => {});
+    updateDoc(userProfileRef, { credits: increment(-cost) }).catch((e) => {
+        const permissionError = new FirestorePermissionError({
+          path: userProfileRef.path,
+          operation: 'update',
+          requestResourceData: { credits: increment(-cost) },
+        });
+        errorEmitter.emit('permission-error', permissionError);
+    });
   };
 
   const handleSave = async (extraData: any = {}) => {
@@ -120,7 +127,7 @@ export default function EditorPage() {
     
     try {
       if (!isNewProject) {
-        await updateDoc(projectRef, data).catch((e) => {
+        updateDoc(projectRef, data).catch((e) => {
           errorEmitter.emit("permission-error", new FirestorePermissionError({
             path: projectRef.path,
             operation: "update",
@@ -128,10 +135,16 @@ export default function EditorPage() {
           }));
         });
       } else {
-        await setDoc(projectRef, {
+        setDoc(projectRef, {
           ...data,
           createdAt: serverTimestamp(),
           thumbnailUrl: data.thumbnailUrl || thumbnailUrl || `https://picsum.photos/seed/${projectRef.id}/600/400`,
+        }).catch((e) => {
+          errorEmitter.emit("permission-error", new FirestorePermissionError({
+            path: projectRef.path,
+            operation: "create",
+            requestResourceData: data
+          }));
         });
         setIsNewProject(false);
         if (!projectIdFromUrl) router.replace(`/editor?id=${projectRef.id}`);
@@ -152,7 +165,7 @@ export default function EditorPage() {
       await handleSave({ aiNotes: result.script });
       toast({ title: "Success!", description: "Professional script generated." });
     } catch (e: any) {
-      toast({ variant: "destructive", title: "AI Limit Reached", description: "Please check your Gemini API key." });
+      toast({ variant: "destructive", title: "AI Error", description: "Please check your Gemini API key in the .env file." });
     } finally {
       setIsProcessing(false);
     }
@@ -169,7 +182,7 @@ export default function EditorPage() {
       await handleSave({ thumbnailUrl: result.thumbnailDataUri });
       toast({ title: "Masterpiece Ready", description: "Your thumbnail has been designed." });
     } catch (e: any) {
-      toast({ variant: "destructive", title: "Design Error", description: "Failed to connect to AI engine." });
+      toast({ variant: "destructive", title: "Design Error", description: "Failed to connect to AI engine. Check API quota." });
     } finally {
       setIsProcessing(false);
     }
@@ -186,7 +199,7 @@ export default function EditorPage() {
       await handleSave({ videoDataUri: result.videoDataUri });
       toast({ title: "Clip Rendered", description: "Video successfully added to project." });
     } catch (e: any) {
-      toast({ variant: "destructive", title: "Rendering Failed", description: "AI service timed out." });
+      toast({ variant: "destructive", title: "Rendering Failed", description: "AI service timed out or rate limit reached." });
     } finally {
       setIsProcessing(false);
     }

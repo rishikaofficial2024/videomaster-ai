@@ -11,6 +11,10 @@ import {
 import { errorEmitter } from '../error-emitter';
 import { FirestorePermissionError } from '../errors';
 
+/**
+ * useDoc hook for real-time Firestore document updates.
+ * Correctly handles permission errors using the central error architecture.
+ */
 export function useDoc<T = DocumentData>(ref: DocumentReference<T> | null) {
   const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState(true);
@@ -26,15 +30,20 @@ export function useDoc<T = DocumentData>(ref: DocumentReference<T> | null) {
     const unsubscribe = onSnapshot(
       ref,
       (snapshot: DocumentSnapshot<T>) => {
-        setData(snapshot.exists() ? { ...snapshot.data(), id: snapshot.id } : null);
+        setData(snapshot.exists() ? { ...snapshot.data(), id: snapshot.id } as T & { id: string } : null);
         setLoading(false);
+        setError(null);
       },
       async (serverError) => {
+        // Construct detailed permission error for the dev overlay
         const permissionError = new FirestorePermissionError({
           path: ref.path,
           operation: 'get',
         });
+        
+        // Emit for the global listener
         errorEmitter.emit('permission-error', permissionError);
+        
         setError(permissionError);
         setLoading(false);
       }

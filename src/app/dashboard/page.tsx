@@ -15,7 +15,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useUser, useFirestore, useCollection, useDoc } from "@/firebase";
 import { collection, query, orderBy, limit, doc, updateDoc, increment } from "firebase/firestore";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
@@ -26,6 +26,11 @@ export default function Dashboard() {
   const db = useFirestore();
   const { toast } = useToast();
   const [adLoading, setAdLoading] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const userProfileRef = useMemo(() => {
     if (!user) return null;
@@ -54,9 +59,9 @@ export default function Dashboard() {
     });
 
     setTimeout(async () => {
-      await updateDoc(userProfileRef, {
+      updateDoc(userProfileRef, {
         credits: increment(10)
-      });
+      }).catch(() => {});
       setAdLoading(false);
       toast({
         title: "Credits Added! 💰",
@@ -67,6 +72,7 @@ export default function Dashboard() {
 
   const formatDate = (timestamp: any) => {
     if (!timestamp) return "Just now";
+    if (!mounted) return "...";
     try {
       const date = timestamp.seconds ? new Date(timestamp.seconds * 1000) : new Date(timestamp);
       return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
@@ -75,7 +81,7 @@ export default function Dashboard() {
     }
   };
 
-  if (userLoading) {
+  if (userLoading || !mounted) {
     return (
       <div className="h-screen flex items-center justify-center bg-background">
         <Loader2 className="w-8 h-8 animate-spin text-primary" />

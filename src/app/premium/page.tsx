@@ -72,7 +72,7 @@ export default function PremiumPage() {
       // Simulation of a payment gateway delay
       await new Promise(resolve => setTimeout(resolve, 2000));
       
-      await updateDoc(userRef, data).catch(async (e) => {
+      updateDoc(userRef, data).catch(async (e) => {
         errorEmitter.emit("permission-error", new FirestorePermissionError({
           path: userRef.path,
           operation: "update",
