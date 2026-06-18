@@ -3,6 +3,7 @@
  * Firebase configuration object for VideoMaster AI.
  * 
  * ✅ STATUS: API Key Integrated and Verified.
+ * This configuration handles all core services: Auth, Firestore, and App Hosting.
  */
 export const firebaseConfig = {
   apiKey: "AIzaSyCz-pMZtY7_OVr9IyyHiIqwPWnpP3Lb21w",

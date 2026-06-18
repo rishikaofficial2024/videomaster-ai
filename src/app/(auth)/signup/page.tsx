@@ -35,13 +35,15 @@ export default function SignupPage() {
 
       await updateProfile(user, { displayName });
 
-      // Create user profile in Firestore
+      // Create user profile in Firestore with 100 default credits
       await setDoc(doc(db, "users", user.uid), {
         email: user.email,
         displayName: displayName,
         isPremium: false,
-        credits: 100, // Updated from 10 to 100 as requested
+        subscriptionPlan: "free",
+        credits: 100,
         photoURL: "",
+        createdAt: new Date().toISOString()
       });
 
       router.push("/dashboard");
@@ -67,7 +69,7 @@ export default function SignupPage() {
           </div>
           <CardTitle className="text-4xl font-headline font-bold tracking-tighter">Create Account</CardTitle>
           <CardDescription className="text-muted-foreground font-medium">
-            Join VideoMaster AI and start creating today
+            Join VideoMaster AI and get 100 Free AI Credits
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4 px-8 pb-8">
