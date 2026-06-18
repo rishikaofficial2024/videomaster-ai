@@ -1,17 +1,18 @@
 
 # 🏁 Final Setup Checklist - VideoMaster AI
 
-Aapka app coding ke hisaab se 100% complete hai. Ise active karne ke liye ye 2 kaam zaroori hain:
+Aapka app coding ke hisaab se 100% complete hai. Ise active karne ke liye ye steps confirm karein:
 
-### 1. Gemini AI Key (AI Features ke liye)
-- **Kahan milegi**: [aistudio.google.com](https://aistudio.google.com/app/apikey) par jayein aur "Create API Key" karein.
-- **Kahan dalni hai**: Project ki `.env` file kholein (root folder mein) aur `YOUR_GEMINI_API_KEY_HERE` ki jagah apni key paste kar dein.
-- **Kaam**: Iske bina Script Writer, Thumbnail Designer aur AI Video nahi chalenge.
+### 1. Gemini AI Key (.env File)
+- **Status**: Maine `.env` file save kar di hai.
+- **Action**: Agar aapne apni key wahan likh di hai, toh app ab fully functional hai. 
+- **Check**: Agar "400 Error" aaye, toh samjhein key sahi se paste nahi hui.
 
-### 2. Firebase Settings (Login & Database ke liye)
-- **Authentication**: Firebase Console mein jaakar **Email/Password** aur **Google** providers ko "Enable" karein.
-- **Firestore**: Console mein **Firestore Database** ko "Create" karein aur **Test Mode** mein save karein.
+### 2. Firebase Console Settings
+- **Authentication**: Firebase Console mein jaakar **Email/Password** provider ko "Enable" karein.
+- **Firestore**: Database ko "Create" karein aur **Test Mode** mein save karein.
 
-### 🚀 Test Kaise Karein?
-- Pehle `/test-connection` page par jayein check karne ke liye.
-- Sab green hone ke baad, Dashboard par "Draft Script" try karein.
+### 🚀 Launch Testing
+1. Pehle `/test-connection` page par jayein.
+2. Sab green hone ke baad, Dashboard par jayein aur "Start Project" par click karein.
+3. AI Script Writer try karein, agar script generate ho rahi hai, toh aapka app **SUPER READY** hai!
