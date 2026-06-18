@@ -7,9 +7,8 @@ const config: CapacitorConfig = {
   webDir: 'out',
   server: {
     androidScheme: 'https',
-    // IMPORTANT: Once you deploy to Firebase App Hosting, 
-    // uncomment the line below and add your production URL.
-    // url: 'https://videomaster-ai.web.app',
+    // Once deployed, you can point this to your Firebase Hosting URL for live updates
+    // url: 'https://studio-9489287013-59986.web.app',
     allowNavigation: ['*']
   },
   android: {
