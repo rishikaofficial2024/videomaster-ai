@@ -3,14 +3,16 @@
   "entities": {
     "UserProfile": {
       "title": "User Profile",
-      "description": "Stored user preferences and subscription status",
+      "description": "Stored user preferences, subscription status, and credit balance",
       "type": "object",
       "properties": {
         "displayName": { "type": "string" },
         "email": { "type": "string", "format": "email" },
         "photoURL": { "type": "string" },
         "isPremium": { "type": "boolean" },
-        "credits": { "type": "number", "description": "AI processing credits" }
+        "subscriptionPlan": { "type": "string", "enum": ["free", "pro", "business"] },
+        "credits": { "type": "number", "description": "AI processing credits balance" },
+        "totalSpent": { "type": "number", "description": "Total revenue from this user" }
       },
       "required": ["email"]
     },
@@ -28,8 +30,8 @@
         "optimizedDescription": { "type": "string" },
         "hashtags": { "type": "array", "items": { "type": "string" } },
         "thumbnailUrl": { "type": "string" },
-        "videoDataUri": { "type": "string", "description": "Base64 data of the actual video or generated clip" },
-        "subtitles": { "type": "string", "description": "Generated WebVTT content" }
+        "videoDataUri": { "type": "string" },
+        "subtitles": { "type": "string" }
       },
       "required": ["title", "createdAt", "status"]
     }
