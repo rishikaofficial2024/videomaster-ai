@@ -1,9 +1,9 @@
-
 /**
  * Firebase configuration object for VideoMaster AI.
  * 
- * ✅ STATUS: Optimized for Production.
- * This handles Authentication and Firestore.
+ * ✅ STATUS: Production Ready.
+ * This handles Authentication and Firestore ONLY.
+ * IMPORTANT: Gemini API Key must NOT be here; it belongs in the .env file.
  */
 export const firebaseConfig = {
   apiKey: "AIzaSyCz-pMZtY7_OVr9IyyHiIqwPWnpP3Lb21w",

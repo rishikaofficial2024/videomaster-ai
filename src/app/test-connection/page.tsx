@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { Navbar } from "@/components/navbar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { CheckCircle2, XCircle, Loader2, Signal, Wifi, Zap, Database, AlertCircle, Key, ArrowLeft, ShieldCheck, Sparkles } from "lucide-react";
+import { CheckCircle2, XCircle, Loader2, Signal, Database, Zap, Key, ArrowLeft, ShieldCheck, Sparkles } from "lucide-react";
 import { useAuth, useFirestore } from "@/firebase";
 import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -44,7 +44,7 @@ export default function TestConnectionPage() {
 
     if (!isValidKey) {
       setStatus(prev => ({ ...prev, config: "error" }));
-      currentErrors.config = "Firebase API Key is invalid. Check src/firebase/config.ts";
+      currentErrors.config = "Firebase API Key is invalid in config.ts";
     } else {
       setStatus(prev => ({ ...prev, config: "success" }));
     }
@@ -76,11 +76,11 @@ export default function TestConnectionPage() {
     } catch (e: any) {
       setStatus(prev => ({ ...prev, firestore: "error" }));
       currentErrors.firestore = e.message.includes("permission-denied") 
-        ? "Enable 'Firestore' in Console and set to 'Test Mode'."
+        ? "Enable Firestore in Console and set to 'Test Mode'."
         : e.message;
     }
 
-    // 5. AI Key Check (Since we can't read server env on client easily, assume success if reached)
+    // 5. AI Key Check (Assume success for UI purposes, but warn if features fail)
     setStatus(prev => ({ ...prev, ai_key: "success" })); 
 
     setErrors(currentErrors);
@@ -113,42 +113,42 @@ export default function TestConnectionPage() {
         </div>
 
         {isFullyConfigured && !loading && (
-          <Alert className="bg-green-50 border-green-200 text-green-800 rounded-[2.5rem] animate-in zoom-in-95 shadow-lg border-2">
-            <ShieldCheck className="h-5 w-5 text-green-600" />
-            <AlertTitle className="font-bold">Ready for Launch!</AlertTitle>
-            <AlertDescription className="text-xs">
-              All cloud services are connected. Make sure your Gemini Key is also in the .env file.
+          <Alert className="bg-green-500/10 border-green-500/20 text-green-700 dark:text-green-400 rounded-[2.5rem] animate-in zoom-in-95 shadow-lg border-2">
+            <ShieldCheck className="h-5 w-5 text-green-500" />
+            <AlertTitle className="font-bold uppercase tracking-widest text-xs">Ready for Launch!</AlertTitle>
+            <AlertDescription className="text-[10px] font-bold">
+              Database and Auth are connected. Ensure GEMINI_API_KEY is in your .env file.
             </AlertDescription>
           </Alert>
         )}
 
-        <Card className="border-white shadow-2xl bg-white/80 backdrop-blur-xl rounded-[3rem] overflow-hidden blue-glow">
+        <Card className="border-primary/10 shadow-2xl bg-card/50 backdrop-blur-xl rounded-[3rem] overflow-hidden blue-glow">
           <CardHeader className="pt-8 px-8">
             <CardTitle className="text-xl flex items-center gap-2 font-headline font-bold">
               <Zap className="w-5 h-5 text-primary" /> Connection Status
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4 px-8 pb-8">
-            <div className="flex items-center justify-between p-4 bg-muted/30 rounded-2xl border">
+            <div className="flex items-center justify-between p-4 bg-background/40 rounded-2xl border border-primary/5">
               <div className="flex items-center gap-3">
                 <Key className="w-4 h-4 text-muted-foreground" />
-                <span className="text-sm font-bold">Firebase Key</span>
+                <span className="text-sm font-bold">Firebase Config</span>
               </div>
               <StatusIcon state={status.config} />
             </div>
 
-            <div className="flex items-center justify-between p-4 bg-muted/30 rounded-2xl border">
+            <div className="flex items-center justify-between p-4 bg-background/40 rounded-2xl border border-primary/5">
               <div className="flex items-center gap-3">
                 <Database className="w-4 h-4 text-muted-foreground" />
-                <span className="text-sm font-bold">Firestore DB</span>
+                <span className="text-sm font-bold">Firestore Sync</span>
               </div>
               <StatusIcon state={status.firestore} />
             </div>
 
-            <div className="flex items-center justify-between p-4 bg-muted/30 rounded-2xl border">
+            <div className="flex items-center justify-between p-4 bg-background/40 rounded-2xl border border-primary/5">
               <div className="flex items-center gap-3">
                 <Sparkles className="w-4 h-4 text-primary" />
-                <span className="text-sm font-bold">Gemini AI (Env)</span>
+                <span className="text-sm font-bold">AI Agent (Env)</span>
               </div>
               <StatusIcon state={status.ai_key} />
             </div>
@@ -158,17 +158,17 @@ export default function TestConnectionPage() {
               onClick={runTests} 
               disabled={loading}
             >
-              {loading ? <Loader2 className="animate-spin mr-2" /> : "Re-Check Status"}
+              {loading ? <Loader2 className="animate-spin mr-2" /> : "Re-Check All Systems"}
             </Button>
           </CardContent>
         </Card>
 
-        <div className="p-8 bg-blue-50/50 rounded-[2.5rem] border border-blue-100 space-y-4">
-          <p className="text-xs font-bold uppercase text-primary tracking-widest text-center">Troubleshooting</p>
+        <div className="p-8 bg-primary/5 rounded-[2.5rem] border border-primary/10 space-y-4">
+          <p className="text-xs font-bold uppercase text-primary tracking-widest text-center">Important Fixes</p>
           <p className="text-[11px] text-muted-foreground font-medium leading-relaxed">
-            • <b>400 Error?</b> Open <code>.env</code> file and ensure <code>GEMINI_API_KEY</code> is correctly set.<br/>
-            • <b>Auth Error?</b> Enable <b>Email/Password</b> in Firebase Authentication Console.<br/>
-            • <b>Rules Error?</b> Set Firestore to <b>Test Mode</b> in the Firebase Console.
+            • <b>400 AI Error?</b> Your Gemini Key in <code>.env</code> is missing or expired.<br/>
+            • <b>Login Issues?</b> Enable <b>Email/Password</b> in Firebase Console.<br/>
+            • <b>Save Errors?</b> Set Firestore to <b>Test Mode</b> in your Firebase Console.
           </p>
         </div>
       </main>

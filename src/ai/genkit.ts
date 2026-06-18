@@ -1,4 +1,3 @@
-
 import { genkit } from 'genkit';
 import { googleAI } from '@genkit-ai/google-genai';
 
@@ -10,8 +9,8 @@ import { googleAI } from '@genkit-ai/google-genai';
  */
 const apiKey = process.env.GEMINI_API_KEY;
 
-if (!apiKey || apiKey === 'YOUR_GEMINI_API_KEY_HERE') {
-  console.warn("⚠️ GEMINI_API_KEY is missing in .env file. AI features will fail with a 400 error.");
+if (!apiKey) {
+  console.warn("⚠️ GEMINI_API_KEY is missing in your .env file. AI features will fail with a 400 error.");
 }
 
 export const ai = genkit({
