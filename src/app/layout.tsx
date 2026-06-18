@@ -63,12 +63,10 @@ export default function RootLayout({
         <meta name="theme-color" content="#05070a" />
         
         {/* 
-            💰 ADSENSE SETUP GUIDE:
-            1. Go to adsense.google.com
-            2. Get your Publisher ID (e.g., pub-123456789)
-            3. Replace 'ca-pub-PLACEHOLDER' below with your ID (e.g., ca-pub-123456789)
+            💰 ADSENSE LIVE:
+            Aapki Publisher ID (pub-8946933317699938) maine yahan set kar di hai.
         */}
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-PLACEHOLDER" crossOrigin="anonymous"></script>
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8946933317699938" crossOrigin="anonymous"></script>
       </head>
       <body className="font-body antialiased bg-background text-foreground">
         <FirebaseClientProvider>

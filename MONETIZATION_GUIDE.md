@@ -1,16 +1,14 @@
 
 # 💰 VideoMaster AI: Paisa Kamane Ka Plan (Aasaan Guide)
 
-Aapka app ab ek "Money-Making Machine" banne ke liye taiyar hai. Niche padhein ki ads aur subscriptions se paise aapke bank mein kaise aayenge:
+Aapka app ab ek "Money-Making Machine" banne ke liye taiyar hai. Maine aapki **Publisher ID (pub-8946933317699938)** ko code mein set kar diya hai.
 
-### 1. Google AdSense (Website Par Ads) ✅
-AdSense se paise kamane ke liye ye steps follow karein:
-1. [Google AdSense](https://adsense.google.com) par account banayein.
-2. **Seller Visibility**: Account settings mein "Seller information visibility" ko **"Transparent"** chunein. Isse advertisers aap par vishwas karenge aur mahenge ads dikhayenge.
+### 1. Google AdSense (Website Par Ads) - ✅ SET UP COMPLETE
+Aapka setup maine automate kar diya hai:
+1. **AdSense Script**: `src/app/layout.tsx` mein aapki ID set hai.
+2. **Seller Visibility**: [Google AdSense](https://adsense.google.com) par jayein aur "Transparent" chunein. 
 3. **Domain**: Wahan apna domain dalein: `studio-9489287013-59986.web.app`
-4. **Publisher ID**: Left menu mein **Account > Settings > Account Information** par jayein.
-5. Wahan se apni **Publisher ID** (jo `pub-` se shuru hoti hai) copy karein.
-6. App ki file `src/app/layout.tsx` kholiye aur jahan `ca-pub-PLACEHOLDER` likha hai, wahan apni ID paste kar dein (e.g. `ca-pub-123456789`).
+4. **Publisher ID**: Aapki ID `pub-8946933317699938` maine pehle hi code mein daal di hai.
 
 ### 2. Google AdMob (Mobile App Par Ads) ✅
 Agar aap app ko Play Store par dalte hain:
@@ -23,7 +21,7 @@ Agar aap app ko Play Store par dalte hain:
 - **Pro Users (₹99)**: Unlimited access.
 - **Bank Transfer**: Razorpay ya Instamojo par account banakar apna payment link `premium/page.tsx` mein lagayein.
 
-### 4. Reward Ads (Free Credits for Users)
+### 4. Reward Ads (Free Credits for Users) - ✅ ACTIVE
 Maine Dashboard par system set kiya hai:
 - User "Watch Ad" button dabayega.
 - User 5 second ka ad dekhega.
