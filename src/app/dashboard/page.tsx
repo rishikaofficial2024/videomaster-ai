@@ -9,7 +9,7 @@ import {
   ChevronRight, Loader2, Crown, Coins, 
   Zap, MoreVertical, Video, ArrowUpRight, 
   ShieldCheck, BarChart3, Clock, Layout,
-  Cpu, Activity
+  Cpu, Activity, Globe, ExternalLink
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -75,9 +75,9 @@ export default function Dashboard() {
                  </span>
               </div>
               <div className="flex items-center gap-2 px-3 py-1 bg-emerald-500/10 rounded-full border border-emerald-500/20 w-fit">
-                 <Cpu className="w-3 h-3 text-emerald-500" />
+                 <Globe className="w-3 h-3 text-emerald-500" />
                  <span className="text-[10px] font-bold text-emerald-500 uppercase tracking-[0.2em]">
-                   Neural Link Active
+                   Live: studio-9489287013-59986.web.app
                  </span>
               </div>
             </div>
@@ -102,6 +102,29 @@ export default function Dashboard() {
              </Button>
           </div>
         </header>
+
+        {/* Live Status Bar */}
+        <section className="bg-primary/5 border border-primary/10 p-6 rounded-[2rem] flex flex-col md:flex-row items-center justify-between gap-4">
+           <div className="flex items-center gap-4">
+              <div className="p-3 bg-primary/10 rounded-2xl">
+                 <Globe className="w-6 h-6 text-primary" />
+              </div>
+              <div>
+                 <h4 className="font-bold text-sm">Aapka App Live Hai!</h4>
+                 <p className="text-xs text-muted-foreground">Ye aapka public link hai jise aap share kar sakte hain.</p>
+              </div>
+           </div>
+           <div className="flex items-center gap-3">
+              <code className="bg-black/40 px-4 py-2 rounded-xl text-xs font-mono text-primary border border-primary/20">
+                 https://studio-9489287013-59986.web.app
+              </code>
+              <Button size="sm" variant="outline" className="rounded-xl border-primary/20 hover:bg-primary/10" asChild>
+                 <a href="https://studio-9489287013-59986.web.app" target="_blank" rel="noopener noreferrer">
+                    <ExternalLink className="w-4 h-4" />
+                 </a>
+              </Button>
+           </div>
+        </section>
 
         {/* Global Analytics Overview */}
         <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
