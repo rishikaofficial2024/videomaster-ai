@@ -5,7 +5,7 @@ import { useState } from "react";
 import { Navbar } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Crown, Check, Zap, Cloud, Video, ShieldCheck, Loader2, Star, Rocket, Building2, CheckCircle2 } from "lucide-react";
+import { Crown, Check, Zap, Cloud, Video, ShieldCheck, Loader2, Star, Rocket, Building2, CheckCircle2, CreditCard, Banknote } from "lucide-react";
 import { useUser, useFirestore, useDoc } from "@/firebase";
 import { doc, updateDoc } from "firebase/firestore";
 import { useToast } from "@/hooks/use-toast";
@@ -60,6 +60,9 @@ export default function PremiumPage() {
     if (!user || planId === "free") return;
     setLoadingPlan(planId);
     
+    // NOTE: For real payments, you would redirect to Razorpay/Stripe here.
+    // The instructions for this are in BANK_TRANSFER_GUIDE.md
+    
     const userRef = doc(db, "users", user.uid);
     const data = {
       isPremium: true,
@@ -72,7 +75,7 @@ export default function PremiumPage() {
       // Simulation of a payment gateway delay
       await new Promise(resolve => setTimeout(resolve, 2000));
       
-      updateDoc(userRef, data).catch(async (e) => {
+      await updateDoc(userRef, data).catch(async (e) => {
         errorEmitter.emit("permission-error", new FirestorePermissionError({
           path: userRef.path,
           operation: "update",
@@ -182,6 +185,22 @@ export default function PremiumPage() {
             </Card>
           ))}
         </div>
+
+        {/* Bank Connection Info Card */}
+        <section className="bg-indigo-500/5 border border-indigo-500/20 rounded-[3rem] p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-8">
+           <div className="flex items-center gap-6">
+              <div className="w-20 h-20 bg-indigo-500/10 rounded-[2rem] flex items-center justify-center border border-indigo-500/20">
+                 <Banknote className="w-10 h-10 text-indigo-400" />
+              </div>
+              <div className="space-y-2">
+                 <h3 className="text-2xl font-bold font-headline">Bank Account Connection</h3>
+                 <p className="text-muted-foreground text-sm max-w-md font-medium">Aapki kamai direct bank mein aayegi. Google AdSense aur Razorpay settings kaise karni hai, ye jaanne ke liye guide padhein.</p>
+              </div>
+           </div>
+           <Button variant="outline" className="h-14 px-10 rounded-2xl border-indigo-500/30 font-bold hover:bg-indigo-500/10" asChild>
+              <a href="/BANK_TRANSFER_GUIDE.md">Read Setup Guide <ShieldCheck className="ml-2 w-4 h-4" /></a>
+           </Button>
+        </section>
 
         <AdBanner provider="AdMob Premium" />
 
