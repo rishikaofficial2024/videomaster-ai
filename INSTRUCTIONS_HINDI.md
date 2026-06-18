@@ -1,13 +1,14 @@
 # 🗝️ VideoMaster AI: Keys Ka Sahi Setup
 
-Agar aapka AI feature (Thumbnail, Script) kaam nahi kar raha, toh iska matlab hai ki aapne dono keys ko mix kar diya hai ya key galat format mein hai. Inhe theek karne ka sahi tarika ye hai:
+Aapke app mein do tarah ki keys use hoti hain. Inhe sahi jagah par hona zaroori hai:
 
-### 1. Firebase API Key (Ye Sahi Hai ✅)
+### 1. Firebase API Key (Login & Database ke liye) ✅
+- **Aapki Key**: `AIzaSyCz-pMZtY7_OVr9IyyHiIqwPWnpP3Lb21w`
 - **Kahan Hai?**: `src/firebase/config.ts` file mein.
 - **Kya Karti Hai?**: Ye app ko "Login" aur "Data Save" karne mein madad karti hai. 
-- **Zaroori**: Ise chhedne ki zaroorat nahi hai, ye maine pehle se set kar di hai.
+- **Zaroori**: Maine ise pehle hi set kar diya hai. Ise chhedne ki zaroorat nahi hai.
 
-### 2. Gemini API Key (Ise Aapko Set Karna Hai 🧠)
+### 2. Gemini API Key (AI Brain ke liye) 🧠
 - **Kahan Se Milegi?**: [Google AI Studio](https://aistudio.google.com/app/apikey) par jayein.
 - **Kahan Dalni Hai?**: App ke sabse bahar waale folder mein `.env` naam ki file hogi.
 - **Sahi Format**: 
@@ -15,17 +16,12 @@ Agar aapka AI feature (Thumbnail, Script) kaam nahi kar raha, toh iska matlab ha
 
 ---
 
-### ⚠️ Sabse Badi Galti (Don't do this!)
+### ⚠️ Sabse Badi Galti (Mix mat karein!)
 
-**Kaise Pehchaane?**
-- **Firebase Key**: `AIzaSyCz-pMZtY7...` (Ye `.env` mein nahi honi chahiye).
-- **Gemini Key**: Sirf Google AI Studio se milti hai. Ye bhi `AIzaSy` se shuru hoti hai lekin characters alag hote hain.
-- **Dhyan Dein**: Agar aapki key `AQ.` se shuru ho rahi hai toh wo shayad Google AI Studio ki standard key nahi hai. Ek baar dobara aistudio.google.com par jake "Get API Key" par click karein.
+- **Firebase Key**: Ye hamesha `src/firebase/config.ts` mein rahegi.
+- **Gemini Key**: Ye hamesha `.env` file mein rahegi.
 
-### Error Fix Karne Ka Tarika:
-1. `.env` file ko kholein.
-2. Purani key (jaise AQ... wali) ko hata dein.
-3. Google AI Studio wali nayi `AIzaSy` se shuru hone wali key paste karein.
-4. File ko **Save** karein aur app ko refresh karein.
+**Kaise theek karein?**
+Agar AI kaam nahi kar raha, toh `.env` file kholein aur check karein ki wahan Gemini wali asali key hai ya nahi. Agar aapne Firebase wali key `.env` mein daal di hai, toh usey hata kar sahi Gemini key dalein.
 
 Ab aapka app "Brain" (AI) aur "Body" (Database) dono ke saath sahi se jud jayega!
