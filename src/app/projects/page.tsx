@@ -11,9 +11,9 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useUser, useFirestore, useCollection } from "@/firebase";
+import { useUser, useFirestore, useCollection, useMemoFirebase } from "@/firebase";
 import { collection, query, orderBy, deleteDoc, doc } from "firebase/firestore";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import { 
   DropdownMenu, 
@@ -22,6 +22,8 @@ import {
   DropdownMenuTrigger 
 } from "@/components/ui/dropdown-menu";
 import { useToast } from "@/hooks/use-toast";
+import { errorEmitter } from "@/firebase/error-emitter";
+import { FirestorePermissionError, type SecurityRuleContext } from "@/firebase/errors";
 
 export default function ProjectsPage() {
   const { user, loading: userLoading } = useUser();
@@ -30,31 +32,34 @@ export default function ProjectsPage() {
   const { toast } = useToast();
   const [search, setSearch] = useState("");
 
-  const projectsQuery = useMemo(() => {
+  const projectsQuery = useMemoFirebase(() => {
     if (!db || !user) return null;
     return query(
       collection(db, "users", user.uid, "projects"),
       orderBy("createdAt", "desc")
     );
-  }, [db, user]);
+  }, [db, user?.uid]);
 
   const { data: projects, loading: projectsLoading } = useCollection(projectsQuery);
 
-  const filteredProjects = useMemo(() => {
-    if (!projects) return [];
-    return projects.filter(p => 
-      p.title?.toLowerCase().includes(search.toLowerCase())
-    );
-  }, [projects, search]);
+  const filteredProjects = projects ? projects.filter(p => 
+    p.title?.toLowerCase().includes(search.toLowerCase())
+  ) : [];
 
-  const handleDelete = async (projectId: string) => {
+  const handleDelete = (projectId: string) => {
     if (!user) return;
-    try {
-      await deleteDoc(doc(db, "users", user.uid, "projects", projectId));
-      toast({ title: "Project deleted" });
-    } catch (e) {
-      toast({ variant: "destructive", title: "Error deleting project" });
-    }
+    const projectRef = doc(db, "users", user.uid, "projects", projectId);
+    
+    deleteDoc(projectRef)
+      .catch(async (serverError) => {
+        const permissionError = new FirestorePermissionError({
+          path: projectRef.path,
+          operation: 'delete'
+        } satisfies SecurityRuleContext);
+        errorEmitter.emit("permission-error", permissionError);
+      });
+      
+    toast({ title: "Project deleted" });
   };
 
   const formatDate = (project: any) => {

@@ -20,6 +20,8 @@ import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 import { AdBanner } from "@/components/ads/ad-banner";
+import { errorEmitter } from '@/firebase/error-emitter';
+import { FirestorePermissionError, type SecurityRuleContext } from '@/firebase/errors';
 
 export default function Dashboard() {
   const { user, loading: userLoading } = useUser();
@@ -32,7 +34,6 @@ export default function Dashboard() {
     setMounted(true);
   }, []);
 
-  // Use useMemoFirebase to stabilize the Firestore reference
   const userProfileRef = useMemoFirebase(() => {
     if (!user || !db) return null;
     return doc(db, "users", user.uid);
@@ -40,7 +41,6 @@ export default function Dashboard() {
 
   const { data: profile } = useDoc(userProfileRef);
 
-  // Use useMemoFirebase to stabilize the Firestore query
   const projectsQuery = useMemoFirebase(() => {
     if (!db || !user) return null;
     return query(
@@ -52,7 +52,7 @@ export default function Dashboard() {
 
   const { data: projects, loading: projectsLoading } = useCollection(projectsQuery);
 
-  const handleWatchAd = async () => {
+  const handleWatchAd = () => {
     if (!userProfileRef) return;
     setAdLoading(true);
     toast({
@@ -60,10 +60,18 @@ export default function Dashboard() {
       description: "Ad started. Please watch for 15 seconds to earn +20 credits.",
     });
 
-    setTimeout(async () => {
-      updateDoc(userProfileRef, {
-        credits: increment(20)
-      }).catch(() => {});
+    setTimeout(() => {
+      const updateData = { credits: increment(20) };
+      updateDoc(userProfileRef, updateData)
+        .catch(async (serverError) => {
+          const permissionError = new FirestorePermissionError({
+            path: userProfileRef.path,
+            operation: 'update',
+            requestResourceData: updateData,
+          } satisfies SecurityRuleContext);
+          errorEmitter.emit('permission-error', permissionError);
+        });
+      
       setAdLoading(false);
       toast({
         title: "Success! +20 Credits",

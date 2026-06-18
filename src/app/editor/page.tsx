@@ -23,11 +23,11 @@ import { generateAiThumbnail } from "@/ai/flows/ai-thumbnail-designer-flow";
 import { generateAutoCaptionsAndSubtitles } from "@/ai/flows/ai-auto-caption-and-subtitle-generation-flow";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
-import { useUser, useFirestore, useDoc } from "@/firebase";
+import { useUser, useFirestore, useDoc, useMemoFirebase } from "@/firebase";
 import { doc, setDoc, updateDoc, serverTimestamp, increment } from "firebase/firestore";
 import Image from "next/image";
 import { errorEmitter } from "@/firebase/error-emitter";
-import { FirestorePermissionError } from "@/firebase/errors";
+import { FirestorePermissionError, type SecurityRuleContext } from "@/firebase/errors";
 import { cn } from "@/lib/utils";
 
 export default function EditorPage() {
@@ -64,17 +64,17 @@ export default function EditorPage() {
   const [aiScript, setAiScript] = useState<any>(null);
   const [seoData, setSeoData] = useState<any>(null);
 
-  const projectRef = useMemo(() => {
-    if (!user || !projectId) return null;
+  const projectRef = useMemoFirebase(() => {
+    if (!user || !db || !projectId) return null;
     return doc(db, "users", user.uid, "projects", projectId);
-  }, [user, db, projectId]);
+  }, [user?.uid, db, projectId]);
 
   const { data: project } = useDoc(projectRef);
 
-  const userProfileRef = useMemo(() => {
-    if (!user) return null;
+  const userProfileRef = useMemoFirebase(() => {
+    if (!user || !db) return null;
     return doc(db, "users", user.uid);
-  }, [user, db]);
+  }, [user?.uid, db]);
 
   const { data: profile } = useDoc(userProfileRef);
 
@@ -115,18 +115,21 @@ export default function EditorPage() {
     return true;
   };
 
-  const deductCredits = async (cost: number) => {
+  const deductCredits = (cost: number) => {
     if (profile?.isPremium || !userProfileRef) return;
-    updateDoc(userProfileRef, { credits: increment(-cost) }).catch((e) => {
-        errorEmitter.emit('permission-error', new FirestorePermissionError({
+    const updateData = { credits: increment(-cost) };
+    updateDoc(userProfileRef, updateData)
+      .catch(async (serverError) => {
+        const permissionError = new FirestorePermissionError({
           path: userProfileRef.path,
           operation: 'update',
-          requestResourceData: { credits: increment(-cost) },
-        }));
-    });
+          requestResourceData: updateData,
+        } satisfies SecurityRuleContext);
+        errorEmitter.emit('permission-error', permissionError);
+      });
   };
 
-  const handleSave = async (extraData: any = {}) => {
+  const handleSave = (extraData: any = {}) => {
     if (!user || !projectRef) return;
     setIsSaving(true);
     const data: any = {
@@ -136,33 +139,36 @@ export default function EditorPage() {
       ...extraData
     };
     
-    try {
-      if (!isNewProject) {
-        updateDoc(projectRef, data).catch((e) => {
-          errorEmitter.emit("permission-error", new FirestorePermissionError({
+    if (!isNewProject) {
+      updateDoc(projectRef, data)
+        .catch(async (serverError) => {
+          const permissionError = new FirestorePermissionError({
             path: projectRef.path,
-            operation: "update",
+            operation: 'update',
             requestResourceData: data
-          }));
+          } satisfies SecurityRuleContext);
+          errorEmitter.emit("permission-error", permissionError);
         });
-      } else {
-        setDoc(projectRef, {
-          ...data,
-          createdAt: serverTimestamp(),
-          thumbnailUrl: data.thumbnailUrl || thumbnailUrl || `https://picsum.photos/seed/${projectRef.id}/600/400`,
-        }).catch((e) => {
-          errorEmitter.emit("permission-error", new FirestorePermissionError({
+    } else {
+      const createData = {
+        ...data,
+        createdAt: serverTimestamp(),
+        thumbnailUrl: data.thumbnailUrl || thumbnailUrl || `https://picsum.photos/seed/${projectRef.id}/600/400`,
+      };
+      setDoc(projectRef, createData)
+        .catch(async (serverError) => {
+          const permissionError = new FirestorePermissionError({
             path: projectRef.path,
-            operation: "create",
-            requestResourceData: data
-          }));
+            operation: 'create',
+            requestResourceData: createData
+          } satisfies SecurityRuleContext);
+          errorEmitter.emit("permission-error", permissionError);
         });
-        setIsNewProject(false);
-        if (!projectIdFromUrl) router.replace(`/editor?id=${projectRef.id}`);
-      }
-    } finally {
-      setTimeout(() => setIsSaving(false), 500);
+      setIsNewProject(false);
+      if (!projectIdFromUrl) router.replace(`/editor?id=${projectRef.id}`);
     }
+    
+    setTimeout(() => setIsSaving(false), 500);
   };
 
   const handleGenerateScript = async () => {
@@ -172,8 +178,8 @@ export default function EditorPage() {
     try {
       const result = await generateAiScript({ topic: scriptTopic, platform: 'YouTube' });
       setAiScript(result);
-      await deductCredits(2);
-      await handleSave({ aiNotes: result.script });
+      deductCredits(2);
+      handleSave({ aiNotes: result.script });
       toast({ title: "Success!", description: "Professional script generated." });
     } catch (e: any) {
       toast({ variant: "destructive", title: "AI Error", description: "Please check your Gemini API key." });
@@ -189,8 +195,8 @@ export default function EditorPage() {
     try {
       const result = await generateAiThumbnail({ prompt: thumbnailPrompt });
       setThumbnailUrl(result.thumbnailDataUri);
-      await deductCredits(5);
-      await handleSave({ thumbnailUrl: result.thumbnailDataUri });
+      deductCredits(5);
+      handleSave({ thumbnailUrl: result.thumbnailDataUri });
       toast({ title: "Masterpiece Ready", description: "Your thumbnail has been designed." });
     } catch (e: any) {
       toast({ variant: "destructive", title: "Design Error", description: "AI service failed. Check quota." });
@@ -206,8 +212,8 @@ export default function EditorPage() {
     try {
       const result = await generateAiVideo({ prompt: videoPrompt });
       setVideoData(result.videoDataUri);
-      await deductCredits(20);
-      await handleSave({ videoDataUri: result.videoDataUri });
+      deductCredits(20);
+      handleSave({ videoDataUri: result.videoDataUri });
       toast({ title: "Clip Rendered", description: "Video successfully added." });
     } catch (e: any) {
       toast({ variant: "destructive", title: "Rendering Failed", description: "AI service timed out." });
@@ -223,7 +229,7 @@ export default function EditorPage() {
     try {
       const result = await generateAiVoiceover({ text: voiceText, voiceName: 'Algenib' });
       setAudioData(result.audioDataUri);
-      await deductCredits(5);
+      deductCredits(5);
       toast({ title: "Audio Ready", description: "Voiceover track generated." });
     } catch (e: any) {
       toast({ variant: "destructive", title: "Audio Error", description: "Failed to synthesize voice." });
@@ -242,8 +248,8 @@ export default function EditorPage() {
     try {
       const result = await generateAutoCaptionsAndSubtitles({ audioDataUri: audioData });
       setSubtitles(result.subtitles);
-      await deductCredits(10);
-      await handleSave({ subtitles: result.subtitles });
+      deductCredits(10);
+      handleSave({ subtitles: result.subtitles });
       toast({ title: "Subtitles Generated", description: "WebVTT track added to project." });
     } catch (e: any) {
       toast({ variant: "destructive", title: "Subtitle Error", description: "AI transcription failed." });
@@ -262,8 +268,8 @@ export default function EditorPage() {
     try {
       const result = await aiVideoContentOptimization({ videoTranscript: aiScript.script });
       setSeoData(result);
-      await deductCredits(5);
-      await handleSave({ 
+      deductCredits(5);
+      handleSave({ 
         optimizedTitle: result.title, 
         optimizedDescription: result.description, 
         hashtags: result.hashtags 
