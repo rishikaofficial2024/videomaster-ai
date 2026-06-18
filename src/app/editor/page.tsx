@@ -10,7 +10,7 @@ import {
   Music, Wand2, Download, Sparkles, ChevronLeft, Loader2, Video,
   Zap, Volume2, Image as ImageIcon,
   PenTool, Layers, MousePointer2,
-  Coins, Plus, RefreshCw, AlertCircle, ClipboardCheck, Cloud
+  Coins, Plus, RefreshCw, ClipboardCheck, Cloud
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { aiVideoContentOptimization } from "@/ai/flows/ai-video-content-optimization-flow";
@@ -152,7 +152,7 @@ export default function EditorPage() {
       await handleSave({ aiNotes: result.script });
       toast({ title: "Success!", description: "Professional script generated." });
     } catch (e: any) {
-      toast({ variant: "destructive", title: "AI Limit Reached", description: "Please check your Gemini API key in .env file." });
+      toast({ variant: "destructive", title: "AI Limit Reached", description: "Please check your Gemini API key." });
     } finally {
       setIsProcessing(false);
     }
@@ -169,7 +169,7 @@ export default function EditorPage() {
       await handleSave({ thumbnailUrl: result.thumbnailDataUri });
       toast({ title: "Masterpiece Ready", description: "Your thumbnail has been designed." });
     } catch (e: any) {
-      toast({ variant: "destructive", title: "Design Error", description: "Failed to connect to Imagen. Check API key." });
+      toast({ variant: "destructive", title: "Design Error", description: "Failed to connect to AI engine." });
     } finally {
       setIsProcessing(false);
     }
@@ -186,7 +186,7 @@ export default function EditorPage() {
       await handleSave({ videoDataUri: result.videoDataUri });
       toast({ title: "Clip Rendered", description: "Video successfully added to project." });
     } catch (e: any) {
-      toast({ variant: "destructive", title: "Rendering Failed", description: "AI service timed out. Please try again." });
+      toast({ variant: "destructive", title: "Rendering Failed", description: "AI service timed out." });
     } finally {
       setIsProcessing(false);
     }
@@ -240,7 +240,7 @@ export default function EditorPage() {
                  </div>
                ) : (
                  <div className="flex items-center gap-1">
-                   <Zap className="w-2.5 h-2.5 text-emerald-500" />
+                   <Cloud className="w-2.5 h-2.5 text-emerald-500" />
                    <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest">Cloud Sync Active</span>
                  </div>
                )}
