@@ -1,25 +1,20 @@
 
-# 📱 GitHub Se APK Kaise Banayein? (Ultimate Guide)
+# 📱 GitHub Se APK Kaise Download Karein? (Final Guide)
 
-Aapka Next.js code hi aapka Android app hai. Maine aisi setting kar di hai ki GitHub khud ek Android project banayega aur aapko APK de dega.
+Maine aapka poora setup "Automatic" kar diya hai. Ab aapko computer par kisi software ki zaroorat nahi hai.
 
 ### Step 1: Code Push Karein ✅
-Is poore project ko apne GitHub account par upload (Push) karein. 
-- Maine `.github/workflows/android-build.yml` mein saara logic likh diya hai.
+Apne is project ko GitHub repository mein upload (Push) karein. 
 
-### Step 2: GitHub Actions Tab Mein Jayein 🚀
-1. Apni repository mein upar **"Actions"** tab par click karein.
-2. Left side mein **"Build Android APK (Cloud Build)"** par click karein.
-3. Wahan aapko ek workflow chalta hua dikhega (Yellow circle 🟡).
-4. Isme 5-8 minute lagenge kyunki GitHub aapka Android project zero se build kar raha hai.
+### Step 2: GitHub Actions Tab 🚀
+1. GitHub par apni repository kholein.
+2. Upar waale menu mein **"Actions"** par click karein.
+3. Left side mein **"Build Android APK (Professional Cloud Build)"** dikhega, usey chunein.
+4. Agar workflow khud nahi chala, toh **"Run workflow"** button dabayein.
 
-### Step 3: APK Download Karein 📥
-1. Jab build Green ✅ ho jaye, toh uspar click karein.
-2. Sabse niche **"Artifacts"** section mein aapko `VideoMaster-AI-Final-APK` naam ki file milegi.
-3. Usey download karein, phone mein transfer karein aur install karein!
+### Step 3: APK Download 📥
+1. Jab build Green (✅) ho jaye, toh uspar click karein.
+2. Sabse niche **"Artifacts"** section mein jayein.
+3. `VideoMasterAI-Final-APK` naam ki file hogi, usey download karein aur install karein!
 
-### ⚠️ Important Note:
-- Maine build process ko "Automatic Scaffold" mode mein set kiya hai. Iska matlab hai ki aapko computer par Android Studio ki zaroorat nahi hai.
-- Agar koi error aaye, toh Dashboard par **"System Diagnostics"** run karein.
-
-**Aapka App ab ek professional Android App banne ke liye bilkul taiyar hai!** 🚀📲
+**Note:** Aapka Next.js code hi asali Android code hai. Capacitor usey mobile ke liye convert kar deta hai.

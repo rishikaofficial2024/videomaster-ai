@@ -1,5 +1,5 @@
 
-name: Build Android APK (Cloud Build)
+name: Build Android APK (Professional Cloud Build)
 
 on:
   push:
@@ -10,7 +10,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: Checkout Code
         uses: actions/checkout@v4
 
       - name: Set up Node.js
@@ -19,10 +19,10 @@ jobs:
           node-version: 20
           cache: 'npm'
 
-      - name: Install dependencies
+      - name: Install Dependencies
         run: npm install
 
-      - name: Build Next.js Web App
+      - name: Build Next.js Web App (Static Export)
         run: npm run build
 
       - name: Set up Java
@@ -34,19 +34,21 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Capacitor Sync & Build
+      - name: Capacitor Scaffold & Sync
         run: |
-          # Add android platform if not exists
+          # Automatically add android platform if it doesn't exist
           npx cap add android || true
-          # Sync web assets to android project
+          # Sync the 'out' folder (Web assets) to Android
           npx cap sync android
-          # Build APK using Gradle
+
+      - name: Build APK (Release/Debug)
+        run: |
           cd android
           chmod +x gradlew
           ./gradlew assembleDebug
 
-      - name: Upload APK
+      - name: Upload Finished APK
         uses: actions/upload-artifact@v4
         with:
-          name: VideoMaster-AI-Final-APK
+          name: VideoMasterAI-Final-APK
           path: android/app/build/outputs/apk/debug/app-debug.apk
