@@ -26,7 +26,7 @@ export default function PremiumPage() {
       name: "Starter",
       price: "₹0",
       description: "Perfect for beginners",
-      features: ["10 AI Credits", "720p Exports", "Basic AI Scripts", "Standard Support"],
+      features: ["100 AI Credits", "720p Exports", "Basic AI Scripts", "Standard Support"],
       buttonText: "Current Plan",
       icon: Star,
       color: "border-slate-800"

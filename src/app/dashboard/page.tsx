@@ -75,9 +75,9 @@ export default function Dashboard() {
                 <div className="flex-1 md:w-48 space-y-2">
                    <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest">
                       <span>Credits Used</span>
-                      <span>{profile?.credits ?? 0} / 10 Left</span>
+                      <span>{profile?.credits ?? 0} / 100 Left</span>
                    </div>
-                   <Progress value={(profile?.credits ?? 0) * 10} className="h-2" />
+                   <Progress value={profile?.credits ?? 0} className="h-2" />
                 </div>
                 <Button className="rounded-xl font-bold h-12 px-8" asChild>
                    <Link href="/premium">Upgrade <ArrowUpRight className="ml-2 w-4 h-4" /></Link>
