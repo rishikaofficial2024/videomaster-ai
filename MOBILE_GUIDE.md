@@ -1,18 +1,21 @@
 
-# 📱 APK Kaise Banayein (Bina Laptop/PC ke)
+# 📱 Bina PC ke APK Banane ka Sahi Tarika
 
-Aapne pucha ki bina PC ke APK kaise banayein, toh uska sabse aasan tarika **GitHub Actions** ka use karna hai. Maine code mein settings kar di hain.
+Aapne jo screenshot dikhaya wo **"Import"** page hai, use band kar dein. Mobile se APK banane ke liye ye steps follow karein:
 
-### Steps to get your APK:
+### Step 1: GitHub par Naya Ghar (Repository) Banayein
+1. Apne mobile browser mein `github.com/new` kholein.
+2. **Repository name** mein `VideoMasterAI` likhein.
+3. **Public** select karein aur niche **"Create repository"** par click karein.
 
-1. **GitHub par Account Banayein**: Agar nahi hai, toh github.com par account banayein.
-2. **Code Upload Karein**: Is project ko apne GitHub repository mein "Push" ya upload karein.
-3. **Actions Tab mein Jayein**:
-   - Apne GitHub repo mein upar **'Actions'** likha dikhega, us par click karein.
-   - Wahan **'Build Android APK'** naam ka ek kaam (workflow) apne aap shuru ho jayega.
-4. **Download Karein**:
-   - Jab build khatam ho jaye (lagbhag 5-7 minute), toh us par click karein.
-   - Sabse niche **'Artifacts'** section mein aapko `VideoMaster-AI-Debug-APK` milega.
-   - Use download karke apne phone mein install kar lein!
+### Step 2: Code Upload Karein
+1. Repository banne ke baad, screen par dhundhein jahan likha ho: **"uploading an existing file"**.
+2. Is Studio se apni files ko download karein (Download ZIP).
+3. GitHub par wo saari files upload kar dein aur niche **"Commit changes"** par click karein.
 
-**Note**: Maine `.github/workflows/android-build.yml` file add kar di hai jo ye saara kaam cloud par free mein karegi.
+### Step 3: APK Download Karein
+1. Jaise hi files upload hongi, GitHub upar **"Actions"** tab mein jayega.
+2. Wahan maine jo `android-build.yml` banayi hai, wo apne aap kaam shuru kar degi (Build Android APK).
+3. 5-10 minute wait karein. Jab green checkmark aa jaye, toh us par click karke niche **"Artifacts"** se apna APK download kar lein!
+
+**Note**: Maine sab kuch set kar diya hai, bas aapko files GitHub par "Upload" karni hain.
