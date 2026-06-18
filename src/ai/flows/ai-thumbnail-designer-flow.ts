@@ -6,6 +6,7 @@
  */
 
 import { ai, z } from '@/ai/genkit';
+import { googleAI } from '@genkit-ai/google-genai';
 
 const ThumbnailDesignerInputSchema = z.object({
   prompt: z.string().describe('Visual description of the thumbnail to generate'),
@@ -28,17 +29,22 @@ const thumbnailDesignerFlow = ai.defineFlow(
     outputSchema: ThumbnailDesignerOutputSchema,
   },
   async (input) => {
-    const { media } = await ai.generate({
-      model: 'googleai/imagen-4.0-fast-generate-001',
-      prompt: `Cinematic high-quality video thumbnail: ${input.prompt}. Professional lighting, 4k, eye-catching.`,
-    });
+    try {
+      const { media } = await ai.generate({
+        model: googleAI.model('imagen-3.0-fast-generate-001'),
+        prompt: `Cinematic high-quality professional video thumbnail about: ${input.prompt}. Eye-catching, high contrast, 4k resolution, professional photography style.`,
+      });
 
-    if (!media?.url) {
-      throw new Error('Failed to generate thumbnail image.');
+      if (!media?.url) {
+        throw new Error('AI generated the response but no image was returned. Check your API quota.');
+      }
+
+      return {
+        thumbnailDataUri: media.url,
+      };
+    } catch (error: any) {
+      console.error('Thumbnail Generation Error:', error);
+      throw new Error(error.message || 'Failed to generate thumbnail. Ensure your GEMINI_API_KEY is valid and has Imagen access.');
     }
-
-    return {
-      thumbnailDataUri: media.url,
-    };
   }
 );
