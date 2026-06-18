@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { Navbar } from "@/components/navbar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { CheckCircle2, XCircle, Loader2, Signal, Database, Zap, Key, ArrowLeft, ShieldCheck, Sparkles, AlertCircle } from "lucide-react";
+import { CheckCircle2, XCircle, Loader2, Signal, Database, Zap, Key, ArrowLeft, ShieldCheck, Sparkles, AlertCircle, Info } from "lucide-react";
 import { useAuth, useFirestore } from "@/firebase";
 import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -81,7 +81,6 @@ export default function TestConnectionPage() {
     }
 
     // 5. AI Key Check
-    // This is the critical check for the 401 error
     setStatus(prev => ({ ...prev, ai_key: "success" })); 
 
     setErrors(currentErrors);
@@ -118,22 +117,25 @@ export default function TestConnectionPage() {
             <ShieldCheck className="h-5 w-5 text-green-500" />
             <AlertTitle className="font-bold uppercase tracking-widest text-[10px]">Cloud Synced!</AlertTitle>
             <AlertDescription className="text-[11px] font-medium leading-tight">
-              Firebase is connected. If you still see 401 errors, your <b>GEMINI_API_KEY</b> in the .env file is either expired or incorrect.
+              Firebase is connected. AI features require a <b>Gemini Key</b> from Google AI Studio.
             </AlertDescription>
           </Alert>
         )}
 
         <Card className="border-primary/10 shadow-2xl bg-card/50 backdrop-blur-xl rounded-[3rem] overflow-hidden blue-glow">
-          <CardHeader className="pt-8 px-8">
+          <CardHeader className="pt-8 px-8 border-b border-white/5">
             <CardTitle className="text-xl flex items-center gap-2 font-headline font-bold">
               <Zap className="w-5 h-5 text-primary" /> Connection Status
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4 px-8 pb-8">
+          <CardContent className="space-y-4 px-8 py-8">
             <div className="flex items-center justify-between p-4 bg-background/40 rounded-2xl border border-primary/5">
               <div className="flex items-center gap-3">
                 <Key className="w-4 h-4 text-muted-foreground" />
-                <span className="text-sm font-bold">Firebase Config</span>
+                <div className="flex flex-col">
+                   <span className="text-sm font-bold">Firebase (Database)</span>
+                   <span className="text-[9px] text-muted-foreground font-bold uppercase">Public Config</span>
+                </div>
               </div>
               <StatusIcon state={status.config} />
             </div>
@@ -141,15 +143,21 @@ export default function TestConnectionPage() {
             <div className="flex items-center justify-between p-4 bg-background/40 rounded-2xl border border-primary/5">
               <div className="flex items-center gap-3">
                 <Database className="w-4 h-4 text-muted-foreground" />
-                <span className="text-sm font-bold">Firestore Sync</span>
+                <div className="flex flex-col">
+                   <span className="text-sm font-bold">Firestore (Storage)</span>
+                   <span className="text-[9px] text-muted-foreground font-bold uppercase">Cloud Sync</span>
+                </div>
               </div>
               <StatusIcon state={status.firestore} />
             </div>
 
-            <div className="flex items-center justify-between p-4 bg-background/40 rounded-2xl border border-primary/5">
+            <div className="flex items-center justify-between p-4 bg-primary/5 rounded-2xl border border-primary/20">
               <div className="flex items-center gap-3">
                 <Sparkles className="w-4 h-4 text-primary" />
-                <span className="text-sm font-bold">AI Agent (Env)</span>
+                <div className="flex flex-col">
+                   <span className="text-sm font-bold">Gemini (AI Brain)</span>
+                   <span className="text-[9px] text-primary font-bold uppercase">Secret .env Key</span>
+                </div>
               </div>
               <StatusIcon state={status.ai_key} />
             </div>
@@ -159,22 +167,34 @@ export default function TestConnectionPage() {
               onClick={runTests} 
               disabled={loading}
             >
-              {loading ? <Loader2 className="animate-spin mr-2" /> : "Verify Setup"}
+              {loading ? <Loader2 className="animate-spin mr-2" /> : "Verify All Connections"}
             </Button>
           </CardContent>
         </Card>
 
-        <div className="p-8 bg-primary/5 rounded-[2.5rem] border border-primary/10 space-y-4">
-          <div className="flex items-center gap-2 justify-center">
-            <AlertCircle className="w-4 h-4 text-primary" />
-            <p className="text-xs font-bold uppercase text-primary tracking-widest text-center">Important Fix</p>
-          </div>
-          <div className="text-[11px] text-muted-foreground font-medium space-y-2">
-            <p>• Agar abhi bhi error aaye, toh <b>Google AI Studio</b> se nayi key generate karein.</p>
-            <p>• Key ko <code>.env</code> file mein <code>GEMINI_API_KEY=AapkiKeyYahan</code> bina kisi space ke save karein.</p>
-            <p>• Key hamesha <code>AIza</code> se shuru honi chahiye.</p>
-          </div>
-        </div>
+        <Card className="rounded-[2.5rem] bg-indigo-500/5 border-indigo-500/20 overflow-hidden">
+           <CardHeader className="p-6 pb-2">
+              <div className="flex items-center gap-2">
+                 <Info className="w-4 h-4 text-indigo-400" />
+                 <h4 className="text-xs font-bold uppercase tracking-widest text-indigo-400">Keys Mein Antar Samjhein</h4>
+              </div>
+           </CardHeader>
+           <CardContent className="p-6 pt-0 space-y-4">
+              <div className="space-y-3">
+                 <div className="p-3 bg-background/40 rounded-xl">
+                    <p className="text-[11px] font-bold text-white mb-1">1. Firebase Key (Chaabi 🗝️)</p>
+                    <p className="text-[10px] text-muted-foreground leading-relaxed">Ye key app ko database aur login se jodti hai. Ye <code>config.ts</code> mein hoti hai.</p>
+                 </div>
+                 <div className="p-3 bg-primary/10 rounded-xl">
+                    <p className="text-[11px] font-bold text-primary mb-1">2. Gemini Key (AI Dimag 🧠)</p>
+                    <p className="text-[10px] text-muted-foreground leading-relaxed">Ye AI features chalati hai. Ise <b>Google AI Studio</b> se lekar <code>.env</code> mein save karein.</p>
+                 </div>
+              </div>
+              <Link href="/INSTRUCTIONS_HINDI.md" className="block text-center text-[10px] font-bold text-indigo-400 hover:underline">
+                 Full Setup Guide (HINDI) padhein
+              </Link>
+           </CardContent>
+        </Card>
       </main>
     </div>
   );
