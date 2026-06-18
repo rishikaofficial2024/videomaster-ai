@@ -86,7 +86,7 @@ export default function TestConnectionPage() {
   const StatusIcon = ({ state }: { state: string }) => {
     if (state === "testing") return <Loader2 className="w-5 h-5 animate-spin text-primary" />;
     if (state === "success") return <CheckCircle2 className="w-5 h-5 text-emerald-500" />;
-    if (state state === "error") return <XCircle className="w-5 h-5 text-destructive" />;
+    if (state === "error") return <XCircle className="w-5 h-5 text-destructive" />;
     return <Activity className="w-5 h-5 text-muted-foreground opacity-20" />;
   };
 
