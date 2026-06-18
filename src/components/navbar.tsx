@@ -3,7 +3,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Video, LayoutTemplate, FolderOpen, User, Crown, LayoutDashboard, Coins } from "lucide-react";
+import { Video, LayoutTemplate, FolderOpen, User, Crown, LayoutDashboard, Coins, ShieldAlert } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useUser, useFirestore, useDoc, useMemoFirebase } from "@/firebase";
 import { doc } from "firebase/firestore";
@@ -22,7 +22,6 @@ export function Navbar() {
   const { user } = useUser();
   const db = useFirestore();
 
-  // Stabilize reference to prevent infinite loops
   const profileRef = useMemoFirebase(() => {
     if (!user || !db) return null;
     return doc(db, "users", user.uid);
@@ -52,6 +51,19 @@ export function Navbar() {
         </div>
         
         <div className="flex-1 flex justify-around md:justify-end md:gap-4 lg:gap-8">
+          {profile?.isAdmin && (
+            <Link
+              href="/admin"
+              className={cn(
+                "flex flex-col md:flex-row items-center gap-1.5 transition-all p-3 rounded-2xl group",
+                pathname === "/admin" ? "text-red-500 bg-red-500/5" : "text-muted-foreground hover:text-red-400"
+              )}
+            >
+              <ShieldAlert className="w-6 h-6 md:w-5 md:h-5" />
+              <span className="text-[10px] md:text-sm font-bold tracking-tight">Admin</span>
+            </Link>
+          )}
+
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive = pathname === item.href;

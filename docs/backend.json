@@ -10,6 +10,7 @@
         "email": { "type": "string", "format": "email" },
         "photoURL": { "type": "string" },
         "isPremium": { "type": "boolean" },
+        "isAdmin": { "type": "boolean", "description": "Global admin privileges" },
         "subscriptionPlan": { "type": "string", "enum": ["free", "pro", "business"] },
         "credits": { "type": "number", "description": "Available AI processing credits" },
         "totalSpent": { "type": "number", "description": "Total lifetime revenue from user" },
