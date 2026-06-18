@@ -6,7 +6,6 @@
  */
 
 import { ai, z } from '@/ai/genkit';
-import { googleAI } from '@genkit-ai/google-genai';
 
 const ScriptWriterInputSchema = z.object({
   topic: z.string().describe('The main topic or subject of the video'),
@@ -34,13 +33,26 @@ const scriptWriterFlow = ai.defineFlow(
   },
   async (input) => {
     const { output } = await ai.generate({
-      model: googleAI.model('gemini-flash-latest'),
+      model: 'googleai/gemini-flash-latest',
       prompt: `You are a world-class social media content strategist and script writer. 
       Create a viral-ready script for ${input.platform} about "${input.topic}". 
       Tone: ${input.tone || 'energetic and engaging'}.
       Format the output to include clear Scene Descriptions and Narration/Dialogue.`,
       output: { schema: ScriptWriterOutputSchema },
+      config: {
+        safetySettings: [
+          { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_ONLY_HIGH' },
+          { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_ONLY_HIGH' },
+          { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_ONLY_HIGH' },
+          { category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT', threshold: 'BLOCK_ONLY_HIGH' },
+        ]
+      }
     });
-    return output!;
+    
+    if (!output) {
+      throw new Error('AI failed to generate a script. Please check your prompt or API quota.');
+    }
+    
+    return output;
   }
 );

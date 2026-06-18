@@ -1,4 +1,3 @@
-
 'use server';
 /**
  * @fileOverview An AI agent that generates professional voiceovers from text scripts using Gemini TTS.
@@ -8,9 +7,7 @@
  * - VoiceoverOutput - The return type for the function.
  */
 
-import { ai } from '@/ai/genkit';
-import { z } from 'genkit';
-import { googleAI } from '@genkit-ai/google-genai';
+import { ai, z } from '@/ai/genkit';
 import wav from 'wav';
 
 const VoiceoverInputSchema = z.object({
@@ -36,7 +33,7 @@ const voiceoverFlow = ai.defineFlow(
   },
   async (input) => {
     const { media } = await ai.generate({
-      model: googleAI.model('gemini-2.5-flash-preview-tts'),
+      model: 'googleai/gemini-2.5-flash-preview-tts',
       config: {
         responseModalities: ['AUDIO'],
         speechConfig: {

@@ -1,4 +1,3 @@
-
 'use server';
 /**
  * @fileOverview An AI agent that generates cinematic video clips from text prompts using Veo.
@@ -8,9 +7,7 @@
  * - VideoGenerationOutput - The return type for the function.
  */
 
-import { ai } from '@/ai/genkit';
-import { z } from 'genkit';
-import { googleAI } from '@genkit-ai/google-genai';
+import { ai, z } from '@/ai/genkit';
 
 const VideoGenerationInputSchema = z.object({
   prompt: z.string().describe('The descriptive prompt for the video generation.'),
@@ -34,7 +31,7 @@ const videoGenerationFlow = ai.defineFlow(
   },
   async (input) => {
     let { operation } = await ai.generate({
-      model: googleAI.model('veo-2.0-generate-001'),
+      model: 'googleai/veo-2.0-generate-001',
       prompt: input.prompt,
       config: {
         durationSeconds: 5,
@@ -63,8 +60,9 @@ const videoGenerationFlow = ai.defineFlow(
       throw new Error('No video output generated.');
     }
 
-    // Download and convert to base64 for the client
-    const response = await fetch(`${videoPart.media.url}&key=${process.env.GEMINI_API_KEY}`);
+    // Use the same API key logic for the download
+    const apiKey = (process.env.GEMINI_API_KEY || '').trim().replace(/^["']|["']$/g, '').trim();
+    const response = await fetch(`${videoPart.media.url}&key=${apiKey}`);
     if (!response.ok) throw new Error('Failed to download generated video.');
     
     const buffer = await response.arrayBuffer();
