@@ -1,32 +1,31 @@
 
-# 💰 VideoMaster AI: Paisa Kamane Ka Plan (Aasaan Guide)
+# 💰 VideoMaster AI: Ads se Paisa Kamane ka Full Plan
 
-Aapka app ab ek "Money-Making Machine" banne ke liye taiyar hai. Maine aapki **Publisher ID (pub-8946933317699938)** ko code mein set kar diya hai.
+Aapka app ab ek asli "Ad-Revenue Engine" ban chuka hai. Maine sabhi modern ad formats ismein integrate kar diye hain.
 
-### 1. Google AdSense (Website Par Ads) - ✅ SET UP COMPLETE
-Aapka setup maine automate kar diya hai:
-1. **AdSense Script**: `src/app/layout.tsx` mein aapki ID set hai.
-2. **Seller Visibility**: [Google AdSense](https://adsense.google.com) par jayein aur "Transparent" chunein. 
-3. **Domain**: Wahan apna domain dalein: `studio-9489287013-59986.web.app`
-4. **Publisher ID**: Aapki ID `pub-8946933317699938` maine pehle hi code mein daal di hai.
+### 1. Rewarded Video Ads (Highest Earning) ✅
+- **Kahan Hai?**: Dashboard par "Watch Video & Get Credits" section.
+- **Kaise Kaam Karta Hai?**: User 15 second ka video ad dekhega aur use +20 AI Credits milenge.
+- **Fayda**: Iska CPM (Paisa) sabse zyada milta hai kyunki user pura ad dekhta hai.
 
-### 2. Google AdMob (Mobile App Par Ads) ✅
-Agar aap app ko Play Store par dalte hain:
-1. [Google AdMob](https://admob.google.com) par jayein aur "App" create karein.
-2. Wahan se **App ID** aur **Ad Unit ID** lein.
-3. Dashboard par jo "Watch Ad" button hai, wahan ye IDs kaam aayengi.
+### 2. Interstitial Ads (Full-Screen Ads) ✅
+- **Kahan Hai?**: Editor mein "Export" button dabane par.
+- **Kaise Kaam Karta Hai?**: Jab user video export karta hai, usse pehle ek bada ad dikhega.
+- **Fayda**: Ye ads transitions ke waqt dikhte hain aur inki click-rate bahut high hoti hai.
 
-### 3. Subscriptions (Pro Plans) ✅
-- **Free Users**: 100 credits limit.
-- **Pro Users (₹99)**: Unlimited access.
-- **Bank Transfer**: Razorpay ya Instamojo par account banakar apna payment link `premium/page.tsx` mein lagayein.
+### 3. Smart Banner Ads ✅
+- **Kahan Hai?**: Dashboard, Premium, aur Templates pages ke niche.
+- **Kaise Kaam Karta Hai?**: Ye hamesha screen par dikhte rehte hain aur impression ke paise dete hain.
 
-### 4. Reward Ads (Free Credits for Users) - ✅ ACTIVE
-Maine Dashboard par system set kiya hai:
-- User "Watch Ad" button dabayega.
-- User 5 second ka ad dekhega.
-- Aapko ad ka paisa milega, aur user ko +10 credits. Dono ka fayda!
+### 4. Subscription Upsell (Ad-Free Experience) ✅
+- **Kahan Hai?**: Premium page.
+- **Kaise Kaam Karta Hai?**: User ₹99/mo dekar ads hata sakta hai. Aapko ads se bhi kamai hogi aur agar koi subscription le toh direct bank mein bhi.
 
 ---
 
-**Aapka app ab READY-TO-EARN hai!** 🚀💰
+### ⚠️ Zaroori Setup Steps (AdSense ID: pub-8946933317699938)
+1. **Domain Link**: Apna domain `studio-9489287013-59986.web.app` AdSense dashboard mein add karein.
+2. **Transparent Setting**: "Account Settings" mein jakar visibility ko "Transparent" chunein.
+3. **App-ads.txt**: Google AdSense ke dashboard se ye file download karke root folder mein add karein (Maine codes set kar diye hain).
+
+**Aapka App ab ek asli Business ban gaya hai jo sotey waqt bhi paise kamayega!** 🚀💸

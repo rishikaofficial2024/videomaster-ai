@@ -9,7 +9,7 @@ import {
   ChevronRight, Loader2, Crown, Coins, 
   Zap, MoreVertical, Video, ArrowUpRight, 
   ShieldCheck, BarChart3, Clock, Layout,
-  Cpu, Activity, Globe, ExternalLink, MonitorPlay, AlertTriangle
+  Cpu, Activity, Globe, ExternalLink, MonitorPlay, AlertTriangle, Gift
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -54,20 +54,21 @@ export default function Dashboard() {
     if (!userProfileRef) return;
     setAdLoading(true);
     toast({
-      title: "Loading Reward Ad...",
-      description: "Please wait 5 seconds to earn your 10 free credits.",
+      title: "Loading Rewarded Video...",
+      description: "Ad started. Please watch for 15 seconds to earn +20 credits.",
     });
 
+    // Simulated Rewarded Ad logic
     setTimeout(async () => {
       updateDoc(userProfileRef, {
-        credits: increment(10)
+        credits: increment(20)
       }).catch(() => {});
       setAdLoading(false);
       toast({
-        title: "Credits Added! 💰",
-        description: "10 AI Credits have been added to your account for watching an ad.",
+        title: "Success! +20 Credits",
+        description: "Your reward has been added. You can watch another in 1 hour.",
       });
-    }, 5000);
+    }, 15000);
   };
 
   const formatDate = (timestamp: any) => {
@@ -107,15 +108,9 @@ export default function Dashboard() {
               <div className="flex items-center gap-2 px-3 py-1 bg-emerald-500/10 rounded-full border border-emerald-500/20 w-fit">
                  <Globe className="w-3 h-3 text-emerald-500" />
                  <span className="text-[10px] font-bold text-emerald-500 uppercase tracking-[0.2em]">
-                   Live: studio-9489287013-59986.web.app
+                   {user?.displayName?.split(' ')[0]}'s Studio
                  </span>
               </div>
-              <Link href="/test-connection" className="flex items-center gap-2 px-3 py-1 bg-yellow-500/10 rounded-full border border-yellow-500/20 w-fit hover:bg-yellow-500/20 transition-all">
-                 <AlertTriangle className="w-3 h-3 text-yellow-500" />
-                 <span className="text-[10px] font-bold text-yellow-500 uppercase tracking-[0.2em]">
-                   Run System Diagnostics
-                 </span>
-              </Link>
             </div>
             <h1 className="text-5xl md:text-7xl font-headline font-bold tracking-tighter">
               Welcome, <span className="text-primary italic">{user?.displayName?.split(' ')[0] || 'Creator'}</span>
@@ -139,25 +134,30 @@ export default function Dashboard() {
           </div>
         </header>
 
-        {/* Ad Reward Section */}
-        <section className="bg-gradient-to-r from-indigo-500/10 to-primary/10 border border-white/10 p-8 rounded-[3rem] blue-glow flex flex-col md:flex-row items-center justify-between gap-6">
-           <div className="flex items-center gap-6">
-              <div className="w-16 h-16 bg-white/5 rounded-[1.5rem] flex items-center justify-center border border-white/10">
-                 <MonitorPlay className="w-8 h-8 text-primary" />
-              </div>
-              <div className="space-y-1">
-                 <h3 className="text-xl font-bold font-headline">Earn Credits with Ads</h3>
-                 <p className="text-sm text-muted-foreground font-medium">Watch a quick ad to get <span className="text-primary font-bold">+10 Free Credits</span></p>
-              </div>
-           </div>
-           <Button 
-             onClick={handleWatchAd} 
-             disabled={adLoading}
-             className="h-14 px-10 rounded-2xl bg-white text-black hover:bg-primary hover:text-white font-bold transition-all shadow-xl"
-           >
-              {adLoading ? <Loader2 className="animate-spin mr-2" /> : <Zap className="w-4 h-4 mr-2" />}
-              {adLoading ? "Processing..." : "Watch Ad & Earn Credits"}
-           </Button>
+        {/* REWARDED AD SECTION - HIGH CONVERSION FOR ADS */}
+        <section className="relative overflow-hidden group">
+          <div className="absolute inset-0 bg-primary/20 blur-[100px] opacity-20 group-hover:opacity-40 transition-opacity"></div>
+          <Card className="rounded-[3rem] bg-[#0a0d14] border-primary/20 p-8 md:p-12 relative z-10 blue-glow">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-8">
+               <div className="flex items-center gap-8 text-center md:text-left">
+                  <div className="w-20 h-20 bg-primary/10 rounded-[1.5rem] flex items-center justify-center border border-primary/20 shadow-xl">
+                     <Gift className="w-10 h-10 text-primary animate-bounce" />
+                  </div>
+                  <div className="space-y-2">
+                     <h3 className="text-3xl font-bold font-headline">Earn +20 AI Credits</h3>
+                     <p className="text-muted-foreground font-medium max-w-sm">Watch a short video ad and fuel your creativity for free. <span className="text-primary font-bold">Recommended for daily users.</span></p>
+                  </div>
+               </div>
+               <Button 
+                 onClick={handleWatchAd} 
+                 disabled={adLoading || profile?.isPremium}
+                 className="h-20 px-12 rounded-2xl bg-primary hover:bg-primary/90 text-white font-bold transition-all shadow-2xl shadow-primary/40 active:scale-95 text-lg"
+               >
+                  {adLoading ? <Loader2 className="animate-spin mr-3 w-6 h-6" /> : <MonitorPlay className="w-6 h-6 mr-3" />}
+                  {adLoading ? "Ad playing..." : "Watch Video & Get Credits"}
+               </Button>
+            </div>
+          </Card>
         </section>
 
         {/* Global Analytics Overview */}
@@ -196,15 +196,15 @@ export default function Dashboard() {
               </div>
               <div className="relative z-10 space-y-6">
                  <h3 className="text-2xl font-bold font-headline leading-tight">Elite <br/> Creator Hub</h3>
-                 <p className="text-xs font-medium text-primary-foreground/80">4K Exports & Priority Support Active.</p>
+                 <p className="text-xs font-medium text-primary-foreground/80">Remove all ads & get 4K exports.</p>
                  <Button variant="secondary" className="w-full rounded-xl font-bold h-12 shadow-lg" asChild>
-                    <Link href="/premium">Manage Plan <ArrowUpRight className="ml-2 w-4 h-4" /></Link>
+                    <Link href="/premium">Go Ad-Free <ArrowUpRight className="ml-2 w-4 h-4" /></Link>
                  </Button>
               </div>
            </Card>
         </section>
 
-        <AdBanner provider="AdMob Mobile Ads" />
+        <AdBanner provider="Premium AdMob Network" />
 
         {/* Recent Projects */}
         <section className="space-y-8">

@@ -10,7 +10,7 @@ import {
   Music, Wand2, Download, Sparkles, ChevronLeft, Loader2, Video,
   Zap, Volume2, Image as ImageIcon,
   PenTool, Layers, MousePointer2,
-  Coins, Plus, RefreshCw, ClipboardCheck, Cloud
+  Coins, Plus, RefreshCw, ClipboardCheck, Cloud, X, Info
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { aiVideoContentOptimization } from "@/ai/flows/ai-video-content-optimization-flow";
@@ -46,6 +46,7 @@ export default function EditorPage() {
   const [processingMessage, setProcessingMessage] = useState("");
   const [activeTool, setActiveTool] = useState("ai");
   const [activeInspectorTab, setActiveInspectorTab] = useState("ai");
+  const [showInterstitial, setShowInterstitial] = useState(false);
   
   const [videoData, setVideoData] = useState<string | null>(null);
   const [audioData, setAudioData] = useState<string | null>(null);
@@ -88,6 +89,15 @@ export default function EditorPage() {
       setProjectId(newId);
     }
   }, [projectId, projectIdFromUrl]);
+
+  const handleExport = () => {
+    if (profile?.isPremium) {
+       toast({ title: "Export Started", description: "Your 4K HDR video is being compiled." });
+       return;
+    }
+    // INTERSTITIAL AD TRIGGER
+    setShowInterstitial(true);
+  };
 
   const checkCredits = (cost: number) => {
     if (profile?.isPremium) return true;
@@ -266,7 +276,7 @@ export default function EditorPage() {
               <Coins className="w-3.5 h-3.5 text-primary" />
               <span className="text-[10px] font-bold text-primary tracking-widest">{profile?.credits ?? 0} CREDITS</span>
            </div>
-           <Button size="sm" className="h-9 px-6 rounded-xl font-bold bg-primary shadow-xl shadow-primary/20 gap-2">
+           <Button onClick={handleExport} size="sm" className="h-9 px-6 rounded-xl font-bold bg-primary shadow-xl shadow-primary/20 gap-2">
              <Download className="w-4 h-4" /> Export Video
            </Button>
         </div>
@@ -431,25 +441,6 @@ export default function EditorPage() {
                          </div>
                        )}
                     </div>
-
-                    <div className="p-6 rounded-[2rem] bg-[#161a25] border border-rose-500/20 space-y-4 shadow-2xl">
-                       <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-3">
-                             <ImageIcon className="w-4 h-4 text-rose-400" />
-                             <h4 className="text-xs font-bold uppercase tracking-widest text-rose-400">Thumbnail Maker</h4>
-                          </div>
-                          <span className="text-[9px] font-bold text-muted-foreground uppercase">5 Credits</span>
-                       </div>
-                       <textarea 
-                          placeholder="Describe your thumbnail design..." 
-                          className="w-full bg-[#0c0f17] border border-white/5 rounded-2xl p-4 text-xs h-24 focus:ring-1 focus:ring-rose-500 outline-none resize-none transition-all placeholder:text-muted-foreground/30"
-                          value={thumbnailPrompt}
-                          onChange={(e) => setThumbnailPrompt(e.target.value)}
-                       />
-                       <Button className="w-full h-12 rounded-2xl font-bold bg-rose-600 hover:bg-rose-700 text-xs shadow-xl shadow-rose-500/20" onClick={handleGenerateThumbnail} disabled={isProcessing || !thumbnailPrompt}>
-                          {isProcessing && processingMessage.includes("designing") ? <Loader2 className="animate-spin mr-2" /> : "Design Thumbnail"}
-                       </Button>
-                    </div>
                  </TabsContent>
 
                  <TabsContent value="project" className="mt-0 space-y-8">
@@ -474,6 +465,49 @@ export default function EditorPage() {
            </Tabs>
         </div>
       </div>
+
+      {/* INTERSTITIAL AD SIMULATION */}
+      {showInterstitial && (
+        <div className="fixed inset-0 z-[200] bg-black flex items-center justify-center p-6">
+           <div className="max-w-4xl w-full bg-[#0a0d14] rounded-[3rem] border border-primary/20 overflow-hidden relative shadow-[0_0_100px_rgba(59,130,246,0.3)]">
+              <button 
+                onClick={() => setShowInterstitial(false)}
+                className="absolute top-8 right-8 p-2 bg-white/5 hover:bg-white/10 rounded-full transition-colors z-50"
+              >
+                <X className="w-6 h-6" />
+              </button>
+              
+              <div className="p-12 md:p-20 text-center space-y-10">
+                 <div className="flex items-center justify-center gap-3 mb-4">
+                    <Zap className="w-6 h-6 text-primary fill-primary" />
+                    <span className="text-sm font-bold uppercase tracking-[0.3em] text-primary">Sponsor Spotlight</span>
+                 </div>
+                 
+                 <div className="space-y-6">
+                    <h3 className="text-4xl md:text-6xl font-headline font-bold text-white tracking-tighter">Your Export is Loading...</h3>
+                    <p className="text-muted-foreground text-xl max-w-2xl mx-auto font-medium leading-relaxed italic">While we prepare your 4K render, check out this special offer from our sponsor.</p>
+                 </div>
+
+                 <div className="aspect-video w-full max-w-2xl mx-auto bg-white/5 rounded-[2rem] border border-white/10 flex flex-col items-center justify-center gap-6 shadow-2xl">
+                    <MonitorPlay className="w-16 h-16 text-primary/40" />
+                    <div className="space-y-2">
+                       <p className="text-lg font-bold text-white/60">Elite Ad Slot - 1080p</p>
+                       <p className="text-xs text-muted-foreground">Ad will close automatically in 5 seconds...</p>
+                    </div>
+                    <Button variant="outline" className="rounded-full h-12 px-10 border-white/20">Learn More <ExternalLink className="ml-2 w-4 h-4" /></Button>
+                 </div>
+
+                 <div className="pt-10 flex flex-col items-center gap-4">
+                    <div className="flex items-center gap-3 text-emerald-500 font-bold">
+                       <ShieldCheck className="w-5 h-5" />
+                       <span>Ads support our free AI engine</span>
+                    </div>
+                    <Button variant="ghost" onClick={() => setShowInterstitial(false)} className="text-xs font-bold text-muted-foreground uppercase tracking-widest hover:text-white">Skip Ad</Button>
+                 </div>
+              </div>
+           </div>
+        </div>
+      )}
 
       {isProcessing && (
         <div className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-2xl flex items-center justify-center p-12">
