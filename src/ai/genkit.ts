@@ -5,16 +5,22 @@ import { googleAI } from '@genkit-ai/google-genai';
  * Genkit initialization for VideoMaster AI.
  * 
  * This reads the GEMINI_API_KEY from the .env file.
- * Includes cleaning logic to handle potential formatting issues.
+ * We use a very robust cleaning logic to ensure copy-paste errors 
+ * (like extra spaces or quotes) don't break the connection.
  */
-const rawKey = process.env.GEMINI_API_KEY || '';
-const apiKey = rawKey.trim().replace(/^["']|["']$/g, '');
+const getApiKey = () => {
+  const rawKey = process.env.GEMINI_API_KEY || '';
+  // Remove spaces, quotes, and any hidden characters
+  return rawKey.trim().replace(/^["']|["']$/g, '').trim();
+};
 
-// Developer Logging for Connection Verification
+const apiKey = getApiKey();
+
+// Logging for developer debugging (masked for security)
 if (!apiKey) {
-  console.error("❌ ERROR: GEMINI_API_KEY is missing in your .env file.");
+  console.error("❌ AI ERROR: GEMINI_API_KEY is completely missing from .env file.");
 } else {
-  console.log("✅ AI SERVICE: Gemini API Key loaded and initialized.");
+  console.log(`✅ AI SERVICE: Key detected (Starts with: ${apiKey.substring(0, 6)}...)`);
 }
 
 export const ai = genkit({
