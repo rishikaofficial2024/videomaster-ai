@@ -11,7 +11,7 @@ import {
   Coins, Plus, RefreshCw, Cloud, Info,
   LayoutTemplate, Type, Box, Upload, Palette,
   Volume2, Image as ImageIcon, PenTool, Layers,
-  Subtitles, BarChart4, TrendingUp, Tags, Music, Trash2, X, AlertTriangle
+  Subtitles, BarChart4, TrendingUp, Tags, Music, Trash2, X, AlertTriangle, CheckCircle2
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { aiVideoContentOptimization } from "@/ai/flows/ai-video-content-optimization-flow";
@@ -205,7 +205,16 @@ export default function EditorPage() {
       setThumbnailUrl(result.thumbnailDataUri);
       deductCredits(5);
       handleSave({ thumbnailUrl: result.thumbnailDataUri });
-      toast({ title: "Masterpiece Ready", description: "Your thumbnail has been designed." });
+      
+      if (result.isAiGenerated === false) {
+        toast({ 
+          title: "Premium Fallback Used", 
+          description: "Free Jugaad: AI model paid tha, isliye maine aapko Unsplash se professional photo dhund di hai!",
+          duration: 5000 
+        });
+      } else {
+        toast({ title: "Masterpiece Ready", description: "Your thumbnail has been designed by AI." });
+      }
     } catch (e: any) {
       toast({ variant: "destructive", title: "Design Error", description: e.message });
     } finally {
@@ -621,6 +630,10 @@ export default function EditorPage() {
                        <div className="flex items-center gap-3">
                           <Palette className="w-4 h-4 text-indigo-400" />
                           <h4 className="text-[10px] font-bold uppercase tracking-widest text-indigo-400">Thumbnail Design AI</h4>
+                       </div>
+                       <div className="bg-primary/10 border border-primary/20 p-2 rounded-lg flex items-start gap-2 mb-2">
+                          <CheckCircle2 className="w-3 h-3 text-primary shrink-0 mt-0.5" />
+                          <span className="text-[8px] text-primary">Free Jugaad Active: Fallback images enabled.</span>
                        </div>
                        <textarea 
                           placeholder="Visual prompt for thumbnail generation..." 
