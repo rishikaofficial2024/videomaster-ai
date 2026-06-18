@@ -1,6 +1,6 @@
 # 🗝️ VideoMaster AI: Keys Ka Sahi Setup
 
-Agar aapka AI feature (Thumbnail, Script) kaam nahi kar raha, toh iska matlab hai ki aapne dono keys ko mix kar diya hai. Inhe theek karne ka sahi tarika ye hai:
+Agar aapka AI feature (Thumbnail, Script) kaam nahi kar raha, toh iska matlab hai ki aapne dono keys ko mix kar diya hai ya key galat format mein hai. Inhe theek karne ka sahi tarika ye hai:
 
 ### 1. Firebase API Key (Ye Sahi Hai ✅)
 - **Kahan Hai?**: `src/firebase/config.ts` file mein.
@@ -16,16 +16,16 @@ Agar aapka AI feature (Thumbnail, Script) kaam nahi kar raha, toh iska matlab ha
 ---
 
 ### ⚠️ Sabse Badi Galti (Don't do this!)
-Dono keys `AIza` se shuru hoti hain. Log aksar Firebase ki key ko `.env` mein daal dete hain, jiski wajah se **401 Unauthorized** error aata hai.
 
 **Kaise Pehchaane?**
-- **Firebase Key**: Aapke Firebase Project Dashboard se milti hai.
-- **Gemini Key**: Sirf Google AI Studio se milti hai (Gemini AI ke liye).
+- **Firebase Key**: `AIzaSyCz-pMZtY7...` (Ye `.env` mein nahi honi chahiye).
+- **Gemini Key**: Sirf Google AI Studio se milti hai. Ye bhi `AIzaSy` se shuru hoti hai lekin characters alag hote hain.
+- **Dhyan Dein**: Agar aapki key `AQ.` se shuru ho rahi hai toh wo shayad Google AI Studio ki standard key nahi hai. Ek baar dobara aistudio.google.com par jake "Get API Key" par click karein.
 
 ### Error Fix Karne Ka Tarika:
 1. `.env` file ko kholein.
-2. Purani key ko hata dein.
-3. Google AI Studio wali nayi key paste karein.
+2. Purani key (jaise AQ... wali) ko hata dein.
+3. Google AI Studio wali nayi `AIzaSy` se shuru hone wali key paste karein.
 4. File ko **Save** karein aur app ko refresh karein.
 
-Ab aapka app "Brain" (AI) aur "Body" (Database) dono ke saath jud jayega!
+Ab aapka app "Brain" (AI) aur "Body" (Database) dono ke saath sahi se jud jayega!

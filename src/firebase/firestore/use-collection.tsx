@@ -23,8 +23,9 @@ export function useCollection<T = DocumentData>(query: Query<T> | null) {
   const lastQueryRef = useRef<string | null>(null);
 
   useEffect(() => {
-    // Generate a unique identifier for the query to prevent loops
-    const queryId = query ? JSON.stringify(query) : null;
+    // Generate a unique identifier for the query based on its structure
+    // We avoid JSON.stringify on the whole query as it can have circular refs
+    const queryId = query ? (query as any)._query?.path?.toString() || 'default' : null;
     
     if (!query) {
       if (lastQueryRef.current !== null) {

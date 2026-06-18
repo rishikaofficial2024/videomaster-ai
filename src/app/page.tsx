@@ -1,11 +1,10 @@
-
 "use client";
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { 
-  Video, ArrowRight, Sparkles, Wand2, Smartphone, 
-  Download, Play, Zap, Globe, Cpu, BarChart3, Crown, Check
+  Video, ArrowRight, Sparkles, Wand2, 
+  Download, Play, Zap, Cpu, BarChart3, Crown, Check
 } from "lucide-react";
 import Image from "next/image";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
