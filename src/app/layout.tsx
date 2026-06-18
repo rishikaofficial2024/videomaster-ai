@@ -5,8 +5,18 @@ import { FirebaseClientProvider } from '@/firebase';
 
 export const metadata: Metadata = {
   title: 'VideoMaster AI - India\'s #1 Professional AI Video Studio & Script Writer',
-  description: 'Create viral YouTube, TikTok, and Reels 10x faster with VideoMaster AI. The best AI video generator for creators. Features: AI Script Writer, Cinematic Thumbnail Maker, and Veo 2.0 Video Generation. Get 100 free credits and start earning today!',
-  keywords: ['AI Video Editor', 'Video Generation', 'Thumbnail Maker', 'AI Scripts', 'YouTube Tools', 'TikTok Editor', 'Monetize Video', 'Viral Reels Maker', 'VideoMaster AI India'],
+  description: 'Create viral YouTube, TikTok, and Reels 10x faster with VideoMaster AI. The best AI video generator for creators in India. Features: AI Script Writer, Cinematic Thumbnail Maker, and Veo 2.0 Video Generation. Get 100 free credits and start earning today!',
+  keywords: [
+    'AI Video Generator India', 
+    'Viral Reels Maker AI', 
+    'Best AI Script Writer for YouTube', 
+    'Cinematic Thumbnail Designer AI', 
+    'VideoMaster AI India',
+    'Text to Video AI Free India',
+    'Automated Video Subtitles AI',
+    'AI Video Editor Online',
+    'YouTube Automation Tool'
+  ],
   authors: [{ name: 'VideoMaster AI Global' }],
   metadataBase: new URL('https://studio-9489287013-59986.web.app'),
   alternates: {
@@ -14,7 +24,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: 'VideoMaster AI - Create Viral Videos in Seconds',
-    description: 'The all-in-one AI video studio built to help creators earn more and work less. Join 50,000+ creators today.',
+    description: 'The all-in-one AI video studio built to help Indian creators earn more and work less. Join 50,000+ creators today.',
     url: 'https://studio-9489287013-59986.web.app',
     siteName: 'VideoMaster AI',
     locale: 'en_IN',

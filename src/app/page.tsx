@@ -46,10 +46,10 @@ export default function LandingPage() {
                 <Sparkles className="w-3.5 h-3.5" /> India's Leading AI Video Generator
               </div>
               <h1 className="text-5xl md:text-9xl font-bold tracking-tighter font-headline max-w-6xl leading-[0.9] animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-100">
-                Create viral videos <span className="text-primary italic">10x faster</span> with AI.
+                Create <span className="text-primary italic">Viral Reels</span> with India's Best AI Studio.
               </h1>
               <p className="max-w-[800px] text-muted-foreground text-lg md:text-2xl font-medium leading-relaxed animate-in fade-in slide-in-from-bottom-5 duration-1000 delay-200">
-                The all-in-one AI video studio for modern creators. Generate high-quality scripts, cinematic thumbnails, and HD videos in seconds.
+                VideoMaster AI is the ultimate viral reels maker and script writer for Indian creators. Generate scripts, thumbnails, and cinematic HD videos automatically.
               </p>
               <div className="flex flex-col sm:flex-row gap-5 animate-in fade-in slide-in-from-bottom-6 duration-1000 delay-300">
                 <Button asChild size="lg" className="h-16 px-12 rounded-2xl text-lg font-bold shadow-2xl shadow-primary/30 hover:scale-105 transition-all">
@@ -82,14 +82,13 @@ export default function LandingPage() {
 
         {/* SEO Content Section */}
         <section className="w-full py-12 border-y bg-muted/30">
-          <div className="container px-6 mx-auto">
-            <h2 className="text-center text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-10">Optimized for Viral Platforms</h2>
+          <div className="container px-6 mx-auto text-center">
+            <h2 className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-10">Optimized for Viral Platforms in India</h2>
             <div className="flex flex-wrap justify-center items-center gap-12 md:gap-24 opacity-50 grayscale">
               <div className="text-2xl font-bold font-headline">YouTube</div>
-              <div className="text-2xl font-bold font-headline">TikTok</div>
-              <div className="text-2xl font-bold font-headline">Instagram</div>
-              <div className="text-2xl font-bold font-headline">LinkedIn</div>
-              <div className="text-2xl font-bold font-headline">Meta</div>
+              <div className="text-2xl font-bold font-headline">Instagram Reels</div>
+              <div className="text-2xl font-bold font-headline">TikTok AI</div>
+              <div className="text-2xl font-bold font-headline">Facebook Video</div>
             </div>
           </div>
         </section>
@@ -98,33 +97,33 @@ export default function LandingPage() {
         <section id="features" className="w-full py-32">
           <div className="container px-6 mx-auto">
             <div className="text-center mb-24 space-y-4">
-              <h2 className="text-4xl md:text-6xl font-bold font-headline tracking-tighter">AI Tools for <span className="text-primary italic">Pro Content</span></h2>
-              <p className="text-muted-foreground max-w-2xl mx-auto text-xl font-medium">Reimagining video production with ethical Gemini AI and Google Cloud power.</p>
+              <h2 className="text-4xl md:text-6xl font-bold font-headline tracking-tighter">AI Tools for <span className="text-primary italic">Professional Scripts</span></h2>
+              <p className="text-muted-foreground max-w-2xl mx-auto text-xl font-medium">Empowering Indian YouTubers with world-class AI script writing and viral video generation.</p>
             </div>
             <div className="grid gap-8 lg:grid-cols-4">
               {[
                 { 
                   icon: Wand2, 
-                  title: "AI Video Generation", 
-                  desc: "Generate high-fidelity cinematic clips using Veo 2.0 reasoning and text prompts.",
+                  title: "AI Video Generation India", 
+                  desc: "Generate high-fidelity cinematic clips using Veo 2.0. The most powerful AI video generator for Indian creators.",
                   color: "blue"
                 },
                 { 
                   icon: Zap, 
-                  title: "Viral Optimization", 
-                  desc: "Automatically generate viral titles, hashtags, and SEO descriptions to rank higher.",
+                  title: "Viral Reels Maker", 
+                  desc: "Automatically generate viral titles, hashtags, and SEO descriptions to rank higher on Instagram and YouTube.",
                   color: "orange"
                 },
                 { 
                   icon: BarChart3, 
-                  title: "Usage Analytics", 
-                  desc: "Track your AI credit usage and video performance metrics in one central dashboard.",
+                  title: "Best AI Script Writer", 
+                  desc: "Craft professional video scripts in seconds with our advanced AI script writer for YouTube and LinkedIn.",
                   color: "green"
                 },
                 { 
                   icon: Cpu, 
-                  title: "Thumbnail AI", 
-                  desc: "Create click-worthy thumbnails that boost CTR using state-of-the-art Imagen models.",
+                  title: "Thumbnail Designer AI", 
+                  desc: "Create click-worthy thumbnails that boost your CTR. Professional AI thumbnail maker for modern creators.",
                   color: "rose"
                 }
               ].map((feature, i) => (
@@ -146,15 +145,15 @@ export default function LandingPage() {
              <div className="grid md:grid-cols-3 gap-16 text-center">
                 <div className="space-y-2">
                    <h3 className="text-6xl md:text-7xl font-bold font-headline text-primary tracking-tighter">98%</h3>
-                   <p className="text-sm font-bold uppercase tracking-widest text-muted-foreground">Faster Video Editing</p>
+                   <p className="text-sm font-bold uppercase tracking-widest text-muted-foreground">Faster Viral Reels Making</p>
                 </div>
                 <div className="space-y-2">
                    <h3 className="text-6xl md:text-7xl font-bold font-headline text-primary tracking-tighter">50K+</h3>
-                   <p className="text-sm font-bold uppercase tracking-widest text-muted-foreground">Users in India</p>
+                   <p className="text-sm font-bold uppercase tracking-widest text-muted-foreground">Creators in India</p>
                 </div>
                 <div className="space-y-2">
                    <h3 className="text-6xl md:text-7xl font-bold font-headline text-primary tracking-tighter">₹0</h3>
-                   <p className="text-sm font-bold uppercase tracking-widest text-muted-foreground">Initial Setup Cost</p>
+                   <p className="text-sm font-bold uppercase tracking-widest text-muted-foreground">Free AI Credits for You</p>
                 </div>
              </div>
           </div>
@@ -167,7 +166,7 @@ export default function LandingPage() {
                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.2),transparent)]"></div>
                <div className="relative z-10 space-y-10">
                   <h2 className="text-4xl md:text-7xl font-bold font-headline tracking-tighter leading-tight">Launch Your Viral <br/> Channel Today</h2>
-                  <p className="max-w-xl mx-auto text-primary-foreground/80 text-lg md:text-xl font-medium">Get 100 free AI credits when you create your account today. The #1 AI video studio in India.</p>
+                  <p className="max-w-xl mx-auto text-primary-foreground/80 text-lg md:text-xl font-medium">Get 100 free AI credits when you create your account today. The #1 AI video studio in India for viral growth.</p>
                   <Button asChild size="lg" variant="secondary" className="h-20 px-16 rounded-[2rem] text-xl font-bold hover:scale-105 transition-all shadow-xl">
                     <Link href="/signup">Claim My 100 Credits <ArrowRight className="ml-3 w-6 h-6" /></Link>
                   </Button>
@@ -192,10 +191,10 @@ export default function LandingPage() {
             <div className="space-y-6">
               <h4 className="font-bold text-xs uppercase tracking-[0.2em] text-primary">Resources</h4>
               <nav className="flex flex-col gap-4 text-muted-foreground font-medium text-sm">
-                <Link href="/editor" className="hover:text-primary transition-colors">AI Video Editor</Link>
-                <Link href="/templates" className="hover:text-primary transition-colors">Video Templates</Link>
-                <Link href="/ai-gen" className="hover:text-primary transition-colors">AI Content Generator</Link>
-                <Link href="/pricing" className="hover:text-primary transition-colors">Affordable Pricing</Link>
+                <Link href="/editor" className="hover:text-primary transition-colors">AI Video Editor India</Link>
+                <Link href="/templates" className="hover:text-primary transition-colors">Viral Video Templates</Link>
+                <Link href="/ai-gen" className="hover:text-primary transition-colors">AI Script Writer</Link>
+                <Link href="/pricing" className="hover:text-primary transition-colors">Affordable AI Plans</Link>
               </nav>
             </div>
             <div className="space-y-6">
