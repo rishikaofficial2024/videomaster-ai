@@ -1,20 +1,23 @@
 
-# 📱 GitHub Se APK Kaise Download Karein? (Final Guide)
+# 📱 APK Kaise Banayein? (Code Yahan Hai)
 
-Maine aapka poora setup "Automatic" kar diya hai. Ab aapko computer par kisi software ki zaroorat nahi hai.
+Aapka APK banane ka "Build Code" aapki repository mein pehle se hi save hai.
 
-### Step 1: Code Push Karein ✅
-Apne is project ko GitHub repository mein upload (Push) karein. 
+### APK Download Karne ke Steps:
 
-### Step 2: GitHub Actions Tab 🚀
-1. GitHub par apni repository kholein.
-2. Upar waale menu mein **"Actions"** par click karein.
-3. Left side mein **"Build Android APK (Professional Cloud Build)"** dikhega, usey chunein.
-4. Agar workflow khud nahi chala, toh **"Run workflow"** button dabayein.
+1. **GitHub par Code Push Karein**:
+   - Aapne jo coding ki hai, use apni GitHub repository mein upload karein.
 
-### Step 3: APK Download 📥
-1. Jab build Green (✅) ho jaye, toh uspar click karein.
-2. Sabse niche **"Artifacts"** section mein jayein.
-3. `VideoMasterAI-Final-APK` naam ki file hogi, usey download karein aur install karein!
+2. **Actions Tab Mein Jayein**:
+   - Apni GitHub repository par upar menu mein **"Actions"** button par click karein.
+   - Wahan aapko **"Build Android APK"** naam ka workflow dikhega.
 
-**Note:** Aapka Next.js code hi asali Android code hai. Capacitor usey mobile ke liye convert kar deta hai.
+3. **Build Start Karein**:
+   - Agar wo khud nahi chala, toh **"Run workflow"** par click karein.
+   - GitHub 5-7 minute mein aapka APK bana dega.
+
+4. **APK Download Karein**:
+   - Jab build Green (✅) ho jaye, toh uspar click karein.
+   - Sabse niche **"Artifacts"** section mein `VideoMasterAI-Final-APK` par click karke download karein.
+
+**Note**: Aapka Next.js code (`src` folder) hi aapka mobile app hai. Maine sabhi settings automate kar di hain.

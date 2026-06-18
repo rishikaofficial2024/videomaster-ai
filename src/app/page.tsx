@@ -177,66 +177,11 @@ export default function LandingPage() {
             </div>
           </div>
         </section>
-
-        <section className="w-full py-32">
-          <div className="container px-6 mx-auto">
-            <div className="bg-primary p-16 md:p-32 rounded-[5rem] text-white relative overflow-hidden shadow-2xl shadow-primary/40 text-center">
-               <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.25),transparent)]"></div>
-               <div className="relative z-10 space-y-12">
-                  <h2 className="text-5xl md:text-8xl font-bold font-headline tracking-tighter leading-tight">Your Viral Channel <br/> Starts Here</h2>
-                  <p className="max-w-2xl mx-auto text-primary-foreground/90 text-xl md:text-2xl font-medium">Get 100 free AI credits when you create your account today. The #1 design studio for viral growth.</p>
-                  <Button asChild size="lg" variant="secondary" className="h-20 px-20 rounded-[2.5rem] text-2xl font-bold hover:scale-105 transition-all shadow-2xl">
-                    <Link href="/signup">Claim My 100 Credits <ArrowRight className="ml-4 w-7 h-7" /></Link>
-                  </Button>
-               </div>
-            </div>
-          </div>
-        </section>
       </main>
 
       <footer className="py-24 px-6 border-t bg-background/80 backdrop-blur-xl border-white/5">
-        <div className="container mx-auto">
-          <div className="grid md:grid-cols-4 gap-16 mb-24">
-            <div className="col-span-2 space-y-8">
-              <div className="flex items-center gap-4">
-                <div className="bg-primary p-2 rounded-xl">
-                   <Video className="h-7 w-7 text-white" />
-                </div>
-                <span className="font-headline font-bold text-4xl tracking-tighter">VideoMaster AI</span>
-              </div>
-              <p className="text-muted-foreground max-w-sm text-xl leading-relaxed">The world's first AI-native design studio built for speed, performance, and viral growth in the Indian creator economy.</p>
-            </div>
-            <div className="space-y-8">
-              <h4 className="font-bold text-xs uppercase tracking-[0.3em] text-primary">Studio</h4>
-              <nav className="flex flex-col gap-5 text-muted-foreground font-medium text-base">
-                <Link href="/editor" className="hover:text-primary transition-colors">Design Studio India</Link>
-                <Link href="/templates" className="hover:text-primary transition-colors">AI Templates</Link>
-                <Link href="/privacy" className="hover:text-primary transition-colors">Privacy Policy</Link>
-                <Link href="/terms" className="hover:text-primary transition-colors">Terms of Service</Link>
-              </nav>
-            </div>
-            <div className="space-y-8">
-              <h4 className="font-bold text-xs uppercase tracking-[0.3em] text-primary">Support</h4>
-              <nav className="flex flex-col gap-5 text-muted-foreground font-medium text-base">
-                <Link href="#" className="hover:text-primary transition-colors">Help Center</Link>
-                <Link href="#" className="hover:text-primary transition-colors">Contact Expert</Link>
-                <p className="text-sm text-muted-foreground/60 italic">Email: support@videomaster-ai.web.app</p>
-              </nav>
-            </div>
-          </div>
-          <div className="flex flex-col md:flex-row justify-between items-center border-t pt-16 gap-10 border-white/5">
-             <div className="flex flex-col md:flex-row items-center gap-8">
-                <p className="text-xs text-muted-foreground font-bold uppercase tracking-[0.3em]">© 2024 VideoMaster AI India</p>
-                <div className="flex items-center gap-3 px-4 py-1.5 bg-emerald-500/10 border border-emerald-500/20 rounded-full">
-                   <div className="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-pulse"></div>
-                   <span className="text-[11px] font-bold text-emerald-400 uppercase tracking-widest">Neural Link: Active</span>
-                </div>
-             </div>
-             <div className="flex gap-6">
-                <Button variant="outline" size="icon" className="rounded-2xl h-12 w-12 hover:bg-primary/10 hover:text-primary border-white/10"><Smartphone className="w-5 h-5" /></Button>
-                <Button variant="outline" size="icon" className="rounded-2xl h-12 w-12 hover:bg-primary/10 hover:text-primary border-white/10"><Download className="w-5 h-5" /></Button>
-             </div>
-          </div>
+        <div className="container mx-auto text-center space-y-8">
+          <p className="text-xs text-muted-foreground font-bold uppercase tracking-[0.3em]">© 2024 VideoMaster AI India</p>
         </div>
       </footer>
     </div>
