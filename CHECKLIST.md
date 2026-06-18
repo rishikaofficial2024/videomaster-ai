@@ -1,19 +1,20 @@
 
 # 🏁 Final Deployment Checklist - VideoMaster AI
 
-Aapka app coding ke hisaab se 100% complete hai. Ab bas ye final check karein:
+Aapka app coding ke hiisab se 100% complete hai. Ye 2 keys zaroori hain:
 
-### 1. Firebase Service Connectivity
-- [x] **API Key**: integrated (`src/firebase/config.ts`).
-- [ ] **Authentication**: Firebase Console > Build > Authentication mein 'Email/Password' aur 'Google' Enable karein.
-- [ ] **Firestore Database**: Firebase Console > Build > Firestore mein 'Create Database' karein aur use 'Test Mode' mein on karein.
+### 1. Firebase Key (Jo aapne daal di hai ✅)
+- **File**: `src/firebase/config.ts`
+- **Kaam**: Login aur Database chalana.
 
-### 2. Gemini AI Features (MANDATORY for AI Tools)
-- [ ] **Gemini API Key**: [aistudio.google.com](https://aistudio.google.com/app/apikey) se key lekar `.env` file mein `GEMINI_API_KEY=YOUR_KEY` likhein.
-- **Note**: Bina iske Script Writer aur Thumbnail designer error dikhayenge.
+### 2. Gemini AI Key (ABHI MISSING HAI ❌)
+- **Kahan milegi**: [aistudio.google.com](https://aistudio.google.com/app/apikey) par jayein aur "Create API Key" karein.
+- **Kahan dalni hai**: Project ki `.env` file mein: `GEMINI_API_KEY=YOUR_KEY`
+- **Kaam**: Script Writer, Thumbnail Designer aur AI Video chalana.
 
-### 3. App Verification
+### Final Verification
 - [ ] `/test-connection` page par jayein.
-- [ ] Agar charo checks (Config, Core, DB, Auth) **GREEN** hain, toh app live hai!
+- [ ] Agar Firebase checks green hain, toh login karein.
+- [ ] `.env` mein key daalne ke baad "Draft Script" try karein.
 
-Aapka monochromatic Light Blue studio ab projects handle karne ke liye ready hai!
+Aapka app ab bas ek Gemini Key ki doori par hai!
