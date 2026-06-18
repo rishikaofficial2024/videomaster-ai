@@ -5,9 +5,9 @@ import { useState } from "react";
 import { Navbar } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Crown, Check, Zap, Cloud, Video, ShieldCheck, Loader2, Star, Rocket, Building2 } from "lucide-react";
+import { Crown, Check, Zap, Cloud, Video, ShieldCheck, Loader2, Star, Rocket, Building2, CheckCircle2 } from "lucide-react";
 import { useUser, useFirestore, useDoc } from "@/firebase";
-import { doc, updateDoc, increment } from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 import { useToast } from "@/hooks/use-toast";
 import { errorEmitter } from "@/firebase/error-emitter";
 import { FirestorePermissionError } from "@/firebase/errors";
@@ -18,6 +18,7 @@ export default function PremiumPage() {
   const db = useFirestore();
   const { data: profile } = useDoc(user ? doc(db, "users", user.uid) : null);
   const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
+  const [showSuccess, setShowSuccess] = useState(false);
   const { toast } = useToast();
 
   const plans = [
@@ -48,26 +49,28 @@ export default function PremiumPage() {
       price: "₹499",
       description: "For professional teams",
       features: ["Everything in Pro", "Team Collaboration", "Priority AI Queue", "API Access"],
-      buttonText: "Contact Sales",
+      buttonText: "Join Agency",
       icon: Building2,
       color: "border-purple-500 shadow-purple-500/10"
     }
   ];
 
   const handleUpgrade = async (planId: string) => {
-    if (!user || planId === "free" || planId === "business") return;
+    if (!user || planId === "free") return;
     setLoadingPlan(planId);
     
     const userRef = doc(db, "users", user.uid);
     const data = {
       isPremium: true,
       subscriptionPlan: planId,
-      credits: 99999, // Unlimited simulation
+      credits: 99999,
       updatedAt: new Date().toISOString()
     };
 
     try {
-      // In a real app, you'd trigger Stripe/Razorpay here
+      // Simulation of a payment gateway delay
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
       await updateDoc(userRef, data).catch(async (e) => {
         errorEmitter.emit("permission-error", new FirestorePermissionError({
           path: userRef.path,
@@ -75,6 +78,8 @@ export default function PremiumPage() {
           requestResourceData: data
         }));
       });
+      
+      setShowSuccess(true);
       toast({
         title: "Welcome to Pro Studio!",
         description: "Your account has been upgraded successfully.",
@@ -89,6 +94,25 @@ export default function PremiumPage() {
       setLoadingPlan(null);
     }
   };
+
+  if (showSuccess) {
+    return (
+      <div className="min-h-screen bg-[#05070a] flex items-center justify-center p-6 text-center">
+        <div className="max-w-md w-full space-y-8 animate-in zoom-in-95 duration-500">
+           <div className="w-24 h-24 bg-primary/20 rounded-full flex items-center justify-center mx-auto border-2 border-primary animate-bounce">
+              <CheckCircle2 className="w-12 h-12 text-primary" />
+           </div>
+           <div className="space-y-4">
+              <h1 className="text-4xl font-headline font-bold text-white tracking-tighter">PAYMENT SUCCESS!</h1>
+              <p className="text-muted-foreground font-medium italic leading-relaxed">Aapka account ab PRO hai. Ab aap unlimited AI videos generate kar sakte hain.</p>
+           </div>
+           <Button className="w-full h-16 rounded-2xl font-bold text-lg shadow-2xl shadow-primary/30" onClick={() => window.location.href = '/dashboard'}>
+              Go to Dashboard
+           </Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen pb-20 md:pt-20 bg-background hero-gradient">

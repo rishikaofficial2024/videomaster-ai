@@ -1,9 +1,10 @@
+
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { 
   Video, ArrowRight, Sparkles, Wand2, Smartphone, 
   Download, Play, Zap, ShieldCheck, Star, 
-  CheckCircle2, Globe, Cpu, BarChart3
+  CheckCircle2, Globe, Cpu, BarChart3, Crown, Check
 } from "lucide-react";
 import Image from "next/image";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
@@ -23,7 +24,7 @@ export default function LandingPage() {
         <nav className="ml-auto flex items-center gap-8">
           <div className="hidden md:flex gap-8">
             <Link href="#features" className="text-sm font-semibold hover:text-primary transition-colors">Features</Link>
-            <Link href="#how-it-works" className="text-sm font-semibold hover:text-primary transition-colors">How it works</Link>
+            <Link href="#pricing" className="text-sm font-semibold hover:text-primary transition-colors">Pricing</Link>
             <Link href="/templates" className="text-sm font-semibold hover:text-primary transition-colors">Templates</Link>
           </div>
           <div className="flex items-center gap-4">
@@ -80,19 +81,6 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* SEO Content Section */}
-        <section className="w-full py-12 border-y bg-muted/30">
-          <div className="container px-6 mx-auto text-center">
-            <h2 className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-10">Optimized for Viral Platforms in India</h2>
-            <div className="flex flex-wrap justify-center items-center gap-12 md:gap-24 opacity-50 grayscale">
-              <div className="text-2xl font-bold font-headline">YouTube</div>
-              <div className="text-2xl font-bold font-headline">Instagram Reels</div>
-              <div className="text-2xl font-bold font-headline">TikTok AI</div>
-              <div className="text-2xl font-bold font-headline">Facebook Video</div>
-            </div>
-          </div>
-        </section>
-
         {/* Features Section */}
         <section id="features" className="w-full py-32">
           <div className="container px-6 mx-auto">
@@ -139,23 +127,48 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* Social Proof Statistics */}
-        <section className="w-full py-32 bg-primary/5">
+        {/* Pricing Section */}
+        <section id="pricing" className="w-full py-32 bg-[#0a0d14]/40">
           <div className="container px-6 mx-auto">
-             <div className="grid md:grid-cols-3 gap-16 text-center">
-                <div className="space-y-2">
-                   <h3 className="text-6xl md:text-7xl font-bold font-headline text-primary tracking-tighter">98%</h3>
-                   <p className="text-sm font-bold uppercase tracking-widest text-muted-foreground">Faster Viral Reels Making</p>
+            <div className="text-center mb-20 space-y-4">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-bold uppercase tracking-widest">
+                <Crown className="w-3 h-3" /> Monetize Your Vision
+              </div>
+              <h2 className="text-4xl md:text-6xl font-bold font-headline tracking-tighter">Affordable Plans for <span className="text-primary italic">Viral Growth</span></h2>
+              <p className="text-muted-foreground max-w-xl mx-auto text-lg font-medium italic">Start for free with 100 credits, then upgrade as you earn.</p>
+            </div>
+            
+            <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+              {[
+                { name: "Starter", price: "₹0", features: ["100 Free Credits", "720p Exports", "Basic AI Editor"] },
+                { name: "Pro Studio", price: "₹99", features: ["Unlimited AI Clips", "4K Ultra HD", "No Watermark"], popular: true },
+                { name: "Agency", price: "₹499", features: ["Priority AI Queue", "Team Access", "API Access"] }
+              ].map((plan, i) => (
+                <div key={i} className={cn(
+                  "p-10 rounded-[3rem] border bg-background/50 flex flex-col space-y-8 relative overflow-hidden transition-all hover:scale-105",
+                  plan.popular ? "border-primary blue-glow" : "border-white/5"
+                )}>
+                  {plan.popular && <div className="absolute top-6 right-6 bg-primary text-white text-[9px] font-bold px-3 py-1 rounded-full uppercase tracking-widest">Best Value</div>}
+                  <div className="space-y-2">
+                    <h3 className="text-2xl font-bold font-headline">{plan.name}</h3>
+                    <div className="flex items-baseline gap-1">
+                      <span className="text-4xl font-bold">{plan.price}</span>
+                      <span className="text-xs text-muted-foreground font-bold">/mo</span>
+                    </div>
+                  </div>
+                  <ul className="space-y-4 flex-1">
+                    {plan.features.map((f, j) => (
+                      <li key={j} className="flex items-center gap-3 text-xs font-bold text-muted-foreground">
+                        <Check className="w-4 h-4 text-primary" /> {f}
+                      </li>
+                    ))}
+                  </ul>
+                  <Button asChild className={cn("h-14 rounded-2xl font-bold", plan.popular ? "bg-primary shadow-xl" : "bg-white/5 hover:bg-white/10 text-white")}>
+                    <Link href="/signup">{plan.price === "₹0" ? "Get Started" : "Upgrade Now"}</Link>
+                  </Button>
                 </div>
-                <div className="space-y-2">
-                   <h3 className="text-6xl md:text-7xl font-bold font-headline text-primary tracking-tighter">50K+</h3>
-                   <p className="text-sm font-bold uppercase tracking-widest text-muted-foreground">Creators in India</p>
-                </div>
-                <div className="space-y-2">
-                   <h3 className="text-6xl md:text-7xl font-bold font-headline text-primary tracking-tighter">₹0</h3>
-                   <p className="text-sm font-bold uppercase tracking-widest text-muted-foreground">Free AI Credits for You</p>
-                </div>
-             </div>
+              ))}
+            </div>
           </div>
         </section>
 
