@@ -10,7 +10,7 @@ import {
   Music, Wand2, Download, Sparkles, ChevronLeft, Loader2, Video,
   Zap, Volume2, Image as ImageIcon,
   PenTool, Layers, MousePointer2,
-  Coins, Plus, RefreshCw, AlertCircle
+  Coins, Plus, RefreshCw, AlertCircle, CloudCheck, Cloud
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { aiVideoContentOptimization } from "@/ai/flows/ai-video-content-optimization-flow";
@@ -36,17 +36,17 @@ export default function EditorPage() {
   const db = useFirestore();
   const { toast } = useToast();
   const videoRef = useRef<HTMLVideoElement>(null);
-  const audioRef = useRef<HTMLAudioElement>(null);
-
+  
   const [projectId, setProjectId] = useState<string | null>(projectIdFromUrl);
   const [isNewProject, setIsNewProject] = useState(!projectIdFromUrl);
   
-  const [title, setTitle] = useState("New Masterpiece");
+  const [title, setTitle] = useState("Untitled Project");
   const [isPlaying, setIsPlaying] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
   const [processingMessage, setProcessingMessage] = useState("");
-  const [activeTool, setActiveTool] = useState("select");
-  const [activeInspectorTab, setActiveInspectorTab] = useState(toolFromUrl === "gen" ? "ai" : "ai");
+  const [activeTool, setActiveTool] = useState("ai");
+  const [activeInspectorTab, setActiveInspectorTab] = useState("ai");
   
   // Media States
   const [videoData, setVideoData] = useState<string | null>(null);
@@ -60,7 +60,6 @@ export default function EditorPage() {
   const [voiceText, setVoiceText] = useState("");
   
   const [aiScript, setAiScript] = useState<any>(null);
-  const [aiMetadata, setAiMetadata] = useState<any>(null);
 
   // Load project if exists
   const projectRef = useMemo(() => {
@@ -100,8 +99,8 @@ export default function EditorPage() {
     if ((profile?.credits ?? 0) < cost) {
       toast({
         variant: "destructive",
-        title: "Insufficient Credits",
-        description: `This action costs ${cost} credits. Please upgrade.`,
+        title: "Credits Required",
+        description: `This action costs ${cost} credits. Please top up.`,
         action: <Button variant="secondary" size="sm" asChild><Link href="/premium">Upgrade</Link></Button>
       });
       return false;
@@ -116,6 +115,7 @@ export default function EditorPage() {
 
   const handleSave = async (extraData: any = {}) => {
     if (!user || !projectRef) return;
+    setIsSaving(true);
     const data: any = {
       title,
       updatedAt: serverTimestamp(),
@@ -123,22 +123,26 @@ export default function EditorPage() {
       ...extraData
     };
     
-    if (!isNewProject) {
-      updateDoc(projectRef, data).catch((e) => {
-        errorEmitter.emit("permission-error", new FirestorePermissionError({
-          path: projectRef.path,
-          operation: "update",
-          requestResourceData: data
-        }));
-      });
-    } else {
-      await setDoc(projectRef, {
-        ...data,
-        createdAt: serverTimestamp(),
-        thumbnailUrl: data.thumbnailUrl || thumbnailUrl || `https://picsum.photos/seed/${projectRef.id}/600/400`,
-      });
-      setIsNewProject(false);
-      if (!projectIdFromUrl) router.replace(`/editor?id=${projectRef.id}`);
+    try {
+      if (!isNewProject) {
+        await updateDoc(projectRef, data).catch((e) => {
+          errorEmitter.emit("permission-error", new FirestorePermissionError({
+            path: projectRef.path,
+            operation: "update",
+            requestResourceData: data
+          }));
+        });
+      } else {
+        await setDoc(projectRef, {
+          ...data,
+          createdAt: serverTimestamp(),
+          thumbnailUrl: data.thumbnailUrl || thumbnailUrl || `https://picsum.photos/seed/${projectRef.id}/600/400`,
+        });
+        setIsNewProject(false);
+        if (!projectIdFromUrl) router.replace(`/editor?id=${projectRef.id}`);
+      }
+    } finally {
+      setTimeout(() => setIsSaving(false), 500);
     }
   };
 
@@ -146,13 +150,13 @@ export default function EditorPage() {
   const handleGenerateScript = async () => {
     if (!scriptTopic || !checkCredits(2)) return;
     setIsProcessing(true);
-    setProcessingMessage("Orchestrating script architecture...");
+    setProcessingMessage("Generating narrative structure...");
     try {
       const result = await generateAiScript({ topic: scriptTopic, platform: 'YouTube' });
       setAiScript(result);
       await deductCredits(2);
       await handleSave({ aiNotes: result.script });
-      toast({ title: "Script Generated!", description: "Analysis complete." });
+      toast({ title: "Script Optimized", description: "Project notes updated." });
     } catch (e: any) {
       toast({ variant: "destructive", title: "AI Error", description: e.message });
     } finally {
@@ -163,15 +167,15 @@ export default function EditorPage() {
   const handleGenerateThumbnail = async () => {
     if (!thumbnailPrompt || !checkCredits(5)) return;
     setIsProcessing(true);
-    setProcessingMessage("Imagen 4 is crafting visuals...");
+    setProcessingMessage("Designing cinematic thumbnail...");
     try {
       const result = await generateAiThumbnail({ prompt: thumbnailPrompt });
       setThumbnailUrl(result.thumbnailDataUri);
       await deductCredits(5);
       await handleSave({ thumbnailUrl: result.thumbnailDataUri });
-      toast({ title: "Thumbnail Ready", description: "Design applied to project." });
+      toast({ title: "Thumbnail Ready", description: "Master design applied." });
     } catch (e: any) {
-      toast({ variant: "destructive", title: "AI Error", description: e.message });
+      toast({ variant: "destructive", title: "Design Error", description: e.message });
     } finally {
       setIsProcessing(false);
     }
@@ -180,15 +184,15 @@ export default function EditorPage() {
   const handleGenerateVideo = async () => {
     if (!videoPrompt || !checkCredits(20)) return;
     setIsProcessing(true);
-    setProcessingMessage("Veo 2.0 is rendering cinematic clip...");
+    setProcessingMessage("Veo 2.0 is rendering visual clip...");
     try {
       const result = await generateAiVideo({ prompt: videoPrompt });
       setVideoData(result.videoDataUri);
       await deductCredits(20);
       await handleSave({ videoDataUri: result.videoDataUri });
-      toast({ title: "Video Rendered!", description: "New clip added to workspace." });
+      toast({ title: "Clip Rendered", description: "Successfully added to project." });
     } catch (e: any) {
-      toast({ variant: "destructive", title: "Video Error", description: "Veo is busy. Try a shorter prompt or try later." });
+      toast({ variant: "destructive", title: "Engine Error", description: "Connection timeout. Please retry." });
     } finally {
       setIsProcessing(false);
     }
@@ -197,12 +201,12 @@ export default function EditorPage() {
   const handleGenerateVoiceover = async () => {
     if (!voiceText || !checkCredits(5)) return;
     setIsProcessing(true);
-    setProcessingMessage("Synthesizing neural voiceover...");
+    setProcessingMessage("Synthesizing neural voice...");
     try {
       const result = await generateAiVoiceover({ text: voiceText, voiceName: 'Algenib' });
       setAudioData(result.audioDataUri);
       await deductCredits(5);
-      toast({ title: "Voiceover Complete", description: "Ready for timeline playback." });
+      toast({ title: "Audio Ready", description: "Narration track generated." });
     } catch (e: any) {
       toast({ variant: "destructive", title: "Audio Error", description: e.message });
     } finally {
@@ -235,14 +239,26 @@ export default function EditorPage() {
               onBlur={() => handleSave()}
               className="bg-transparent font-bold text-sm focus:outline-none border-b border-transparent focus:border-primary/50 w-48 truncate"
             />
-            <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest leading-none">Studio v2.4 • Neural Sync</span>
+            <div className="flex items-center gap-2">
+               {isSaving ? (
+                 <div className="flex items-center gap-1">
+                   <RefreshCw className="w-2.5 h-2.5 animate-spin text-primary" />
+                   <span className="text-[9px] font-bold text-primary uppercase tracking-widest">Saving to Cloud</span>
+                 </div>
+               ) : (
+                 <div className="flex items-center gap-1">
+                   <Activity className="w-2.5 h-2.5 text-emerald-500" />
+                   <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest">Neural Link Active</span>
+                 </div>
+               )}
+            </div>
           </div>
         </div>
 
         <div className="flex items-center gap-4">
            <div className="hidden md:flex items-center gap-2 bg-primary/10 px-3 py-1 rounded-full border border-primary/20">
               <Coins className="w-3.5 h-3.5 text-primary" />
-              <span className="text-[10px] font-bold text-primary tracking-widest">{profile?.credits ?? 0} CREDITS</span>
+              <span className="text-[10px] font-bold text-primary tracking-widest">{profile?.credits ?? 0} STUDIO CREDITS</span>
            </div>
            <Button size="sm" className="h-9 px-6 rounded-xl font-bold bg-primary shadow-xl shadow-primary/20 gap-2">
              <Download className="w-4 h-4" /> Export 4K
@@ -265,7 +281,7 @@ export default function EditorPage() {
                activeTool === tool.id ? "bg-primary text-white shadow-2xl shadow-primary/40" : "text-muted-foreground hover:bg-white/5"
              )} onClick={() => setActiveTool(tool.id)}>
                <tool.icon className="w-5 h-5" />
-               <div className="absolute left-full ml-4 px-2 py-1 bg-black text-[10px] font-bold rounded opacity-0 group-hover:opacity-100 pointer-events-none whitespace-nowrap z-50">
+               <div className="absolute left-full ml-4 px-2 py-1 bg-black text-[10px] font-bold rounded opacity-0 group-hover:opacity-100 pointer-events-none whitespace-nowrap z-50 shadow-2xl">
                   {tool.id.toUpperCase()}
                </div>
              </button>
@@ -275,14 +291,14 @@ export default function EditorPage() {
         {/* Workspace */}
         <div className="flex-1 flex flex-col min-w-0 bg-[#0c0f17] relative">
           <div className="flex-1 relative flex items-center justify-center p-8">
-             <div className="aspect-video w-full max-w-5xl bg-black rounded-3xl shadow-[0_0_120px_rgba(0,0,0,0.6)] border border-white/5 relative overflow-hidden flex items-center justify-center group/player">
+             <div className="aspect-video w-full max-w-5xl bg-black rounded-[2.5rem] shadow-[0_0_120px_rgba(0,0,0,0.6)] border border-white/5 relative overflow-hidden flex items-center justify-center group/player">
                 {!videoData ? (
                   <div className="text-center space-y-6">
-                     <div className="w-24 h-24 bg-primary/10 rounded-[2rem] flex items-center justify-center mx-auto mb-6 border border-primary/20 animate-float">
+                     <div className="w-24 h-24 bg-primary/10 rounded-[2.5rem] flex items-center justify-center mx-auto mb-6 border border-primary/20 animate-float">
                         <Video className="w-10 h-10 text-primary" />
                      </div>
-                     <h3 className="text-lg font-bold font-headline uppercase tracking-widest">Awaiting Vision</h3>
-                     <p className="text-xs text-muted-foreground max-w-xs mx-auto">Use the AI Studio on the right to generate your first cinematic clip.</p>
+                     <h3 className="text-lg font-bold font-headline uppercase tracking-widest text-white">Visual Engine Ready</h3>
+                     <p className="text-xs text-muted-foreground max-w-xs mx-auto leading-relaxed">Initiate AI generation from the sidebar to create cinematic visuals.</p>
                   </div>
                 ) : (
                   <video 
@@ -311,16 +327,16 @@ export default function EditorPage() {
              <div className="h-10 bg-[#111621]/80 px-6 flex items-center justify-between border-b">
                 <div className="flex items-center gap-4">
                    <div className="flex items-center gap-2">
-                      <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
-                      <span className="text-[10px] font-bold uppercase tracking-widest">Master 4K Engine</span>
+                      <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+                      <span className="text-[10px] font-bold uppercase tracking-widest">Neural Timeline v2.4</span>
                    </div>
                 </div>
-                <div className="text-[10px] font-mono text-muted-foreground font-bold">00:00:00:00</div>
+                <div className="text-[10px] font-mono text-muted-foreground font-bold tracking-widest">00:00:00:00</div>
              </div>
              
              <div className="flex-1 overflow-y-auto p-4 space-y-2 custom-scrollbar">
                 {[
-                  { label: "V1: AI GENERATION", active: !!videoData, icon: Sparkles, color: "bg-primary/20 border-primary/40 text-primary" },
+                  { label: "V1: VIDEO GEN", active: !!videoData, icon: Sparkles, color: "bg-primary/20 border-primary/40 text-primary" },
                   { label: "A1: NARRATION", active: !!audioData, icon: Volume2, color: "bg-indigo-500/20 border-indigo-500/40 text-indigo-400" },
                   { label: "G1: THUMBNAIL", active: !!thumbnailUrl, icon: ImageIcon, color: "bg-rose-500/20 border-rose-500/40 text-rose-400" }
                 ].map((track, i) => (
@@ -331,7 +347,12 @@ export default function EditorPage() {
                      </div>
                      <div className="flex-1 bg-[#0c0f17] rounded-xl relative border border-white/5 overflow-hidden">
                         {track.active && (
-                          <div className={cn("absolute inset-y-1 left-8 right-20 rounded-lg border-x-4", track.color)}>
+                          <div className={cn("absolute inset-y-1 left-8 right-20 rounded-lg border-x-4 flex items-center px-4 overflow-hidden", track.color)}>
+                             <div className="flex items-end gap-0.5 h-6 opacity-30">
+                                {[1,2,3,4,5,6,7,8,9,10,8,6,4,2,5,7,9,10,8,6,4,2].map((h, j) => (
+                                  <div key={j} className="w-1 bg-current rounded-full" style={{ height: `${h * 10}%` }} />
+                                ))}
+                             </div>
                              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent animate-shimmer" />
                           </div>
                         )}
@@ -346,14 +367,14 @@ export default function EditorPage() {
         <div className="w-[400px] bg-[#0a0d14] border-l shrink-0 flex flex-col overflow-hidden">
            <Tabs value={activeInspectorTab} onValueChange={setActiveInspectorTab} className="flex-1 flex flex-col">
               <TabsList className="w-full h-14 bg-transparent border-b rounded-none grid grid-cols-2 p-0">
-                 <TabsTrigger value="ai" className="rounded-none font-bold text-xs data-[state=active]:text-primary">AI NEURAL ENGINE</TabsTrigger>
-                 <TabsTrigger value="project" className="rounded-none font-bold text-xs">METADATA</TabsTrigger>
+                 <TabsTrigger value="ai" className="rounded-none font-bold text-[10px] tracking-widest data-[state=active]:text-primary">AI NEURAL ENGINE</TabsTrigger>
+                 <TabsTrigger value="project" className="rounded-none font-bold text-[10px] tracking-widest">PROJECT SYNC</TabsTrigger>
               </TabsList>
               
               <div className="flex-1 overflow-y-auto p-6 space-y-8 custom-scrollbar">
                  <TabsContent value="ai" className="mt-0 space-y-8">
                     {/* Script Tool */}
-                    <div className="p-6 rounded-3xl bg-[#161a25] border border-indigo-500/20 space-y-4 shadow-2xl">
+                    <div className="p-6 rounded-[2rem] bg-[#161a25] border border-indigo-500/20 space-y-4 shadow-2xl">
                        <div className="flex items-center justify-between">
                           <div className="flex items-center gap-3">
                              <PenTool className="w-4 h-4 text-indigo-400" />
@@ -362,8 +383,8 @@ export default function EditorPage() {
                           <span className="text-[9px] font-bold text-muted-foreground uppercase">2 Credits</span>
                        </div>
                        <textarea 
-                          placeholder="Project theme or video topic..." 
-                          className="w-full bg-[#0c0f17] border border-white/5 rounded-2xl p-4 text-xs h-24 focus:ring-1 focus:ring-indigo-500 outline-none resize-none transition-all"
+                          placeholder="What is your video about?" 
+                          className="w-full bg-[#0c0f17] border border-white/5 rounded-2xl p-4 text-xs h-24 focus:ring-1 focus:ring-indigo-500 outline-none resize-none transition-all placeholder:text-muted-foreground/30"
                           value={scriptTopic}
                           onChange={(e) => setScriptTopic(e.target.value)}
                        />
@@ -373,27 +394,27 @@ export default function EditorPage() {
                     </div>
 
                     {/* Veo 2.0 Video Gen */}
-                    <div className="p-6 rounded-3xl bg-[#161a25] border border-blue-500/20 space-y-4 shadow-2xl">
+                    <div className="p-6 rounded-[2rem] bg-[#161a25] border border-blue-500/20 space-y-4 shadow-2xl">
                        <div className="flex items-center justify-between">
                           <div className="flex items-center gap-3">
                              <Sparkles className="w-4 h-4 text-blue-400" />
-                             <h4 className="text-xs font-bold uppercase tracking-widest text-blue-400">Veo 2.0 Video Engine</h4>
+                             <h4 className="text-xs font-bold uppercase tracking-widest text-blue-400">Veo 2.0 Visual Gen</h4>
                           </div>
                           <span className="text-[9px] font-bold text-muted-foreground uppercase">20 Credits</span>
                        </div>
                        <textarea 
-                          placeholder="Visual prompt for cinematic generation..." 
-                          className="w-full bg-[#0c0f17] border border-white/5 rounded-2xl p-4 text-xs h-24 focus:ring-1 focus:ring-blue-500 outline-none resize-none transition-all"
+                          placeholder="Describe your cinematic scene..." 
+                          className="w-full bg-[#0c0f17] border border-white/5 rounded-2xl p-4 text-xs h-24 focus:ring-1 focus:ring-blue-500 outline-none resize-none transition-all placeholder:text-muted-foreground/30"
                           value={videoPrompt}
                           onChange={(e) => setVideoPrompt(e.target.value)}
                        />
                        <Button className="w-full h-12 rounded-2xl font-bold bg-blue-600 hover:bg-blue-700 text-xs shadow-xl shadow-blue-500/20" onClick={handleGenerateVideo} disabled={isProcessing || !videoPrompt}>
-                          {isProcessing && processingMessage.includes("rendering") ? <Loader2 className="animate-spin" /> : "Render Cinematic Clip"}
+                          {isProcessing && processingMessage.includes("rendering") ? <Loader2 className="animate-spin" /> : "Render Clip"}
                        </Button>
                     </div>
 
                     {/* Voiceover Tool */}
-                    <div className="p-6 rounded-3xl bg-[#161a25] border border-cyan-500/20 space-y-4 shadow-2xl">
+                    <div className="p-6 rounded-[2rem] bg-[#161a25] border border-cyan-500/20 space-y-4 shadow-2xl">
                        <div className="flex items-center justify-between">
                           <div className="flex items-center gap-3">
                              <Volume2 className="w-4 h-4 text-cyan-400" />
@@ -402,8 +423,8 @@ export default function EditorPage() {
                           <span className="text-[9px] font-bold text-muted-foreground uppercase">5 Credits</span>
                        </div>
                        <textarea 
-                          placeholder="Paste narration script here..." 
-                          className="w-full bg-[#0c0f17] border border-white/5 rounded-2xl p-4 text-xs h-24 focus:ring-1 focus:ring-cyan-500 outline-none resize-none transition-all"
+                          placeholder="Paste narration script..." 
+                          className="w-full bg-[#0c0f17] border border-white/5 rounded-2xl p-4 text-xs h-24 focus:ring-1 focus:ring-cyan-500 outline-none resize-none transition-all placeholder:text-muted-foreground/30"
                           value={voiceText}
                           onChange={(e) => setVoiceText(e.target.value)}
                        />
@@ -412,13 +433,13 @@ export default function EditorPage() {
                        </Button>
                        {audioData && (
                          <div className="pt-2">
-                           <audio controls src={audioData} className="w-full h-10" />
+                           <audio controls src={audioData} className="w-full h-10 rounded-xl" />
                          </div>
                        )}
                     </div>
 
                     {/* Thumbnail Tool */}
-                    <div className="p-6 rounded-3xl bg-[#161a25] border border-rose-500/20 space-y-4 shadow-2xl">
+                    <div className="p-6 rounded-[2rem] bg-[#161a25] border border-rose-500/20 space-y-4 shadow-2xl">
                        <div className="flex items-center justify-between">
                           <div className="flex items-center gap-3">
                              <ImageIcon className="w-4 h-4 text-rose-400" />
@@ -427,39 +448,34 @@ export default function EditorPage() {
                           <span className="text-[9px] font-bold text-muted-foreground uppercase">5 Credits</span>
                        </div>
                        <textarea 
-                          placeholder="Describe visual composition..." 
-                          className="w-full bg-[#0c0f17] border border-white/5 rounded-2xl p-4 text-xs h-24 focus:ring-1 focus:ring-rose-500 outline-none resize-none transition-all"
+                          placeholder="Visual composition description..." 
+                          className="w-full bg-[#0c0f17] border border-white/5 rounded-2xl p-4 text-xs h-24 focus:ring-1 focus:ring-rose-500 outline-none resize-none transition-all placeholder:text-muted-foreground/30"
                           value={thumbnailPrompt}
                           onChange={(e) => setThumbnailPrompt(e.target.value)}
                        />
                        <Button className="w-full h-12 rounded-2xl font-bold bg-rose-600 hover:bg-rose-700 text-xs shadow-xl shadow-rose-500/20" onClick={handleGenerateThumbnail} disabled={isProcessing || !thumbnailPrompt}>
-                          {isProcessing && processingMessage.includes("designing") ? <Loader2 className="animate-spin" /> : "Generate Thumbnail"}
+                          {isProcessing && processingMessage.includes("designing") ? <Loader2 className="animate-spin" /> : "Generate Cover"}
                        </Button>
                     </div>
                  </TabsContent>
 
                  <TabsContent value="project" className="mt-0 space-y-8">
+                    <div className="p-6 rounded-[2rem] bg-emerald-500/5 border border-emerald-500/20 space-y-4">
+                       <div className="flex items-center gap-3">
+                          <CloudCheck className="w-5 h-5 text-emerald-500" />
+                          <h4 className="text-xs font-bold uppercase tracking-widest text-emerald-500">Cloud Status</h4>
+                       </div>
+                       <p className="text-[10px] text-muted-foreground leading-relaxed">All changes are automatically synced to your secure cloud workspace. You can pick up where you left off on any device.</p>
+                    </div>
+
                     {aiScript && (
                       <div className="space-y-3">
-                         <h4 className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Neural Script</h4>
-                         <div className="p-5 bg-[#161a25] rounded-3xl text-[11px] leading-relaxed border border-white/5 font-medium">
+                         <h4 className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground ml-2">Generated Script</h4>
+                         <div className="p-6 bg-[#161a25] rounded-[2rem] text-[11px] leading-relaxed border border-white/5 font-medium text-white/80">
                             {aiScript.script}
                          </div>
                       </div>
                     )}
-                    <div className="space-y-3">
-                       <h4 className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Project Specs</h4>
-                       <div className="grid grid-cols-2 gap-3">
-                          <div className="p-4 bg-[#161a25] rounded-2xl border border-white/5">
-                             <p className="text-[8px] font-bold text-muted-foreground uppercase tracking-widest">Resolution</p>
-                             <p className="text-xs font-bold">4K Ultra HD</p>
-                          </div>
-                          <div className="p-4 bg-[#161a25] rounded-2xl border border-white/5">
-                             <p className="text-[8px] font-bold text-muted-foreground uppercase tracking-widest">Frame Rate</p>
-                             <p className="text-xs font-bold">60 FPS</p>
-                          </div>
-                       </div>
-                    </div>
                  </TabsContent>
               </div>
            </Tabs>
@@ -472,15 +488,15 @@ export default function EditorPage() {
            <div className="max-w-md w-full text-center space-y-10 animate-in fade-in zoom-in-95 duration-500">
              <div className="relative w-32 h-32 mx-auto">
                 <Loader2 className="w-32 h-32 animate-spin text-primary opacity-20" />
-                <div className="absolute inset-0 m-auto w-16 h-16 bg-primary rounded-3xl flex items-center justify-center shadow-[0_0_80px_rgba(59,130,246,0.5)]">
+                <div className="absolute inset-0 m-auto w-16 h-16 bg-primary rounded-[1.5rem] flex items-center justify-center shadow-[0_0_80px_rgba(59,130,246,0.5)]">
                    <Sparkles className="w-8 h-8 text-white animate-pulse" />
                 </div>
              </div>
              <div className="space-y-3">
-               <h3 className="text-3xl font-headline font-bold text-white tracking-tighter uppercase">AI Orchestration</h3>
-               <p className="text-muted-foreground font-medium text-base leading-relaxed">{processingMessage}</p>
+               <h3 className="text-3xl font-headline font-bold text-white tracking-tighter uppercase">AI Processing</h3>
+               <p className="text-muted-foreground font-medium text-base leading-relaxed italic">{processingMessage}</p>
              </div>
-             <div className="h-1.5 bg-white/5 rounded-full overflow-hidden w-full max-w-sm mx-auto">
+             <div className="h-1 bg-white/5 rounded-full overflow-hidden w-full max-w-sm mx-auto">
                 <div className="h-full bg-primary animate-progress-indefinite shadow-[0_0_20px_rgba(59,130,246,0.8)]" />
              </div>
            </div>
