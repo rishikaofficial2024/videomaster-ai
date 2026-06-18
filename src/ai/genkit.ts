@@ -8,10 +8,13 @@ import { googleAI } from '@genkit-ai/google-genai';
  */
 const apiKey = process.env.GEMINI_API_KEY;
 
+// Validation for Developer Logs
 if (!apiKey) {
-  console.warn("⚠️ GEMINI_API_KEY is missing in your .env file. AI features will fail with a 400 error.");
+  console.error("❌ CRITICAL ERROR: GEMINI_API_KEY is missing in your .env file.");
 } else if (!apiKey.startsWith("AIza")) {
-  console.warn("⚠️ GEMINI_API_KEY format looks invalid. It should start with 'AIza'.");
+  console.error("❌ INVALID KEY FORMAT: GEMINI_API_KEY should start with 'AIza'. Please check your key.");
+} else {
+  console.log("✅ AI SERVICE: Gemini API Key detected and loaded.");
 }
 
 export const ai = genkit({
