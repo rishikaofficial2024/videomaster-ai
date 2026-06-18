@@ -1,15 +1,11 @@
-
 "use client";
 
 import { Navbar } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { 
-  Plus, Play, Sparkles, Wand2, History, 
-  ChevronRight, Loader2, Crown, Coins, 
-  Zap, MoreVertical, Video, ArrowUpRight, 
-  ShieldCheck, BarChart3, Clock, Layout,
-  Cpu, Activity, Globe, ExternalLink, MonitorPlay, AlertTriangle, Gift
+  Plus, Sparkles, ChevronRight, Loader2, Coins, 
+  ArrowUpRight, Video, Activity, Gift, MonitorPlay
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -106,7 +102,7 @@ export default function Dashboard() {
         <header className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8">
           <div className="space-y-4">
             <div className="flex flex-wrap gap-2">
-              <div className="flex items-center gap-2 px-3 py-1 bg-primary/10 rounded-full border border-primary/20 w-fit">
+              <div className={cn("flex items-center gap-2 px-3 py-1 bg-primary/10 rounded-full border border-primary/20 w-fit")}>
                  <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
                  <span className="text-[10px] font-bold text-primary uppercase tracking-[0.2em]">
                    {profile?.subscriptionPlan === 'pro' ? 'PRO STUDIO ACTIVE' : 'STARTER WORKSPACE'}
@@ -139,7 +135,7 @@ export default function Dashboard() {
             <div className="flex flex-col md:flex-row items-center justify-between gap-8">
                <div className="flex items-center gap-8 text-center md:text-left">
                   <div className="w-20 h-20 bg-primary/10 rounded-[1.5rem] flex items-center justify-center border border-primary/20">
-                     <Gift className="w-10 h-10 text-primary animate-bounce" />
+                     <Gift className="w-10 h-10 text-primary animate-float" />
                   </div>
                   <div className="space-y-2">
                      <h3 className="text-3xl font-bold font-headline">Earn +20 Credits</h3>

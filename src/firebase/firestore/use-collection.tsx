@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useEffect, useState, useRef } from 'react';
@@ -13,23 +12,31 @@ import { FirestorePermissionError } from '../errors';
 
 /**
  * useCollection hook for real-time Firestore collection updates.
- * Optimized to prevent infinite render loops.
+ * Optimized with path-based stabilization to prevent infinite render loops.
  */
 export function useCollection<T = DocumentData>(query: Query<T> | null) {
   const [data, setData] = useState<T[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
   
-  // Track the query to avoid redundant subscriptions
-  // For queries, we can use the internal query string if available or a hash
-  const queryRef = useRef<string | null>(null);
+  // Track the query to avoid redundant subscriptions using a ref
+  const lastQueryRef = useRef<string | null>(null);
 
   useEffect(() => {
+    // Generate a unique identifier for the query to prevent loops
+    const queryId = query ? JSON.stringify(query) : null;
+    
     if (!query) {
-      setData(null);
-      setLoading(false);
+      if (lastQueryRef.current !== null) {
+        setData(null);
+        setLoading(false);
+        lastQueryRef.current = null;
+      }
       return;
     }
+
+    if (lastQueryRef.current === queryId) return;
+    lastQueryRef.current = queryId;
 
     setLoading(true);
     const unsubscribe = onSnapshot(

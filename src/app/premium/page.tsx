@@ -1,11 +1,10 @@
-
 "use client";
 
 import { useState } from "react";
 import { Navbar } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Crown, Check, Zap, Cloud, Video, ShieldCheck, Loader2, Star, Rocket, Building2, CheckCircle2, CreditCard, Banknote } from "lucide-react";
+import { Crown, Check, Zap, Cloud, Video, ShieldCheck, Loader2, Star, Rocket, Building2, CheckCircle2, Banknote } from "lucide-react";
 import { useUser, useFirestore, useDoc } from "@/firebase";
 import { doc, updateDoc } from "firebase/firestore";
 import { useToast } from "@/hooks/use-toast";
@@ -13,6 +12,7 @@ import { errorEmitter } from "@/firebase/error-emitter";
 import { FirestorePermissionError, type SecurityRuleContext } from "@/firebase/errors";
 import { cn } from "@/lib/utils";
 import { AdBanner } from "@/components/ads/ad-banner";
+import Link from "next/link";
 
 export default function PremiumPage() {
   const { user } = useUser();

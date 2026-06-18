@@ -1,18 +1,16 @@
-
 "use client";
 
-import { useState, useEffect, useMemo, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Navbar } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
-  Pause, Play, SkipBack, SkipForward, Scissors, 
-  Music, Wand2, Download, Sparkles, ChevronLeft, Loader2, Video,
-  Zap, Volume2, Image as ImageIcon,
-  PenTool, Layers, MousePointer2,
-  Coins, Plus, RefreshCw, ClipboardCheck, Cloud, X, Info,
-  LayoutTemplate, Type, Box, Upload, Palette, Maximize2, Search,
-  Tags, Subtitles, BarChart4, TrendingUp
+  Pause, Play, SkipBack, SkipForward,
+  Wand2, Download, Sparkles, ChevronLeft, Loader2, Video,
+  Coins, Plus, RefreshCw, Cloud, Info,
+  LayoutTemplate, Type, Box, Upload, Palette,
+  Volume2, Image as ImageIcon, PenTool, Layers,
+  Subtitles, BarChart4, TrendingUp, Tags
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { aiVideoContentOptimization } from "@/ai/flows/ai-video-content-optimization-flow";
@@ -49,7 +47,6 @@ export default function EditorPage() {
   const [processingMessage, setProcessingMessage] = useState("");
   const [activeTab, setActiveTab] = useState("templates");
   const [activeInspectorTab, setActiveInspectorTab] = useState("ai");
-  const [showInterstitial, setShowInterstitial] = useState(false);
   
   const [videoData, setVideoData] = useState<string | null>(null);
   const [audioData, setAudioData] = useState<string | null>(null);
@@ -326,11 +323,11 @@ export default function EditorPage() {
         </div>
 
         <div className="flex items-center gap-4">
-           <div className="hidden md:flex items-center gap-2 bg-primary/10 px-3 py-1 rounded-full border border-primary/20">
+           <div className={cn("hidden md:flex items-center gap-2 bg-primary/10 px-3 py-1 rounded-full border border-primary/20")}>
               <Coins className="w-3.5 h-3.5 text-primary" />
               <span className="text-[10px] font-bold text-primary tracking-widest">{profile?.credits ?? 0} CREDITS</span>
            </div>
-           <Button onClick={() => setShowInterstitial(true)} size="sm" className="h-9 px-6 rounded-xl font-bold bg-primary shadow-xl shadow-primary/20 gap-2 hover:scale-105 transition-all">
+           <Button size="sm" className="h-9 px-6 rounded-xl font-bold bg-primary shadow-xl shadow-primary/20 gap-2 hover:scale-105 transition-all">
              <Download className="w-4 h-4" /> Export Video
            </Button>
         </div>
@@ -413,12 +410,6 @@ export default function EditorPage() {
                        </Button>
                     </div>
                  </div>
-              )}
-              {activeTab !== 'ai' && (
-                <div className="flex flex-col items-center justify-center h-full text-center opacity-30 space-y-4 py-20">
-                   <Info className="w-10 h-10" />
-                   <p className="text-xs font-bold uppercase tracking-widest">Library Loading...</p>
-                </div>
               )}
            </div>
         </div>

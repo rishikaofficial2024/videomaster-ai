@@ -1,12 +1,10 @@
-
 "use client";
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { 
   Video, ArrowRight, Sparkles, Wand2, Smartphone, 
-  Download, Play, Zap, Star, 
-  Globe, Cpu, BarChart3, Crown, Check
+  Download, Play, Zap, Globe, Cpu, BarChart3, Crown, Check
 } from "lucide-react";
 import Image from "next/image";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
@@ -122,9 +120,9 @@ export default function LandingPage() {
                 }
               ].map((feature, i) => (
                 <div key={i} className={cn(
-                  "group p-10 rounded-[3rem] border bg-background/50 hover:bg-background hover:shadow-2xl transition-all duration-500 blue-glow border-white/5",
+                  "group p-10 rounded-[3rem] border bg-background/50 hover:bg-background hover:shadow-2xl transition-all duration-500 blue-glow border-white/5"
                 )}>
-                  <div className={`p-4 rounded-2xl w-fit mb-8 bg-primary/5 text-primary shadow-sm group-hover:scale-110 transition-transform`}>
+                  <div className={cn("p-4 rounded-2xl w-fit mb-8 bg-primary/5 text-primary shadow-sm group-hover:scale-110 transition-transform")}>
                     <feature.icon className="w-8 h-8" />
                   </div>
                   <h3 className="text-2xl font-bold mb-4 font-headline">{feature.title}</h3>
