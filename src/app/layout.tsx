@@ -1,12 +1,11 @@
-
 import type {Metadata} from 'next';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
 import { FirebaseClientProvider } from '@/firebase';
 
 export const metadata: Metadata = {
-  title: 'VideoMaster AI - India\'s No.1 AI Video Studio & Viral Script Maker (.in)',
-  description: 'Create viral YouTube Shorts and Reels 10x faster. VideoMaster AI is the most stable AI video studio for Indian creators. Get 100 FREE credits on signup! Generate scripts, thumbnails, and cinematic clips automatically.',
+  title: 'VideoMaster AI - No.1 AI Video Studio India (.in)',
+  description: 'Create viral YouTube Shorts and Reels 10x faster. VideoMaster AI is the most stable studio for Indian creators. Get 100 FREE credits on signup!',
   keywords: [
     'AI Video Generator India', 
     'Viral Reels Maker AI', 
@@ -14,7 +13,7 @@ export const metadata: Metadata = {
     'Cinematic Thumbnail Maker AI', 
     'VideoMaster AI Studio',
     'Text to Video AI India Free',
-    'VideoMaster.ai.in'
+    'VideoMaster.in'
   ],
   metadataBase: new URL('https://studio-9489287013-59986.web.app'),
   alternates: { 
@@ -27,11 +26,6 @@ export const metadata: Metadata = {
     siteName: 'VideoMaster AI',
     locale: 'en_IN',
     type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'VideoMaster AI',
-    description: 'India\'s Elite AI Video Studio',
   },
   robots: {
     index: true,
@@ -59,8 +53,6 @@ export default function RootLayout({
         {/* Google AdSense Global Tag */}
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8946933317699938" crossOrigin="anonymous"></script>
         <meta name="google-adsense-account" content="ca-pub-8946933317699938" />
-        {/* Google Search Console Verification Placeholder */}
-        <meta name="google-site-verification" content="Aapka_Verification_Code_Yahan_Aayega" />
       </head>
       <body className="font-body antialiased bg-background text-foreground">
         <FirebaseClientProvider>

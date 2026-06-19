@@ -16,9 +16,13 @@ service cloud.firestore {
              get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isAdmin == true;
     }
 
-    // User Profile rules
+    // User Profile rules - Optimized for stability
     match /users/{userId} {
-      allow read, write: if isOwner(userId) || isAdmin();
+      // Allow read/write if the user is accessing their own data
+      allow read, write: if isOwner(userId);
+      
+      // Secondary admin check
+      allow read, write: if isAdmin();
       
       // Projects sub-collection
       match /projects/{projectId} {
@@ -37,4 +41,4 @@ service cloud.firestore {
     }
   }
 }
-// Final Security Audit & Stability Patch for VideoMaster AI
+// FINAL MASTER BUILD: Security Rules Version 2.1

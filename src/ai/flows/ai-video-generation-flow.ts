@@ -2,9 +2,7 @@
 /**
  * @fileOverview An AI agent that generates cinematic video clips from text prompts using Veo.
  * 
- * - generateAiVideo - A function that handles the video generation process.
- * - VideoGenerationInput - The input type for the function.
- * - VideoGenerationOutput - The return type for the function.
+ * 🚀 STABILITY PATCH: Added clear error handling for Billing/Quota issues.
  */
 
 import { ai, z } from '@/ai/genkit';
@@ -30,46 +28,56 @@ const videoGenerationFlow = ai.defineFlow(
     outputSchema: VideoGenerationOutputSchema,
   },
   async (input) => {
-    let { operation } = await ai.generate({
-      model: 'googleai/veo-2.0-generate-001',
-      prompt: input.prompt,
-      config: {
-        durationSeconds: 5,
-        aspectRatio: '16:9',
-      },
-    });
+    try {
+      let { operation } = await ai.generate({
+        model: 'googleai/veo-2.0-generate-001',
+        prompt: input.prompt,
+        config: {
+          durationSeconds: 5,
+          aspectRatio: '16:9',
+        },
+      });
 
-    if (!operation) {
-      throw new Error('Failed to initiate video generation.');
-    }
-
-    // Wait for completion (Veo is a long-running process)
-    while (!operation.done) {
-      operation = await ai.checkOperation(operation);
-      if (!operation.done) {
-        await new Promise((resolve) => setTimeout(resolve, 5000));
+      if (!operation) {
+        throw new Error('Failed to initiate video generation.');
       }
+
+      // Wait for completion (Veo is a long-running process)
+      while (!operation.done) {
+        operation = await ai.checkOperation(operation);
+        if (!operation.done) {
+          await new Promise((resolve) => setTimeout(resolve, 5000));
+        }
+      }
+
+      if (operation.error) {
+        throw new Error(operation.error.message);
+      }
+
+      const videoPart = operation.output?.message?.content.find((p) => !!p.media);
+      if (!videoPart?.media?.url) {
+        throw new Error('No video output generated.');
+      }
+
+      const apiKey = (process.env.GEMINI_API_KEY || '').trim().replace(/^["']|["']$/g, '').trim();
+      const response = await fetch(`${videoPart.media.url}&key=${apiKey}`);
+      if (!response.ok) throw new Error('Failed to download generated video.');
+      
+      const buffer = await response.arrayBuffer();
+      const base64 = Buffer.from(buffer).toString('base64');
+
+      return {
+        videoDataUri: `data:video/mp4;base64,${base64}`,
+      };
+    } catch (e: any) {
+      // CLEAR USER ERROR MESSAGE
+      if (e.message.includes('403') || e.message.includes('billing') || e.message.includes('permission')) {
+        throw new Error("⚠️ Video generation ke liye Google Cloud Billing mandatory hai. [Fix]: Google Cloud Console mein card link karein.");
+      }
+      if (e.message.includes('429')) {
+        throw new Error("⚠️ Rate limit hit! Thoda intezaar karein aur phir se koshish karein.");
+      }
+      throw e;
     }
-
-    if (operation.error) {
-      throw new Error('Video generation failed: ' + operation.error.message);
-    }
-
-    const videoPart = operation.output?.message?.content.find((p) => !!p.media);
-    if (!videoPart?.media?.url) {
-      throw new Error('No video output generated.');
-    }
-
-    // Use the same API key logic for the download
-    const apiKey = (process.env.GEMINI_API_KEY || '').trim().replace(/^["']|["']$/g, '').trim();
-    const response = await fetch(`${videoPart.media.url}&key=${apiKey}`);
-    if (!response.ok) throw new Error('Failed to download generated video.');
-    
-    const buffer = await response.arrayBuffer();
-    const base64 = Buffer.from(buffer).toString('base64');
-
-    return {
-      videoDataUri: `data:video/mp4;base64,${base64}`,
-    };
   }
 );
