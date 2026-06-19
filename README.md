@@ -5,6 +5,12 @@ Aapka app coding aur design ke hisaab se **100% complete** hai.
 
 ---
 
+### 📂 GITHUB REPOSITORY
+- **Name**: `studio-9489287013`
+- **Actions**: [Build status aur APK yahan milega](https://github.com/Firebase-Studio/studio-9489287013/actions)
+
+---
+
 ### 🌐 LIVE LINK: [https://studio-9489287013-59986.web.app](https://studio-9489287013-59986.web.app)
 (Is link ko aap AdSense mein add karein aur apne dosto ko share karein.)
 

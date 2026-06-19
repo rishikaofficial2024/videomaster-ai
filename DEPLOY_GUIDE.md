@@ -1,9 +1,11 @@
+
 # 🚀 Launch & Marketing Guide: VideoMaster AI
 
 Aapka app ab Google aur Play Store par aane ke liye technically taiyar hai.
 
 ### 1. Aapka Business Link (Public URL)
 👉 **Link**: `https://studio-9489287013-59986.web.app`
+👉 **GitHub Repo**: `studio-9489287013`
 
 Ise aap Instagram bio, WhatsApp, aur YouTube descriptions mein share karein. Log is link par jake signup karenge toh aapki kamai chalu hogi.
 
