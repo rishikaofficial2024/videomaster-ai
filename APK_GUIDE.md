@@ -1,23 +1,28 @@
 
-# 📱 APK Kaise Banayein? (Aasaan Tarika)
+# 📱 APK Kaise Banayein? (Final Steps)
 
-Aapne jo GitHub par naya repository banaya hai, usmein ye code dalte hi APK banna chalu ho jayega.
+Aapne GitHub repository **videomaster-ai** bana li hai. Ab APK pane ke liye niche diye gaye steps follow karein:
 
-### 1. GitHub Configuration (Aapke Screenshot ke liye)
-Screen par jo options dikh rahe hain, unhe **aisa hi rehne dein**:
-- **Visibility**: `Public` (Select rehne dein)
-- **Add README**: `Off` (Kyunki maine code mein README bana diya hai)
-- **Add .gitignore**: `None` (Maine code mein .gitignore bana diya hai)
-- **Add license**: `None`
-- Phir seedha **"Create repository"** button dabayein.
+### 1. Code Ko GitHub Par Dalein (Push)
+Studio ke terminal mein ye commands chalayein taaki aapka code GitHub par chala jaye:
 
-### 2. Code Kaise Dalein?
-Repository banne ke baad, GitHub aapko kuch commands dikhayega. Aapko bas apna code wahan **Push** karna hai. Agar aap Studio use kar rahe hain, toh GitHub Desktop ya Git commands ka use karein.
+```bash
+git init
+git remote add origin https://github.com/rishikaofficial2024/videomaster-ai.git
+git add .
+git commit -m "Final Business Ready Build"
+git branch -M main
+git push -u origin main
+```
 
-### 3. APK Download Kaise Karein?
-1. Apni GitHub repository par upar menu mein **"Actions"** tab par jayein.
-2. Wahan **"Build Android APK"** naam ka workflow dikhega.
-3. Jab Green Tick (✅) aa jaye (5-7 minute baad), toh uspar click karein.
-4. Sabse niche **"Artifacts"** section mein `VideoMasterAI-Final-APK` par click karke download kar lein.
+### 2. APK Bante Huye Dekhein
+1. Apni GitHub repository page par jayein: `github.com/rishikaofficial2024/videomaster-ai`
+2. Upar **"Actions"** tab par click karein.
+3. Aapko **"Build Android APK"** naam ka workflow dikhega jo "In Progress" hoga.
 
-**Tip**: Maine `.gitignore` add kar diya hai, isse aapka upload fast hoga aur APK sahi banega.
+### 3. APK Download Karein
+1. Jab workflow poora ho jaye aur Green Tick (✅) aa jaye, toh uspar click karein.
+2. Page ke sabse niche **"Artifacts"** section mein `VideoMasterAI-Final-APK` link dikhega.
+3. Uspar click karke file download karein aur apne mobile mein install karein.
+
+**Note**: Agar login mein koi dikat aaye, toh `AUTH_DOMAIN_FIX.md` padhna na bhulein. Aapka app ab poori tarah business ke liye taiyar hai! 🚀💰
