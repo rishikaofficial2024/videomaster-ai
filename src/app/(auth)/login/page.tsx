@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Video, Chrome, Facebook, Smartphone, ArrowLeft, Sparkles, Loader2 } from "lucide-react";
+import { Video, Chrome, Facebook, Smartphone, ArrowLeft, Sparkles, Loader2, AlertTriangle } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { 
@@ -57,10 +57,17 @@ export default function LoginPage() {
       await signInWithPopup(auth, provider);
       router.push("/dashboard");
     } catch (error: any) {
+      console.error("Auth Error:", error.code, error.message);
+      
+      let description = error.message;
+      if (error.code === 'auth/unauthorized-domain') {
+        description = "⚠️ Ye domain Authorized nahi hai! Firebase Console > Auth > Settings > Authorized Domains mein jaakar apna current URL add karein. Instructions ke liye 'AUTH_DOMAIN_FIX.md' padhein.";
+      }
+      
       toast({
         variant: "destructive",
         title: `${providerName} Login Failed`,
-        description: error.message,
+        description: description,
       });
     } finally {
       setLoading(false);
