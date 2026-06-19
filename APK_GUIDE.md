@@ -1,23 +1,19 @@
 
-# 📱 APK Kaise Banayein? (Code Yahan Hai)
+# 📱 APK Kaise Banayein? (Aasaan Tarika)
 
-Aapka APK banane ka "Build Code" aapki repository mein pehle se hi save hai.
+Aapne jo GitHub par naya repository banaya hai, usmein ye code dalte hi APK banna chalu ho jayega.
 
-### APK Download Karne ke Steps:
+### 1. GitHub par kya bharein? (Aapke Screenshot ke liye)
+- **Repository name**: `videomaster-ai`
+- **Description**: `India's No.1 AI Video Studio`
+- **Visibility**: `Public` par click karein.
+- Phir **"Create repository"** button dabayein.
 
-1. **GitHub par Code Push Karein**:
-   - Aapne jo coding ki hai, use apni GitHub repository mein upload karein.
+### 2. APK Download Kaise Karein?
+1. Apni GitHub repository par upar menu mein **"Actions"** tab par jayein.
+2. Wahan **"Build Android APK"** naam ka workflow dikhega.
+3. Agar wo chalu nahi hua, toh **"Run workflow"** par click karein.
+4. 5-7 minute baad jab Green Tick (✅) aa jaye, toh uspar click karein.
+5. Sabse niche **"Artifacts"** section mein `VideoMasterAI-Final-APK` par click karke download kar lein.
 
-2. **Actions Tab Mein Jayein**:
-   - Apni GitHub repository par upar menu mein **"Actions"** button par click karein.
-   - Wahan aapko **"Build Android APK"** naam ka workflow dikhega.
-
-3. **Build Start Karein**:
-   - Agar wo khud nahi chala, toh **"Run workflow"** par click karein.
-   - GitHub 5-7 minute mein aapka APK bana dega.
-
-4. **APK Download Karein**:
-   - Jab build Green (✅) ho jaye, toh uspar click karein.
-   - Sabse niche **"Artifacts"** section mein `VideoMasterAI-Final-APK` par click karke download karein.
-
-**Note**: Aapka Next.js code (`src` folder) hi aapka mobile app hai. Maine sabhi settings automate kar di hain.
+**Note**: Maine sabhi technical settings (Capacitor, Android) automate kar di hain. Aapko sirf code push karna hai.

@@ -10,7 +10,8 @@ const config: CapacitorConfig = {
     allowNavigation: ['*']
   },
   android: {
-    allowMixedContent: true
+    allowMixedContent: true,
+    captureInput: true
   }
 };
 
