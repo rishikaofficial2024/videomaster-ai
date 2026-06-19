@@ -23,9 +23,9 @@ export const ai = genkit({
   ],
 });
 
-// Using gemini-1.5-flash for better stability during high demand spikes
-export const geminiModel = googleAI.model('gemini-1.5-flash');
-export const imagenModel = googleAI.model('imagen-4.0-fast-generate-001');
+// STABILITY FIX: Using 'gemini-flash-latest' alias to avoid 404 errors with versioned names
+export const geminiModel = googleAI.model('gemini-flash-latest');
+export const imagenModel = googleAI.model('imagen-3.0-generate-001');
 export const veoModel = googleAI.model('veo-2.0-generate-001');
 export const ttsModel = googleAI.model('gemini-2.5-flash-preview-tts');
 
