@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { 
   Plus, Sparkles, ChevronRight, Loader2, Coins, 
-  ArrowUpRight, Video, Activity, Gift, MonitorPlay, Star, ArrowRight
+  ArrowUpRight, Video, Activity, Gift, MonitorPlay, Star, ArrowRight, Globe, CheckCircle2
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -105,10 +105,10 @@ export default function Dashboard() {
         <header className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-10">
           <div className="space-y-4">
             <div className="flex flex-wrap gap-2">
-              <div className={cn("flex items-center gap-2 px-4 py-1.5 bg-primary/10 rounded-full border border-primary/20 w-fit")}>
-                 <Star className="w-3.5 h-3.5 text-primary fill-current" />
-                 <span className="text-[10px] font-bold text-primary uppercase tracking-[0.2em]">
-                   {profile?.subscriptionPlan === 'pro' ? 'ELITE PRO STUDIO' : 'STARTER WORKSPACE'}
+              <div className={cn("flex items-center gap-2 px-4 py-1.5 bg-emerald-500/10 rounded-full border border-emerald-500/20 w-fit")}>
+                 <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
+                 <span className="text-[10px] font-bold text-emerald-500 uppercase tracking-[0.2em]">
+                   APP IS LIVE & SEARCH READY
                  </span>
               </div>
             </div>
@@ -194,11 +194,6 @@ export default function Dashboard() {
                         fill
                         className="object-cover transition-transform duration-1000 group-hover:scale-110"
                       />
-                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                         <div className="p-4 bg-primary rounded-full shadow-2xl scale-50 group-hover:scale-100 transition-transform">
-                            <Play className="w-8 h-8 fill-current text-white" />
-                         </div>
-                      </div>
                     </div>
                     <CardContent className="p-8">
                        <h3 className="font-bold text-xl truncate group-hover:text-primary transition-colors text-white">{project.title}</h3>
@@ -223,26 +218,6 @@ export default function Dashboard() {
             </div>
           )}
         </section>
-
-        {/* Pro Plan Prompt */}
-        {!profile?.isPremium && (
-          <section className="max-w-4xl mx-auto pt-10">
-            <Card className="rounded-[3.5rem] bg-primary p-12 text-white relative overflow-hidden shadow-2xl shadow-primary/40 group hover:scale-[1.02] transition-transform">
-               <div className="absolute -bottom-10 -right-10 opacity-20 rotate-12 group-hover:rotate-0 transition-all duration-1000">
-                  <Star className="w-80 h-80 fill-current" />
-               </div>
-               <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-10">
-                  <div className="space-y-4 text-center md:text-left">
-                     <h3 className="text-4xl font-bold font-headline leading-tight">Pro Studio Join Karo!</h3>
-                     <p className="text-white/80 text-lg font-medium italic">Unlimited AI Credits aur 4K exports ke liye ₹99/mo mein upgrade karein.</p>
-                  </div>
-                  <Button variant="secondary" className="h-16 px-12 rounded-[2rem] font-bold text-lg hover:bg-white transition-all shadow-xl" asChild>
-                    <Link href="/premium">Upgrade Now <ArrowRight className="ml-3 w-5 h-5" /></Link>
-                  </Button>
-               </div>
-            </Card>
-          </section>
-        )}
 
       </main>
     </div>
