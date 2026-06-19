@@ -8,7 +8,7 @@ import {
   Users, DollarSign, BarChart3, Settings, 
   Loader2, ArrowUpRight, TrendingUp,
   Cpu, Activity, Database, AlertTriangle,
-  RefreshCw, Lock, Globe, Eye
+  RefreshCw, Lock, Globe, Eye, Search, CheckCircle2
 } from "lucide-react";
 import { useFirestore, useCollection, useMemoFirebase } from "@/firebase";
 import { collection, query, limit, orderBy, getCountFromServer } from "firebase/firestore";
@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 export default function AdminDashboard() {
   const db = useFirestore();
@@ -32,12 +33,15 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     setMounted(true);
-    // Fetch real-time user count for "Kitne logo ne dekha/signup kiya"
     const fetchUserCount = async () => {
       if (!db) return;
-      const coll = collection(db, "users");
-      const snapshot = await getCountFromServer(coll);
-      setTotalUsersCount(snapshot.data().count);
+      try {
+        const coll = collection(db, "users");
+        const snapshot = await getCountFromServer(coll);
+        setTotalUsersCount(snapshot.data().count);
+      } catch (e) {
+        console.error("User count fetch failed", e);
+      }
     };
     fetchUserCount();
   }, [db]);
@@ -59,51 +63,64 @@ export default function AdminDashboard() {
           <div className="space-y-4">
             <div className="inline-flex items-center gap-2 px-3 py-1 bg-red-500/10 rounded-full border border-red-500/20">
               <Lock className="w-3 h-3 text-red-500" />
-              <span className="text-[10px] font-bold text-red-500 uppercase tracking-widest">System Control Node</span>
+              <span className="text-[10px] font-bold text-red-500 uppercase tracking-widest">Master Admin Node</span>
             </div>
             <h1 className="text-5xl md:text-7xl font-headline font-bold tracking-tighter text-white">
-              Business <span className="text-primary">Status</span>
+              Studio <span className="text-primary">Control</span>
             </h1>
-            <p className="text-muted-foreground font-medium italic">App ka live performance yahan dekhein.</p>
+            <p className="text-muted-foreground font-medium italic">Aapka business yahan se manage hota hai.</p>
           </div>
           
           <div className="flex items-center gap-4 bg-white/5 p-4 rounded-3xl border border-white/5 backdrop-blur-xl">
-             <div className="flex items-center gap-2 text-emerald-500 bg-emerald-500/10 px-4 py-2 rounded-2xl border border-emerald-500/20">
-                <Globe className="w-4 h-4 animate-pulse" />
-                <span className="text-xs font-bold uppercase tracking-widest">Live On Web</span>
+             <div className="flex flex-col px-4 border-r border-white/10">
+                <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-1">Live Users</span>
+                <span className="text-2xl font-bold font-headline text-emerald-500">{totalUsersCount ?? "..."}</span>
              </div>
+             <Globe className="w-8 h-8 text-primary opacity-20 animate-pulse" />
           </div>
         </header>
 
-        {/* METRICS GRID */}
-        <section className="grid grid-cols-1 md:grid-cols-4 gap-6">
-           {[
-             { label: "Total Signups", value: totalUsersCount ?? "...", icon: Users, trend: "+New", color: "text-primary" },
-             { label: "Search Ranking", value: "Indexing", icon: Globe, trend: "Active", color: "text-emerald-500" },
-             { label: "App Views", value: "Live", icon: Eye, trend: "Stable", color: "text-purple-500" },
-             { label: "System Health", value: "99.9%", icon: Activity, trend: "Perfect", color: "text-orange-500" }
-           ].map((stat, i) => (
-             <Card key={i} className="rounded-[2.5rem] bg-[#0a0d14] border-white/5 p-8 blue-glow space-y-4">
-               <div className="flex items-center justify-between">
-                 <div className="p-3 bg-white/5 rounded-2xl"><stat.icon className={cn("w-5 h-5", stat.color)} /></div>
-                 <span className="text-[10px] font-bold text-emerald-500 uppercase tracking-widest flex items-center gap-1">
-                   {stat.trend} <TrendingUp className="w-3 h-3" />
-                 </span>
-               </div>
-               <div>
-                  <h3 className="text-3xl font-bold font-headline text-white">{stat.value}</h3>
-                  <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">{stat.label}</p>
-               </div>
-             </Card>
-           ))}
+        {/* GOOGLE SEARCH STATUS CARD */}
+        <section>
+          <Card className="rounded-[3rem] bg-primary/5 border-primary/20 p-8 md:p-12 blue-glow relative overflow-hidden group">
+            <div className="absolute top-0 right-0 p-12 opacity-5 -rotate-12">
+              <Search className="w-48 h-48" />
+            </div>
+            <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-10">
+              <div className="space-y-4 text-center md:text-left">
+                <div className="flex items-center justify-center md:justify-start gap-3">
+                  <div className="p-3 bg-primary/20 rounded-2xl border border-primary/30">
+                    <Search className="w-6 h-6 text-primary" />
+                  </div>
+                  <h2 className="text-3xl font-headline font-bold text-white tracking-tight">Google Search Indexing</h2>
+                </div>
+                <p className="text-muted-foreground max-w-xl font-medium italic leading-relaxed">
+                  Aapka app technically live hai. Google Search mein top par aane ke liye niche di gayi guide follow karein. Ise manually submit karne se ranking 10x fast hoti hai.
+                </p>
+                <div className="flex flex-wrap gap-4 pt-2">
+                   <div className="flex items-center gap-2 px-4 py-2 bg-emerald-500/10 rounded-xl border border-emerald-500/20">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                      <span className="text-[10px] font-bold text-emerald-500 uppercase tracking-widest">Sitemap Live</span>
+                   </div>
+                   <div className="flex items-center gap-2 px-4 py-2 bg-emerald-500/10 rounded-xl border border-emerald-500/20">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                      <span className="text-[10px] font-bold text-emerald-500 uppercase tracking-widest">Robots.txt Ready</span>
+                   </div>
+                </div>
+              </div>
+              <Button className="h-20 px-12 rounded-[2rem] bg-primary font-bold shadow-2xl shadow-primary/40 text-lg hover:scale-105 transition-all" asChild>
+                <Link href="/SEO_GUIDE.md">Google Par Rank Kaise Karein?</Link>
+              </Button>
+            </div>
+          </Card>
         </section>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-           {/* RECENT USERS TABLE */}
-           <Card className="lg:col-span-2 rounded-[3rem] bg-[#0a0d14] border-white/5 overflow-hidden">
-              <CardHeader className="p-8">
+           {/* RECENT USERS */}
+           <Card className="lg:col-span-2 rounded-[3rem] bg-[#0a0d14] border-white/5 overflow-hidden shadow-2xl">
+              <CardHeader className="p-8 border-b border-white/5">
                 <CardTitle className="text-xl font-headline font-bold">User Management</CardTitle>
-                <CardDescription>Ye log aapka app use kar rahe hain.</CardDescription>
+                <CardDescription>Live signups and project status.</CardDescription>
               </CardHeader>
               <CardContent className="p-0">
                  <Table>
@@ -111,18 +128,18 @@ export default function AdminDashboard() {
                        <TableRow className="hover:bg-transparent border-white/5">
                           <TableHead className="text-[10px] font-bold uppercase tracking-widest px-8">User</TableHead>
                           <TableHead className="text-[10px] font-bold uppercase tracking-widest">Plan</TableHead>
-                          <TableHead className="text-[10px] font-bold uppercase tracking-widest">Credits</TableHead>
-                          <TableHead className="text-[10px] font-bold uppercase tracking-widest text-right px-8">Actions</TableHead>
+                          <TableHead className="text-[10px] font-bold uppercase tracking-widest">Status</TableHead>
+                          <TableHead className="text-[10px] font-bold uppercase tracking-widest text-right px-8">Audit</TableHead>
                        </TableRow>
                     </TableHeader>
                     <TableBody>
                        {usersLoading ? (
-                         <TableRow><TableCell colSpan={4} className="text-center py-10 opacity-50 italic">Database loading...</TableCell></TableRow>
+                         <TableRow><TableCell colSpan={4} className="text-center py-20 opacity-40 italic">Syncing with database...</TableCell></TableRow>
                        ) : users?.map((u: any) => (
                          <TableRow key={u.id} className="border-white/5 hover:bg-white/5 transition-colors">
-                            <TableCell className="px-8 py-5">
+                            <TableCell className="px-8 py-6">
                                <div className="flex flex-col">
-                                  <span className="font-bold text-sm text-white">{u.displayName || 'Creator'}</span>
+                                  <span className="font-bold text-white">{u.displayName || 'Creator'}</span>
                                   <span className="text-[10px] text-muted-foreground">{u.email}</span>
                                </div>
                             </TableCell>
@@ -131,10 +148,15 @@ export default function AdminDashboard() {
                                   {u.subscriptionPlan?.toUpperCase() || 'FREE'}
                                 </Badge>
                             </TableCell>
-                            <TableCell className="font-mono text-xs">{u.credits || 0}</TableCell>
+                            <TableCell>
+                               <div className="flex items-center gap-2">
+                                  <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                                  <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Active</span>
+                               </div>
+                            </TableCell>
                             <TableCell className="text-right px-8">
-                               <Button variant="ghost" size="sm" className="h-8 w-8 p-0 rounded-lg hover:bg-primary/10 hover:text-primary">
-                                  <ArrowUpRight className="w-4 h-4" />
+                               <Button variant="ghost" size="sm" className="h-10 w-10 p-0 rounded-xl hover:bg-primary/10 hover:text-primary transition-all">
+                                  <ArrowUpRight className="w-5 h-5" />
                                 </Button>
                             </TableCell>
                          </TableRow>
@@ -144,38 +166,43 @@ export default function AdminDashboard() {
               </CardContent>
            </Card>
 
-           {/* SYSTEM HEALTH & SEO INFO */}
            <div className="space-y-8">
-              <Card className="rounded-[3rem] bg-primary/5 border-primary/10 p-10 space-y-6">
+              {/* SYSTEM NODE */}
+              <Card className="rounded-[3rem] bg-[#0a0d14] border-white/5 p-10 space-y-6 shadow-2xl blue-glow">
                  <div className="flex items-center gap-4">
-                    <Globe className="w-6 h-6 text-primary" />
-                    <h4 className="text-xl font-bold font-headline">Google Ranking</h4>
+                    <Activity className="w-6 h-6 text-primary" />
+                    <h4 className="text-xl font-bold font-headline">App Node Status</h4>
                  </div>
-                 <p className="text-xs text-muted-foreground leading-relaxed italic">
-                    Aapka app Bharat (India) mein `.in` search results ke liye optimize kar diya gaya hai. 
-                    <b> 24-48 ghante </b> mein Google ise search mein dikhana shuru kar dega.
-                 </p>
-                 <div className="space-y-4 pt-4">
-                    <div className="flex items-center justify-between p-4 bg-white/5 rounded-2xl border border-white/5">
-                       <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground">SEO Indexing</span>
-                       <Badge className="bg-emerald-500/20 text-emerald-500 hover:bg-emerald-500/20">QUEUED</Badge>
+                 <div className="space-y-6">
+                    <div className="flex justify-between items-end">
+                       <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Database Health</span>
+                       <span className="text-emerald-500 font-bold text-xs">ONLINE</span>
                     </div>
-                    <div className="flex items-center justify-between p-4 bg-white/5 rounded-2xl border border-white/5">
-                       <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Mobile App</span>
-                       <Badge className="bg-primary/20 text-primary hover:bg-primary/20">READY</Badge>
+                    <Progress value={100} className="h-1.5 bg-emerald-500/10" />
+                    
+                    <div className="flex justify-between items-end">
+                       <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">AI Neural Link</span>
+                       <span className="text-primary font-bold text-xs">STABLE</span>
                     </div>
+                    <Progress value={98} className="h-1.5 bg-primary/10" />
                  </div>
+                 <Button className="w-full h-14 rounded-2xl bg-white/5 border border-white/10 font-bold text-[10px] uppercase tracking-widest hover:bg-white/10" asChild>
+                    <Link href="/test-connection">Run Health Audit</Link>
+                 </Button>
               </Card>
 
-              <Card className="rounded-[3rem] bg-red-500/5 border-red-500/10 p-10 space-y-6">
-                 <div className="flex items-center gap-4">
-                    <Activity className="w-6 h-6 text-red-500" />
-                    <h4 className="text-xl font-bold font-headline">Live Server</h4>
+              {/* DOMAIN CONFIG */}
+              <Card className="rounded-[3rem] bg-emerald-500/5 border-emerald-500/10 p-10 space-y-4 shadow-2xl">
+                 <div className="flex items-center gap-3">
+                    <Globe className="w-5 h-5 text-emerald-500" />
+                    <h4 className="text-xs font-bold uppercase tracking-widest text-emerald-500">Domain Node (.in)</h4>
                  </div>
-                 <div className="flex flex-col gap-2">
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Status: 100% Online</span>
-                    <Progress value={100} className="h-2 bg-red-500/10" />
-                 </div>
+                 <p className="text-[10px] text-muted-foreground leading-relaxed italic">
+                    Agar aapne GoDaddy/Hostinger se domain le liya hai, toh usey connect karne ke liye instructions yahan hain.
+                 </p>
+                 <Button className="w-full h-14 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 font-bold text-[10px] uppercase tracking-widest hover:bg-emerald-500/20" asChild>
+                    <Link href="/DOMAIN_GUIDE.md">Domain Setup Guide</Link>
+                 </Button>
               </Card>
            </div>
         </div>

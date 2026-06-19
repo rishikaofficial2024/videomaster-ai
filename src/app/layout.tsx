@@ -17,7 +17,9 @@ export const metadata: Metadata = {
     'VideoMaster.ai.in'
   ],
   metadataBase: new URL('https://studio-9489287013-59986.web.app'),
-  alternates: { canonical: '/' },
+  alternates: { 
+    canonical: 'https://studio-9489287013-59986.web.app',
+  },
   openGraph: {
     title: 'VideoMaster AI - Viral Studio for Indian Creators',
     description: 'Transform your ideas into professional videos with AI. 100 Free Credits inside!',
@@ -25,6 +27,11 @@ export const metadata: Metadata = {
     siteName: 'VideoMaster AI',
     locale: 'en_IN',
     type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'VideoMaster AI',
+    description: 'India\'s Elite AI Video Studio',
   },
   robots: {
     index: true,
@@ -49,10 +56,11 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
         <meta name="theme-color" content="#05070a" />
-        <link rel="canonical" href="https://studio-9489287013-59986.web.app" />
         {/* Google AdSense Global Tag */}
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8946933317699938" crossOrigin="anonymous"></script>
         <meta name="google-adsense-account" content="ca-pub-8946933317699938" />
+        {/* Google Search Console Verification Placeholder */}
+        <meta name="google-site-verification" content="Aapka_Verification_Code_Yahan_Aayega" />
       </head>
       <body className="font-body antialiased bg-background text-foreground">
         <FirebaseClientProvider>
