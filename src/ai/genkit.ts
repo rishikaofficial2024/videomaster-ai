@@ -23,8 +23,9 @@ export const ai = genkit({
   ],
 });
 
-// STABILITY FIX: Using 'gemini-flash-latest' alias to avoid 404 errors with versioned names
+// STABILITY FIX: Using latest aliases for maximum compatibility and quota management
 export const geminiModel = googleAI.model('gemini-flash-latest');
+export const geminiProModel = googleAI.model('gemini-pro-latest');
 export const imagenModel = googleAI.model('imagen-3.0-generate-001');
 export const veoModel = googleAI.model('veo-2.0-generate-001');
 export const ttsModel = googleAI.model('gemini-2.5-flash-preview-tts');

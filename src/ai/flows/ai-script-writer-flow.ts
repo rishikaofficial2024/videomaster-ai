@@ -1,9 +1,9 @@
 'use server';
 /**
- * @fileOverview A robust Genkit flow for generating professional video scripts with auto-retry logic.
+ * @fileOverview A robust Genkit flow for generating professional video scripts with auto-retry logic and fallback.
  */
 
-import { ai, geminiModel, z } from '@/ai/genkit';
+import { ai, geminiModel, geminiProModel, z } from '@/ai/genkit';
 
 const ScriptWriterInputSchema = z.object({
   topic: z.string().describe('The main topic or subject of the video'),
@@ -19,10 +19,6 @@ const ScriptWriterOutputSchema = z.object({
 });
 export type ScriptWriterOutput = z.infer<typeof ScriptWriterOutputSchema>;
 
-export async function generateAiScript(input: ScriptWriterInput): Promise<ScriptWriterOutput> {
-  return scriptWriterFlow(input);
-}
-
 const scriptWriterFlow = ai.defineFlow(
   {
     name: 'scriptWriterFlow',
@@ -30,16 +26,19 @@ const scriptWriterFlow = ai.defineFlow(
     outputSchema: ScriptWriterOutputSchema,
   },
   async (input) => {
-    // STABILITY PATCH: 3-Stage Auto-Retry for 503 Server Busy errors
+    // STABILITY PATCH: 5-Stage Auto-Retry with Exponential Backoff
     let attempts = 0;
-    const maxAttempts = 3;
+    const maxAttempts = 5;
 
     while (attempts < maxAttempts) {
       try {
+        // Fallback Logic: If Flash fails consistently, try Pro model on last 2 attempts
+        const activeModel = attempts < 3 ? geminiModel : geminiProModel;
+        
         const { output } = await ai.generate({
-          model: geminiModel,
+          model: activeModel,
           prompt: `You are a world-class viral video strategist. Create a script for ${input.platform} about "${input.topic}". 
-          Tone: ${input.tone || 'energetic'}. Include a killer hook.`,
+          Tone: ${input.tone || 'energetic'}. Include a killer hook and professional scene descriptions.`,
           output: { schema: ScriptWriterOutputSchema },
         });
         
@@ -47,11 +46,20 @@ const scriptWriterFlow = ai.defineFlow(
         return output;
       } catch (e: any) {
         attempts++;
-        console.warn(`AI Attempt ${attempts} failed: ${e.message}`);
-        if (attempts === maxAttempts || !e.message.includes('503')) throw e;
-        await new Promise(resolve => setTimeout(resolve, 2000));
+        const delay = Math.pow(2, attempts) * 1000; // 2s, 4s, 8s, 16s...
+        console.warn(`AI Attempt ${attempts} failed: ${e.message}. Retrying in ${delay}ms...`);
+        
+        // Only retry if it's a server busy or rate limit error
+        const isRetryable = e.message.includes('503') || e.message.includes('429') || e.message.includes('UNAVAILABLE');
+        
+        if (attempts === maxAttempts || !isRetryable) throw e;
+        await new Promise(resolve => setTimeout(resolve, delay));
       }
     }
     throw new Error('AI Servers are currently overloaded. Please try again in 1 minute.');
   }
 );
+
+export async function generateAiScript(input: ScriptWriterInput): Promise<ScriptWriterOutput> {
+  return scriptWriterFlow(input);
+}
