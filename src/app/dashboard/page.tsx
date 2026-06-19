@@ -1,3 +1,4 @@
+
 "use client";
 
 import { Navbar } from "@/components/navbar";
@@ -5,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { 
   Plus, Sparkles, ChevronRight, Loader2, Coins, 
-  ArrowUpRight, Video, Activity, Gift, MonitorPlay
+  ArrowUpRight, Video, Activity, Gift, MonitorPlay, Star, ArrowRight
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -52,11 +53,10 @@ export default function Dashboard() {
     if (!userProfileRef) return;
     setAdLoading(true);
     toast({
-      title: "Loading Rewarded Video...",
-      description: "Ad started. Please watch for 15 seconds to earn +20 credits.",
+      title: "Ad Shuru Ho Gaya Hai!",
+      description: "Bas 15 second wait karein aur +20 credits payein.",
     });
 
-    // Simulate an ad interaction - once AdSense/AdMob is fully active, this logic would trigger from their SDK events
     setTimeout(() => {
       const updateData = { credits: increment(20) };
       updateDoc(userProfileRef, updateData)
@@ -71,27 +71,27 @@ export default function Dashboard() {
       
       setAdLoading(false);
       toast({
-        title: "Success! +20 Credits",
-        description: "Your reward has been added to your account.",
+        title: "Mubarak Ho! +20 Credits",
+        description: "Aapke account mein credits jud gaye hain.",
       });
     }, 15000);
   };
 
   const formatDate = (timestamp: any) => {
-    if (!timestamp) return "Just now";
+    if (!timestamp) return "Abhi abhi";
     if (!mounted) return "...";
     try {
       const date = timestamp.seconds ? new Date(timestamp.seconds * 1000) : new Date(timestamp);
-      return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      return date.toLocaleDateString('en-IN', { month: 'short', day: 'numeric' });
     } catch (e) {
-      return "Recently";
+      return "Haal hi mein";
     }
   };
 
   if (userLoading || !mounted) {
     return (
       <div className="h-screen flex items-center justify-center bg-background">
-        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+        <Loader2 className="w-10 h-10 animate-spin text-primary" />
       </div>
     );
   }
@@ -99,131 +99,151 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen pb-32 md:pt-24 bg-[#05070a] hero-gradient">
       <Navbar />
-      <main className="max-w-7xl mx-auto p-6 space-y-12">
-        <header className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8">
+      <main className="max-w-7xl mx-auto p-6 space-y-16">
+        
+        {/* Simplified Header */}
+        <header className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-10">
           <div className="space-y-4">
             <div className="flex flex-wrap gap-2">
-              <div className={cn("flex items-center gap-2 px-3 py-1 bg-primary/10 rounded-full border border-primary/20 w-fit")}>
-                 <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+              <div className={cn("flex items-center gap-2 px-4 py-1.5 bg-primary/10 rounded-full border border-primary/20 w-fit")}>
+                 <Star className="w-3.5 h-3.5 text-primary fill-current" />
                  <span className="text-[10px] font-bold text-primary uppercase tracking-[0.2em]">
-                   {profile?.subscriptionPlan === 'pro' ? 'PRO STUDIO ACTIVE' : 'STARTER WORKSPACE'}
+                   {profile?.subscriptionPlan === 'pro' ? 'ELITE PRO STUDIO' : 'STARTER WORKSPACE'}
                  </span>
               </div>
             </div>
-            <h1 className="text-5xl md:text-7xl font-headline font-bold tracking-tighter text-white">
-              Welcome, <span className="text-primary italic">{user?.displayName?.split(' ')[0] || 'Creator'}</span>
+            <h1 className="text-6xl md:text-8xl font-headline font-bold tracking-tighter text-white">
+              Hello, <span className="text-primary italic">{user?.displayName?.split(' ')[0] || 'Creator'}</span>
             </h1>
+            <p className="text-muted-foreground text-xl font-medium max-w-xl italic">Aaj kaunsi viral video banani hai?</p>
           </div>
           
-          <div className="flex items-center gap-6 bg-[#0a0d14]/80 backdrop-blur-2xl p-4 rounded-[2rem] border border-white/5 shadow-2xl">
-             <div className="flex flex-col px-6 border-r border-white/10">
-                <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-1">AI Credits</span>
-                <div className="flex items-center gap-2">
-                  <Coins className="w-4 h-4 text-primary" />
-                  <span className="text-3xl font-bold font-headline text-white">
+          {/* Quick Stats - Bigger & Clearer */}
+          <div className="flex items-center gap-8 bg-[#0a0d14]/90 backdrop-blur-3xl p-6 rounded-[3rem] border border-white/5 shadow-2xl blue-glow">
+             <div className="flex flex-col px-8 border-r border-white/10">
+                <span className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground mb-2">Aapke Credits</span>
+                <div className="flex items-center gap-3">
+                  <Coins className="w-6 h-6 text-primary" />
+                  <span className="text-5xl font-bold font-headline text-white">
                     {profile?.isPremium ? '∞' : (profile?.credits ?? 0)}
                   </span>
                 </div>
              </div>
-             <Button className="rounded-2xl h-16 font-bold px-10 shadow-2xl shadow-primary/30 transition-all hover:scale-105" asChild>
-                <Link href="/editor"><Plus className="w-6 h-6 mr-2" /> New Project</Link>
+             <Button className="rounded-[2rem] h-20 font-bold px-12 shadow-2xl shadow-primary/40 transition-all hover:scale-105 active:scale-95 text-lg" asChild>
+                <Link href="/editor"><Plus className="w-6 h-6 mr-3" /> Nayi Video</Link>
              </Button>
           </div>
         </header>
 
-        {/* REWARDED AD SECTION - PAISA KAMANE KA RAASTA 1 */}
-        <section className="relative overflow-hidden group">
-          <Card className="rounded-[3rem] bg-[#0a0d14] border-primary/20 p-8 md:p-12 relative z-10 blue-glow">
-            <div className="flex flex-col md:flex-row items-center justify-between gap-8">
-               <div className="flex items-center gap-8 text-center md:text-left">
-                  <div className="w-20 h-20 bg-primary/10 rounded-[1.5rem] flex items-center justify-center border border-primary/20">
-                     <Gift className="w-10 h-10 text-primary animate-float" />
+        {/* Free Credits Section - More Prominent */}
+        <section className="relative overflow-hidden">
+          <Card className="rounded-[3.5rem] bg-[#0a0d14] border-primary/30 p-10 md:p-16 relative z-10 blue-glow overflow-hidden group">
+            <div className="absolute top-0 right-0 p-12 opacity-5 rotate-12 group-hover:rotate-0 transition-all duration-1000">
+               <Gift className="w-64 h-64" />
+            </div>
+            <div className="flex flex-col md:flex-row items-center justify-between gap-12 relative z-10">
+               <div className="flex flex-col md:flex-row items-center gap-10 text-center md:text-left">
+                  <div className="w-24 h-24 bg-primary/20 rounded-[2.5rem] flex items-center justify-center border-2 border-primary/20 shadow-xl animate-float">
+                     <Gift className="w-12 h-12 text-primary" />
                   </div>
-                  <div className="space-y-2">
-                     <h3 className="text-3xl font-bold font-headline text-white">Earn +20 AI Credits</h3>
-                     <p className="text-muted-foreground font-medium">Watch a short video ad and fuel your creativity for free.</p>
+                  <div className="space-y-3">
+                     <h3 className="text-4xl font-bold font-headline text-white tracking-tight">Free Credits Chahiye?</h3>
+                     <p className="text-muted-foreground font-medium text-lg italic">Bas ek short ad dekho aur <span className="text-primary font-bold">+20 credits</span> turant payein.</p>
                   </div>
                </div>
                <Button 
                  onClick={handleWatchAd} 
                  disabled={adLoading || profile?.isPremium}
-                 className="h-20 px-12 rounded-2xl bg-primary font-bold shadow-2xl shadow-primary/40 text-lg hover:scale-105 transition-all"
+                 className="h-24 px-16 rounded-[2rem] bg-primary font-bold shadow-2xl shadow-primary/40 text-xl hover:scale-105 transition-all group active:scale-95"
                >
-                  {adLoading ? <Loader2 className="animate-spin mr-3 w-6 h-6" /> : <MonitorPlay className="w-6 h-6 mr-3" />}
-                  {adLoading ? "Ad playing..." : "Watch Ad & Earn"}
+                  {adLoading ? <Loader2 className="animate-spin mr-3 w-8 h-8" /> : <MonitorPlay className="w-8 h-8 mr-4 group-hover:animate-pulse" />}
+                  {adLoading ? "Ad chal raha hai..." : "Ad Dekho aur Earn Karo"}
                </Button>
             </div>
           </Card>
         </section>
 
-        {/* DASHBOARD STATS */}
-        <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
-           <Card className="rounded-[2.5rem] bg-[#0a0d14] border-white/5 p-8 blue-glow space-y-6">
-              <div className="flex items-center justify-between">
-                 <div className="p-3 bg-primary/10 rounded-2xl"><Activity className="w-5 h-5 text-primary" /></div>
-                 <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Efficiency</span>
-              </div>
-              <h3 className="text-3xl font-bold font-headline text-white">98.5%</h3>
-              <Progress value={98} className="h-1.5 bg-white/5" />
-           </Card>
+        {/* Display Ads - Monetization Rasta */}
+        <AdBanner provider="Network Hub" />
 
-           {/* SUBSCRIPTION PROMPT - PAISA KAMANE KA RAASTA 2 */}
-           <Card className="rounded-[2.5rem] bg-primary border-none p-8 text-white relative overflow-hidden shadow-2xl shadow-primary/20">
-              <div className="relative z-10 space-y-6">
-                 <h3 className="text-2xl font-bold font-headline leading-tight">Elite <br/> Creator Hub</h3>
-                 <p className="text-white/80 text-sm font-medium">Unlock 4K exports and unlimited AI rendering for ₹99.</p>
-                 <Button variant="secondary" className="w-full rounded-xl font-bold h-12 hover:scale-105 transition-all" asChild>
-                    <Link href="/premium">Go Pro Studio <ArrowUpRight className="ml-2 w-4 h-4" /></Link>
-                 </Button>
-              </div>
-           </Card>
-        </section>
-
-        {/* DISPLAY ADS - PAISA KAMANE KA RAASTA 3 */}
-        <AdBanner provider="Premium Creator Network" />
-
-        {/* PROJECT LIBRARY */}
-        <section className="space-y-8">
-          <div className="flex justify-between items-end">
-            <h2 className="text-2xl font-headline font-bold text-white">Project Library</h2>
-            <Link href="/projects" className="text-xs font-bold text-primary flex items-center hover:underline">
-              Browse All <ChevronRight className="ml-1 w-4 h-4" />
+        {/* Project Library - Simple Grid */}
+        <section className="space-y-10">
+          <div className="flex justify-between items-end px-4">
+            <div>
+              <h2 className="text-3xl font-headline font-bold text-white tracking-tight">Aapke Purane Designs</h2>
+              <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest mt-1">Sabhi projects yahan save hain</p>
+            </div>
+            <Link href="/projects" className="text-sm font-bold text-primary flex items-center hover:underline group">
+              Saare Dekho <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </Link>
           </div>
           
           {projectsLoading ? (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {[1, 2, 3].map(i => <div key={i} className="h-64 bg-[#0a0d14] animate-pulse rounded-[2.5rem]" />)}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+              {[1, 2, 3].map(i => <div key={i} className="h-72 bg-[#0a0d14] animate-pulse rounded-[3rem]" />)}
             </div>
           ) : projects && projects.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
               {projects.map((project: any) => (
-                <Card key={project.id} className="group overflow-hidden rounded-[2.5rem] border-white/5 bg-[#0a0d14] shadow-xl transition-all duration-500">
+                <Card key={project.id} className="group overflow-hidden rounded-[3rem] border-white/5 bg-[#0a0d14] shadow-2xl transition-all duration-500 hover:border-primary/30">
                   <Link href={`/editor?id=${project.id}`}>
                     <div className="aspect-video relative overflow-hidden">
                       <Image
                         src={project.thumbnailUrl || `https://picsum.photos/seed/${project.id}/600/400`}
                         alt={project.title}
                         fill
-                        className="object-cover transition-transform duration-700 group-hover:scale-110"
+                        className="object-cover transition-transform duration-1000 group-hover:scale-110"
                       />
+                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                         <div className="p-4 bg-primary rounded-full shadow-2xl scale-50 group-hover:scale-100 transition-transform">
+                            <Play className="w-8 h-8 fill-current text-white" />
+                         </div>
+                      </div>
                     </div>
-                    <CardContent className="p-6">
-                       <h3 className="font-bold text-lg truncate group-hover:text-primary transition-colors text-white">{project.title}</h3>
-                       <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">{formatDate(project.updatedAt || project.createdAt)}</p>
+                    <CardContent className="p-8">
+                       <h3 className="font-bold text-xl truncate group-hover:text-primary transition-colors text-white">{project.title}</h3>
+                       <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mt-2">{formatDate(project.updatedAt || project.createdAt)} ko banaya</p>
                     </CardContent>
                   </Link>
                 </Card>
               ))}
             </div>
           ) : (
-            <div className="bg-[#0a0d14] border-2 border-dashed border-white/5 rounded-[4rem] p-24 text-center">
-              <Button className="rounded-2xl h-14 px-10 font-bold" asChild>
-                <Link href="/editor">Launch New Session</Link>
+            <div className="bg-[#0a0d14] border-4 border-dashed border-white/5 rounded-[4rem] p-32 text-center space-y-8 group hover:border-primary/20 transition-all">
+              <div className="w-24 h-24 bg-white/5 rounded-full flex items-center justify-center mx-auto">
+                 <Video className="w-10 h-10 text-muted-foreground opacity-20" />
+              </div>
+              <div className="space-y-2">
+                 <h3 className="text-2xl font-bold font-headline text-white">Abhi koi project nahi hai</h3>
+                 <p className="text-muted-foreground font-medium italic">Chaliye, pehli viral video aaj hi banate hain!</p>
+              </div>
+              <Button className="rounded-[2rem] h-16 px-12 font-bold shadow-xl shadow-primary/20" asChild>
+                <Link href="/editor">Naya Kaam Shuru Karo</Link>
               </Button>
             </div>
           )}
         </section>
+
+        {/* Pro Plan Prompt */}
+        {!profile?.isPremium && (
+          <section className="max-w-4xl mx-auto pt-10">
+            <Card className="rounded-[3.5rem] bg-primary p-12 text-white relative overflow-hidden shadow-2xl shadow-primary/40 group hover:scale-[1.02] transition-transform">
+               <div className="absolute -bottom-10 -right-10 opacity-20 rotate-12 group-hover:rotate-0 transition-all duration-1000">
+                  <Star className="w-80 h-80 fill-current" />
+               </div>
+               <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-10">
+                  <div className="space-y-4 text-center md:text-left">
+                     <h3 className="text-4xl font-bold font-headline leading-tight">Pro Studio Join Karo!</h3>
+                     <p className="text-white/80 text-lg font-medium italic">Unlimited AI Credits aur 4K exports ke liye ₹99/mo mein upgrade karein.</p>
+                  </div>
+                  <Button variant="secondary" className="h-16 px-12 rounded-[2rem] font-bold text-lg hover:bg-white transition-all shadow-xl" asChild>
+                    <Link href="/premium">Upgrade Now <ArrowRight className="ml-3 w-5 h-5" /></Link>
+                  </Button>
+               </div>
+            </Card>
+          </section>
+        )}
+
       </main>
     </div>
   );
