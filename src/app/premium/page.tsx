@@ -1,10 +1,11 @@
+
 "use client";
 
 import { useState } from "react";
 import { Navbar } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Crown, Check, Zap, Cloud, Video, ShieldCheck, Loader2, Star, Rocket, Building2, CheckCircle2, Banknote } from "lucide-react";
+import { Crown, Check, Zap, Cloud, Video, ShieldCheck, Loader2, Star, Rocket, Building2, CheckCircle2, Banknote, CreditCard, ArrowRight } from "lucide-react";
 import { useUser, useFirestore, useDoc } from "@/firebase";
 import { doc, updateDoc } from "firebase/firestore";
 import { useToast } from "@/hooks/use-toast";
@@ -69,10 +70,9 @@ export default function PremiumPage() {
     };
 
     try {
-      // Simulation of a payment gateway delay
+      // Simulation of a payment gateway delay (Razorpay integration point)
       await new Promise(resolve => setTimeout(resolve, 2000));
       
-      // Non-blocking mutation
       updateDoc(userRef, data).catch(async (e) => {
         const permissionError = new FirestorePermissionError({
           path: userRef.path,
@@ -192,16 +192,16 @@ export default function PremiumPage() {
                  <Banknote className="w-10 h-10 text-indigo-400" />
               </div>
               <div className="space-y-2">
-                 <h3 className="text-2xl font-bold font-headline">Bank Account Connection</h3>
-                 <p className="text-muted-foreground text-sm max-w-md font-medium">Aapki kamai direct bank mein aayegi. Google AdSense aur Razorpay settings kaise karni hai, ye jaanne ke liye guide padhein.</p>
+                 <h3 className="text-2xl font-bold font-headline">Bank Account & Earning</h3>
+                 <p className="text-muted-foreground text-sm max-w-md font-medium">Aapki kamai direct bank mein aayegi. Google AdSense aur Subscription ka paisa kaise withdraw karna hai, ye jaanne ke liye guide padhein.</p>
               </div>
            </div>
            <Button variant="outline" className="h-14 px-10 rounded-2xl border-indigo-500/30 font-bold hover:bg-indigo-500/10" asChild>
-              <Link href="/premium">Read Setup Guide <ShieldCheck className="ml-2 w-4 h-4" /></Link>
+              <Link href="/BANK_TRANSFER_GUIDE.md">Paisa Kaise Milega? <ArrowRight className="ml-2 w-4 h-4" /></Link>
            </Button>
         </section>
 
-        <AdBanner provider="AdMob Premium" />
+        <AdBanner provider="AdMob Premium Network" />
 
         <div className="grid md:grid-cols-4 gap-8 py-10">
           {[

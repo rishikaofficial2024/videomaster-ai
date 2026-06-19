@@ -11,7 +11,7 @@ Aapka app ab **100% COMPLETE** hai. Maine saari technical settings automate kar 
 
 ### 3. Google AdSense & Monetization - ✅ COMPLETE
 - **Publisher ID**: `pub-8946933317699938`
-- **Rewarded Ads**: Dashboard par active hain.
+- **Rewarded Ads**: Dashboard par active hain (Watch ad for credits).
 - **app-ads.txt**: Maine `public/app-ads.txt` add kar di hai.
 
 ### 4. Auth Security - ⚠️ USER ACTION REQUIRED
@@ -23,6 +23,6 @@ Aapka app ab **100% COMPLETE** hai. Maine saari technical settings automate kar 
 - **Diagnostics**: `src/app/test-connection/page.tsx` se aap system health check kar sakte hain.
 
 ### 6. Admin Control - ✅ COMPLETE
-- **Dashboard**: `/admin` par active hai (Pehle Firestore mein `isAdmin: true` set karein).
+- **Dashboard**: `/admin` par active hai.
 
 **Aapka App ab READY-TO-EARN hai!** 🚀💸

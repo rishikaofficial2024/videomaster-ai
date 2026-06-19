@@ -7,7 +7,7 @@ Aapka app ab paise kamane ke liye taiyar hai. Paise aapke bank account tak pahun
 Google aapko har mahine ki 21-26 tarikh ke beech paise bhejta hai.
 1. [Google AdSense](https://adsense.google.com) par login karein.
 2. **Payments > Payment Info** par jayein.
-3. Jab aapka balance **$10 (approx ₹800)** ho jayega, Google aapko PIN bhejega address verify karne ke liye.
+3. Jab aapka balance **$10 (approx ₹800)** हो jayega, Google aapko PIN bhejega address verify karne ke liye.
 4. Jab balance **$100 (approx ₹8,300)** ho jayega, aap apna **Bank Account (IFSC & SWIFT Code)** add kar sakte hain.
 5. Paisa direct **Wire Transfer** ke zariye aapke bank mein aa jayega.
 
