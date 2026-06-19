@@ -17,7 +17,7 @@ git push -u origin main
 
 ### 2. APK Bante Huye Dekhein
 1. Apni GitHub repository page par jayein: `github.com/rishikaofficial2024/videomaster-ai`
-2. Upar **"Actions"** tab par click karein.
+2. Upar menu mein **"Actions"** tab par click karein.
 3. Aapko **"Build Android APK"** naam ka workflow dikhega jo "In Progress" hoga.
 
 ### 3. APK Download Karein
@@ -25,4 +25,4 @@ git push -u origin main
 2. Page ke sabse niche **"Artifacts"** section mein `VideoMasterAI-Final-APK` link dikhega.
 3. Uspar click karke file download karein aur apne mobile mein install karein.
 
-**Note**: Agar login mein koi dikat aaye, toh `AUTH_DOMAIN_FIX.md` padhna na bhulein. Aapka app ab poori tarah business ke liye taiyar hai! 🚀💰
+**Note**: Aapka app ab poori tarah business ke liye taiyar hai! 🚀💰
