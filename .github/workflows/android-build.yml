@@ -11,10 +11,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@3932fa9ca7020759f945ad336e2d48c3d8b50252 # v4.1.0
         with:
           node-version: 20
           cache: 'npm'
@@ -26,13 +26,13 @@ jobs:
         run: npm run build
 
       - name: Set up Java
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@387ac29b308b003c05baef7110cbf2d3278d85c5 # v4.4.0
         with:
           distribution: 'zulu'
           java-version: '17'
 
       - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
+        uses: android-actions/setup-android@7420a551b8ac3f18a56f06a869768a3563914948 # v3.2.1
 
       - name: Capacitor Scaffold & Sync
         run: |
@@ -48,7 +48,7 @@ jobs:
           ./gradlew assembleDebug
 
       - name: Upload Finished APK
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@b4b15b8c7c6ac21ea23f80ca15c574c82b071052 # v4.4.3
         with:
           name: VideoMasterAI-Final-APK
           path: android/app/build/outputs/apk/debug/app-debug.apk
