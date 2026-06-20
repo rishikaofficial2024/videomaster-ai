@@ -1,14 +1,14 @@
 
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Video, Chrome, Facebook, Smartphone, ArrowLeft, Sparkles, Loader2, AlertTriangle, Info, ExternalLink } from "lucide-react";
+import { Video, Chrome, Facebook, Smartphone, ArrowLeft, Sparkles, Loader2, Info, ExternalLink, Github } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { 
@@ -16,6 +16,7 @@ import {
   signInWithPopup, 
   GoogleAuthProvider, 
   FacebookAuthProvider,
+  GithubAuthProvider,
   RecaptchaVerifier,
   signInWithPhoneNumber
 } from "firebase/auth";
@@ -50,10 +51,14 @@ export default function LoginPage() {
     }
   };
 
-  const handleSocialLogin = async (providerName: 'google' | 'facebook') => {
+  const handleSocialLogin = async (providerName: 'google' | 'facebook' | 'github') => {
     try {
       setLoading(true);
-      const provider = providerName === 'google' ? new GoogleAuthProvider() : new FacebookAuthProvider();
+      let provider;
+      if (providerName === 'google') provider = new GoogleAuthProvider();
+      else if (providerName === 'facebook') provider = new FacebookAuthProvider();
+      else provider = new GithubAuthProvider();
+
       await signInWithPopup(auth, provider);
       router.push("/dashboard");
     } catch (error: any) {
@@ -247,14 +252,18 @@ export default function LoginPage() {
             </div>
           </div>
           
-          <div className="grid grid-cols-2 gap-4">
-            <Button variant="outline" className="h-16 rounded-2xl gap-3 font-bold border-white/10 bg-black/20 hover:bg-primary/5 transition-all shadow-sm group" onClick={() => handleSocialLogin('google')} disabled={loading}>
-              <Chrome className="w-5 h-5 text-red-500 group-hover:scale-110 transition-transform" />
-              Google
+          <div className="grid grid-cols-3 gap-3">
+            <Button variant="outline" className="h-14 rounded-2xl gap-2 font-bold border-white/10 bg-black/20 hover:bg-primary/5 transition-all group p-1" onClick={() => handleSocialLogin('google')} disabled={loading}>
+              <Chrome className="w-4 h-4 text-red-500" />
+              <span className="text-[10px]">Google</span>
             </Button>
-            <Button variant="outline" className="h-16 rounded-2xl gap-3 font-bold border-white/10 bg-black/20 hover:bg-primary/5 transition-all shadow-sm group" onClick={() => handleSocialLogin('facebook')} disabled={loading}>
-              <Facebook className="w-5 h-5 text-blue-600 group-hover:scale-110 transition-transform" />
-              Facebook
+            <Button variant="outline" className="h-14 rounded-2xl gap-2 font-bold border-white/10 bg-black/20 hover:bg-primary/5 transition-all group p-1" onClick={() => handleSocialLogin('facebook')} disabled={loading}>
+              <Facebook className="w-4 h-4 text-blue-600" />
+              <span className="text-[10px]">FB</span>
+            </Button>
+            <Button variant="outline" className="h-14 rounded-2xl gap-2 font-bold border-white/10 bg-black/20 hover:bg-primary/5 transition-all group p-1" onClick={() => handleSocialLogin('github')} disabled={loading}>
+              <Github className="w-4 h-4 text-white" />
+              <span className="text-[10px]">GitHub</span>
             </Button>
           </div>
         </CardContent>
