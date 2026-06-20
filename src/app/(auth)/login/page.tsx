@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Video, Chrome, Facebook, Smartphone, ArrowLeft, Sparkles, Loader2, Info, ExternalLink, Github, AlertCircle, Copy } from "lucide-react";
+import { Video, Chrome, Facebook, ArrowLeft, Sparkles, Loader2, Info, ExternalLink, Github, AlertCircle, Copy } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { 
@@ -183,7 +183,7 @@ export default function LoginPage() {
                 <AlertCircle className="w-5 h-5 text-destructive shrink-0" />
                 <div className="space-y-1">
                   <p className="text-[10px] font-bold text-destructive uppercase tracking-widest">Billing Not Enabled</p>
-                  <p className="text-[11px] text-white/70 leading-relaxed">Phone Auth ke liye aapko Firebase project ko **Blaze Plan** par upgrade karna hoga. Ye Google ki policy hai.</p>
+                  <p className="text-[11px] text-white/70 leading-relaxed">Phone Auth ke liye aapko Firebase project ko **Blaze Plan** par upgrade karna hoga.</p>
                 </div>
               </div>
               <Button variant="link" className="h-auto p-0 text-[10px] text-primary font-bold justify-start gap-1" asChild>
@@ -303,15 +303,6 @@ export default function LoginPage() {
             </TabsContent>
           </Tabs>
           
-          <div className="relative">
-            <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t border-white/5" />
-            </div>
-            <div className="relative flex justify-center text-[9px] uppercase font-bold tracking-[0.4em]">
-              <span className="bg-[#0a0d14] px-4 text-muted-foreground">Neural Connect</span>
-            </div>
-          </div>
-          
           <div className="grid grid-cols-3 gap-3">
             <Button variant="outline" className="h-14 rounded-2xl gap-2 font-bold border-white/10 bg-black/20 hover:bg-primary/5 transition-all group p-1" onClick={() => handleSocialLogin('google')} disabled={loading}>
               <Chrome className="w-4 h-4 text-red-500" />
@@ -327,17 +318,12 @@ export default function LoginPage() {
             </Button>
           </div>
         </CardContent>
-
         <CardFooter className="flex flex-col space-y-6 pb-12 pt-6">
           <div className="text-xs text-center text-muted-foreground font-medium">
             New to the studio?{" "}
-            <Link href="/signup" className="text-primary font-bold hover:underline transition-all">
+            <Link href="/signup" className="text-primary font-bold hover:underline">
               Create Free Account
             </Link>
-          </div>
-          <div className="flex items-center gap-3 px-5 py-2 bg-primary/10 rounded-full border border-primary/20 shadow-inner">
-            <Sparkles className="w-4 h-4 text-primary" />
-            <span className="text-[9px] font-bold text-primary uppercase tracking-[0.3em]">Secure 256-bit AI Access</span>
           </div>
         </CardFooter>
       </Card>

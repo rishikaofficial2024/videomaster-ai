@@ -8,7 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "mobile:push": "git add . && (git commit -m 'Elite Clean Build' || true) && git push origin main --force",
+    "mobile:push": "git add . && (git commit -m '🚀 Elite Production Launch Build' || true) && git push origin main --force",
     "web:deploy": "npm run build && npx firebase-tools deploy --only hosting"
   },
   "dependencies": {
