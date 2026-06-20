@@ -1,11 +1,10 @@
-
 "use client";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { 
   Home, Search, Compass, Crown, User, 
-  Video, Sparkles, ShieldAlert 
+  Video, Sparkles, ShieldAlert, Bot 
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useUser, useFirestore, useDoc, useMemoFirebase } from "@/firebase";
@@ -14,6 +13,7 @@ import { doc } from "firebase/firestore";
 const navItems = [
   { name: "Home", href: "/dashboard", icon: Home },
   { name: "Search", href: "/projects", icon: Search },
+  { name: "Assistant", href: "/ai-assistant", icon: Bot },
   { name: "Explore", href: "/templates", icon: Compass },
   { name: "Premium", href: "/premium", icon: Crown },
   { name: "Profile", href: "/profile", icon: User },
@@ -65,7 +65,7 @@ export function Navbar() {
         </div>
       </nav>
 
-      {/* Mobile Bottom Navbar (Matches Screenshot) */}
+      {/* Mobile Bottom Navbar */}
       <nav className="fixed bottom-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-3xl border-t border-white/5 md:hidden h-24 flex items-center justify-around px-4 shadow-[0_-10px_40px_rgba(0,0,0,0.5)]">
         {navItems.map((item) => {
           const Icon = item.icon;
