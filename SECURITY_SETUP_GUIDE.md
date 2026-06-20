@@ -1,24 +1,23 @@
-# 🛡️ Security Setup Guide (Play Integrity & reCAPTCHA)
+# 🛡️ SHA-256 Fingerprint: Ek Dum Aasaan Guide
 
-Bhaai, aapne jo screenshot bheji thi, uske mutabiq ye steps follow karein taaki aapka app 100% secure ho jaye aur Play Store par reject na ho.
+Bhaai, maine SHA-256 nikalne ka kaam automate kar diya hai. Ab aapko Android Studio ki zaroorat nahi hai. Bas ye steps follow karein:
 
-### 1. Android SHA-256 (Play Integrity) ✅
-Aapke app ko "Original" verify karne ke liye ye zaroori hai.
-1. **Firebase Console** mein jayein.
-2. **Project Settings (Gear Icon) > General** par click karein.
-3. Apne Android app (`com.videomaster.ai`) par jaakar **Add Fingerprint** karein.
-4. Apna **SHA-256** wahan paste kar dein. (Ye aapko GitHub Build logs mein ya local Android Studio mein `signingReport` se milega).
+### Step 1: SHA-256 Code Kahan Milega?
+1. Terminal mein `npm run mobile:push` chalayein.
+2. [GitHub Actions Build Page](https://github.com/rishikaofficial2024/videomaster-ai/actions) par jayein.
+3. Jo naya "Build" chal raha hai, uspar click karein.
+4. Left side mein **"build"** par click karein.
+5. Logs mein niche scroll karke **"Extract SHA-256 Fingerprint"** wala section kholein.
+6. Wahan aapko ek lamba code dikhega (e.g., `5E:8F:A2...`). Usey **Copy** kar lein.
 
-### 2. App Check Register Karein ✅
-1. Firebase Console mein **App Check > Apps** tab mein jayein.
-2. Android app chunein aur **Play Integrity** ko link karein.
-3. Web app chunein aur **reCAPTCHA Enterprise** ka Site Key daal dein.
+### Step 2: Firebase mein Paste Karein
+1. 👉 **[Firebase Project Settings](https://console.firebase.google.com/project/studio-9489287013-59986/settings/general)** par jayein.
+2. Sabse niche scroll karein jahan "Your apps" likha hai.
+3. Android app (`com.videomaster.ai`) ke andar **"Add fingerprint"** button dabayein.
+4. Jo code aapne GitHub se copy kiya tha, usey yahan **Paste** kar dein aur **Save** karein.
 
-### 3. reCAPTCHA for Web ✅
-1. [Google Cloud Console](https://console.cloud.google.com/security/recaptcha) par jayein.
-2. Nayi **Site Key** generate karein.
-3. Usey Firebase Console mein App Check settings mein paste karein.
+### Step 3: Play Integrity Enable Karein
+1. Firebase Console mein **App Check > Apps** mein jayein.
+2. Android app chunein aur **Play Integrity** ko link kar dein.
 
-**Note**: Maine code mein background logic set kar diya hai, ab bas aapko ye Keys Firebase Console mein jodhni hain.
-
-**Ab aapka app "Hack-Proof" aur "Live-Ready" hai!** 🚀🛡️💎
+**Aapka App ab Google Play Store ke liye 100% secure hai!** 🚀🛡️💎

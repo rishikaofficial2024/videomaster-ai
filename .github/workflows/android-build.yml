@@ -39,6 +39,15 @@ jobs:
           npx cap add android || true
           npx cap sync android
 
+      - name: 🔑 Extract SHA-256 Fingerprint
+        run: |
+          cd android
+          chmod +x gradlew
+          ./gradlew signingReport | grep -A 3 "Variant: debug" | grep "SHA-256" || true
+          echo "------------------------------------------------------------"
+          echo "Bhaai, upar waala SHA-256 code copy karke Firebase mein daalein!"
+          echo "------------------------------------------------------------"
+
       - name: Build APK (Debug/Release)
         run: |
           cd android
