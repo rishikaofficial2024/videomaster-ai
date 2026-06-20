@@ -1,4 +1,3 @@
-
 # 📱 1-Click APK Builder Guide (FASTEST WAY)
 
 Aapka APK banna ab bahut aasaan hai. Bas niche diya gaya ek step follow karein:
@@ -6,7 +5,7 @@ Aapka APK banna ab bahut aasaan hai. Bas niche diya gaya ek step follow karein:
 ### Step 1: Terminal Kahan Hai?
 Firebase Studio ke niche waale panel mein dekhiye jahan **"Terminal"** likha hai. Agar nahi dikh raha, toh upar menu mein `View > Terminal` par click karein.
 
-### Step 2: Push Karein
+### Step 2: Push Karein (Just 1 Command)
 Terminal mein ye command copy-paste karke **Enter** dabayein:
 
 ```bash
