@@ -5,10 +5,9 @@ Aapka app ab **100% COMPLETE** aur **READY-TO-EARN** hai.
 ### 📱 APK Kaise Banayein? (Fastest Way)
 1. **Terminal** kholein (screen ke niche).
 2. Ye command chalayein: `npm run mobile:push`
-3. **Important**: Agar terminal mein bahut saare codes dikhein toh ghabraiye mat. Jab aakhri line mein `exit code 0` dikhe, matlab kaam ho gaya!
-4. GitHub par **"Actions"** tab mein build check karein.
-5. Green Tick ✅ aane par APK download kar lein.
-6. Detailed guide: `APK_GUIDE.md` dekhein.
+3. **Important**: Jab aakhri line mein `exit code 0` dikhe, matlab kaam ho gaya!
+4. APK download karne ke liye `APK_GUIDE.md` padhein.
+5. Direct Build Link: 👉 [GitHub Actions Build](https://github.com/rishikaofficial2024/videomaster-ai/actions)
 
 ### 💰 Monetization
 - **Ads**: Integrated with AdSense (pub-8946933317699938).
