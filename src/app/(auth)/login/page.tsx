@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Video, Chrome, Facebook, ArrowLeft, Sparkles, Loader2, Info, ExternalLink, Github, AlertCircle, Copy } from "lucide-react";
+import { Video, Chrome, Facebook, ArrowLeft, Sparkles, Loader2, Info, ExternalLink, Github, AlertCircle, Copy, HelpCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { 
@@ -31,6 +31,7 @@ export default function LoginPage() {
   const [confirmationResult, setConfirmationResult] = useState<any>(null);
   const [authError, setAuthError] = useState<string | null>(null);
   const [currentHostname, setCurrentHostname] = useState("");
+  const [showTroubleshoot, setShowTroubleshoot] = useState(false);
   
   const router = useRouter();
   const { toast } = useToast();
@@ -50,7 +51,7 @@ export default function LoginPage() {
       await signInWithEmailAndPassword(auth, email, password);
       router.push("/dashboard");
     } catch (error: any) {
-      setAuthError(error.message);
+      setAuthError(error.code || error.message);
       toast({
         variant: "destructive",
         title: "Login Failed",
@@ -74,21 +75,16 @@ export default function LoginPage() {
       router.push("/dashboard");
     } catch (error: any) {
       console.error("Auth Error:", error.code, error.message);
+      setAuthError(error.code);
       
-      let description = error.message;
       if (error.code === 'auth/unauthorized-domain') {
-        setAuthError("auth/unauthorized-domain");
-      } else if (error.code === 'auth/operation-not-allowed') {
-        description = `⚠️ ${providerName} Login disabled hai! Firebase Console mein ise Enable karein.`;
-        setAuthError(description);
-      } else if (error.code === 'auth/billing-not-enabled') {
-        setAuthError("auth/billing-not-enabled");
+        setShowTroubleshoot(true);
       }
       
       toast({
         variant: "destructive",
-        title: `${providerName} Login Error`,
-        description: description,
+        title: `${providerName} Error`,
+        description: error.message,
       });
     } finally {
       setLoading(false);
@@ -115,16 +111,8 @@ export default function LoginPage() {
       setConfirmationResult(result);
       toast({ title: "OTP Sent", description: "Please check your mobile messages." });
     } catch (error: any) {
-      console.error("Phone Auth Error:", error.code, error.message);
-      let description = error.message;
-      if (error.code === 'auth/operation-not-allowed') {
-        description = "⚠️ Phone Login disabled hai! Firebase Console mein 'Phone' ko Enable karein.";
-      } else if (error.code === 'auth/billing-not-enabled') {
-        setAuthError("auth/billing-not-enabled");
-        description = "⚠️ Billing not enabled! Firebase Console mein 'Blaze Plan' par upgrade karein.";
-      }
-      setAuthError(description);
-      toast({ variant: "destructive", title: "Phone Error", description: description });
+      setAuthError(error.code);
+      toast({ variant: "destructive", title: "Phone Error", description: error.message });
     } finally {
       setLoading(false);
     }
@@ -176,54 +164,41 @@ export default function LoginPage() {
         </CardHeader>
 
         <CardContent className="space-y-8 px-10">
-          {/* Billing Error Handler */}
-          {authError === "auth/billing-not-enabled" && (
-            <div className="p-5 bg-destructive/10 border border-destructive/20 rounded-2xl flex flex-col gap-4 animate-in zoom-in-95">
+          {/* Advanced Troubleshooting UI */}
+          {(authError === "auth/unauthorized-domain" || showTroubleshoot) && (
+            <div className="p-6 bg-red-500/10 border border-red-500/30 rounded-3xl space-y-4 animate-in zoom-in-95">
               <div className="flex gap-3">
-                <AlertCircle className="w-5 h-5 text-destructive shrink-0" />
+                <AlertCircle className="w-6 h-6 text-red-500 shrink-0" />
                 <div className="space-y-1">
-                  <p className="text-[10px] font-bold text-destructive uppercase tracking-widest">Billing Not Enabled</p>
-                  <p className="text-[11px] text-white/70 leading-relaxed">Phone Auth ke liye aapko Firebase project ko **Blaze Plan** par upgrade karna hoga.</p>
-                </div>
-              </div>
-              <Button variant="link" className="h-auto p-0 text-[10px] text-primary font-bold justify-start gap-1" asChild>
-                <a href="https://console.firebase.google.com/project/studio-9489287013-59986/usage/details" target="_blank" rel="noopener noreferrer">
-                  Upgrade to Blaze Plan <ExternalLink className="w-2 h-2" />
-                </a>
-              </Button>
-            </div>
-          )}
-
-          {/* Unauthorized Domain Error Handler */}
-          {authError === "auth/unauthorized-domain" && (
-            <div className="p-5 bg-destructive/10 border border-destructive/20 rounded-2xl flex flex-col gap-4 animate-in zoom-in-95">
-              <div className="flex gap-3">
-                <AlertCircle className="w-5 h-5 text-destructive shrink-0" />
-                <div className="space-y-1">
-                  <p className="text-[10px] font-bold text-destructive uppercase tracking-widest">Unauthorized Domain Error</p>
-                  <p className="text-[11px] text-white/70">Niche diye gaye domain ko copy karein aur Firebase Console mein add karein:</p>
+                  <p className="text-xs font-bold text-red-500 uppercase tracking-widest">Unauthorized Domain (Fix Chahiye)</p>
+                  <p className="text-[11px] text-white/70">Bhaai, is domain ko Firebase mein add karna zaroori hai tabhi login chalega:</p>
                 </div>
               </div>
               
-              <div className="flex items-center gap-2 p-3 bg-black/40 rounded-xl border border-white/5 group">
+              <div className="flex items-center gap-2 p-3 bg-black/40 rounded-xl border border-white/10">
                 <code className="flex-1 text-[10px] font-mono text-primary truncate">{currentHostname}</code>
                 <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg" onClick={() => copyToClipboard(currentHostname)}>
                   <Copy className="w-3 h-3" />
                 </Button>
               </div>
 
-              <Button variant="link" className="h-auto p-0 text-[10px] text-primary font-bold justify-start gap-1" asChild>
-                <a href="https://console.firebase.google.com/project/studio-9489287013-59986/authentication/settings" target="_blank" rel="noopener noreferrer">
-                  Open Firebase Settings <ExternalLink className="w-2 h-2" />
-                </a>
-              </Button>
+              <div className="space-y-2">
+                <p className="text-[10px] text-white/50 italic">1. Upar wala domain Copy karein.<br/>2. Niche wala button dabayein.<br/>3. Firebase mein 'Add Domain' karke paste karein.</p>
+                <Button className="w-full h-10 rounded-xl bg-red-600 hover:bg-red-700 text-[10px] font-bold" asChild>
+                  <a href="https://console.firebase.google.com/project/studio-9489287013-59986/authentication/settings" target="_blank">
+                    Firebase Settings Kholein <ExternalLink className="ml-2 w-3 h-3" />
+                  </a>
+                </Button>
+              </div>
             </div>
           )}
 
-          {authError && authError !== "auth/unauthorized-domain" && authError !== "auth/billing-not-enabled" && (
+          {authError && authError !== "auth/unauthorized-domain" && (
             <div className="p-4 bg-destructive/10 border border-destructive/20 rounded-2xl flex gap-3 animate-in zoom-in-95">
               <AlertCircle className="w-5 h-5 text-destructive shrink-0" />
-              <p className="text-[10px] font-bold text-destructive leading-relaxed uppercase tracking-widest">{authError}</p>
+              <p className="text-[10px] font-bold text-destructive leading-relaxed uppercase tracking-widest">
+                Error: {authError}
+              </p>
             </div>
           )}
 
@@ -242,7 +217,7 @@ export default function LoginPage() {
                     type="email" 
                     placeholder="name@example.com" 
                     required 
-                    className="h-14 rounded-2xl bg-black/40 border-white/10 focus:border-primary/50 transition-all text-white" 
+                    className="h-14 rounded-2xl bg-black/40 border-white/10 focus:border-primary/50 text-white" 
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                   />
@@ -253,7 +228,7 @@ export default function LoginPage() {
                     id="password" 
                     type="password" 
                     required 
-                    className="h-14 rounded-2xl bg-black/40 border-white/10 focus:border-primary/50 transition-all text-white" 
+                    className="h-14 rounded-2xl bg-black/40 border-white/10 focus:border-primary/50 text-white" 
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                   />
@@ -273,7 +248,7 @@ export default function LoginPage() {
                       id="phone" 
                       type="tel" 
                       placeholder="+91 98765 43210" 
-                      className="h-14 rounded-2xl bg-black/40 border-white/10 focus:border-primary/50 transition-all text-white" 
+                      className="h-14 rounded-2xl bg-black/40 border-white/10 focus:border-primary/50 text-white" 
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
                     />
@@ -304,15 +279,15 @@ export default function LoginPage() {
           </Tabs>
           
           <div className="grid grid-cols-3 gap-3">
-            <Button variant="outline" className="h-14 rounded-2xl gap-2 font-bold border-white/10 bg-black/20 hover:bg-primary/5 transition-all group p-1" onClick={() => handleSocialLogin('google')} disabled={loading}>
+            <Button variant="outline" className="h-14 rounded-2xl gap-2 font-bold border-white/10 bg-black/20 hover:bg-primary/5 transition-all p-1" onClick={() => handleSocialLogin('google')} disabled={loading}>
               <Chrome className="w-4 h-4 text-red-500" />
               <span className="text-[10px]">Google</span>
             </Button>
-            <Button variant="outline" className="h-14 rounded-2xl gap-2 font-bold border-white/10 bg-black/20 hover:bg-primary/5 transition-all group p-1" onClick={() => handleSocialLogin('facebook')} disabled={loading}>
+            <Button variant="outline" className="h-14 rounded-2xl gap-2 font-bold border-white/10 bg-black/20 hover:bg-primary/5 transition-all p-1" onClick={() => handleSocialLogin('facebook')} disabled={loading}>
               <Facebook className="w-4 h-4 text-blue-600" />
               <span className="text-[10px]">FB</span>
             </Button>
-            <Button variant="outline" className="h-14 rounded-2xl gap-2 font-bold border-white/10 bg-black/20 hover:bg-primary/5 transition-all group p-1" onClick={() => handleSocialLogin('github')} disabled={loading}>
+            <Button variant="outline" className="h-14 rounded-2xl gap-2 font-bold border-white/10 bg-black/20 hover:bg-primary/5 transition-all p-1" onClick={() => handleSocialLogin('github')} disabled={loading}>
               <Github className="w-4 h-4 text-white" />
               <span className="text-[10px]">GitHub</span>
             </Button>
@@ -325,6 +300,9 @@ export default function LoginPage() {
               Create Free Account
             </Link>
           </div>
+          <Button variant="ghost" className="text-[10px] font-bold uppercase tracking-widest gap-2 text-muted-foreground" onClick={() => setShowTroubleshoot(!showTroubleshoot)}>
+            <HelpCircle className="w-3 h-3" /> Troubleshoot Login
+          </Button>
         </CardFooter>
       </Card>
     </div>

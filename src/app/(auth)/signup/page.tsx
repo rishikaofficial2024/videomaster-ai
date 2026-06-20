@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Video, Chrome, Facebook, Sparkles, Loader2, AlertCircle, Copy, ExternalLink, ArrowLeft } from "lucide-react";
+import { Video, Chrome, Facebook, Sparkles, Loader2, AlertCircle, Copy, ExternalLink, ArrowLeft, HelpCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { 
   createUserWithEmailAndPassword, 
@@ -30,6 +30,7 @@ export default function SignupPage() {
   const [lastName, setLastName] = useState("");
   const [authError, setAuthError] = useState<string | null>(null);
   const [currentHostname, setCurrentHostname] = useState("");
+  const [showTroubleshoot, setShowTroubleshoot] = useState(false);
   
   const router = useRouter();
   const { toast } = useToast();
@@ -69,22 +70,12 @@ export default function SignupPage() {
         }
       };
 
-      setDoc(userRef, profileData)
-        .catch(async (serverError) => {
-          const permissionError = new FirestorePermissionError({
-            path: userRef.path,
-            operation: 'create',
-            requestResourceData: profileData
-          } satisfies SecurityRuleContext);
-          errorEmitter.emit('permission-error', permissionError);
-        });
-
+      await setDoc(userRef, profileData);
       router.push("/dashboard");
     } catch (error: any) {
+      setAuthError(error.code || error.message);
       if (error.code === 'auth/unauthorized-domain') {
-        setAuthError("auth/unauthorized-domain");
-      } else {
-        setAuthError(error.message);
+        setShowTroubleshoot(true);
       }
       toast({
         variant: "destructive",
@@ -120,15 +111,12 @@ export default function SignupPage() {
         }
       };
 
-      setDoc(userRef, profileData, { merge: true })
-        .catch(async () => {});
-
+      await setDoc(userRef, profileData, { merge: true });
       router.push("/dashboard");
     } catch (error: any) {
+      setAuthError(error.code || error.message);
       if (error.code === 'auth/unauthorized-domain') {
-        setAuthError("auth/unauthorized-domain");
-      } else {
-        setAuthError(error.message);
+        setShowTroubleshoot(true);
       }
       toast({
         variant: "destructive",
@@ -171,35 +159,28 @@ export default function SignupPage() {
         </CardHeader>
 
         <CardContent className="space-y-8 px-10">
-          {authError === "auth/unauthorized-domain" && (
-            <div className="p-5 bg-destructive/10 border border-destructive/20 rounded-2xl flex flex-col gap-4 animate-in zoom-in-95">
+          {(authError === "auth/unauthorized-domain" || showTroubleshoot) && (
+            <div className="p-6 bg-red-500/10 border border-red-500/30 rounded-3xl space-y-4 animate-in zoom-in-95">
               <div className="flex gap-3">
-                <AlertCircle className="w-5 h-5 text-destructive shrink-0" />
+                <AlertCircle className="w-6 h-6 text-red-500 shrink-0" />
                 <div className="space-y-1">
-                  <p className="text-[10px] font-bold text-destructive uppercase tracking-widest">Unauthorized Domain Error</p>
-                  <p className="text-[11px] text-white/70">Niche diye gaye domain ko copy karein aur Firebase Console mein add karein:</p>
+                  <p className="text-xs font-bold text-red-500 uppercase tracking-widest">Login Fix Required</p>
+                  <p className="text-[11px] text-white/70">Niche wala domain copy karke Firebase Console mein add karein:</p>
                 </div>
               </div>
               
-              <div className="flex items-center gap-2 p-3 bg-black/40 rounded-xl border border-white/5 group">
+              <div className="flex items-center gap-2 p-3 bg-black/40 rounded-xl border border-white/10">
                 <code className="flex-1 text-[10px] font-mono text-primary truncate">{currentHostname}</code>
                 <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg" onClick={() => copyToClipboard(currentHostname)}>
                   <Copy className="w-3 h-3" />
                 </Button>
               </div>
 
-              <Button variant="link" className="h-auto p-0 text-[10px] text-primary font-bold justify-start gap-1" asChild>
-                <a href="https://console.firebase.google.com/project/studio-9489287013-59986/authentication/settings" target="_blank" rel="noopener noreferrer">
-                  Open Firebase Settings <ExternalLink className="w-2 h-2" />
+              <Button className="w-full h-10 rounded-xl bg-red-600 font-bold text-[10px]" asChild>
+                <a href="https://console.firebase.google.com/project/studio-9489287013-59986/authentication/settings" target="_blank">
+                  Open Firebase Config <ExternalLink className="ml-2 w-3 h-3" />
                 </a>
               </Button>
-            </div>
-          )}
-
-          {authError && authError !== "auth/unauthorized-domain" && (
-            <div className="p-4 bg-destructive/10 border border-destructive/20 rounded-2xl flex gap-3 animate-in zoom-in-95">
-              <AlertCircle className="w-5 h-5 text-destructive shrink-0" />
-              <p className="text-[10px] font-bold text-destructive leading-relaxed uppercase tracking-widest">{authError}</p>
             </div>
           )}
 
@@ -207,86 +188,42 @@ export default function SignupPage() {
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2.5">
                 <Label htmlFor="firstName" className="font-bold text-[10px] uppercase tracking-widest text-primary ml-1">First Name</Label>
-                <Input 
-                  id="firstName" 
-                  placeholder="John" 
-                  required 
-                  className="h-14 rounded-2xl bg-black/40 border-white/10 focus:border-primary/50 transition-all text-white" 
-                  value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
-                />
+                <Input id="firstName" placeholder="John" required className="h-14 rounded-2xl bg-black/40 border-white/10 focus:border-primary/50 text-white" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
               </div>
               <div className="space-y-2.5">
                 <Label htmlFor="lastName" className="font-bold text-[10px] uppercase tracking-widest text-primary ml-1">Last Name</Label>
-                <Input 
-                  id="lastName" 
-                  placeholder="Doe" 
-                  required 
-                  className="h-14 rounded-2xl bg-black/40 border-white/10 focus:border-primary/50 transition-all text-white" 
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
-                />
+                <Input id="lastName" placeholder="Doe" required className="h-14 rounded-2xl bg-black/40 border-white/10 focus:border-primary/50 text-white" value={lastName} onChange={(e) => setLastName(e.target.value)} />
               </div>
             </div>
             <div className="space-y-2.5">
               <Label htmlFor="email" className="font-bold text-[10px] uppercase tracking-widest text-primary ml-1">Email</Label>
-              <Input 
-                id="email" 
-                type="email" 
-                placeholder="john@example.com" 
-                required 
-                className="h-14 rounded-2xl bg-black/40 border-white/10 focus:border-primary/50 transition-all text-white" 
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
+              <Input id="email" type="email" placeholder="john@example.com" required className="h-14 rounded-2xl bg-black/40 border-white/10 focus:border-primary/50 text-white" value={email} onChange={(e) => setEmail(e.target.value)} />
             </div>
             <div className="space-y-2.5">
               <Label htmlFor="password" className="font-bold text-[10px] uppercase tracking-widest text-primary ml-1">Password</Label>
-              <Input 
-                id="password" 
-                type="password" 
-                required 
-                className="h-14 rounded-2xl bg-black/40 border-white/10 focus:border-primary/50 transition-all text-white" 
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
+              <Input id="password" type="password" required className="h-14 rounded-2xl bg-black/40 border-white/10 focus:border-primary/50 text-white" value={password} onChange={(e) => setPassword(e.target.value)} />
             </div>
             <Button type="submit" className="w-full h-16 text-lg font-bold rounded-2xl shadow-2xl shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all" disabled={loading}>
               {loading ? <Loader2 className="animate-spin" /> : "Start Free Journey"}
             </Button>
           </form>
           
-          <div className="relative">
-            <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t border-white/5" />
-            </div>
-            <div className="relative flex justify-center text-[9px] uppercase font-bold tracking-[0.4em]">
-              <span className="bg-[#0a0d14] px-4 text-muted-foreground">Quick Signup</span>
-            </div>
-          </div>
-          
           <div className="grid grid-cols-2 gap-4">
-            <Button variant="outline" className="h-14 rounded-2xl gap-2 font-bold border-white/10 bg-black/20 hover:bg-primary/5 transition-all group" onClick={() => handleSocialSignup('google')} disabled={loading}>
-              <Chrome className="w-4 h-4 text-red-500" />
-              Google
+            <Button variant="outline" className="h-14 rounded-2xl gap-2 font-bold border-white/10 bg-black/20 hover:bg-primary/5 transition-all" onClick={() => handleSocialSignup('google')} disabled={loading}>
+              <Chrome className="w-4 h-4 text-red-500" /> Google
             </Button>
-            <Button variant="outline" className="h-14 rounded-2xl gap-2 font-bold border-white/10 bg-black/20 hover:bg-primary/5 transition-all group" onClick={() => handleSocialSignup('facebook')} disabled={loading}>
-              <Facebook className="w-4 h-4 text-blue-600" />
-              Facebook
+            <Button variant="outline" className="h-14 rounded-2xl gap-2 font-bold border-white/10 bg-black/20 hover:bg-primary/5 transition-all" onClick={() => handleSocialSignup('facebook')} disabled={loading}>
+              <Facebook className="w-4 h-4 text-blue-600" /> Facebook
             </Button>
           </div>
         </CardContent>
         <CardFooter className="flex flex-col space-y-6 pb-12 pt-6">
           <div className="text-xs text-center text-muted-foreground font-medium">
-            Already have an account?{" "}
-            <Link href="/login" className="text-primary font-bold hover:underline">
-              Log in
-            </Link>
+            Already have an account? <Link href="/login" className="text-primary font-bold hover:underline">Log in</Link>
           </div>
-          <div className="flex items-center gap-3 px-5 py-2 bg-primary/10 rounded-full border border-primary/20 shadow-inner">
-            <Sparkles className="w-4 h-4 text-primary" />
-            <span className="text-[9px] font-bold text-primary uppercase tracking-[0.3em]">Neural Connect Verified</span>
-          </div>
+          <Button variant="ghost" className="text-[10px] font-bold uppercase tracking-widest gap-2 text-muted-foreground" onClick={() => setShowTroubleshoot(!showTroubleshoot)}>
+            <HelpCircle className="w-3 h-3" /> Login Problems?
+          </Button>
         </CardFooter>
       </Card>
     </div>
