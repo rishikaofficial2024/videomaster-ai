@@ -85,7 +85,6 @@ export default function PremiumPage() {
     }
 
     try {
-      // Simulation of a payment gateway delay
       await new Promise(resolve => setTimeout(resolve, 2000));
       
       updateDoc(userRef, data).catch(async (e) => {
@@ -121,8 +120,8 @@ export default function PremiumPage() {
               <CheckCircle2 className="w-12 h-12 text-primary" />
            </div>
            <div className="space-y-4">
-              <h1 className="text-4xl font-headline font-bold text-white tracking-tighter">PAYMENT SUCCESS!</h1>
-              <p className="text-muted-foreground font-medium italic leading-relaxed">Aapka account update ho gaya hai. Ab aap bina kisi rok-tok ke kamaal ki videos bana sakte hain.</p>
+              <h1 className="text-4xl font-headline font-bold text-white tracking-tighter">PAYMENT SUCCESSFUL!</h1>
+              <p className="text-muted-foreground font-medium italic leading-relaxed">Your account has been upgraded. You can now create stunning videos without limitations.</p>
            </div>
            <Button className="w-full h-16 rounded-2xl font-bold text-lg shadow-2xl shadow-primary/30" onClick={() => window.location.href = '/dashboard'}>
               Go to Dashboard
@@ -142,7 +141,7 @@ export default function PremiumPage() {
           </div>
           <h1 className="text-5xl md:text-7xl font-headline font-bold tracking-tighter">Choose Your <span className="text-primary italic">Success Plan</span></h1>
           <p className="text-muted-foreground text-xl max-w-2xl mx-auto font-medium italic">
-            Everything you need to grow your channel and earn more from every video.
+            Everything you need to grow your channel and maximize your reach.
           </p>
         </div>
 
@@ -208,7 +207,7 @@ export default function PremiumPage() {
         <div className="space-y-8 pt-8">
            <div className="text-center space-y-2">
               <h2 className="text-3xl font-headline font-bold">One-Time <span className="text-indigo-400">Credit Packs</span></h2>
-              <p className="text-muted-foreground italic">Don't want to subscribe? Just top up your account.</p>
+              <p className="text-muted-foreground italic">Don't want to subscribe? Just top up your account balance.</p>
            </div>
            <div className="grid md:grid-cols-3 gap-6">
               {creditPacks.map((pack) => (
@@ -229,7 +228,7 @@ export default function PremiumPage() {
                      onClick={() => handleAction(pack.id, 'credits', pack.credits)}
                      disabled={loadingAction === pack.id}
                    >
-                     {loadingAction === pack.id ? <Loader2 className="animate-spin" /> : `Buy for ${pack.price}`}
+                     {loadingAction === pack.id ? <Loader2 className="animate-spin" /> : `Purchase for ${pack.price}`}
                    </Button>
                 </Card>
               ))}
@@ -244,11 +243,11 @@ export default function PremiumPage() {
               </div>
               <div className="space-y-3">
                  <h3 className="text-3xl font-bold font-headline">Bank Account & Withdrawals</h3>
-                 <p className="text-muted-foreground text-lg max-w-xl font-medium italic">Aapki saari kamai (Ads + Subscriptions) direct bank mein aayegi. Razorpay aur AdSense setup ke liye guide padhein.</p>
+                 <p className="text-muted-foreground text-lg max-w-xl font-medium italic">All your earnings (Ads + Subscriptions) will be transferred directly to your bank account via AdSense and Razorpay.</p>
               </div>
            </div>
            <Button className="h-20 px-12 rounded-3xl bg-emerald-600 font-bold text-lg shadow-2xl shadow-emerald-600/20 hover:scale-105" asChild>
-              <Link href="/BANK_TRANSFER_GUIDE.md">Paisa Withdraw Karein <ArrowRight className="ml-3 w-5 h-5" /></Link>
+              <Link href="/BANK_TRANSFER_GUIDE.md">Withdrawal Guide <ArrowRight className="ml-3 w-5 h-5" /></Link>
            </Button>
         </section>
 

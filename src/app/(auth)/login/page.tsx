@@ -84,7 +84,7 @@ export default function LoginPage() {
       toast({
         variant: "destructive",
         title: `${providerName} Sync Error`,
-        description: "Bhaai, Firebase settings mein kuch problem hai. Niche 'Troubleshoot' check karein.",
+        description: "Firebase configuration required. Please check troubleshooting below.",
       });
     } finally {
       setLoading(false);
@@ -102,6 +102,7 @@ export default function LoginPage() {
       toast({ title: "OTP Sent", description: "Check your messages." });
     } catch (error: any) {
       setAuthError(error.code);
+      if (error.code === 'auth/billing-not-enabled') setShowTroubleshoot(true);
       toast({ variant: "destructive", title: "Phone Error", description: error.message });
     } finally {
       setLoading(false);
@@ -154,8 +155,8 @@ export default function LoginPage() {
               <div className="flex gap-3">
                 <ShieldCheck className="w-5 h-5 text-red-500 shrink-0" />
                 <div className="space-y-1">
-                  <p className="text-[10px] font-bold text-red-500 uppercase tracking-widest">Sync Connection Fix</p>
-                  <p className="text-[11px] text-white/70">Social login chalu karne ke liye ye domain Firebase mein add karein:</p>
+                  <p className="text-[10px] font-bold text-red-500 uppercase tracking-widest">Connection Setup Required</p>
+                  <p className="text-[11px] text-white/70">To enable login, add this domain to your Firebase Authorized Domains:</p>
                 </div>
               </div>
               
@@ -177,6 +178,13 @@ export default function LoginPage() {
                     2. Add Authorized Domain <ExternalLink className="ml-2 w-3 h-3" />
                   </a>
                 </Button>
+                {authError === 'auth/billing-not-enabled' && (
+                  <Button variant="destructive" className="w-full h-10 rounded-xl text-[9px] font-bold uppercase tracking-wider" asChild>
+                    <a href="https://console.firebase.google.com/project/studio-9489287013-59986/usage/details" target="_blank">
+                      3. Enable Blaze Plan for Phone Auth <ExternalLink className="ml-2 w-3 h-3" />
+                    </a>
+                  </Button>
+                )}
               </div>
             </div>
           )}
@@ -193,7 +201,7 @@ export default function LoginPage() {
                 <Input type="email" placeholder="name@example.com" className="h-12 rounded-xl bg-black/40 border-white/10 text-white" value={email} onChange={(e) => setEmail(e.target.value)} />
               </div>
               <div className="space-y-2">
-                <Label className="text-[10px] uppercase tracking-widest text-primary ml-1">Security Key</Label>
+                <Label className="text-[10px] uppercase tracking-widest text-primary ml-1">Password</Label>
                 <Input type="password" className="h-12 rounded-xl bg-black/40 border-white/10 text-white" value={password} onChange={(e) => setPassword(e.target.value)} />
               </div>
               <Button onClick={handleLogin} className="w-full h-14 text-lg font-bold rounded-xl shadow-xl shadow-primary/20" disabled={loading}>
@@ -206,7 +214,7 @@ export default function LoginPage() {
                 <div className="space-y-4">
                   <div className="space-y-2">
                     <Label className="text-[10px] uppercase tracking-widest text-primary ml-1">Mobile Number</Label>
-                    <Input type="tel" placeholder="+91 98765 43210" className="h-12 rounded-xl bg-black/40 border-white/10 text-white" value={phone} onChange={(e) => setPhone(e.target.value)} />
+                    <Input type="tel" placeholder="+1 123 456 7890" className="h-12 rounded-xl bg-black/40 border-white/10 text-white" value={phone} onChange={(e) => setPhone(e.target.value)} />
                   </div>
                   <Button onClick={handlePhoneSignIn} className="w-full h-14 text-lg font-bold rounded-xl shadow-xl shadow-primary/20" disabled={loading || !phone}>
                     {loading ? <Loader2 className="animate-spin" /> : "Send OTP"}

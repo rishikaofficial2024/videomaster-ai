@@ -1,6 +1,7 @@
+
 'use server';
 /**
- * @fileOverview A free-tier Genkit AI chat assistant for general creative help.
+ * @fileOverview A professional Genkit AI chat assistant for creative guidance.
  */
 
 import { ai, geminiModel, z } from '@/ai/genkit';
@@ -28,12 +29,11 @@ const aiChatFlow = ai.defineFlow(
   async (input) => {
     const { text } = await ai.generate({
       model: geminiModel,
-      system: 'You are VideoMaster AI Assistant. You help Indian creators with video ideas, viral scripts, and social media tips. Keep your tone energetic and helpful. Always try to suggest how the user can make their video more viral.',
+      system: 'You are the VideoMaster AI Assistant. You help content creators with viral video ideas, high-conversion scripts, and social media growth strategies. Maintain a professional, energetic, and highly encouraging tone. Always aim to provide actionable tips for virality.',
       prompt: input.message,
-      // Pass history if needed, but for MVP we use single prompt
     });
 
-    return { response: text || "Bhaai, AI server thoda busy hai, dobara try karein!" };
+    return { response: text || "I'm sorry, my neural core is temporarily busy. Please try asking again in a moment!" };
   }
 );
 

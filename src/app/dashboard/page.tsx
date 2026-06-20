@@ -85,8 +85,8 @@ export default function Dashboard() {
       setAdLoading(false);
       setShowAdOverlay(false);
       toast({
-        title: "Mubarak Ho! +20 Credits",
-        description: "Aapke account mein credits jud gaye hain.",
+        title: "Congratulations! +20 Credits",
+        description: "Credits have been successfully added to your account.",
       });
     }, 15000);
   };
@@ -107,13 +107,13 @@ export default function Dashboard() {
       await updateDoc(userProfileRef, trialData);
       toast({
         title: "Trial Activated!",
-        description: "Ab aap 7 dino tak Pro features aur extra credits use kar sakte hain.",
+        description: "You can now access Pro features and extra credits for 7 days.",
       });
     } catch (e: any) {
       toast({
         variant: "destructive",
         title: "Claim Failed",
-        description: "Bhaai, kuch error aa gaya. Dobara try karein.",
+        description: "Something went wrong. Please try again.",
       });
     } finally {
       setClaimingTrial(false);
@@ -124,7 +124,7 @@ export default function Dashboard() {
     navigator.clipboard.writeText("npm run mobile:push");
     toast({
       title: "Command Copied!",
-      description: "Ab Terminal dhoond kar Paste karein.",
+      description: "Paste this in your Terminal (Ctrl + ~) to deploy.",
     });
   };
 
@@ -189,19 +189,19 @@ export default function Dashboard() {
               <Link href="/terminal-guide">
                 <div className="flex items-center gap-2 px-4 py-1.5 bg-red-500/10 rounded-full border border-red-500/20 w-fit hover:bg-red-500/20 transition-all cursor-pointer group">
                    <TerminalIcon className="w-3.5 h-3.5 text-red-500 group-hover:scale-110 transition-transform" />
-                   <span className="text-[10px] font-bold text-red-500 uppercase tracking-[0.2em]">Terminal Kaise Kholein?</span>
+                   <span className="text-[10px] font-bold text-red-500 uppercase tracking-[0.2em]">Terminal Guide</span>
                 </div>
               </Link>
             </div>
             <h1 className="text-6xl md:text-8xl font-headline font-bold tracking-tighter text-white">
               Hello, <span className="text-primary italic">{user?.displayName?.split(' ')[0] || 'Creator'}</span>
             </h1>
-            <p className="text-muted-foreground text-xl font-medium max-w-xl italic">Aaj kaunsi viral video banani hai?</p>
+            <p className="text-muted-foreground text-xl font-medium max-w-xl italic">Ready to create your next viral hit?</p>
           </div>
           
           <div className="flex items-center gap-8 bg-[#0a0d14]/90 backdrop-blur-3xl p-6 rounded-[3rem] border border-white/5 shadow-2xl blue-glow">
              <div className="flex flex-col px-8 border-r border-white/10">
-                <span className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground mb-2">Aapke Credits</span>
+                <span className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground mb-2">Available Credits</span>
                 <div className="flex items-center gap-3">
                   <Coins className="w-6 h-6 text-primary" />
                   <span className="text-5xl font-bold font-headline text-white">
@@ -210,7 +210,7 @@ export default function Dashboard() {
                 </div>
              </div>
              <Button className="rounded-[2rem] h-20 font-bold px-12 shadow-2xl shadow-primary/40 transition-all hover:scale-105 active:scale-95 text-lg" asChild>
-                <Link href="/editor"><Plus className="w-6 h-6 mr-3" /> Nayi Video</Link>
+                <Link href="/editor"><Plus className="w-6 h-6 mr-3" /> New Video</Link>
              </Button>
           </div>
         </header>
@@ -226,7 +226,7 @@ export default function Dashboard() {
                   </div>
                   <div className="space-y-2">
                      <h3 className="text-3xl font-bold font-headline text-white">7-Day Free Pro Trial!</h3>
-                     <p className="text-muted-foreground font-medium italic">Bhaai, Pro features ko free mein try karein. Unlimited AI access aur zero watermark.</p>
+                     <p className="text-muted-foreground font-medium italic">Experience Pro features for free. Unlock unlimited AI access and remove watermarks.</p>
                   </div>
                </div>
                <Button 
@@ -251,7 +251,7 @@ export default function Dashboard() {
                        <span className="text-[10px] font-bold text-red-500 uppercase tracking-widest">Build Command</span>
                     </div>
                     <h3 className="text-2xl font-bold font-headline text-white">1-Click Launch</h3>
-                    <p className="text-xs text-muted-foreground italic">Bhaai, copy karke Terminal (Ctrl + ~) mein paste karein.</p>
+                    <p className="text-xs text-muted-foreground italic">Copy and paste this into your Terminal (Ctrl + ~).</p>
                  </div>
                  <Button onClick={copyPushCommand} className="h-14 rounded-2xl bg-red-600 hover:bg-red-700 font-bold shadow-xl shadow-red-600/20 transition-all active:scale-95">
                     <Copy className="w-4 h-4 mr-2" /> Copy Command
@@ -264,13 +264,13 @@ export default function Dashboard() {
                  <div className="space-y-2">
                     <div className="inline-flex items-center gap-2 px-3 py-1 bg-emerald-500/10 rounded-full border border-emerald-500/20">
                        <Zap className="w-3 h-3 text-emerald-500" />
-                       <span className="text-[10px] font-bold text-emerald-500 uppercase tracking-widest">Login Sync Fix</span>
+                       <span className="text-[10px] font-bold text-emerald-500 uppercase tracking-widest">Auth Sync Fix</span>
                     </div>
-                    <h3 className="text-2xl font-bold font-headline text-white">Sync Problems?</h3>
-                    <p className="text-xs text-muted-foreground italic">Agar Google ya FB login nahi ho raha toh ye check karein.</p>
+                    <h3 className="text-2xl font-bold font-headline text-white">Sync Issues?</h3>
+                    <p className="text-xs text-muted-foreground italic">If social login isn't working, check your connection here.</p>
                  </div>
                  <Button className="h-14 rounded-2xl bg-emerald-600 hover:bg-emerald-700 font-bold shadow-xl shadow-emerald-600/20" asChild>
-                    <Link href="/test-connection">Fix Social Login <ArrowRight className="w-4 h-4 ml-2" /></Link>
+                    <Link href="/test-connection">Verify Connection <ArrowRight className="w-4 h-4 ml-2" /></Link>
                  </Button>
               </div>
            </Card>
@@ -285,7 +285,7 @@ export default function Dashboard() {
                   </div>
                   <div className="space-y-2">
                      <h3 className="text-3xl font-bold font-headline text-white">Unlock Pro Studio</h3>
-                     <p className="text-muted-foreground font-medium italic">Remove watermarks, unlock 4K export, and get unlimited AI credits for ₹99.</p>
+                     <p className="text-muted-foreground font-medium italic">Remove watermarks, unlock 4K export, and get unlimited AI credits for just ₹99.</p>
                   </div>
                </div>
                <Button className="h-16 px-10 rounded-2xl bg-primary font-bold shadow-xl shadow-primary/20">Upgrade Now <ArrowRight className="ml-2 w-4 h-4" /></Button>
@@ -304,8 +304,8 @@ export default function Dashboard() {
                      <Gift className="w-12 h-12 text-primary" />
                   </div>
                   <div className="space-y-3">
-                     <h3 className="text-4xl font-bold font-headline text-white tracking-tight">Free Credits Chahiye?</h3>
-                     <p className="text-muted-foreground font-medium text-lg italic">Bas ek 15-second ad dekho aur <span className="text-primary font-bold">+20 credits</span> turant payein.</p>
+                     <h3 className="text-4xl font-bold font-headline text-white tracking-tight">Need Free Credits?</h3>
+                     <p className="text-muted-foreground font-medium text-lg italic">Watch a 15-second ad and earn <span className="text-primary font-bold">+20 credits</span> instantly.</p>
                   </div>
                </div>
                <Button 

@@ -1,27 +1,27 @@
 
-# 🚀 VideoMaster AI - India's #1 AI Video Studio
+# 🚀 VideoMaster AI - Professional AI Video Studio
 
-Aapka app ab **100% COMPLETE**, **HACKER-PROOF**, aur **READY-TO-EARN** hai. Ye repository ek professional AI business hub hai.
+Your application is now **100% COMPLETE**, **SECURE**, and **READY-TO-EARN**. This repository is a professional AI business hub.
 
 ## 📱 1-Click APK Download
 1. **Terminal Command**: `npm run mobile:push`
-2. **Download Link**: 👉 [Yahan Click Karein: APK Status](https://github.com/rishikaofficial2024/videomaster-ai/actions)
-   *Page ke niche jaakar 'Artifacts' mein APK milega.*
+2. **Download Link**: 👉 [Click Here: APK Status](https://github.com/rishikaofficial2024/videomaster-ai/actions)
+   *Scroll to the bottom of the page and check 'Artifacts' for the APK file.*
 
-## 🛡️ Security & SMS Fix
-1. **SHA-256 Fingerprint**: GitHub Actions mein jaakar "Build" step dekhein. Logs mein **"🔑 EXTRACT SHA-256 FINGERPRINT"** section se code copy karein.
-2. **Firebase Setup**: Firebase Console > Project Settings > General mein jaakar woh Fingerprint add karein.
-3. **SMS Region**: Firebase Console > Authentication > Settings > SMS Region Policy mein jaakar **India (IN)** ko **Allow** karein.
+## 🛡️ Security & SMS Configuration
+1. **SHA-256 Fingerprint**: Go to GitHub Actions and check the "Build" step logs. Locate the **"🔑 EXTRACT SHA-256 FINGERPRINT"** section and copy the code.
+2. **Firebase Setup**: Go to Firebase Console > Project Settings > General and add the Fingerprint.
+3. **SMS Region**: Go to Firebase Console > Authentication > Settings > SMS Region Policy and **Allow** your target regions.
 
 ## 💰 Monetization & Ads
 - **Publisher ID**: `ca-pub-8946933317699938`
-- **Verification**: `app-ads.txt` is live. Site approve hone ke liye [Google AdSense](https://adsense.google.com) par register karein.
-- **Rewarded System**: User ads dekh kar free credits (+20) kama sakte hain.
+- **Verification**: `app-ads.txt` is live. Register your site at [Google AdSense](https://adsense.google.com) for approval.
+- **Rewarded System**: Users can watch ads to earn free credits (+20 per ad).
 
 ## 📈 Tech Stack
-- **AI Brain**: Genkit (Gemini Pro & Flash)
+- **AI Engine**: Genkit (Gemini Pro & Flash)
 - **Frontend**: Next.js 15 + ShadCN UI
 - **Backend**: Firebase (Auth & Firestore)
 - **Mobile**: Capacitor (Android APK)
 
-**Aapka Business ab LIVE aur STABLE hai!** 🚀💸🎬
+**Your Business is now LIVE and fully optimized!** 🚀💸🎬

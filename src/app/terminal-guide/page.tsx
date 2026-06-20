@@ -1,3 +1,4 @@
+
 "use client";
 
 import { Navbar } from "@/components/navbar";
@@ -14,7 +15,7 @@ export default function TerminalGuidePage() {
     navigator.clipboard.writeText("npm run mobile:push");
     toast({
       title: "Command Copied!",
-      description: "Ab bas Terminal mein jaakar Paste karein aur Enter dabayein.",
+      description: "Now paste this into your Terminal and press Enter.",
     });
   };
 
@@ -27,9 +28,9 @@ export default function TerminalGuidePage() {
             <ArrowLeft className="w-4 h-4" /> Back to Dashboard
           </Link>
           <h1 className="text-5xl md:text-7xl font-headline font-bold text-white tracking-tighter">
-            Terminal <span className="text-primary italic">Kaise Kholem?</span>
+            Terminal <span className="text-primary italic">Guide</span>
           </h1>
-          <p className="text-muted-foreground text-xl font-medium italic">Bhaai, Terminal dhoondna bahut aasaan hai. Bas ye follow karein:</p>
+          <p className="text-muted-foreground text-xl font-medium italic">Finding the Terminal is easy. Just follow these simple steps:</p>
         </header>
 
         <section className="grid gap-8">
@@ -40,11 +41,11 @@ export default function TerminalGuidePage() {
                    <Info className="w-10 h-10 text-primary" />
                 </div>
              </div>
-             <h3 className="text-2xl font-bold font-headline">Sabse Fast Tarika (Keyboard)</h3>
+             <h3 className="text-2xl font-bold font-headline">Fastest Method (Keyboard)</h3>
              <p className="text-muted-foreground text-lg">
-                Apne keyboard par <span className="text-white font-bold bg-white/10 px-3 py-1 rounded">Ctrl</span> + <span className="text-white font-bold bg-white/10 px-3 py-1 rounded">~</span> dabayein.
+                Press <span className="text-white font-bold bg-white/10 px-3 py-1 rounded">Ctrl</span> + <span className="text-white font-bold bg-white/10 px-3 py-1 rounded">~</span> on your keyboard.
                 <br />
-                <span className="text-xs text-primary font-bold uppercase tracking-widest">(Ye button Esc key ke bilkul niche hota hai)</span>
+                <span className="text-xs text-primary font-bold uppercase tracking-widest">(This key is right below the Esc key)</span>
              </p>
           </Card>
 
@@ -53,17 +54,17 @@ export default function TerminalGuidePage() {
               <div className="w-16 h-16 bg-emerald-500/20 rounded-2xl flex items-center justify-center border border-emerald-500/30">
                 <MousePointer2 className="w-8 h-8 text-emerald-500" />
               </div>
-              <h3 className="text-2xl font-bold font-headline">Mouse Se Kaise Kholem?</h3>
+              <h3 className="text-2xl font-bold font-headline">Using the Mouse</h3>
             </div>
             <div className="space-y-4">
                <p className="text-muted-foreground text-lg leading-relaxed">
-                 1. Apni screen ke <span className="text-white font-bold underline">SABSE NICHE</span> (Bottom Bar) dekhein.
+                 1. Look at the <span className="text-white font-bold underline">BOTTOM</span> of your screen (Bottom Panel).
                </p>
                <p className="text-muted-foreground text-lg leading-relaxed">
-                 2. Wahan <span className="text-white font-bold">"Terminal"</span> naam ka ek tab dikhega. Uspar click karein.
+                 2. Click on the tab named <span className="text-white font-bold">"Terminal"</span>.
                </p>
                <p className="text-muted-foreground text-lg leading-relaxed">
-                 3. Ek kaala box khul jayega jismein aap likh sakte hain.
+                 3. A command panel will open where you can type.
                </p>
             </div>
             <div className="p-4 bg-black rounded-2xl border border-white/10 flex items-center justify-center">
@@ -76,11 +77,11 @@ export default function TerminalGuidePage() {
               <div className="w-16 h-16 bg-primary/20 rounded-2xl flex items-center justify-center border border-primary/30">
                 <Keyboard className="w-8 h-8 text-primary" />
               </div>
-              <h3 className="text-2xl font-bold font-headline">Command Paste Karein</h3>
+              <h3 className="text-2xl font-bold font-headline">Paste the Command</h3>
             </div>
             <div className="space-y-6">
                <p className="text-muted-foreground text-lg italic">
-                 Niche diye gaye button par click karein, phir Terminal mein jaakar <span className="text-white font-bold">Right Click &gt; Paste</span> karein aur **Enter** dabayein.
+                 Click the button below to copy the command, then go to the Terminal, <span className="text-white font-bold">Right Click &gt; Paste</span>, and press **Enter**.
                </p>
                <div className="group relative">
                  <div className="p-8 bg-black rounded-3xl border-2 border-primary/30 font-mono text-primary text-xl md:text-3xl font-bold text-center shadow-2xl flex flex-col items-center gap-6 overflow-hidden">
@@ -98,14 +99,14 @@ export default function TerminalGuidePage() {
             <div className="flex justify-center">
                <CheckCircle2 className="w-12 h-12 text-emerald-500" />
             </div>
-            <h4 className="text-xl font-bold font-headline">Command Chalte Hi Kya Hoga?</h4>
-            <p className="text-sm text-muted-foreground italic">Aapka code GitHub par update ho jayega aur APK banna shuru ho jayega. Aapka app live aur secure ho jayega.</p>
+            <h4 className="text-xl font-bold font-headline">What happens next?</h4>
+            <p className="text-sm text-muted-foreground italic">Your code will be updated on GitHub, and the APK build process will begin automatically. Your app will be live and secure.</p>
           </Card>
         </section>
 
         <div className="text-center">
            <Button className="h-16 px-12 rounded-2xl font-bold text-lg" asChild>
-              <Link href="/dashboard">Wapas Dashboard par Jayein</Link>
+              <Link href="/dashboard">Return to Dashboard</Link>
            </Button>
         </div>
       </main>

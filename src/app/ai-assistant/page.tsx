@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useRef, useEffect } from "react";
@@ -20,7 +21,7 @@ interface Message {
 
 export default function AiAssistantPage() {
   const [messages, setMessages] = useState<Message[]>([
-    { role: 'model', text: 'Namaste! Main hoon VideoMaster AI. Aaj aapko kis viral video idea mein help chahiye?' }
+    { role: 'model', text: 'Hello! I am your VideoMaster AI Assistant. How can I help you create your next viral masterpiece today?' }
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -44,7 +45,7 @@ export default function AiAssistantPage() {
       const result = await sendAiChatMessage({ message: userMsg });
       setMessages(prev => [...prev, { role: 'model', text: result.response }]);
     } catch (e) {
-      setMessages(prev => [...prev, { role: 'model', text: "Maaf kijiye, kuch error aa gaya. Dobara try karein." }]);
+      setMessages(prev => [...prev, { role: 'model', text: "I'm sorry, I encountered an error. Please try again in a moment." }]);
     } finally {
       setLoading(false);
     }
@@ -119,7 +120,7 @@ export default function AiAssistantPage() {
               <Input 
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="Ask anything about your video..."
+                placeholder="Ask anything about your video content..."
                 className="h-16 rounded-2xl bg-[#05070a] border-white/10 px-6 pr-20 text-white focus:border-primary/50 transition-all"
               />
               <Button 
@@ -131,7 +132,7 @@ export default function AiAssistantPage() {
               </Button>
             </form>
             <p className="text-[9px] text-center mt-4 text-muted-foreground font-bold uppercase tracking-widest opacity-40">
-              Powered by Genkit Neural Assistant • 0 Credits Used
+              Powered by Genkit Neural Assistant • 0 Credits Consumed
             </p>
           </div>
         </Card>
