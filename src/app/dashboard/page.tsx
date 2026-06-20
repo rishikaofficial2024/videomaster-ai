@@ -1,3 +1,4 @@
+
 "use client";
 
 import { Navbar } from "@/components/navbar";
@@ -5,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { 
   Plus, Sparkles, ChevronRight, Loader2, Coins, 
-  ArrowUpRight, Video, Activity, Gift, MonitorPlay, Star, ArrowRight, Globe, CheckCircle2, X, Rocket, ShieldCheck, Crown
+  ArrowUpRight, Video, Activity, Gift, MonitorPlay, Star, ArrowRight, Globe, CheckCircle2, X, Rocket, ShieldCheck, Crown, HeartPulse
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -53,7 +54,6 @@ export default function Dashboard() {
   const handleWatchAd = () => {
     if (!userProfileRef) return;
     
-    // Check if user is already watching
     if (adLoading) return;
 
     setAdLoading(true);
@@ -70,7 +70,6 @@ export default function Dashboard() {
       });
     }, 1000);
 
-    // After 15 seconds, award credits
     setTimeout(() => {
       const updateData = { credits: increment(20) };
       updateDoc(userProfileRef, updateData)
@@ -116,7 +115,6 @@ export default function Dashboard() {
       <Navbar />
       <main className="max-w-7xl mx-auto p-6 space-y-16">
         
-        {/* REWARDED AD OVERLAY - Fixed for Real Revenue */}
         {showAdOverlay && (
           <div className="fixed inset-0 z-[100] bg-black flex flex-col items-center justify-center p-6 text-center animate-in fade-in duration-300">
             <div className="absolute top-6 right-6 flex items-center gap-3 bg-white/10 px-4 py-2 rounded-full border border-white/20">
@@ -134,7 +132,6 @@ export default function Dashboard() {
               <div className="aspect-video md:aspect-[16/9] bg-[#0a0d14] rounded-[2rem] border-2 border-primary/20 flex flex-col items-center justify-center p-6 space-y-6 relative overflow-hidden shadow-2xl">
                 <div className="absolute inset-0 bg-gradient-to-t from-primary/10 to-transparent" />
                 
-                {/* REAL ADSENSE BANNER INSIDE OVERLAY FOR REVENUE */}
                 <div className="w-full h-full flex flex-col items-center justify-center">
                    <AdBanner variant="large" provider="Premium Ad Network" adSlot="rewarded_placement" />
                    <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest mt-4">
@@ -163,6 +160,12 @@ export default function Dashboard() {
                    BUSINESS READY: AD REVENUE ACTIVE
                  </span>
               </div>
+              <Link href="/test-connection">
+                <div className="flex items-center gap-2 px-4 py-1.5 bg-primary/10 rounded-full border border-primary/20 w-fit hover:bg-primary/20 transition-all cursor-pointer group">
+                   <HeartPulse className="w-3.5 h-3.5 text-primary group-hover:scale-110 transition-transform" />
+                   <span className="text-[10px] font-bold text-primary uppercase tracking-[0.2em]">Run System Diagnostics</span>
+                </div>
+              </Link>
             </div>
             <h1 className="text-6xl md:text-8xl font-headline font-bold tracking-tighter text-white">
               Hello, <span className="text-primary italic">{user?.displayName?.split(' ')[0] || 'Creator'}</span>
@@ -186,7 +189,6 @@ export default function Dashboard() {
           </div>
         </header>
 
-        {/* PRO MOVEMENT WIDGET */}
         {!profile?.isPremium && (
           <Link href="/premium">
             <Card className="rounded-[3.5rem] bg-gradient-to-r from-primary/20 via-indigo-500/10 to-transparent border-primary/30 p-10 flex flex-col md:flex-row items-center justify-between gap-8 group hover:scale-[1.01] transition-all">
@@ -277,8 +279,6 @@ export default function Dashboard() {
             </div>
           </Card>
         </section>
-
-        <AdBanner variant="large" provider="Network Hub Mobile" />
 
         <section className="space-y-10">
           <div className="flex justify-between items-end px-4">

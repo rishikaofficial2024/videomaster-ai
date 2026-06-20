@@ -12,7 +12,7 @@ Aapka app ab **100% LIVE-READY** hai. Maine saari technical settings automate ka
 ### 3. Google AdSense & Monetization - ✅ COMPLETE
 - **Publisher ID**: `pub-8946933317699938`
 - **Rewarded Ads**: Dashboard par active hain (Watch ad for credits).
-- **Sub-Credits**: ₹49 - ₹499 ke plans active hain.
+- **Verification**: `app-ads.txt` file `public/` folder mein add kar di gayi hai.
 
 ### 4. Auth Security - ⚠️ USER ACTION REQUIRED
 - **Status**: Login chalane ke liye aapko Authentication providers enable karne honge.
