@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { 
   Plus, Sparkles, Loader2, Coins, 
-  Video, Gift, SquarePlay, Star, ArrowRight, CheckCircle2, X, HeartPulse, Crown, Terminal as TerminalIcon
+  Video, Gift, SquarePlay, Star, ArrowRight, CheckCircle2, X, HeartPulse, Crown, Terminal as TerminalIcon, Copy
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -88,6 +88,14 @@ export default function Dashboard() {
         description: "Aapke account mein credits jud gaye hain.",
       });
     }, 15000);
+  };
+
+  const copyPushCommand = () => {
+    navigator.clipboard.writeText("npm run mobile:push");
+    toast({
+      title: "Command Copied!",
+      description: "Ab Terminal dhoond kar Paste karein.",
+    });
   };
 
   const formatDate = (timestamp: any) => {
@@ -187,6 +195,36 @@ export default function Dashboard() {
              </Button>
           </div>
         </header>
+
+        {/* Elite Terminal Shortcut Card */}
+        <section className="animate-in fade-in slide-in-from-left-5 duration-700">
+           <Card className="rounded-[3rem] bg-[#0a0d14] border-red-500/30 p-10 md:p-12 relative overflow-hidden group">
+              <div className="absolute top-0 right-0 p-10 opacity-5 rotate-12 group-hover:rotate-0 transition-all duration-700">
+                 <TerminalIcon className="w-48 h-48 text-red-500" />
+              </div>
+              <div className="flex flex-col md:flex-row items-center justify-between gap-10 relative z-10">
+                 <div className="space-y-4 text-center md:text-left">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 bg-red-500/10 rounded-full border border-red-500/20 mb-2">
+                       <TerminalIcon className="w-3 h-3 text-red-500" />
+                       <span className="text-[10px] font-bold text-red-500 uppercase tracking-widest">Elite Build Shortcut</span>
+                    </div>
+                    <h3 className="text-3xl font-bold font-headline text-white">1-Click Launch Command</h3>
+                    <p className="text-muted-foreground font-medium italic max-w-lg">Bhaai, is button ko dabao phir keyboard par <span className="text-white font-bold">Ctrl + ~</span> dabao aur paste kar do. App turant banna shuru ho jayega.</p>
+                 </div>
+                 <div className="flex flex-col sm:flex-row items-center gap-4">
+                    <Button 
+                      onClick={copyPushCommand}
+                      className="h-16 px-10 rounded-2xl bg-red-600 hover:bg-red-700 font-bold shadow-2xl shadow-red-600/20 text-lg transition-all active:scale-95 flex items-center gap-3"
+                    >
+                       <Copy className="w-5 h-5" /> Copy Command
+                    </Button>
+                    <Button variant="outline" className="h-16 px-8 rounded-2xl border-white/10 hover:bg-white/5 font-bold" asChild>
+                       <Link href="/terminal-guide">Sikhein Kaise Karein</Link>
+                    </Button>
+                 </div>
+              </div>
+           </Card>
+        </section>
 
         {!profile?.isPremium && (
           <Link href="/premium">
