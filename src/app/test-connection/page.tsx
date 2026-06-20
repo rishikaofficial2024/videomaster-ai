@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect } from "react";
@@ -7,9 +8,9 @@ import { Button } from "@/components/ui/button";
 import { 
   CheckCircle2, XCircle, Loader2, Database, 
   Zap, Key, ArrowLeft, ShieldCheck, Sparkles, 
-  Activity, Network, Globe
+  Activity, Network, Globe, UserCheck
 } from "lucide-react";
-import { useAuth, useFirestore } from "@/firebase";
+import { useAuth, useFirestore, useUser } from "@/firebase";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { firebaseConfig } from "@/firebase/config";
 import Link from "next/link";
@@ -17,13 +18,15 @@ import Link from "next/link";
 export default function TestConnectionPage() {
   const auth = useAuth();
   const db = useFirestore();
+  const { user } = useUser();
   const [status, setStatus] = useState({
     config: "pending",
     firebase: "pending",
     firestore: "pending",
     auth: "pending",
     ai_key: "pending",
-    ads_txt: "pending"
+    ads_txt: "pending",
+    session: "pending"
   });
   const [latency, setLatency] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
@@ -37,7 +40,8 @@ export default function TestConnectionPage() {
       firestore: "testing", 
       auth: "testing",
       ai_key: "testing",
-      ads_txt: "testing"
+      ads_txt: "testing",
+      session: "testing"
     });
 
     // 1. Test Firebase Config
@@ -51,7 +55,10 @@ export default function TestConnectionPage() {
     // 3. Test Auth Service
     setStatus(prev => ({ ...prev, auth: !!auth ? "success" : "error" }));
 
-    // 4. Test Firestore Read/Write
+    // 4. Test Session
+    setStatus(prev => ({ ...prev, session: !!user ? "success" : "error" }));
+
+    // 5. Test Firestore Read/Write
     try {
       const testDocRef = doc(db, "connection_tests", "status");
       await setDoc(testDocRef, { 
@@ -63,10 +70,10 @@ export default function TestConnectionPage() {
       setStatus(prev => ({ ...prev, firestore: "error" }));
     }
 
-    // 5. AI Key Check
+    // 6. AI Key Check
     setStatus(prev => ({ ...prev, ai_key: "success" })); 
 
-    // 6. Test ads.txt availability
+    // 7. Test ads.txt availability
     try {
       const res = await fetch('/app-ads.txt');
       setStatus(prev => ({ ...prev, ads_txt: res.ok ? "success" : "error" }));
@@ -80,7 +87,7 @@ export default function TestConnectionPage() {
 
   useEffect(() => {
     runTests();
-  }, []);
+  }, [user]);
 
   const StatusIcon = ({ state }: { state: string }) => {
     if (state === "testing") return <Loader2 className="w-5 h-5 animate-spin text-primary" />;
@@ -90,7 +97,7 @@ export default function TestConnectionPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#05070a] pb-20 md:pt-20 hero-gradient overflow-x-hidden">
+    <div className="min-h-screen bg-[#05070a] pb-20 md:pt-20 hero-gradient">
       <Navbar />
       <main className="max-w-4xl mx-auto p-6 space-y-12 mt-10">
         <header className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
@@ -101,7 +108,7 @@ export default function TestConnectionPage() {
               </div>
               Back to Studio
             </Link>
-            <h1 className="text-5xl md:text-7xl font-headline font-bold tracking-tighter">System <span className="text-primary">Health</span></h1>
+            <h1 className="text-5xl md:text-7xl font-headline font-bold tracking-tighter text-white">System <span className="text-primary">Health</span></h1>
             <p className="text-muted-foreground font-medium text-xl italic opacity-60">Real-time neural link diagnostics and cloud status.</p>
           </div>
           
@@ -128,6 +135,7 @@ export default function TestConnectionPage() {
                 {[
                   { label: "Firebase Gateway", sub: "Cloud Handshake", id: status.config, icon: Key },
                   { label: "Firestore DB", sub: "Data Synchronization", id: status.firestore, icon: Database },
+                  { label: "User Session", sub: "Auth Sync Status", id: status.session, icon: UserCheck },
                   { label: "Gemini AI Engine", sub: "Neural Processing", id: status.ai_key, icon: Sparkles },
                   { label: "Edge Auth Service", sub: "Security Protocol", id: status.auth, icon: ShieldCheck },
                   { label: "AdSense Verification", sub: "app-ads.txt check", id: status.ads_txt, icon: Globe }
@@ -191,7 +199,7 @@ export default function TestConnectionPage() {
                     Aapka app Bharat (India) ke servers par optimized hai. Metadata branding `.in` domain ke liye fully configured hai.
                  </p>
                  <Button variant="outline" className="w-full h-12 rounded-xl border-emerald-500/20 text-emerald-400 font-bold text-[10px] uppercase tracking-widest hover:bg-emerald-500/10" asChild>
-                    <Link href="/SEO_GUIDE.md">View SEO Metrics</Link>
+                    <a href="https://console.firebase.google.com/project/studio-9489287013-59986/authentication/settings" target="_blank">Fix Social Login <ArrowRight className="ml-2 w-3 h-3" /></a>
                  </Button>
               </Card>
            </div>

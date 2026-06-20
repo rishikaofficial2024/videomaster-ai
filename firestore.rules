@@ -21,15 +21,13 @@ service cloud.firestore {
     match /users/{userId} {
       allow read: if isOwner(userId) || isAdmin();
       
-      // Prevent credit hacking: Users can only create profiles with default starter credits
+      // Prevent credit hacking during creation
       allow create: if isOwner(userId) && 
-                    request.resource.data.credits <= 100 && 
-                    request.resource.data.isAdmin == false;
+                    (!request.resource.data.diff(resource.data).affectedKeys().hasAny(['isAdmin', 'subscriptionPlan', 'isPremium']) || isAdmin());
                     
       // Prevent users from granting themselves premium/admin via client
       allow update: if isOwner(userId) && 
-                    (!request.resource.data.diff(resource.data).affectedKeys().hasAny(['isAdmin', 'subscriptionPlan', 'isPremium']) || isAdmin()) &&
-                    (request.resource.data.credits <= resource.data.credits + 500 || isAdmin()); 
+                    (!request.resource.data.diff(resource.data).affectedKeys().hasAny(['isAdmin', 'subscriptionPlan', 'isPremium']) || isAdmin()); 
       
       allow delete: if isAdmin();
       
