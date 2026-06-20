@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { 
   Plus, Sparkles, Loader2, Coins, 
-  Video, Gift, SquarePlay, Star, ArrowRight, CheckCircle2, X, HeartPulse, Crown, Terminal as TerminalIcon, Copy
+  Video, Gift, SquarePlay, Star, ArrowRight, CheckCircle2, X, HeartPulse, Crown, Terminal as TerminalIcon, Copy, ShieldCheck, Zap
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -196,32 +196,37 @@ export default function Dashboard() {
           </div>
         </header>
 
-        {/* Elite Terminal Shortcut Card */}
-        <section className="animate-in fade-in slide-in-from-left-5 duration-700">
-           <Card className="rounded-[3rem] bg-[#0a0d14] border-red-500/30 p-10 md:p-12 relative overflow-hidden group">
-              <div className="absolute top-0 right-0 p-10 opacity-5 rotate-12 group-hover:rotate-0 transition-all duration-700">
-                 <TerminalIcon className="w-48 h-48 text-red-500" />
-              </div>
-              <div className="flex flex-col md:flex-row items-center justify-between gap-10 relative z-10">
-                 <div className="space-y-4 text-center md:text-left">
-                    <div className="inline-flex items-center gap-2 px-3 py-1 bg-red-500/10 rounded-full border border-red-500/20 mb-2">
+        {/* Quick Launch & Sync Hub */}
+        <section className="grid md:grid-cols-2 gap-8">
+           <Card className="rounded-[3rem] bg-[#0a0d14] border-red-500/30 p-10 relative overflow-hidden group">
+              <div className="flex flex-col gap-6 relative z-10">
+                 <div className="space-y-2">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 bg-red-500/10 rounded-full border border-red-500/20">
                        <TerminalIcon className="w-3 h-3 text-red-500" />
-                       <span className="text-[10px] font-bold text-red-500 uppercase tracking-widest">Elite Build Shortcut</span>
+                       <span className="text-[10px] font-bold text-red-500 uppercase tracking-widest">Build Command</span>
                     </div>
-                    <h3 className="text-3xl font-bold font-headline text-white">1-Click Launch Command</h3>
-                    <p className="text-muted-foreground font-medium italic max-w-lg">Bhaai, is button ko dabao phir keyboard par <span className="text-white font-bold">Ctrl + ~</span> dabao aur paste kar do. App turant banna shuru ho jayega.</p>
+                    <h3 className="text-2xl font-bold font-headline text-white">1-Click Launch</h3>
+                    <p className="text-xs text-muted-foreground italic">Bhaai, copy karke Terminal (Ctrl + ~) mein paste karein.</p>
                  </div>
-                 <div className="flex flex-col sm:flex-row items-center gap-4">
-                    <Button 
-                      onClick={copyPushCommand}
-                      className="h-16 px-10 rounded-2xl bg-red-600 hover:bg-red-700 font-bold shadow-2xl shadow-red-600/20 text-lg transition-all active:scale-95 flex items-center gap-3"
-                    >
-                       <Copy className="w-5 h-5" /> Copy Command
-                    </Button>
-                    <Button variant="outline" className="h-16 px-8 rounded-2xl border-white/10 hover:bg-white/5 font-bold" asChild>
-                       <Link href="/terminal-guide">Sikhein Kaise Karein</Link>
-                    </Button>
+                 <Button onClick={copyPushCommand} className="h-14 rounded-2xl bg-red-600 hover:bg-red-700 font-bold shadow-xl shadow-red-600/20 transition-all active:scale-95">
+                    <Copy className="w-4 h-4 mr-2" /> Copy Command
+                 </Button>
+              </div>
+           </Card>
+
+           <Card className="rounded-[3rem] bg-[#0a0d14] border-emerald-500/30 p-10 relative overflow-hidden group">
+              <div className="flex flex-col gap-6 relative z-10">
+                 <div className="space-y-2">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 bg-emerald-500/10 rounded-full border border-emerald-500/20">
+                       <Zap className="w-3 h-3 text-emerald-500" />
+                       <span className="text-[10px] font-bold text-emerald-500 uppercase tracking-widest">Login Sync Fix</span>
+                    </div>
+                    <h3 className="text-2xl font-bold font-headline text-white">Sync Problems?</h3>
+                    <p className="text-xs text-muted-foreground italic">Agar Google ya FB login nahi ho raha toh ye check karein.</p>
                  </div>
+                 <Button className="h-14 rounded-2xl bg-emerald-600 hover:bg-emerald-700 font-bold shadow-xl shadow-emerald-600/20" asChild>
+                    <Link href="/test-connection">Fix Social Login <ArrowRight className="w-4 h-4 ml-2" /></Link>
+                 </Button>
               </div>
            </Card>
         </section>
@@ -268,58 +273,6 @@ export default function Dashboard() {
                </Button>
             </div>
           </Card>
-        </section>
-
-        <section className="space-y-10">
-          <div className="flex justify-between items-end px-4">
-            <div>
-              <h2 className="text-3xl font-headline font-bold text-white tracking-tight">Recent Projects</h2>
-              <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest mt-1">Ready for publishing</p>
-            </div>
-            <Link href="/projects" className="text-sm font-bold text-primary flex items-center hover:underline group">
-              View All <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </Link>
-          </div>
-          
-          {projectsLoading ? (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-              {[1, 2, 3].map(i => <div key={i} className="h-72 bg-[#0a0d14] animate-pulse rounded-[3rem]" />)}
-            </div>
-          ) : projects && projects.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-              {projects.map((project: any) => (
-                <Card key={project.id} className="group overflow-hidden rounded-[3rem] border-white/5 bg-[#0a0d14] shadow-2xl transition-all duration-500 hover:border-primary/30">
-                  <Link href={`/editor?id=${project.id}`}>
-                    <div className="aspect-video relative overflow-hidden">
-                      <Image
-                        src={project.thumbnailUrl || `https://picsum.photos/seed/${project.id}/600/400`}
-                        alt={project.title}
-                        fill
-                        className="object-cover transition-transform duration-1000 group-hover:scale-110"
-                      />
-                    </div>
-                    <CardContent className="p-8">
-                       <h3 className="font-bold text-xl truncate group-hover:text-primary transition-colors text-white">{project.title}</h3>
-                       <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mt-2">Edited {formatDate(project.updatedAt || project.createdAt)}</p>
-                    </CardContent>
-                  </Link>
-                </Card>
-              ))}
-            </div>
-          ) : (
-            <div className="bg-[#0a0d14] border-4 border-dashed border-white/5 rounded-[4rem] p-32 text-center space-y-8 group hover:border-primary/20 transition-all">
-              <div className="w-24 h-24 bg-white/5 rounded-full flex items-center justify-center mx-auto">
-                 <Video className="w-10 h-10 text-muted-foreground opacity-20" />
-              </div>
-              <div className="space-y-2">
-                 <h3 className="text-2xl font-bold font-headline text-white">No projects yet</h3>
-                 <p className="text-muted-foreground font-medium italic">Create your first viral video masterpiece!</p>
-              </div>
-              <Button className="rounded-[2rem] h-16 px-12 font-bold shadow-xl shadow-primary/20" asChild>
-                <Link href="/editor">Start Creating</Link>
-              </Button>
-            </div>
-          )}
         </section>
 
       </main>

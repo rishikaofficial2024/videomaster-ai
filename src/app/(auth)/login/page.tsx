@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Video, Chrome, Facebook, ArrowLeft, Sparkles, Loader2, Info, ExternalLink, Github, AlertCircle, Copy, HelpCircle } from "lucide-react";
+import { Video, Chrome, Facebook, ArrowLeft, Sparkles, Loader2, Info, ExternalLink, Github, AlertCircle, Copy, HelpCircle, ShieldCheck, Zap } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { 
@@ -77,14 +77,14 @@ export default function LoginPage() {
       console.error("Auth Error:", error.code, error.message);
       setAuthError(error.code);
       
-      if (error.code === 'auth/unauthorized-domain') {
+      if (error.code === 'auth/unauthorized-domain' || error.code === 'auth/operation-not-allowed' || error.code === 'auth/invalid-credential') {
         setShowTroubleshoot(true);
       }
       
       toast({
         variant: "destructive",
-        title: `${providerName} Error`,
-        description: error.message,
+        title: `${providerName} Sync Error`,
+        description: "Bhaai, Firebase settings mein kuch problem hai. Niche 'Troubleshoot' check karein.",
       });
     } finally {
       setLoading(false);
@@ -112,6 +112,7 @@ export default function LoginPage() {
       toast({ title: "OTP Sent", description: "Please check your mobile messages." });
     } catch (error: any) {
       setAuthError(error.code);
+      if (error.code === 'auth/billing-not-enabled') setShowTroubleshoot(true);
       toast({ variant: "destructive", title: "Phone Error", description: error.message });
     } finally {
       setLoading(false);
@@ -164,41 +165,39 @@ export default function LoginPage() {
         </CardHeader>
 
         <CardContent className="space-y-8 px-10">
-          {/* Advanced Troubleshooting UI */}
-          {(authError === "auth/unauthorized-domain" || showTroubleshoot) && (
+          {/* Elite Troubleshooting UI */}
+          {(authError || showTroubleshoot) && (
             <div className="p-6 bg-red-500/10 border border-red-500/30 rounded-3xl space-y-4 animate-in zoom-in-95">
               <div className="flex gap-3">
-                <AlertCircle className="w-6 h-6 text-red-500 shrink-0" />
+                <ShieldCheck className="w-6 h-6 text-red-500 shrink-0" />
                 <div className="space-y-1">
-                  <p className="text-xs font-bold text-red-500 uppercase tracking-widest">Unauthorized Domain (Fix Chahiye)</p>
-                  <p className="text-[11px] text-white/70">Bhaai, is domain ko Firebase mein add karna zaroori hai tabhi login chalega:</p>
+                  <p className="text-xs font-bold text-red-500 uppercase tracking-widest">Sync Connection Fix</p>
+                  <p className="text-[11px] text-white/70">Bhaai, login sync karne ke liye ye steps 1 minute mein poore karein:</p>
                 </div>
               </div>
               
-              <div className="flex items-center gap-2 p-3 bg-black/40 rounded-xl border border-white/10">
-                <code className="flex-1 text-[10px] font-mono text-primary truncate">{currentHostname}</code>
-                <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg" onClick={() => copyToClipboard(currentHostname)}>
-                  <Copy className="w-3 h-3" />
-                </Button>
+              <div className="space-y-3">
+                <div className="flex items-center gap-2 p-3 bg-black/40 rounded-xl border border-white/10">
+                  <code className="flex-1 text-[10px] font-mono text-primary truncate">{currentHostname}</code>
+                  <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg" onClick={() => copyToClipboard(currentHostname)}>
+                    <Copy className="w-3 h-3" />
+                  </Button>
+                </div>
+                
+                <div className="grid grid-cols-1 gap-2">
+                  <Button className="w-full h-10 rounded-xl bg-red-600 hover:bg-red-700 text-[9px] font-bold uppercase tracking-wider" asChild>
+                    <a href="https://console.firebase.google.com/project/studio-9489287013-59986/authentication/providers" target="_blank">
+                      1. Enable Google/FB Sync <ExternalLink className="ml-2 w-3 h-3" />
+                    </a>
+                  </Button>
+                  <Button variant="outline" className="w-full h-10 rounded-xl border-red-500/30 text-[9px] font-bold uppercase tracking-wider" asChild>
+                    <a href="https://console.firebase.google.com/project/studio-9489287013-59986/authentication/settings" target="_blank">
+                      2. Add Authorized Domain <ExternalLink className="ml-2 w-3 h-3" />
+                    </a>
+                  </Button>
+                </div>
               </div>
-
-              <div className="space-y-2">
-                <p className="text-[10px] text-white/50 italic">1. Upar wala domain Copy karein.<br/>2. Niche wala button dabayein.<br/>3. Firebase mein 'Add Domain' karke paste karein.</p>
-                <Button className="w-full h-10 rounded-xl bg-red-600 hover:bg-red-700 text-[10px] font-bold" asChild>
-                  <a href="https://console.firebase.google.com/project/studio-9489287013-59986/authentication/settings" target="_blank">
-                    Firebase Settings Kholein <ExternalLink className="ml-2 w-3 h-3" />
-                  </a>
-                </Button>
-              </div>
-            </div>
-          )}
-
-          {authError && authError !== "auth/unauthorized-domain" && (
-            <div className="p-4 bg-destructive/10 border border-destructive/20 rounded-2xl flex gap-3 animate-in zoom-in-95">
-              <AlertCircle className="w-5 h-5 text-destructive shrink-0" />
-              <p className="text-[10px] font-bold text-destructive leading-relaxed uppercase tracking-widest">
-                Error: {authError}
-              </p>
+              <p className="text-[9px] text-white/40 text-center italic">Error Code: {authError || "SYNC_FAILED"}</p>
             </div>
           )}
 
@@ -301,7 +300,7 @@ export default function LoginPage() {
             </Link>
           </div>
           <Button variant="ghost" className="text-[10px] font-bold uppercase tracking-widest gap-2 text-muted-foreground" onClick={() => setShowTroubleshoot(!showTroubleshoot)}>
-            <HelpCircle className="w-3 h-3" /> Troubleshoot Login
+            <HelpCircle className="w-3 h-3" /> Troubleshoot Sync
           </Button>
         </CardFooter>
       </Card>
