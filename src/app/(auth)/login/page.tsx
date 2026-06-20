@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Video, Chrome, Facebook, Smartphone, ArrowLeft, Sparkles, Loader2, AlertTriangle, Info } from "lucide-react";
+import { Video, Chrome, Facebook, Smartphone, ArrowLeft, Sparkles, Loader2, AlertTriangle, Info, ExternalLink } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { 
@@ -63,7 +63,7 @@ export default function LoginPage() {
       if (error.code === 'auth/unauthorized-domain') {
         description = "⚠️ Ye domain Authorized nahi hai! Firebase Console > Auth > Settings > Authorized Domains mein jaakar apna current URL add karein.";
       } else if (error.code === 'auth/operation-not-allowed') {
-        description = `⚠️ ${providerName} login enabled nahi hai! Firebase Console > Auth > Sign-in Method mein jaakar ise Enable karein.`;
+        description = `⚠️ ${providerName} login enabled nahi hai! Firebase Console mein ise Enable karein.`;
       }
       
       toast({
@@ -203,11 +203,18 @@ export default function LoginPage() {
                   <Button onClick={handlePhoneSignIn} className="w-full h-16 text-lg font-bold rounded-2xl shadow-2xl shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all" disabled={loading || !phone}>
                     {loading ? <Loader2 className="animate-spin" /> : "Send OTP Verification"}
                   </Button>
-                  <div className="p-4 bg-primary/5 border border-primary/10 rounded-2xl flex gap-3">
-                    <Info className="w-4 h-4 text-primary shrink-0 mt-0.5" />
-                    <p className="text-[10px] font-medium text-muted-foreground leading-relaxed italic">
-                      Make sure Phone Auth is enabled in your Firebase Console for this feature to work.
-                    </p>
+                  <div className="p-4 bg-primary/5 border border-primary/10 rounded-2xl flex flex-col gap-3">
+                    <div className="flex gap-3">
+                      <Info className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                      <p className="text-[10px] font-medium text-muted-foreground leading-relaxed italic">
+                        Firebase Console mein Phone Auth on karna zaroori hai.
+                      </p>
+                    </div>
+                    <Button variant="link" className="h-auto p-0 text-[10px] text-primary font-bold justify-start gap-1" asChild>
+                      <a href="https://console.firebase.google.com/project/studio-9489287013-59986/authentication/providers" target="_blank" rel="noopener noreferrer">
+                        Direct Link to Enable <ExternalLink className="w-2 h-2" />
+                      </a>
+                    </Button>
                   </div>
                 </div>
               ) : (

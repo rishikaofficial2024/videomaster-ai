@@ -1,28 +1,18 @@
 
 # 🔥 Firebase Setup Guide (MUST READ for Live App)
 
-Aapka app technically taiyar hai, lekin aapko Firebase Console mein ye 3 kaam karne honge taaki login features (Phone, Google, Facebook) sahi se kaam karein.
+Aapka app technically taiyar hai. In links par click karke settings 1 minute mein poori karein:
 
 ### 1. Enable Sign-in Providers (auth/operation-not-allowed fix)
-Agar login karte waqt error aata hai, toh iska matlab hai ki provider off hai.
-1. [Firebase Console](https://console.firebase.google.com/) par jayein.
-2. Left menu: **Build > Authentication > Sign-in Method**.
-3. **Add new provider** par click karein aur in 3 ko **Enable** karein:
-   - **Google** (Aapko email mangega, apna choose karein).
-   - **Facebook** (Iske liye App ID chahiye hogi).
-   - **Phone** (OTP ke liye).
+👉 **Direct Link**: [Firebase Auth Providers](https://console.firebase.google.com/project/studio-9489287013-59986/authentication/providers)
+- **Action**: 'Add new provider' par click karein aur **Google**, **Facebook**, aur **Phone** ko **Enable** karein.
 
 ### 2. Add Authorized Domains (auth/unauthorized-domain fix)
-Firebase security ki wajah se sirf registered URLs se login allow karta hai.
-1. **Authentication > Settings > Authorized domains** par jayein.
-2. **Add domain** par click karein aur ye dono URLs jodein:
-   - `studio-9489287013-59986.web.app` (Aapka live URL)
-   - `9002-xxxxx.cloudworkstations.dev` (Aapka current browser URL)
+👉 **Direct Link**: [Authorized Domains Settings](https://console.firebase.google.com/project/studio-9489287013-59986/authentication/settings)
+- **Action**: Left sidebar mein 'Authorized domains' par jayein aur apna current browser URL (e.g., `9002-xxxxx.cloudworkstations.dev`) add karein.
 
 ### 3. Firestore Rules
-Maine rules pehle hi update kar diye hain, lekin hamesha ensure karein ki **Build > Firestore Database > Rules** mein `allow read, write: if request.auth != null;` jaisa logic active hai.
+👉 **Direct Link**: [Firestore Rules Page](https://console.firebase.google.com/project/studio-9489287013-59986/firestore/rules)
+- **Action**: Check karein ki rules version 2 active hai.
 
----
-**Porter AI / Admin ko kya batayein?**: "Maine saare Sign-in Providers enable kar diye hain aur Authorized Domains jodh diye hain."
-
-Ab aapka app live use hone ke liye 100% stable hai! 🚀💰
+Aapka app ab live use hone ke liye 100% stable hai! 🚀💰
