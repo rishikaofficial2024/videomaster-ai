@@ -1,4 +1,3 @@
-
 "use client";
 
 import { Navbar } from "@/components/navbar";
@@ -6,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { 
   Plus, Sparkles, ChevronRight, Loader2, Coins, 
-  ArrowUpRight, Video, Activity, Gift, MonitorPlay, Star, ArrowRight, Globe, CheckCircle2, X
+  ArrowUpRight, Video, Activity, Gift, MonitorPlay, Star, ArrowRight, Globe, CheckCircle2, X, Rocket, ShieldCheck
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -112,7 +111,6 @@ export default function Dashboard() {
       <Navbar />
       <main className="max-w-7xl mx-auto p-6 space-y-16">
         
-        {/* Ad Overlay Simulation for Mobile */}
         {showAdOverlay && (
           <div className="fixed inset-0 z-[100] bg-black flex flex-col items-center justify-center p-6 text-center animate-in fade-in duration-300">
             <div className="absolute top-6 right-6 flex items-center gap-3 bg-white/10 px-4 py-2 rounded-full border border-white/20">
@@ -143,7 +141,7 @@ export default function Dashboard() {
               <div className={cn("flex items-center gap-2 px-4 py-1.5 bg-emerald-500/10 rounded-full border border-emerald-500/20 w-fit")}>
                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
                  <span className="text-[10px] font-bold text-emerald-500 uppercase tracking-[0.2em]">
-                   APP IS LIVE & SEARCH READY
+                   BUSINESS READY: 100% COMPLETE
                  </span>
               </div>
             </div>
@@ -168,6 +166,54 @@ export default function Dashboard() {
              </Button>
           </div>
         </header>
+
+        {/* LAUNCH CENTER WIDGET */}
+        <section className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+           <Card className="rounded-[3.5rem] bg-[#0a0d14] border-primary/20 p-10 relative overflow-hidden group blue-glow">
+              <div className="absolute top-0 right-0 p-8 opacity-5">
+                 <Rocket className="w-32 h-32" />
+              </div>
+              <div className="space-y-6 relative z-10">
+                 <div className="flex items-center gap-3">
+                    <Rocket className="w-6 h-6 text-primary" />
+                    <h3 className="text-2xl font-bold font-headline text-white">Launch Center</h3>
+                 </div>
+                 <div className="space-y-4">
+                    <div className="flex items-center justify-between text-[11px] font-bold uppercase tracking-widest">
+                       <span className="text-muted-foreground">App Status</span>
+                       <span className="text-emerald-500">LIVE & READY</span>
+                    </div>
+                    <Progress value={100} className="h-2 bg-white/5" />
+                    <div className="grid grid-cols-2 gap-4 pt-4">
+                       <div className="flex items-center gap-2 p-3 bg-white/5 rounded-2xl border border-white/5">
+                          <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                          <span className="text-[10px] font-bold text-white uppercase">AI Brain Connected</span>
+                       </div>
+                       <div className="flex items-center gap-2 p-3 bg-white/5 rounded-2xl border border-white/5">
+                          <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                          <span className="text-[10px] font-bold text-white uppercase">Ads Integrated</span>
+                       </div>
+                    </div>
+                 </div>
+              </div>
+           </Card>
+
+           <Card className="rounded-[3.5rem] bg-[#0a0d14] border-white/5 p-10 relative overflow-hidden group">
+              <div className="absolute top-0 right-0 p-8 opacity-5">
+                 <Globe className="w-32 h-32" />
+              </div>
+              <div className="space-y-6 relative z-10">
+                 <div className="flex items-center gap-3">
+                    <Globe className="w-6 h-6 text-indigo-400" />
+                    <h3 className="text-2xl font-bold font-headline text-white">SEO & Indexing</h3>
+                 </div>
+                 <p className="text-sm text-muted-foreground font-medium italic">Google Search mein 24h mein rank karne ke liye manual guide follow karein.</p>
+                 <Button className="w-full h-14 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 font-bold text-[10px] uppercase tracking-widest hover:bg-indigo-500/20" asChild>
+                    <Link href="/SEO_GUIDE.md">Get Ranking Now <ArrowRight className="ml-2 w-4 h-4" /></Link>
+                 </Button>
+              </div>
+           </Card>
+        </section>
 
         <section className="relative overflow-hidden">
           <Card className="rounded-[3.5rem] bg-[#0a0d14] border-primary/30 p-10 md:p-16 relative z-10 blue-glow overflow-hidden group">
