@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { 
   Plus, Sparkles, ChevronRight, Loader2, Coins, 
-  ArrowUpRight, Video, Activity, Gift, MonitorPlay, Star, ArrowRight, Globe, CheckCircle2, X, Rocket, ShieldCheck, Crown, HeartPulse
+  ArrowUpRight, Video, Activity, Gift, SquarePlay, Star, ArrowRight, Globe, CheckCircle2, X, Rocket, ShieldCheck, Crown, HeartPulse
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -273,7 +273,7 @@ export default function Dashboard() {
                  disabled={adLoading || profile?.isPremium}
                  className="h-24 px-16 rounded-[2rem] bg-primary font-bold shadow-2xl shadow-primary/40 text-xl hover:scale-105 transition-all group active:scale-95"
                >
-                  {adLoading ? <Loader2 className="animate-spin mr-3 w-8 h-8" /> : <MonitorPlay className="w-8 h-8 mr-4 group-hover:animate-pulse" />}
+                  {adLoading ? <Loader2 className="animate-spin mr-3 w-8 h-8" /> : <SquarePlay className="w-8 h-8 mr-4 group-hover:animate-pulse" />}
                   {adLoading ? `Ad ends in ${adTimer}s` : "Ad Dekho aur Earn Karo"}
                </Button>
             </div>

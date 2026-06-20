@@ -26,6 +26,18 @@
       "imageHint": "action sports"
     },
     {
+      "id": "template-4",
+      "description": "Luxury Real Estate showcase template",
+      "imageUrl": "https://picsum.photos/seed/luxury-home/400/600",
+      "imageHint": "luxury real estate"
+    },
+    {
+      "id": "template-5",
+      "description": "Gaming Highlight Reel with neon effects",
+      "imageUrl": "https://picsum.photos/seed/gaming-pro/400/600",
+      "imageHint": "gaming highlight"
+    },
+    {
       "id": "avatar-user",
       "description": "Professional user profile avatar",
       "imageUrl": "https://picsum.photos/seed/user-avatar/200/200",
