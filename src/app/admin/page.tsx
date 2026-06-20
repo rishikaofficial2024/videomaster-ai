@@ -5,16 +5,12 @@ import { Navbar } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { 
-  Users, DollarSign, BarChart3, Settings, 
-  Loader2, ArrowUpRight, TrendingUp,
-  Cpu, Activity, Database, AlertTriangle,
-  RefreshCw, Lock, Globe, Eye, Search, CheckCircle2, ShieldCheck,
-  UserPlus, ShieldAlert, Coins, Star
+  Users, Coins, ShieldCheck, Lock, Loader2, ArrowUpRight, TrendingUp,
+  Activity, CheckCircle2, Star, ShieldAlert, MoreVertical
 } from "lucide-react";
 import { useFirestore, useCollection, useMemoFirebase } from "@/firebase";
 import { collection, query, limit, orderBy, getCountFromServer, doc, updateDoc, increment } from "firebase/firestore";
 import { useState, useEffect } from "react";
-import { Progress } from "@/components/ui/progress";
 import { 
   Table, 
   TableBody, 
@@ -24,8 +20,12 @@ import {
   TableRow 
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { cn } from "@/lib/utils";
-import Link from "next/link";
+import { 
+  DropdownMenu, 
+  DropdownMenuContent, 
+  DropdownMenuItem, 
+  DropdownMenuTrigger 
+} from "@/components/ui/dropdown-menu";
 import { useToast } from "@/hooks/use-toast";
 
 export default function AdminDashboard() {
@@ -86,12 +86,12 @@ export default function AdminDashboard() {
             <h1 className="text-5xl md:text-7xl font-headline font-bold tracking-tighter text-white">
               Studio <span className="text-primary">Control</span>
             </h1>
-            <p className="text-muted-foreground font-medium italic">Manage users, roles, and credits.</p>
+            <p className="text-muted-foreground font-medium italic">Manage studio users, roles, and AI resources.</p>
           </div>
           
           <div className="flex items-center gap-4 bg-white/5 p-4 rounded-3xl border border-white/5 backdrop-blur-xl">
              <div className="flex flex-col px-4 border-r border-white/10">
-                <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-1">Total Users</span>
+                <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-1">Total Network Users</span>
                 <span className="text-2xl font-bold font-headline text-emerald-500">{totalUsersCount ?? "..."}</span>
              </div>
              <ShieldCheck className="w-8 h-8 text-primary opacity-20" />
@@ -99,18 +99,20 @@ export default function AdminDashboard() {
         </header>
 
         <div className="grid grid-cols-1 gap-8">
-           {/* RECENT USERS */}
            <Card className="rounded-[3rem] bg-[#0a0d14] border-white/5 overflow-hidden shadow-2xl">
-              <CardHeader className="p-8 border-b border-white/5">
-                <CardTitle className="text-xl font-headline font-bold">User Settings Management</CardTitle>
-                <CardDescription>Promote users, give credits, or manage plans.</CardDescription>
+              <CardHeader className="p-8 border-b border-white/5 flex flex-row items-center justify-between">
+                <div>
+                  <CardTitle className="text-xl font-headline font-bold">User Management</CardTitle>
+                  <CardDescription>Directly modify roles, credits, and subscription status.</CardDescription>
+                </div>
+                <Users className="w-6 h-6 text-muted-foreground opacity-20" />
               </CardHeader>
               <CardContent className="p-0">
                  <Table>
                     <TableHeader className="bg-white/5">
                        <TableRow className="hover:bg-transparent border-white/5">
-                          <TableHead className="text-[10px] font-bold uppercase tracking-widest px-8">User Info</TableHead>
-                          <TableHead className="text-[10px] font-bold uppercase tracking-widest">Status & Credits</TableHead>
+                          <TableHead className="text-[10px] font-bold uppercase tracking-widest px-8">User</TableHead>
+                          <TableHead className="text-[10px] font-bold uppercase tracking-widest">Credits & Plan</TableHead>
                           <TableHead className="text-[10px] font-bold uppercase tracking-widest">Role</TableHead>
                           <TableHead className="text-[10px] font-bold uppercase tracking-widest text-right px-8">Actions</TableHead>
                        </TableRow>
@@ -122,20 +124,18 @@ export default function AdminDashboard() {
                          <TableRow key={u.id} className="border-white/5 hover:bg-white/5 transition-colors">
                             <TableCell className="px-8 py-6">
                                <div className="flex flex-col">
-                                  <span className="font-bold text-white">{u.displayName || 'Creator'}</span>
+                                  <span className="font-bold text-white">{u.displayName || 'Unknown Creator'}</span>
                                   <span className="text-[10px] text-muted-foreground">{u.email}</span>
                                </div>
                             </TableCell>
                             <TableCell>
-                               <div className="flex flex-col gap-1">
-                                  <div className="flex items-center gap-2">
-                                     <Badge variant={u.isPremium ? 'default' : 'secondary'} className="rounded-full text-[9px] uppercase tracking-widest">
-                                        {u.subscriptionPlan?.toUpperCase() || 'FREE'}
-                                      </Badge>
-                                      <span className="text-[10px] font-bold text-primary flex items-center gap-1">
-                                        <Coins className="w-3 h-3" /> {u.credits?.toFixed(0) || 0}
-                                      </span>
-                                  </div>
+                               <div className="flex items-center gap-3">
+                                   <Badge variant={u.isPremium ? 'default' : 'secondary'} className="rounded-full text-[9px] uppercase tracking-widest px-3">
+                                      {u.subscriptionPlan?.toUpperCase() || 'FREE'}
+                                    </Badge>
+                                    <div className="flex items-center gap-1 text-[10px] font-bold text-primary">
+                                      <Coins className="w-3 h-3" /> {u.credits?.toFixed(0) || 0}
+                                    </div>
                                </div>
                             </TableCell>
                             <TableCell>
@@ -147,33 +147,28 @@ export default function AdminDashboard() {
                             </TableCell>
                             <TableCell className="text-right px-8">
                                <div className="flex items-center justify-end gap-2">
-                                  <Button 
-                                    variant="outline" 
-                                    size="sm" 
-                                    className="h-9 px-3 rounded-xl text-[10px] font-bold uppercase"
-                                    onClick={() => handleUpdateUser(u.id, { credits: increment(100) })}
-                                    disabled={updatingUser === u.id}
-                                  >
-                                    +100 Credits
-                                  </Button>
-                                  <Button 
-                                    variant={u.isPremium ? "outline" : "default"} 
-                                    size="sm" 
-                                    className="h-9 px-3 rounded-xl text-[10px] font-bold uppercase"
-                                    onClick={() => handleUpdateUser(u.id, { isPremium: !u.isPremium, subscriptionPlan: u.isPremium ? 'free' : 'pro' })}
-                                    disabled={updatingUser === u.id}
-                                  >
-                                    {u.isPremium ? 'Revoke Pro' : 'Make Pro'}
-                                  </Button>
-                                  <Button 
-                                    variant="ghost" 
-                                    size="sm" 
-                                    className="h-9 px-3 rounded-xl text-[10px] font-bold uppercase hover:bg-red-500/10 hover:text-red-500"
-                                    onClick={() => handleUpdateUser(u.id, { isAdmin: !u.isAdmin })}
-                                    disabled={updatingUser === u.id}
-                                  >
-                                    {u.isAdmin ? 'Demote' : 'Promote Admin'}
-                                  </Button>
+                                  {updatingUser === u.id ? (
+                                    <Loader2 className="w-4 h-4 animate-spin text-primary" />
+                                  ) : (
+                                    <DropdownMenu>
+                                      <DropdownMenuTrigger asChild>
+                                        <Button variant="ghost" size="icon" className="rounded-full h-10 w-10">
+                                          <MoreVertical className="w-4 h-4" />
+                                        </Button>
+                                      </DropdownMenuTrigger>
+                                      <DropdownMenuContent align="end" className="bg-[#0a0d14] border-white/10 rounded-2xl w-56 p-2">
+                                        <DropdownMenuItem className="rounded-xl font-bold text-xs p-3 cursor-pointer" onClick={() => handleUpdateUser(u.id, { credits: increment(500) })}>
+                                          Grant +500 Credits
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem className="rounded-xl font-bold text-xs p-3 cursor-pointer" onClick={() => handleUpdateUser(u.id, { isPremium: !u.isPremium, subscriptionPlan: u.isPremium ? 'free' : 'pro' })}>
+                                          {u.isPremium ? 'Downgrade to Free' : 'Promote to Pro'}
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem className="rounded-xl font-bold text-xs p-3 cursor-pointer text-red-500" onClick={() => handleUpdateUser(u.id, { isAdmin: !u.isAdmin })}>
+                                          {u.isAdmin ? 'Revoke Admin Role' : 'Grant Admin Role'}
+                                        </DropdownMenuItem>
+                                      </DropdownMenuContent>
+                                    </DropdownMenu>
+                                  )}
                                </div>
                             </TableCell>
                          </TableRow>

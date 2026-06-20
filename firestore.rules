@@ -1,3 +1,4 @@
+
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
@@ -16,12 +17,12 @@ service cloud.firestore {
              get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isAdmin == true;
     }
 
-    // User Profile rules - Optimized for stability
+    // User Profile rules - Enhanced for Admin management
     match /users/{userId} {
       // Allow read/write if the user is accessing their own data
       allow read, write: if isOwner(userId);
       
-      // Secondary admin check
+      // Global admin management access
       allow read, write: if isAdmin();
       
       // Projects sub-collection
@@ -41,4 +42,3 @@ service cloud.firestore {
     }
   }
 }
-// FINAL MASTER BUILD: Security Rules Version 2.1

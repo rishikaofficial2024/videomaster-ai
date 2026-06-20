@@ -49,10 +49,15 @@ export default function SignupPage() {
         email: user.email,
         displayName: displayName,
         isPremium: false,
+        isAdmin: false,
         subscriptionPlan: "free",
         credits: 100,
         photoURL: "",
-        createdAt: new Date().toISOString()
+        createdAt: new Date().toISOString(),
+        usageStats: {
+          totalVideos: 0,
+          aiGenerations: 0
+        }
       };
 
       setDoc(userRef, profileData)
@@ -83,17 +88,21 @@ export default function SignupPage() {
       const provider = providerName === 'google' ? new GoogleAuthProvider() : new FacebookAuthProvider();
       const result = await signInWithPopup(auth, provider);
       
-      // Ensure profile exists for social signup
       const user = result.user;
       const userRef = doc(db, "users", user.uid);
       const profileData = {
         email: user.email,
         displayName: user.displayName,
         isPremium: false,
+        isAdmin: false,
         subscriptionPlan: "free",
         credits: 100,
-        photoURL: user.photoURL,
-        createdAt: new Date().toISOString()
+        photoURL: user.photoURL || "",
+        createdAt: new Date().toISOString(),
+        usageStats: {
+          totalVideos: 0,
+          aiGenerations: 0
+        }
       };
 
       setDoc(userRef, profileData, { merge: true })

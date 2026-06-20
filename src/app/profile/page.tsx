@@ -7,8 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { 
   Settings, ChevronRight, Coins, LayoutTemplate, 
-  Zap, Briefcase, Trash2, HelpCircle, LogOut, 
-  Maximize2, Loader2, Edit3, ShieldCheck, UserCircle
+  Zap, LogOut, Loader2, Edit3, ShieldCheck, UserCircle,
+  HelpCircle, Star
 } from "lucide-react";
 import Link from "next/link";
 import { useUser, useFirestore, useDoc, useMemoFirebase } from "@/firebase";
@@ -20,6 +20,7 @@ import { PlaceHolderImages } from "@/lib/placeholder-images";
 import { useToast } from "@/hooks/use-toast";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { cn } from "@/lib/utils";
 
 export default function ProfilePage() {
   const { user, loading: userLoading } = useUser();
@@ -31,8 +32,6 @@ export default function ProfilePage() {
   const [isEditing, setIsEditing] = useState(false);
   const [newDisplayName, setNewDisplayName] = useState("");
   const [saving, setSaving] = useState(false);
-
-  const userAvatar = PlaceHolderImages.find(img => img.id === "avatar-user");
 
   const profileRef = useMemoFirebase(() => {
     if (!user || !db) return null;
@@ -51,7 +50,7 @@ export default function ProfilePage() {
     setSaving(true);
     try {
       await updateDoc(profileRef, { displayName: newDisplayName });
-      toast({ title: "Profile Updated", description: "Your display name has been changed." });
+      toast({ title: "Success!", description: "Profile updated successfully." });
       setIsEditing(false);
     } catch (e: any) {
       toast({ variant: "destructive", title: "Update Failed", description: e.message });
@@ -77,16 +76,16 @@ export default function ProfilePage() {
       color: "text-primary"
     },
     { 
-      label: "Templates", 
-      icon: LayoutTemplate, 
-      href: "/templates",
-      color: "text-indigo-400"
-    },
-    { 
       label: "My Projects", 
       icon: Zap, 
       href: "/projects",
       color: "text-emerald-400"
+    },
+    { 
+      label: "Templates", 
+      icon: LayoutTemplate, 
+      href: "/templates",
+      color: "text-indigo-400"
     },
     { 
       label: "Admin Panel", 
@@ -96,7 +95,7 @@ export default function ProfilePage() {
       show: profile?.isAdmin
     },
     { 
-      label: "Help Center", 
+      label: "Support Hub", 
       icon: HelpCircle, 
       href: "/test-connection",
       color: "text-muted-foreground"
@@ -111,102 +110,96 @@ export default function ProfilePage() {
         <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-white/5 rounded-full border border-white/10">
            <ShieldCheck className={cn("w-3 h-3", profile?.isAdmin ? "text-red-500" : "text-primary")} />
            <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
-             {profile?.isAdmin ? "Master Admin Node" : (profile?.isPremium ? "Premium Creator" : "Standard Node")}
+             {profile?.isAdmin ? "Master Admin Node" : (profile?.isPremium ? "Premium Studio" : "Standard Node")}
            </span>
         </div>
-        <div className="flex items-center gap-4">
-           <Dialog open={isEditing} onOpenChange={setIsEditing}>
-              <DialogTrigger asChild>
-                <Button variant="ghost" size="icon" className="rounded-full hover:bg-primary/20 hover:text-primary transition-all">
-                  <Edit3 className="w-5 h-5" />
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="rounded-[2rem] bg-[#0a0d14] border-white/10">
-                <DialogHeader>
-                  <DialogTitle className="font-headline font-bold">Edit Profile Name</DialogTitle>
-                </DialogHeader>
-                <div className="space-y-6 pt-4">
-                   <div className="space-y-2">
-                      <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground ml-1">New Display Name</label>
-                      <Input 
-                        placeholder={profile?.displayName || "Enter name"} 
-                        value={newDisplayName}
-                        onChange={(e) => setNewDisplayName(e.target.value)}
-                        className="h-14 rounded-2xl bg-black/40 border-white/10"
-                      />
-                   </div>
-                   <Button className="w-full h-14 rounded-2xl font-bold" onClick={handleUpdateProfile} disabled={saving}>
-                      {saving ? <Loader2 className="animate-spin" /> : "Save Changes"}
-                   </Button>
-                </div>
-              </DialogContent>
-           </Dialog>
-           <Settings className="w-5 h-5 text-muted-foreground cursor-pointer hover:text-primary transition-colors" />
-        </div>
+        <Dialog open={isEditing} onOpenChange={setIsEditing}>
+          <DialogTrigger asChild>
+            <Button variant="ghost" size="icon" className="rounded-full h-10 w-10 bg-white/5 hover:bg-primary/20 hover:text-primary transition-all">
+              <Edit3 className="w-5 h-5" />
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="rounded-[2.5rem] bg-[#0a0d14] border-white/10 p-10">
+            <DialogHeader className="mb-6">
+              <DialogTitle className="text-2xl font-headline font-bold">Edit Profile</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-6">
+               <div className="space-y-2">
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-primary ml-1">Full Name</label>
+                  <Input 
+                    placeholder={profile?.displayName || "Enter name"} 
+                    value={newDisplayName}
+                    onChange={(e) => setNewDisplayName(e.target.value)}
+                    className="h-14 rounded-2xl bg-black/40 border-white/10"
+                  />
+               </div>
+               <Button className="w-full h-14 rounded-2xl font-bold shadow-xl shadow-primary/20" onClick={handleUpdateProfile} disabled={saving || !newDisplayName}>
+                  {saving ? <Loader2 className="animate-spin" /> : "Sync Changes"}
+               </Button>
+            </div>
+          </DialogContent>
+        </Dialog>
       </div>
 
       <main className="max-w-xl mx-auto px-6 space-y-12">
-        {/* User Header */}
-        <div className="flex flex-col items-center gap-6 py-4">
-          <div className="relative">
-             <Avatar className="w-32 h-32 border-4 border-primary/20 bg-muted shadow-2xl blue-glow">
-                <AvatarImage src={user?.photoURL || userAvatar?.imageUrl} />
-                <AvatarFallback className="text-4xl font-bold bg-primary/10 text-primary">
+        <div className="flex flex-col items-center gap-6">
+          <div className="relative group">
+             <Avatar className="w-40 h-40 border-8 border-white/5 bg-muted shadow-2xl blue-glow">
+                <AvatarImage src={profile?.photoURL || ""} />
+                <AvatarFallback className="text-5xl font-bold bg-primary/10 text-primary font-headline">
                   {profile?.displayName?.charAt(0) || "U"}
                 </AvatarFallback>
              </Avatar>
              {profile?.isPremium && (
-               <div className="absolute -bottom-2 -right-2 bg-primary p-2 rounded-full shadow-lg">
-                  <Star className="w-4 h-4 text-white fill-current" />
+               <div className="absolute bottom-2 right-2 bg-primary p-3 rounded-2xl shadow-xl shadow-primary/40 animate-float">
+                  <Star className="w-5 h-5 text-white fill-current" />
                </div>
              )}
           </div>
           <div className="text-center space-y-2">
-            <h2 className="text-4xl font-headline font-bold text-white tracking-tighter">
-              {profile?.displayName || "Anonymous Creator"}
+            <h2 className="text-5xl font-headline font-bold text-white tracking-tighter">
+              {profile?.displayName || "Creator Node"}
             </h2>
-            <p className="text-sm font-medium text-muted-foreground">{user?.email}</p>
+            <p className="text-sm font-medium text-muted-foreground opacity-60">{profile?.email}</p>
           </div>
         </div>
 
-        {/* List Items */}
-        <div className="space-y-3">
+        <div className="grid grid-cols-1 gap-4">
           {menuItems.map((item, index) => (
             <Link 
               key={index} 
               href={item.href}
-              className="flex items-center justify-between p-6 bg-white/5 border border-white/5 group hover:bg-white/[0.08] hover:border-primary/20 transition-all rounded-[2rem]"
+              className="flex items-center justify-between p-6 bg-white/5 border border-white/5 group hover:bg-white/[0.08] hover:border-primary/30 transition-all rounded-[2.5rem] shadow-sm"
             >
               <div className="flex items-center gap-6">
-                <div className={cn("p-3 rounded-2xl bg-black/40", item.color)}>
-                  <item.icon className="w-6 h-6" />
+                <div className={cn("p-4 rounded-2xl bg-black/40 shadow-inner", item.color)}>
+                  <item.icon className="w-7 h-7" />
                 </div>
-                <span className="text-lg font-bold text-white/90">{item.label}</span>
+                <span className="text-xl font-bold text-white/90 font-headline">{item.label}</span>
               </div>
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-4">
                 {item.value && (
-                  <span className="text-primary font-bold text-lg">{item.value}</span>
+                  <span className="text-primary font-bold text-2xl font-headline">{item.value}</span>
                 )}
-                <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
+                <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
               </div>
             </Link>
           ))}
         </div>
 
-        {/* Logout Section */}
         <Button 
           variant="ghost" 
-          className="w-full justify-start text-destructive hover:bg-destructive/10 gap-6 h-20 rounded-[2rem] px-8"
+          className="w-full justify-start text-destructive hover:bg-destructive/10 gap-6 h-24 rounded-[2.5rem] px-10 transition-all border border-transparent hover:border-destructive/20"
           onClick={handleLogout}
         >
-          <div className="p-3 rounded-2xl bg-destructive/10">
-            <LogOut className="w-6 h-6" />
+          <div className="p-4 rounded-2xl bg-destructive/10">
+            <LogOut className="w-7 h-7" />
           </div>
-          <span className="text-lg font-bold">Sign Out from Studio</span>
+          <span className="text-xl font-bold font-headline">Sign Out from Studio</span>
         </Button>
 
-        <div className="text-center pt-8">
-           <p className="text-[10px] text-muted-foreground uppercase tracking-[0.5em] font-bold opacity-30">VideoMaster AI • Mobile Node v1.5</p>
+        <div className="text-center pt-10">
+           <p className="text-[10px] text-muted-foreground uppercase tracking-[0.5em] font-bold opacity-20">VideoMaster AI • Build v1.5.0 Final</p>
         </div>
       </main>
     </div>
