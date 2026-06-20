@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState, useEffect, useRef, useMemo } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Navbar } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
 import { 
@@ -66,9 +66,7 @@ export default function EditorPage() {
   // AI Form State
   const [scriptTopic, setScriptTopic] = useState("");
   const [videoPrompt, setVideoPrompt] = useState("");
-  const [voiceText, setVoiceText] = useState("");
-  const [aiScript, setAiScript] = useState<any>(null);
-
+  
   const projectRef = useMemoFirebase(() => {
     if (!user || !db || !projectId) return null;
     return doc(db, "users", user.uid, "projects", projectId);
@@ -116,7 +114,15 @@ export default function EditorPage() {
 
   const deductCredits = (cost: number) => {
     if (profile?.isPremium || !userProfileRef) return;
-    updateDoc(userProfileRef, { credits: increment(-cost) }).catch(() => {});
+    const updateData = { credits: increment(-cost) };
+    updateDoc(userProfileRef, updateData).catch(async (serverError) => {
+      const permissionError = new FirestorePermissionError({
+        path: userProfileRef.path,
+        operation: 'update',
+        requestResourceData: updateData,
+      } satisfies SecurityRuleContext);
+      errorEmitter.emit('permission-error', permissionError);
+    });
   };
 
   const handleSave = (extraData: any = {}) => {
@@ -133,13 +139,27 @@ export default function EditorPage() {
     };
     
     if (!isNewProject) {
-      updateDoc(projectRef, data).catch(() => {});
+      updateDoc(projectRef, data).catch(async (serverError) => {
+        const permissionError = new FirestorePermissionError({
+          path: projectRef.path,
+          operation: 'update',
+          requestResourceData: data,
+        } satisfies SecurityRuleContext);
+        errorEmitter.emit('permission-error', permissionError);
+      });
     } else {
       setDoc(projectRef, {
         ...data,
         createdAt: serverTimestamp(),
         status: "draft",
-      }).catch(() => {});
+      }).catch(async (serverError) => {
+        const permissionError = new FirestorePermissionError({
+          path: projectRef.path,
+          operation: 'create',
+          requestResourceData: { ...data, status: 'draft' },
+        } satisfies SecurityRuleContext);
+        errorEmitter.emit('permission-error', permissionError);
+      });
       setIsNewProject(false);
       if (!projectIdFromUrl) router.replace(`/editor?id=${projectRef.id}`);
     }
@@ -175,7 +195,6 @@ export default function EditorPage() {
     setProcessingMessage("Writing viral script...");
     try {
       const result = await generateAiScript({ topic: scriptTopic, platform: 'YouTube' });
-      setAiScript(result);
       deductCredits(2);
       handleSave({ aiNotes: result.script });
       toast({ title: "Script Generated", description: "Aapki script AI tab mein ready hai." });
@@ -215,7 +234,6 @@ export default function EditorPage() {
     <div className="h-screen bg-[#05070a] flex flex-col overflow-hidden text-[#e1e4e8] font-body">
       <Navbar />
       
-      {/* Top Tool Bar */}
       <div className="h-16 border-b bg-[#0a0d14]/95 backdrop-blur-2xl px-6 flex items-center justify-between z-40 border-white/5 shadow-lg">
         <div className="flex items-center gap-6">
           <Link href="/dashboard" className="p-2 hover:bg-white/5 rounded-2xl transition-colors">
@@ -244,7 +262,6 @@ export default function EditorPage() {
       </div>
 
       <div className="flex-1 flex overflow-hidden">
-        {/* Left Sidebar - Navigation */}
         <div className="w-20 bg-[#0a0d14] border-r border-white/5 flex flex-col items-center py-8 gap-10">
            {[
              { icon: Film, id: 'media', label: 'Media' },
@@ -272,7 +289,6 @@ export default function EditorPage() {
            ))}
         </div>
 
-        {/* Content Panel - Dynamic Tools */}
         <div className="w-80 bg-[#0a0d14]/60 backdrop-blur-3xl border-r border-white/5 flex flex-col p-6 space-y-8 overflow-y-auto">
            {activeTab === 'media' && (
              <div className="space-y-6">
@@ -383,9 +399,7 @@ export default function EditorPage() {
            )}
         </div>
 
-        {/* Editor Central Workspace */}
         <div className="flex-1 flex flex-col bg-[#0c0f17] relative p-8">
-           {/* Canvas View */}
            <div className="flex-1 relative aspect-video h-[60%] mx-auto bg-black rounded-[3.5rem] border-[12px] border-[#0a0d14] overflow-hidden shadow-2xl blue-glow group">
               <div className="absolute inset-0 flex items-center justify-center">
                 {!videoData && !thumbnailUrl ? (
@@ -416,7 +430,6 @@ export default function EditorPage() {
                 )}
               </div>
 
-              {/* Canvas Overlay Controls */}
               <div className="absolute inset-x-0 bottom-10 flex justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-4 group-hover:translate-y-0">
                  <div className="bg-black/60 backdrop-blur-xl px-8 py-3 rounded-full border border-white/10 flex items-center gap-8 shadow-2xl">
                     <Button variant="ghost" size="icon" className="h-10 w-10 rounded-full hover:bg-white/10"><SkipBack className="w-5 h-5" /></Button>
@@ -433,7 +446,6 @@ export default function EditorPage() {
               </div>
            </div>
 
-           {/* Pro Timeline Interface */}
            <div className="h-64 bg-[#0a0d14] mt-8 rounded-[3rem] border border-white/5 flex flex-col overflow-hidden shadow-inner">
               <div className="h-12 border-b border-white/5 px-8 flex items-center justify-between bg-white/[0.02]">
                  <div className="flex items-center gap-6">
@@ -474,7 +486,6 @@ export default function EditorPage() {
            </div>
         </div>
 
-        {/* Right Inspector - Properties & Adjustments */}
         <div className="w-80 bg-[#0a0d14] border-l border-white/5 p-6 flex flex-col gap-10 overflow-y-auto">
            <div className="space-y-6">
               <div className="flex items-center gap-2">

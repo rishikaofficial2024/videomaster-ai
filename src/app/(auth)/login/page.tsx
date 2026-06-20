@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Video, Chrome, Facebook, Smartphone, ArrowLeft, Sparkles, Loader2, Info, ExternalLink, Github } from "lucide-react";
+import { Video, Chrome, Facebook, Smartphone, ArrowLeft, Sparkles, Loader2, Info, ExternalLink, Github, AlertCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { 
@@ -29,6 +29,7 @@ export default function LoginPage() {
   const [phone, setPhone] = useState("");
   const [otp, setOtp] = useState("");
   const [confirmationResult, setConfirmationResult] = useState<any>(null);
+  const [authError, setAuthError] = useState<string | null>(null);
   
   const router = useRouter();
   const { toast } = useToast();
@@ -37,10 +38,12 @@ export default function LoginPage() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    setAuthError(null);
     try {
       await signInWithEmailAndPassword(auth, email, password);
       router.push("/dashboard");
     } catch (error: any) {
+      setAuthError(error.message);
       toast({
         variant: "destructive",
         title: "Login Failed",
@@ -54,6 +57,7 @@ export default function LoginPage() {
   const handleSocialLogin = async (providerName: 'google' | 'facebook' | 'github') => {
     try {
       setLoading(true);
+      setAuthError(null);
       let provider;
       if (providerName === 'google') provider = new GoogleAuthProvider();
       else if (providerName === 'facebook') provider = new FacebookAuthProvider();
@@ -66,9 +70,11 @@ export default function LoginPage() {
       
       let description = error.message;
       if (error.code === 'auth/unauthorized-domain') {
-        description = "⚠️ Ye domain Authorized nahi hai! Firebase Console > Auth > Settings > Authorized Domains mein jaakar apna current URL add karein.";
+        description = "⚠️ Authorized Domain Error: Firebase Console > Auth > Settings > Authorized Domains mein jaakar apna current URL add karein.";
+        setAuthError(description);
       } else if (error.code === 'auth/operation-not-allowed') {
-        description = `⚠️ ${providerName} login enabled nahi hai! Firebase Console > Authentication mein jaakar ise Enable karein aur GitHub ke liye Client Secret dalein.`;
+        description = `⚠️ ${providerName} Login disabled hai! Firebase Console mein ise Enable karein.`;
+        setAuthError(description);
       }
       
       toast({
@@ -93,6 +99,7 @@ export default function LoginPage() {
   const handlePhoneSignIn = async () => {
     if (!phone) return;
     setLoading(true);
+    setAuthError(null);
     try {
       setupRecaptcha();
       const appVerifier = (window as any).recaptchaVerifier;
@@ -100,13 +107,11 @@ export default function LoginPage() {
       setConfirmationResult(result);
       toast({ title: "OTP Sent", description: "Please check your mobile messages." });
     } catch (error: any) {
-      console.error("Phone Auth Error:", error.code, error.message);
       let description = error.message;
-      
       if (error.code === 'auth/operation-not-allowed') {
-        description = "⚠️ Phone Login disabled hai! [Action]: Firebase Console > Authentication > Sign-in Method mein jaakar 'Phone' ko Enable karein.";
+        description = "⚠️ Phone Login disabled hai! Firebase Console mein 'Phone' ko Enable karein.";
       }
-      
+      setAuthError(description);
       toast({ variant: "destructive", title: "Phone Error", description: description });
     } finally {
       setLoading(false);
@@ -154,6 +159,13 @@ export default function LoginPage() {
         </CardHeader>
 
         <CardContent className="space-y-8 px-10">
+          {authError && (
+            <div className="p-4 bg-destructive/10 border border-destructive/20 rounded-2xl flex gap-3 animate-in zoom-in-95">
+              <AlertCircle className="w-5 h-5 text-destructive shrink-0" />
+              <p className="text-[10px] font-bold text-destructive leading-relaxed uppercase tracking-widest">{authError}</p>
+            </div>
+          )}
+
           <Tabs defaultValue="email" className="w-full">
             <TabsList className="grid w-full grid-cols-2 bg-white/5 rounded-2xl p-1.5 mb-8 border border-white/5">
               <TabsTrigger value="email" className="rounded-xl font-bold text-[10px] uppercase tracking-widest py-3">Email Access</TabsTrigger>
