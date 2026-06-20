@@ -68,7 +68,7 @@ export default function LoginPage() {
       if (error.code === 'auth/unauthorized-domain') {
         description = "⚠️ Ye domain Authorized nahi hai! Firebase Console > Auth > Settings > Authorized Domains mein jaakar apna current URL add karein.";
       } else if (error.code === 'auth/operation-not-allowed') {
-        description = `⚠️ ${providerName} login enabled nahi hai! Firebase Console mein ise Enable karein.`;
+        description = `⚠️ ${providerName} login enabled nahi hai! Firebase Console > Authentication mein jaakar ise Enable karein aur GitHub ke liye Client Secret dalein.`;
       }
       
       toast({
