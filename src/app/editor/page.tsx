@@ -10,7 +10,7 @@ import {
   Plus, RefreshCw, Palette, Mic2, 
   Trash2, TrendingUp, Tags, BarChart4, Music, Star, Volume2,
   Upload, Scissors, Layers, Film, Image as ImageIcon,
-  Settings2, MoveHorizontal, Type, Layout
+  Settings2, MoveHorizontal, Type, Layout, Crown, Lock
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { generateAiVideo } from "@/ai/flows/ai-video-generation-flow";
@@ -106,8 +106,8 @@ export default function EditorPage() {
     if ((profile?.credits ?? 0) < cost) {
       toast({
         variant: "destructive",
-        title: "Insufficient Credits",
-        description: `This action requires ${cost} credits. Watch an ad or upgrade to Pro.`,
+        title: "Credits Khatam!",
+        description: `Ye kaam karne ke liye ${cost} credits chahiye. Ad dekh kar earn karein ya Pro banein.`,
       });
       return false;
     }
@@ -161,7 +161,6 @@ export default function EditorPage() {
     const updatedAssets = [...mediaAssets, newAsset];
     setMediaAssets(updatedAssets);
     
-    // Auto-select if it's a video/image to preview
     if (newAsset.type !== 'audio') {
       setVideoData(url);
     }
@@ -179,7 +178,7 @@ export default function EditorPage() {
       setAiScript(result);
       deductCredits(2);
       handleSave({ aiNotes: result.script });
-      toast({ title: "Script Generated", description: "Your script is ready in AI tab." });
+      toast({ title: "Script Generated", description: "Aapki script AI tab mein ready hai." });
     } catch (e: any) {
       toast({ variant: "destructive", title: "Error", description: e.message });
     } finally {
@@ -196,7 +195,7 @@ export default function EditorPage() {
       setVideoData(result.videoDataUri);
       deductCredits(20);
       handleSave({ videoDataUri: result.videoDataUri });
-      toast({ title: "Clip Ready", description: "AI video clip added to timeline." });
+      toast({ title: "Clip Ready", description: "AI clip timeline mein jodh di gayi hai." });
     } catch (e: any) {
       toast({ variant: "destructive", title: "Generation Error", description: e.message });
     } finally {
@@ -237,8 +236,9 @@ export default function EditorPage() {
           <Button variant="ghost" size="sm" className="rounded-xl font-bold gap-2 text-muted-foreground hover:text-white" onClick={() => handleSave()}>
             Save Draft
           </Button>
-          <Button className="h-10 px-8 rounded-xl font-bold bg-primary shadow-xl shadow-primary/20 hover:scale-105 active:scale-95 transition-all">
-            <Download className="w-4 h-4 mr-2" /> Export Video
+          <Button className="h-10 px-8 rounded-xl font-bold bg-primary shadow-xl shadow-primary/20 hover:scale-105 active:scale-95 transition-all group">
+            {profile?.isPremium ? <Download className="w-4 h-4 mr-2" /> : <Lock className="w-3 h-3 mr-2 text-white/50" />}
+            {profile?.isPremium ? "Export Video" : "Unlock 4K Export"}
           </Button>
         </div>
       </div>
@@ -350,7 +350,7 @@ export default function EditorPage() {
                          onChange={(e) => setScriptTopic(e.target.value)}
                       />
                       <Button className="w-full h-11 rounded-xl font-bold bg-primary/20 text-primary hover:bg-primary/30" onClick={handleGenerateScript} disabled={isProcessing}>
-                         {isProcessing ? <Loader2 className="w-4 h-4 animate-spin" /> : "Write Script"}
+                         {isProcessing ? <Loader2 className="w-4 h-4 animate-spin" /> : "Write Script (2 Cr)"}
                       </Button>
                    </div>
 
@@ -363,10 +363,22 @@ export default function EditorPage() {
                          onChange={(e) => setVideoPrompt(e.target.value)}
                       />
                       <Button className="w-full h-11 rounded-xl font-bold bg-indigo-600 shadow-lg shadow-indigo-600/20" onClick={handleGenerateVideo} disabled={isProcessing}>
-                         {isProcessing ? <Loader2 className="w-4 h-4 animate-spin" /> : "Render AI Clip"}
+                         {isProcessing ? <Loader2 className="w-4 h-4 animate-spin" /> : "Render AI Clip (20 Cr)"}
                       </Button>
                    </div>
                 </div>
+
+                {!profile?.isPremium && (
+                  <Link href="/premium">
+                    <Card className="p-6 bg-gradient-to-br from-primary/20 to-indigo-500/20 border-primary/30 rounded-[2rem] hover:scale-105 transition-all group">
+                       <div className="flex items-center gap-3 mb-2">
+                          <Crown className="w-5 h-5 text-primary group-hover:rotate-12 transition-transform" />
+                          <h5 className="text-xs font-bold uppercase tracking-widest">Go Pro Studio</h5>
+                       </div>
+                       <p className="text-[9px] text-muted-foreground italic font-medium">Remove watermark & get unlimited AI credits.</p>
+                    </Card>
+                  </Link>
+                )}
              </div>
            )}
         </div>
@@ -394,6 +406,11 @@ export default function EditorPage() {
                         onPlay={() => setIsPlaying(true)}
                         onPause={() => setIsPlaying(false)}
                       />
+                    )}
+                    {!profile?.isPremium && (
+                      <div className="absolute top-8 right-8 bg-black/40 backdrop-blur-xl px-4 py-1.5 rounded-full border border-white/10">
+                         <span className="text-[8px] font-bold text-white/40 uppercase tracking-[0.3em]">VideoMaster AI Watermark</span>
+                      </div>
                     )}
                   </>
                 )}
@@ -434,7 +451,6 @@ export default function EditorPage() {
               </div>
 
               <div className="flex-1 overflow-x-auto p-4 space-y-3 scrollbar-hide">
-                 {/* Video Track */}
                  <div className="h-14 bg-white/[0.03] rounded-2xl flex items-center px-4 relative group border border-dashed border-white/5">
                     <span className="absolute left-4 -top-5 text-[8px] font-bold text-primary/40 uppercase tracking-widest">Video Track 1</span>
                     {videoData && (
@@ -445,7 +461,6 @@ export default function EditorPage() {
                     )}
                  </div>
 
-                 {/* Audio Track */}
                  <div className="h-14 bg-white/[0.03] rounded-2xl flex items-center px-4 relative group border border-dashed border-white/5">
                     <span className="absolute left-4 -top-5 text-[8px] font-bold text-indigo-400/40 uppercase tracking-widest">Audio Track 1</span>
                     {audioData && (

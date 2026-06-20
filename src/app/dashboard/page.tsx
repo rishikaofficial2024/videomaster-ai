@@ -1,3 +1,4 @@
+
 "use client";
 
 import { Navbar } from "@/components/navbar";
@@ -5,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { 
   Plus, Sparkles, ChevronRight, Loader2, Coins, 
-  ArrowUpRight, Video, Activity, Gift, MonitorPlay, Star, ArrowRight, Globe, CheckCircle2, X, Rocket, ShieldCheck
+  ArrowUpRight, Video, Activity, Gift, MonitorPlay, Star, ArrowRight, Globe, CheckCircle2, X, Rocket, ShieldCheck, Crown
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -167,7 +168,24 @@ export default function Dashboard() {
           </div>
         </header>
 
-        {/* LAUNCH CENTER WIDGET - THE "SARE KAAM" STATUS */}
+        {/* PRO MOVEMENT WIDGET */}
+        {!profile?.isPremium && (
+          <Link href="/premium">
+            <Card className="rounded-[3.5rem] bg-gradient-to-r from-primary/20 via-indigo-500/10 to-transparent border-primary/30 p-10 flex flex-col md:flex-row items-center justify-between gap-8 group hover:scale-[1.01] transition-all">
+               <div className="flex items-center gap-8 text-center md:text-left">
+                  <div className="w-20 h-20 bg-primary/20 rounded-[2rem] flex items-center justify-center border-2 border-primary/20 group-hover:rotate-12 transition-transform">
+                     <Crown className="w-10 h-10 text-primary" />
+                  </div>
+                  <div className="space-y-2">
+                     <h3 className="text-3xl font-bold font-headline text-white">Unlock Pro Studio</h3>
+                     <p className="text-muted-foreground font-medium italic">Remove watermarks, unlock 4K export, and get unlimited AI credits for ₹99.</p>
+                  </div>
+               </div>
+               <Button className="h-16 px-10 rounded-2xl bg-primary font-bold shadow-xl shadow-primary/20">Upgrade Now <ArrowRight className="ml-2 w-4 h-4" /></Button>
+            </Card>
+          </Link>
+        )}
+
         <section className="grid grid-cols-1 lg:grid-cols-2 gap-8">
            <Card className="rounded-[3.5rem] bg-[#0a0d14] border-primary/20 p-10 relative overflow-hidden group blue-glow">
               <div className="absolute top-0 right-0 p-8 opacity-5">
@@ -250,7 +268,7 @@ export default function Dashboard() {
           </Card>
         </section>
 
-        <AdBanner provider="Network Hub Mobile" />
+        <AdBanner variant="large" provider="Network Hub Mobile" />
 
         <section className="space-y-10">
           <div className="flex justify-between items-end px-4">
