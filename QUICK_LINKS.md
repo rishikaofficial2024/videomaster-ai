@@ -2,21 +2,22 @@
 
 Aapka app technically 100% ready hai. Bas ye final settings ek-ek karke check kar lein.
 
-### 1. GitHub Integration (APK Build)
-- **Repo URL**: `https://github.com/rishikaofficial2024/videomaster-ai`
-- **Action**: Terminal mein `git push` commands chalaein (Check `APK_GUIDE.md`).
+### ⚠️ Zaroori Soochna (Kise Ignore Karein?)
+Agar aapko Firebase mein **"SQL Connect"** ya **"Schema Generator"** dikhta hai, toh usey **IGNORE** karein. Aapka app **Firestore** use karta hai, SQL ki zaroorat nahi hai. Bas **"Skip schema"** par click kar dein.
 
-### 2. Firebase Auth (Direct Links)
+### 1. Firebase Auth (Direct Links)
 - [Enable Phone Auth](https://console.firebase.google.com/project/studio-9489287013-59986/authentication/providers) -> Bas switch ON karein.
-- [Add Authorized Domain](https://console.firebase.google.com/project/studio-9489287013-59986/authentication/settings) -> Apna browser URL wahan add karein.
+- [Add Authorized Domain](https://console.firebase.google.com/project/studio-9489287013-59986/authentication/settings) -> Apna browser URL wahan add karein (auth/unauthorized-domain fix).
 
-### 3. GitHub OAuth (Settings)
+### 2. GitHub Integration (APK Build)
+- **Action**: Terminal mein ye command chalayein: 
+  ```bash
+  npm run mobile:push
+  ```
+- **Build Status**: Push karne ke baad [Yahan APK check karein](https://github.com/rishikaofficial2024/videomaster-ai/actions).
+
+### 3. GitHub OAuth (Optional)
 - **Client ID**: `0v23liyd0nsdIH0s0VFK`
 - **Authorization callback URL**: `https://studio-9489287013-59986.firebaseapp.com/__/auth/handler`
-- **Action**: GitHub settings mein Client Secret generate karke Firebase mein dalein.
-
-### 4. Revenue & Bank Setup
-- Ads approve karne ke liye [AdSense Console](https://adsense.google.com) par site submit karein.
-- Bank account jodne ke liye `BANK_TRANSFER_GUIDE.md` padhein.
 
 **Aapka Business ab Global Level par jane ke liye taiyar hai!** 🚀💰

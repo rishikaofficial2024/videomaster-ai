@@ -1,27 +1,20 @@
+# 🗝️ VideoMaster AI: Final Step Guide (Hindi)
 
-# 🗝️ VideoMaster AI: Keys & Free Jugaad Setup
+Aapka app technically poora ho chuka hai. Live hone ke liye bas ye 3 kaam bache hain:
 
-Aapke app mein AI features ko bina paise kharche chalane ke liye maine ye setup kiya hai:
+### 1. Firebase Console Settings (Sirf 1 Minute) ✅
+- **SQL Connect / Schema**: Agar ye dikhe toh **Skip** kar dein. Hamein iski zaroorat nahi hai.
+- **Phone Login**: Firebase Console > Auth > Sign-in Method mein jaakar **Phone** ko Enable karein.
+- **Domain Fix**: Current browser URL ko **Authorized Domains** mein jodein taaki login kaam kare.
 
-### 1. Free Jugaad (Thumbnail Designer) 🎨
-Agar aapki Gemini Key mein billing enabled nahi hai, toh **Thumbnail Designer** ab crash nahi hoga. 
-- **Kaise Kaam Karega?**: Maine ek smart system banaya hai. Agar AI generate nahi kar paata, toh app khud-ba-khud **Unsplash** se us topic ki sabse behtareen professional photo nikal kar aapko de dega.
-- **Fayda**: Aapko 4K quality ki thumbnails milti rahengi bina kisi billing ke!
+### 2. APK Kaise Banega? 📱
+- Studio ke niche **Terminal** kholein.
+- Ye command type karein aur Enter dabayein: `npm run mobile:push`
+- Isse aapka code GitHub par jayega aur APK banna chalu ho jayega.
 
-### 2. Video Generation (Veo 2.0) 🎬
-Video generation ke liye **Google Cloud Billing** mandatory hai. 
-- **Mock Mode**: Agar billing nahi hai, toh app aapko rasta batayega (Hindi error message).
-- **Billing Kaise Karein?**: [Google Cloud Console](https://console.cloud.google.com/billing) par jayein aur apna card link karein. Shuruat mein Google aksar free credits deta hai.
-
-### 3. Gemini API Key (.env File) 🧠
-- **Sahi Format**: `GEMINI_API_KEY=AIzaSy...Aapki_Key_Yahan`
-- **Check Karein**: [Google AI Studio](https://aistudio.google.com/app/apikey) par jake apni key ki validity check karein.
+### 3. Paisa Kaise Ayega? 💰
+- **Ads**: Maine `ca-pub-8946933317699938` set kar di hai. Site approve hote hi kamai chalu hogi.
+- **Subscriptions**: User ₹99 ka plan lega toh wo direct aapke dashboard mein dikhega.
 
 ---
-
-### ⚠️ IMPORTANT Checklist
-- [ ] **Firestore Rule**: `/connection_tests` collection mein write enable hona chahiye (Maine rules theek kar diye hain).
-- [ ] **Email Login**: Signup karke 100 free credits milenge, unhe use karein.
-- [ ] **Ad Rewards**: Dashboard par "Watch Ad" dabakar credits badhate rahein.
-
-Ab aapka app "Free Tier" par bhi 90% features ke saath smoothly chalega! 🚀💰
+**Bhaai, aapka app ab "Ready-to-Earn" hai!** Bas Terminal mein command chalayein aur APK download karke promote shuru karein. 🚀💸
