@@ -8,10 +8,11 @@ import {
   Users, DollarSign, BarChart3, Settings, 
   Loader2, ArrowUpRight, TrendingUp,
   Cpu, Activity, Database, AlertTriangle,
-  RefreshCw, Lock, Globe, Eye, Search, CheckCircle2, ShieldCheck
+  RefreshCw, Lock, Globe, Eye, Search, CheckCircle2, ShieldCheck,
+  UserPlus, ShieldAlert, Coins, Star
 } from "lucide-react";
 import { useFirestore, useCollection, useMemoFirebase } from "@/firebase";
-import { collection, query, limit, orderBy, getCountFromServer } from "firebase/firestore";
+import { collection, query, limit, orderBy, getCountFromServer, doc, updateDoc, increment } from "firebase/firestore";
 import { useState, useEffect } from "react";
 import { Progress } from "@/components/ui/progress";
 import { 
@@ -25,33 +26,50 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { useToast } from "@/hooks/use-toast";
 
 export default function AdminDashboard() {
   const db = useFirestore();
+  const { toast } = useToast();
   const [mounted, setMounted] = useState(false);
   const [totalUsersCount, setTotalUsersCount] = useState<number | null>(null);
+  const [updatingUser, setUpdatingUser] = useState<string | null>(null);
 
   useEffect(() => {
     setMounted(true);
-    const fetchUserCount = async () => {
-      if (!db) return;
-      try {
-        const coll = collection(db, "users");
-        const snapshot = await getCountFromServer(coll);
-        setTotalUsersCount(snapshot.data().count);
-      } catch (e) {
-        console.error("User count fetch failed", e);
-      }
-    };
     fetchUserCount();
   }, [db]);
 
+  const fetchUserCount = async () => {
+    if (!db) return;
+    try {
+      const coll = collection(db, "users");
+      const snapshot = await getCountFromServer(coll);
+      setTotalUsersCount(snapshot.data().count);
+    } catch (e) {
+      console.error("User count fetch failed", e);
+    }
+  };
+
   const usersQuery = useMemoFirebase(() => {
     if (!db) return null;
-    return query(collection(db, "users"), limit(20), orderBy("createdAt", "desc"));
+    return query(collection(db, "users"), limit(50), orderBy("createdAt", "desc"));
   }, [db]);
 
   const { data: users, loading: usersLoading } = useCollection(usersQuery);
+
+  const handleUpdateUser = async (userId: string, data: any) => {
+    setUpdatingUser(userId);
+    try {
+      const userRef = doc(db, "users", userId);
+      await updateDoc(userRef, data);
+      toast({ title: "Updated!", description: "User settings updated successfully." });
+    } catch (e: any) {
+      toast({ variant: "destructive", title: "Error", description: e.message });
+    } finally {
+      setUpdatingUser(null);
+    }
+  };
 
   if (!mounted) return null;
 
@@ -68,73 +86,38 @@ export default function AdminDashboard() {
             <h1 className="text-5xl md:text-7xl font-headline font-bold tracking-tighter text-white">
               Studio <span className="text-primary">Control</span>
             </h1>
-            <p className="text-muted-foreground font-medium italic">Aapka business yahan se manage hota hai.</p>
+            <p className="text-muted-foreground font-medium italic">Manage users, roles, and credits.</p>
           </div>
           
           <div className="flex items-center gap-4 bg-white/5 p-4 rounded-3xl border border-white/5 backdrop-blur-xl">
              <div className="flex flex-col px-4 border-r border-white/10">
-                <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-1">Live Users</span>
+                <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-1">Total Users</span>
                 <span className="text-2xl font-bold font-headline text-emerald-500">{totalUsersCount ?? "..."}</span>
              </div>
-             <ShieldCheck className="w-8 h-8 text-primary opacity-20 animate-pulse" />
+             <ShieldCheck className="w-8 h-8 text-primary opacity-20" />
           </div>
         </header>
 
-        {/* SYSTEM AUDIT PROOF CARD */}
-        <section>
-          <Card className="rounded-[3rem] bg-emerald-500/5 border-emerald-500/20 p-8 md:p-12 relative overflow-hidden group">
-            <div className="absolute top-0 right-0 p-12 opacity-5 -rotate-12">
-              <CheckCircle2 className="w-48 h-48" />
-            </div>
-            <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-10">
-              <div className="space-y-4 text-center md:text-left">
-                <div className="flex items-center justify-center md:justify-start gap-3">
-                  <div className="p-3 bg-emerald-500/20 rounded-2xl border border-emerald-500/30">
-                    <ShieldCheck className="w-6 h-6 text-emerald-500" />
-                  </div>
-                  <h2 className="text-3xl font-headline font-bold text-white tracking-tight">System Audit: Passed</h2>
-                </div>
-                <p className="text-muted-foreground max-w-xl font-medium italic leading-relaxed">
-                  Maine aapka poora app verify kar diya hai. AI Brain, Monetization, aur Mobile Build sabhi components 100% active hain. Saboot ke liye Audit file padhein.
-                </p>
-                <div className="flex flex-wrap gap-4 pt-2">
-                   <div className="flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-xl border border-primary/20">
-                      <Zap className="w-4 h-4 text-primary" />
-                      <span className="text-[10px] font-bold text-primary uppercase tracking-widest">AI Engine: Stable</span>
-                   </div>
-                   <div className="flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-xl border border-primary/20">
-                      <DollarSign className="w-4 h-4 text-primary" />
-                      <span className="text-[10px] font-bold text-primary uppercase tracking-widest">Monetization: Live</span>
-                   </div>
-                </div>
-              </div>
-              <Button className="h-20 px-12 rounded-[2rem] bg-emerald-600 font-bold shadow-2xl shadow-emerald-500/40 text-lg hover:scale-105 transition-all" asChild>
-                <Link href="/SYSTEM_AUDIT.md">System Audit (Saboot) Dekhein</Link>
-              </Button>
-            </div>
-          </Card>
-        </section>
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 gap-8">
            {/* RECENT USERS */}
-           <Card className="lg:col-span-2 rounded-[3rem] bg-[#0a0d14] border-white/5 overflow-hidden shadow-2xl">
+           <Card className="rounded-[3rem] bg-[#0a0d14] border-white/5 overflow-hidden shadow-2xl">
               <CardHeader className="p-8 border-b border-white/5">
-                <CardTitle className="text-xl font-headline font-bold">User Management</CardTitle>
-                <CardDescription>Live signups and project status.</CardDescription>
+                <CardTitle className="text-xl font-headline font-bold">User Settings Management</CardTitle>
+                <CardDescription>Promote users, give credits, or manage plans.</CardDescription>
               </CardHeader>
               <CardContent className="p-0">
                  <Table>
                     <TableHeader className="bg-white/5">
                        <TableRow className="hover:bg-transparent border-white/5">
-                          <TableHead className="text-[10px] font-bold uppercase tracking-widest px-8">User</TableHead>
-                          <TableHead className="text-[10px] font-bold uppercase tracking-widest">Plan</TableHead>
-                          <TableHead className="text-[10px] font-bold uppercase tracking-widest">Status</TableHead>
-                          <TableHead className="text-[10px] font-bold uppercase tracking-widest text-right px-8">Audit</TableHead>
+                          <TableHead className="text-[10px] font-bold uppercase tracking-widest px-8">User Info</TableHead>
+                          <TableHead className="text-[10px] font-bold uppercase tracking-widest">Status & Credits</TableHead>
+                          <TableHead className="text-[10px] font-bold uppercase tracking-widest">Role</TableHead>
+                          <TableHead className="text-[10px] font-bold uppercase tracking-widest text-right px-8">Actions</TableHead>
                        </TableRow>
                     </TableHeader>
                     <TableBody>
                        {usersLoading ? (
-                         <TableRow><TableCell colSpan={4} className="text-center py-20 opacity-40 italic">Syncing with database...</TableCell></TableRow>
+                         <TableRow><TableCell colSpan={4} className="text-center py-20 opacity-40 italic">Syncing database...</TableCell></TableRow>
                        ) : users?.map((u: any) => (
                          <TableRow key={u.id} className="border-white/5 hover:bg-white/5 transition-colors">
                             <TableCell className="px-8 py-6">
@@ -144,20 +127,54 @@ export default function AdminDashboard() {
                                </div>
                             </TableCell>
                             <TableCell>
-                               <Badge variant={u.isPremium ? 'default' : 'secondary'} className="rounded-full text-[9px] uppercase tracking-widest">
-                                  {u.subscriptionPlan?.toUpperCase() || 'FREE'}
-                                </Badge>
-                            </TableCell>
-                            <TableCell>
-                               <div className="flex items-center gap-2">
-                                  <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                                  <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Active</span>
+                               <div className="flex flex-col gap-1">
+                                  <div className="flex items-center gap-2">
+                                     <Badge variant={u.isPremium ? 'default' : 'secondary'} className="rounded-full text-[9px] uppercase tracking-widest">
+                                        {u.subscriptionPlan?.toUpperCase() || 'FREE'}
+                                      </Badge>
+                                      <span className="text-[10px] font-bold text-primary flex items-center gap-1">
+                                        <Coins className="w-3 h-3" /> {u.credits?.toFixed(0) || 0}
+                                      </span>
+                                  </div>
                                </div>
                             </TableCell>
+                            <TableCell>
+                               {u.isAdmin ? (
+                                 <Badge className="bg-red-500/20 text-red-500 border-red-500/30 rounded-full text-[9px] uppercase tracking-widest">Admin</Badge>
+                               ) : (
+                                 <Badge variant="outline" className="text-[9px] uppercase tracking-widest opacity-50">User</Badge>
+                               )}
+                            </TableCell>
                             <TableCell className="text-right px-8">
-                               <Button variant="ghost" size="sm" className="h-10 w-10 p-0 rounded-xl hover:bg-primary/10 hover:text-primary transition-all">
-                                  <ArrowUpRight className="w-5 h-5" />
-                                </Button>
+                               <div className="flex items-center justify-end gap-2">
+                                  <Button 
+                                    variant="outline" 
+                                    size="sm" 
+                                    className="h-9 px-3 rounded-xl text-[10px] font-bold uppercase"
+                                    onClick={() => handleUpdateUser(u.id, { credits: increment(100) })}
+                                    disabled={updatingUser === u.id}
+                                  >
+                                    +100 Credits
+                                  </Button>
+                                  <Button 
+                                    variant={u.isPremium ? "outline" : "default"} 
+                                    size="sm" 
+                                    className="h-9 px-3 rounded-xl text-[10px] font-bold uppercase"
+                                    onClick={() => handleUpdateUser(u.id, { isPremium: !u.isPremium, subscriptionPlan: u.isPremium ? 'free' : 'pro' })}
+                                    disabled={updatingUser === u.id}
+                                  >
+                                    {u.isPremium ? 'Revoke Pro' : 'Make Pro'}
+                                  </Button>
+                                  <Button 
+                                    variant="ghost" 
+                                    size="sm" 
+                                    className="h-9 px-3 rounded-xl text-[10px] font-bold uppercase hover:bg-red-500/10 hover:text-red-500"
+                                    onClick={() => handleUpdateUser(u.id, { isAdmin: !u.isAdmin })}
+                                    disabled={updatingUser === u.id}
+                                  >
+                                    {u.isAdmin ? 'Demote' : 'Promote Admin'}
+                                  </Button>
+                               </div>
                             </TableCell>
                          </TableRow>
                        ))}
@@ -165,46 +182,6 @@ export default function AdminDashboard() {
                  </Table>
               </CardContent>
            </Card>
-
-           <div className="space-y-8">
-              {/* SYSTEM NODE */}
-              <Card className="rounded-[3rem] bg-[#0a0d14] border-white/5 p-10 space-y-6 shadow-2xl blue-glow">
-                 <div className="flex items-center gap-4">
-                    <Activity className="w-6 h-6 text-primary" />
-                    <h4 className="text-xl font-bold font-headline">App Node Status</h4>
-                 </div>
-                 <div className="space-y-6">
-                    <div className="flex justify-between items-end">
-                       <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Database Health</span>
-                       <span className="text-emerald-500 font-bold text-xs">ONLINE</span>
-                    </div>
-                    <Progress value={100} className="h-1.5 bg-emerald-500/10" />
-                    
-                    <div className="flex justify-between items-end">
-                       <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">AI Neural Link</span>
-                       <span className="text-primary font-bold text-xs">STABLE</span>
-                    </div>
-                    <Progress value={98} className="h-1.5 bg-primary/10" />
-                 </div>
-                 <Button className="w-full h-14 rounded-2xl bg-white/5 border border-white/10 font-bold text-[10px] uppercase tracking-widest hover:bg-white/10" asChild>
-                    <Link href="/test-connection">Run Health Audit</Link>
-                 </Button>
-              </Card>
-
-              {/* SEARCH STATUS */}
-              <Card className="rounded-[3rem] bg-primary/5 border-primary/10 p-10 space-y-4 shadow-2xl">
-                 <div className="flex items-center gap-3">
-                    <Search className="w-5 h-5 text-primary" />
-                    <h4 className="text-xs font-bold uppercase tracking-widest text-primary">Google Ranking Status</h4>
-                 </div>
-                 <p className="text-[10px] text-muted-foreground leading-relaxed italic">
-                    Aapka app technically SEO-ready hai. 24 ghante mein rank karne ke liye manual guide follow karein.
-                 </p>
-                 <Button className="w-full h-14 rounded-2xl bg-primary/10 border border-primary/20 text-primary font-bold text-[10px] uppercase tracking-widest hover:bg-primary/20" asChild>
-                    <Link href="/SEO_GUIDE.md">Search Indexing Guide</Link>
-                 </Button>
-              </Card>
-           </div>
         </div>
       </main>
     </div>
