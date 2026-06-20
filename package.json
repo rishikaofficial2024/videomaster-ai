@@ -13,7 +13,7 @@
     "mobile:sync": "npm run build && cap sync android",
     "mobile:open": "cap open android",
     "mobile:build-apk": "npm run build && cap sync android && cap open android",
-    "mobile:push": "git init && git remote add origin https://github.com/rishikaofficial2024/videomaster-ai.git || git remote set-url origin https://github.com/rishikaofficial2024/videomaster-ai.git && git add . && (git commit -m 'Elite Build: VideoMaster AI' || true) && git branch -M main && git push -u origin main --force"
+    "mobile:push": "git init && git remote add origin https://github.com/rishikaofficial2024/videomaster-ai.git || git remote set-url origin https://github.com/rishikaofficial2024/videomaster-ai.git && git add . && (git commit -m 'Elite Launch: 1-Click APK Automation' || true) && git branch -M main && git push -u origin main --force"
   },
   "dependencies": {
     "@capacitor/android": "^7.0.0",

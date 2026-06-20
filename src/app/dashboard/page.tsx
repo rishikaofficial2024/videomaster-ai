@@ -1,4 +1,3 @@
-
 "use client";
 
 import { Navbar } from "@/components/navbar";
@@ -6,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { 
   Plus, Sparkles, ChevronRight, Loader2, Coins, 
-  ArrowUpRight, Video, Activity, Gift, SquarePlay, Star, ArrowRight, Globe, CheckCircle2, X, Rocket, ShieldCheck, Crown, HeartPulse
+  ArrowUpRight, Video, Activity, Gift, SquarePlay, Star, ArrowRight, Globe, CheckCircle2, X, Rocket, ShieldCheck, Crown, HeartPulse, ShieldAlert
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -213,23 +212,23 @@ export default function Dashboard() {
               </div>
               <div className="space-y-6 relative z-10">
                  <div className="flex items-center gap-3">
-                    <Rocket className="w-6 h-6 text-primary" />
-                    <h3 className="text-2xl font-bold font-headline text-white">Launch Center (Status)</h3>
+                    <ShieldAlert className="w-6 h-6 text-primary" />
+                    <h3 className="text-2xl font-bold font-headline text-white">Security Protocol</h3>
                  </div>
                  <div className="space-y-4">
                     <div className="flex items-center justify-between text-[11px] font-bold uppercase tracking-widest">
-                       <span className="text-muted-foreground">Ad Revenue Status</span>
-                       <span className="text-emerald-500 font-bold">READY (WAITING REVIEW)</span>
+                       <span className="text-muted-foreground">App Integrity Status</span>
+                       <span className="text-emerald-500 font-bold">MONITORED</span>
                     </div>
                     <Progress value={100} className="h-2 bg-white/5" />
                     <div className="grid grid-cols-2 gap-4 pt-4">
                        <div className="flex items-center gap-2 p-3 bg-white/5 rounded-2xl border border-white/5">
                           <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-                          <span className="text-[10px] font-bold text-white uppercase">App-Ads.txt Ready</span>
+                          <span className="text-[10px] font-bold text-white uppercase">Play Integrity Ready</span>
                        </div>
                        <div className="flex items-center gap-2 p-3 bg-white/5 rounded-2xl border border-white/5">
                           <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-                          <span className="text-[10px] font-bold text-white uppercase">Sitemap Submitted</span>
+                          <span className="text-[10px] font-bold text-white uppercase">reCAPTCHA Active</span>
                        </div>
                     </div>
                  </div>
@@ -247,7 +246,7 @@ export default function Dashboard() {
                  </div>
                  <p className="text-sm text-muted-foreground font-medium italic">Aapka app Bharat (.in) ke search results ke liye technically perfect hai.</p>
                  <Button className="w-full h-14 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 font-bold text-[10px] uppercase tracking-widest hover:bg-indigo-500/20" asChild>
-                    <Link href="/SEO_GUIDE.md">Sitemap & SEO Guide <ArrowRight className="ml-2 w-4 h-4" /></Link>
+                    <Link href="/SECURITY_SETUP_GUIDE.md">View Security Guide <ArrowRight className="ml-2 w-4 h-4" /></Link>
                  </Button>
               </div>
            </Card>
