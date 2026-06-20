@@ -167,7 +167,7 @@ export default function Dashboard() {
           </div>
         </header>
 
-        {/* LAUNCH CENTER WIDGET */}
+        {/* LAUNCH CENTER WIDGET - THE "SARE KAAM" STATUS */}
         <section className="grid grid-cols-1 lg:grid-cols-2 gap-8">
            <Card className="rounded-[3.5rem] bg-[#0a0d14] border-primary/20 p-10 relative overflow-hidden group blue-glow">
               <div className="absolute top-0 right-0 p-8 opacity-5">
@@ -176,22 +176,30 @@ export default function Dashboard() {
               <div className="space-y-6 relative z-10">
                  <div className="flex items-center gap-3">
                     <Rocket className="w-6 h-6 text-primary" />
-                    <h3 className="text-2xl font-bold font-headline text-white">Launch Center</h3>
+                    <h3 className="text-2xl font-bold font-headline text-white">Launch Center (Status)</h3>
                  </div>
                  <div className="space-y-4">
                     <div className="flex items-center justify-between text-[11px] font-bold uppercase tracking-widest">
-                       <span className="text-muted-foreground">App Status</span>
-                       <span className="text-emerald-500">LIVE & READY</span>
+                       <span className="text-muted-foreground">Main Features</span>
+                       <span className="text-emerald-500 font-bold">100% DONE</span>
                     </div>
                     <Progress value={100} className="h-2 bg-white/5" />
                     <div className="grid grid-cols-2 gap-4 pt-4">
                        <div className="flex items-center gap-2 p-3 bg-white/5 rounded-2xl border border-white/5">
                           <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-                          <span className="text-[10px] font-bold text-white uppercase">AI Brain Connected</span>
+                          <span className="text-[10px] font-bold text-white uppercase">AI Scripts Ready</span>
                        </div>
                        <div className="flex items-center gap-2 p-3 bg-white/5 rounded-2xl border border-white/5">
                           <CheckCircle2 className="w-4 h-4 text-emerald-500" />
                           <span className="text-[10px] font-bold text-white uppercase">Ads Integrated</span>
+                       </div>
+                       <div className="flex items-center gap-2 p-3 bg-white/5 rounded-2xl border border-white/5">
+                          <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                          <span className="text-[10px] font-bold text-white uppercase">APK Build Ready</span>
+                       </div>
+                       <div className="flex items-center gap-2 p-3 bg-white/5 rounded-2xl border border-white/5">
+                          <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                          <span className="text-[10px] font-bold text-white uppercase">SEO Optimized</span>
                        </div>
                     </div>
                  </div>
@@ -205,11 +213,11 @@ export default function Dashboard() {
               <div className="space-y-6 relative z-10">
                  <div className="flex items-center gap-3">
                     <Globe className="w-6 h-6 text-indigo-400" />
-                    <h3 className="text-2xl font-bold font-headline text-white">SEO & Indexing</h3>
+                    <h3 className="text-2xl font-bold font-headline text-white">Google Ranking</h3>
                  </div>
-                 <p className="text-sm text-muted-foreground font-medium italic">Google Search mein 24h mein rank karne ke liye manual guide follow karein.</p>
+                 <p className="text-sm text-muted-foreground font-medium italic">Aapka app Bharat (.in) ke search results ke liye technically perfect hai.</p>
                  <Button className="w-full h-14 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 font-bold text-[10px] uppercase tracking-widest hover:bg-indigo-500/20" asChild>
-                    <Link href="/SEO_GUIDE.md">Get Ranking Now <ArrowRight className="ml-2 w-4 h-4" /></Link>
+                    <Link href="/SEO_GUIDE.md">Sitemap & SEO Guide <ArrowRight className="ml-2 w-4 h-4" /></Link>
                  </Button>
               </div>
            </Card>
