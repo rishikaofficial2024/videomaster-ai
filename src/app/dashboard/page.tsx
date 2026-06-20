@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { 
   Plus, Sparkles, ChevronRight, Loader2, Coins, 
-  ArrowUpRight, Video, Activity, Gift, MonitorPlay, Star, ArrowRight, Globe, CheckCircle2
+  ArrowUpRight, Video, Activity, Gift, MonitorPlay, Star, ArrowRight, Globe, CheckCircle2, X
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -25,6 +25,8 @@ export default function Dashboard() {
   const db = useFirestore();
   const { toast } = useToast();
   const [adLoading, setAdLoading] = useState(false);
+  const [showAdOverlay, setShowAdOverlay] = useState(false);
+  const [adTimer, setAdTimer] = useState(15);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -52,10 +54,18 @@ export default function Dashboard() {
   const handleWatchAd = () => {
     if (!userProfileRef) return;
     setAdLoading(true);
-    toast({
-      title: "Ad Shuru Ho Gaya Hai!",
-      description: "Bas 15 second wait karein aur +20 credits payein.",
-    });
+    setShowAdOverlay(true);
+    setAdTimer(15);
+
+    const interval = setInterval(() => {
+      setAdTimer((prev) => {
+        if (prev <= 1) {
+          clearInterval(interval);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
 
     setTimeout(() => {
       const updateData = { credits: increment(20) };
@@ -70,6 +80,7 @@ export default function Dashboard() {
         });
       
       setAdLoading(false);
+      setShowAdOverlay(false);
       toast({
         title: "Mubarak Ho! +20 Credits",
         description: "Aapke account mein credits jud gaye hain.",
@@ -101,7 +112,31 @@ export default function Dashboard() {
       <Navbar />
       <main className="max-w-7xl mx-auto p-6 space-y-16">
         
-        {/* Simplified Header */}
+        {/* Ad Overlay Simulation for Mobile */}
+        {showAdOverlay && (
+          <div className="fixed inset-0 z-[100] bg-black flex flex-col items-center justify-center p-6 text-center animate-in fade-in duration-300">
+            <div className="absolute top-6 right-6 flex items-center gap-3 bg-white/10 px-4 py-2 rounded-full border border-white/20">
+              <span className="text-xs font-bold text-white uppercase tracking-widest">Ad ends in {adTimer}s</span>
+              <X className="w-4 h-4 text-white/40" />
+            </div>
+            
+            <div className="w-full max-w-sm space-y-8 animate-in zoom-in-95 duration-500">
+              <div className="aspect-[9/16] bg-primary/10 rounded-[2rem] border-2 border-primary/20 flex flex-col items-center justify-center p-12 space-y-6 relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent animate-pulse" />
+                <div className="w-20 h-20 bg-primary/20 rounded-3xl flex items-center justify-center animate-bounce shadow-2xl shadow-primary/20">
+                  <MonitorPlay className="w-10 h-10 text-primary" />
+                </div>
+                <h2 className="text-2xl font-bold font-headline text-white tracking-tight">Premium Content Ad</h2>
+                <p className="text-xs text-muted-foreground font-medium italic">Support VideoMaster AI by watching this short sponsor clip.</p>
+                <div className="w-full h-1 bg-white/10 rounded-full mt-8 overflow-hidden">
+                   <div className="h-full bg-primary transition-all duration-1000" style={{ width: `${((15-adTimer)/15)*100}%` }} />
+                </div>
+              </div>
+              <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest animate-pulse">Wait for timer to claim reward</p>
+            </div>
+          </div>
+        )}
+
         <header className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-10">
           <div className="space-y-4">
             <div className="flex flex-wrap gap-2">
@@ -118,7 +153,6 @@ export default function Dashboard() {
             <p className="text-muted-foreground text-xl font-medium max-w-xl italic">Aaj kaunsi viral video banani hai?</p>
           </div>
           
-          {/* Quick Stats - Bigger & Clearer */}
           <div className="flex items-center gap-8 bg-[#0a0d14]/90 backdrop-blur-3xl p-6 rounded-[3rem] border border-white/5 shadow-2xl blue-glow">
              <div className="flex flex-col px-8 border-r border-white/10">
                 <span className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground mb-2">Aapke Credits</span>
@@ -135,7 +169,6 @@ export default function Dashboard() {
           </div>
         </header>
 
-        {/* Free Credits Section - More Prominent */}
         <section className="relative overflow-hidden">
           <Card className="rounded-[3.5rem] bg-[#0a0d14] border-primary/30 p-10 md:p-16 relative z-10 blue-glow overflow-hidden group">
             <div className="absolute top-0 right-0 p-12 opacity-5 rotate-12 group-hover:rotate-0 transition-all duration-1000">
@@ -157,16 +190,14 @@ export default function Dashboard() {
                  className="h-24 px-16 rounded-[2rem] bg-primary font-bold shadow-2xl shadow-primary/40 text-xl hover:scale-105 transition-all group active:scale-95"
                >
                   {adLoading ? <Loader2 className="animate-spin mr-3 w-8 h-8" /> : <MonitorPlay className="w-8 h-8 mr-4 group-hover:animate-pulse" />}
-                  {adLoading ? "Ad chal raha hai..." : "Ad Dekho aur Earn Karo"}
+                  {adLoading ? `Ad ends in ${adTimer}s` : "Ad Dekho aur Earn Karo"}
                </Button>
             </div>
           </Card>
         </section>
 
-        {/* Display Ads - Monetization Rasta */}
-        <AdBanner provider="Network Hub" />
+        <AdBanner provider="Network Hub Mobile" />
 
-        {/* Project Library - Simple Grid */}
         <section className="space-y-10">
           <div className="flex justify-between items-end px-4">
             <div>
