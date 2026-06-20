@@ -1,3 +1,4 @@
+
 "use client";
 
 import { Navbar } from "@/components/navbar";
@@ -5,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { 
   Plus, Sparkles, Loader2, Coins, 
-  Video, Gift, SquarePlay, Star, ArrowRight, CheckCircle2, X, HeartPulse, Crown
+  Video, Gift, SquarePlay, Star, ArrowRight, CheckCircle2, X, HeartPulse, Crown, Terminal as TerminalIcon
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -158,10 +159,10 @@ export default function Dashboard() {
                    MONETIZATION ACTIVE: APP-ADS.TXT VERIFIED
                  </span>
               </div>
-              <Link href="/test-connection">
-                <div className="flex items-center gap-2 px-4 py-1.5 bg-primary/10 rounded-full border border-primary/20 w-fit hover:bg-primary/20 transition-all cursor-pointer group">
-                   <HeartPulse className="w-3.5 h-3.5 text-primary group-hover:scale-110 transition-transform" />
-                   <span className="text-[10px] font-bold text-primary uppercase tracking-[0.2em]">System Diagnostics</span>
+              <Link href="/terminal-guide">
+                <div className="flex items-center gap-2 px-4 py-1.5 bg-red-500/10 rounded-full border border-red-500/20 w-fit hover:bg-red-500/20 transition-all cursor-pointer group">
+                   <TerminalIcon className="w-3.5 h-3.5 text-red-500 group-hover:scale-110 transition-transform" />
+                   <span className="text-[10px] font-bold text-red-500 uppercase tracking-[0.2em]">Terminal Kaise Kholein?</span>
                 </div>
               </Link>
             </div>
