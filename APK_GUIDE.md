@@ -1,22 +1,21 @@
-# 📱 1-Click APK Builder Guide (FINAL)
+# 📱 1-Click APK Download Guide (DIRECT)
 
-Aapka APK banna ab bahut aasaan hai. Bas niche diya gaya ek step follow karein:
+Aapka APK download karne ka sabse aasaan tarika yahan hai:
 
 ### Step 1: Terminal Command
-Terminal mein ye command copy-paste karke **Enter** dabayein:
+Sabse pehle niche waala command copy karke Terminal mein **Enter** dabayein:
 ```bash
 npm run mobile:push
 ```
 
-### Step 2: Sahi Workflow Kahan Hai?
-1. Is link par jayein: 👉 [GitHub Actions - Build Status](https://github.com/rishikaofficial2024/videomaster-ai/actions)
-2. Left side mein ek menu dikhega. Wahan **"Build Android APK (Professional Cloud Build)"** par click karein.
-3. Sabse upar waale run (jo abhi chal raha hoga 🟡 ya khatam ho gaya hoga ✅) par click karein.
+### Step 2: Direct Build Link
+Jaise hi Terminal mein kaam khatam ho jaye, is link par click karein:
+👉 **[YAHAN CLICK KAREIN: APK STATUS](https://github.com/rishikaofficial2024/videomaster-ai/actions/workflows/android-build.yml)**
 
-### Step 3: APK Download (Yahan Milega!)
-- Jab kaam khatam ho jaye aur **Green Tick (✅)** dikhe, toh page ko sabse niche scroll karein.
-- Wahan **Artifacts** naam ka ek section dikhega.
-- Usmein aapko `VideoMasterAI-Final-APK` naam ka ek blue link dikhega.
-- Uspar click karein aur aapka APK mobile mein download ho jayega!
+### Step 3: Download (Kaise Milega?)
+1. Upar waale link par jaane ke baad, sabse upar waala "Run" (Jo **Green ✅** ho gaya ho) usey kholein.
+2. Page ko sabse niche scroll karein.
+3. Wahan **Artifacts** section mein `VideoMasterAI-Final-APK` naam ka link dikhega.
+4. Uspar click karein, aapka mobile app (APK) download ho jayega!
 
-**Note**: Agar aapko "prebuild" dikh raha hai, toh aap galat page par hain. Left menu se "Build Android APK" hi chunein. 🚀📱💰
+**Bhaai, ab aapka app Play Store par jaane ke liye taiyar hai!** 🚀📱💰
