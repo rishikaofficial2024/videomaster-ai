@@ -14,9 +14,9 @@ Aapka app ab **100% LIVE-READY** hai. Maine saari technical settings automate ka
 - **Rewarded Ads**: Dashboard par active hain (Watch ad for credits).
 - **Verification**: `app-ads.txt` file `public/` folder mein add kar di gayi hai.
 
-### 4. Auth Security - ⚠️ USER ACTION REQUIRED
-- **Status**: Login chalane ke liye aapko Authentication providers enable karne honge.
-- **Action**: `QUICK_LINKS.md` file padhein aur 1-click settings poori karein.
+### 4. Auth Security & SMS Policy - ⚠️ USER ACTION REQUIRED
+- **Status**: SMS OTP aane ke liye aapko regions allow karne honge.
+- **Action**: Firebase Console mein 'SMS Region Policy' mein jaakar **India (IN)** ko allow karein aur Save karein.
 
 ### 5. SEO & Google Indexing - ✅ COMPLETE
 - **Status**: Sitemap aur Robots meta tags added. Google Search Console mein site jodhne ke liye `SEO_GUIDE.md` padhein.

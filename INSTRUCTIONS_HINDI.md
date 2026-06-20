@@ -3,8 +3,9 @@
 
 Aapka app technically poora ho chuka hai. Live hone ke liye bas ye 3 kaam bache hain:
 
-### 1. Firebase Console Settings (Sirf 1 Minute) ✅
-- **SQL Connect / Schema**: Agar ye dikhe toh **"Skip schema"** par click karein. Hamein iski zaroorat nahi hai kyunki aapka app **Firestore** use karta hai.
+### 1. Firebase Console Settings (SMS Region Policy Fix) ✅
+- **SMS Policy**: [Is Link par jayein](https://console.firebase.google.com/project/studio-9489287013-59986/authentication/settings)
+- **Action**: 'SMS Region Policy' par click karein. Search mein `India` likhein aur usey **Allow** karke **Save** kar dein. Iske bina OTP nahi aayega.
 - **Phone Login**: [Is Link par jayein](https://console.firebase.google.com/project/studio-9489287013-59986/authentication/providers), 'Add Provider' > 'Phone' ko **Enable** karein.
 - **Domain Fix**: Current browser URL ko **Authorized Domains** mein jodein taaki login kaam kare.
 
@@ -19,4 +20,4 @@ Aapka app technically poora ho chuka hai. Live hone ke liye bas ye 3 kaam bache 
 - **Diagnostics**: Dashboard par **"Run System Diagnostics"** button daba kar check karein ki sab kuch sahi se juda hai ya nahi.
 
 ---
-**Bhaai, aapka app ab "Ready-to-Earn" hai!** Bas Terminal mein command chalayein aur APK download karke promote shuru karein. 🚀💸
+**Bhaai, aapka app ab "Ready-to-Earn" hai!** Bas SMS policy mein India allow karein aur Terminal mein command chalayein. 🚀💸
