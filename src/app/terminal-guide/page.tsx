@@ -1,4 +1,3 @@
-
 "use client";
 
 import { Navbar } from "@/components/navbar";
@@ -81,7 +80,7 @@ export default function TerminalGuidePage() {
             </div>
             <div className="space-y-6">
                <p className="text-muted-foreground text-lg italic">
-                 Niche diye gaye button par click karein, phir Terminal mein jaakar <span className="text-white font-bold">Right Click > Paste</span> karein aur **Enter** dabayein.
+                 Niche diye gaye button par click karein, phir Terminal mein jaakar <span className="text-white font-bold">Right Click &gt; Paste</span> karein aur **Enter** dabayein.
                </p>
                <div className="group relative">
                  <div className="p-8 bg-black rounded-3xl border-2 border-primary/30 font-mono text-primary text-xl md:text-3xl font-bold text-center shadow-2xl flex flex-col items-center gap-6 overflow-hidden">
