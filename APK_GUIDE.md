@@ -13,8 +13,8 @@ Terminal mein ye command copy-paste karke **Enter** dabayein:
 npm run mobile:push
 ```
 
-### Step 3: APK Download Karein
-Jaise hi command poora ho jaye, yahan jayein:
+### Step 3: APK Download Karein (Link)
+Jaise hi command poora ho jaye, is link par jayein apna APK bante huye dekhne ke liye:
 👉 [GitHub Actions - Build Status](https://github.com/rishikaofficial2024/videomaster-ai/actions)
 
 - Jab wahan **Green Tick (✅)** dikhe, toh uspar click karein.

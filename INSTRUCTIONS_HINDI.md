@@ -1,3 +1,4 @@
+
 # 🗝️ VideoMaster AI: Final Step Guide (Hindi)
 
 Aapka app technically poora ho chuka hai. Live hone ke liye bas ye 3 kaam bache hain:
@@ -7,10 +8,11 @@ Aapka app technically poora ho chuka hai. Live hone ke liye bas ye 3 kaam bache 
 - **Phone Login**: [Is Link par jayein](https://console.firebase.google.com/project/studio-9489287013-59986/authentication/providers), 'Add Provider' > 'Phone' ko **Enable** karein.
 - **Domain Fix**: Current browser URL ko **Authorized Domains** mein jodein taaki login kaam kare.
 
-### 2. APK Kaise Banega? 📱
-- Studio ke niche **Terminal** kholein.
+### 2. APK Kaise Banega? (Terminal) 📱
+- Studio ke niche **Terminal** tab kholein.
 - Ye command type karein aur Enter dabayein: `npm run mobile:push`
-- Isse aapka code GitHub par jayega aur APK banna chalu ho jayega.
+- Isse aapka code GitHub par jayega. APK bante huye dekhne ke liye is link par jayein:
+👉 [GitHub Build Status](https://github.com/rishikaofficial2024/videomaster-ai/actions)
 
 ### 3. Paisa Kaise Ayega? 💰
 - **Ads**: Maine `ca-pub-8946933317699938` set kar di hai. Site approve hote hi kamai chalu hogi.
