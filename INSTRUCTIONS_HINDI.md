@@ -3,8 +3,8 @@
 Aapka app technically poora ho chuka hai. Live hone ke liye bas ye 3 kaam bache hain:
 
 ### 1. Firebase Console Settings (Sirf 1 Minute) ✅
-- **SQL Connect / Schema**: Agar ye dikhe toh **Skip** kar dein. Hamein iski zaroorat nahi hai.
-- **Phone Login**: Firebase Console > Auth > Sign-in Method mein jaakar **Phone** ko Enable karein.
+- **SQL Connect / Schema**: Agar ye dikhe toh **"Skip schema"** par click karein. Hamein iski zaroorat nahi hai kyunki aapka app **Firestore** use karta hai.
+- **Phone Login**: [Is Link par jayein](https://console.firebase.google.com/project/studio-9489287013-59986/authentication/providers), 'Add Provider' > 'Phone' ko **Enable** karein.
 - **Domain Fix**: Current browser URL ko **Authorized Domains** mein jodein taaki login kaam kare.
 
 ### 2. APK Kaise Banega? 📱
