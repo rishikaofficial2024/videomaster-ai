@@ -2,7 +2,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { MonitorPlay, Info, Sparkles, TrendingUp } from "lucide-react";
+import { SquarePlay, Info, Sparkles, TrendingUp } from "lucide-react";
 
 interface AdBannerProps {
   provider?: string;
