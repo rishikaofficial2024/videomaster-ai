@@ -132,9 +132,9 @@ export default function Dashboard() {
                 <div className="absolute inset-0 bg-gradient-to-t from-primary/10 to-transparent" />
                 
                 <div className="w-full h-full flex flex-col items-center justify-center">
-                   <AdBanner variant="large" provider="Premium Ad Network" adSlot="rewarded_placement" />
+                   <AdBanner variant="large" provider="Premium Rewarded Ad" adSlot="rewarded_placement" />
                    <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest mt-4">
-                     Revenue is being generated... Please wait for the timer.
+                     High-Value Impression in progress...
                    </p>
                 </div>
 
@@ -144,7 +144,7 @@ export default function Dashboard() {
               </div>
               <div className="flex items-center justify-center gap-2">
                  <ShieldCheck className="w-4 h-4 text-primary" />
-                 <p className="text-[10px] text-white/60 font-bold uppercase tracking-[0.3em]">Verified Ad Credit System</p>
+                 <p className="text-[10px] text-white/60 font-bold uppercase tracking-[0.3em]">AdSense Impression Verified</p>
               </div>
             </div>
           </div>
@@ -156,13 +156,13 @@ export default function Dashboard() {
               <div className={cn("flex items-center gap-2 px-4 py-1.5 bg-emerald-500/10 rounded-full border border-emerald-500/20 w-fit")}>
                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
                  <span className="text-[10px] font-bold text-emerald-500 uppercase tracking-[0.2em]">
-                   BUSINESS READY: AD REVENUE ACTIVE
+                   MONETIZATION ACTIVE: APP-ADS.TXT VERIFIED
                  </span>
               </div>
               <Link href="/test-connection">
                 <div className="flex items-center gap-2 px-4 py-1.5 bg-primary/10 rounded-full border border-primary/20 w-fit hover:bg-primary/20 transition-all cursor-pointer group">
                    <HeartPulse className="w-3.5 h-3.5 text-primary group-hover:scale-110 transition-transform" />
-                   <span className="text-[10px] font-bold text-primary uppercase tracking-[0.2em]">Run System Diagnostics</span>
+                   <span className="text-[10px] font-bold text-primary uppercase tracking-[0.2em]">System Diagnostics</span>
                 </div>
               </Link>
             </div>
@@ -205,53 +205,6 @@ export default function Dashboard() {
           </Link>
         )}
 
-        <section className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-           <Card className="rounded-[3.5rem] bg-[#0a0d14] border-primary/20 p-10 relative overflow-hidden group blue-glow">
-              <div className="absolute top-0 right-0 p-8 opacity-5">
-                 <Rocket className="w-32 h-32" />
-              </div>
-              <div className="space-y-6 relative z-10">
-                 <div className="flex items-center gap-3">
-                    <ShieldAlert className="w-6 h-6 text-primary" />
-                    <h3 className="text-2xl font-bold font-headline text-white">Security Protocol</h3>
-                 </div>
-                 <div className="space-y-4">
-                    <div className="flex items-center justify-between text-[11px] font-bold uppercase tracking-widest">
-                       <span className="text-muted-foreground">App Integrity Status</span>
-                       <span className="text-emerald-500 font-bold">MONITORED</span>
-                    </div>
-                    <Progress value={100} className="h-2 bg-white/5" />
-                    <div className="grid grid-cols-2 gap-4 pt-4">
-                       <div className="flex items-center gap-2 p-3 bg-white/5 rounded-2xl border border-white/5">
-                          <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-                          <span className="text-[10px] font-bold text-white uppercase">Play Integrity Ready</span>
-                       </div>
-                       <div className="flex items-center gap-2 p-3 bg-white/5 rounded-2xl border border-white/5">
-                          <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-                          <span className="text-[10px] font-bold text-white uppercase">reCAPTCHA Active</span>
-                       </div>
-                    </div>
-                 </div>
-              </div>
-           </Card>
-
-           <Card className="rounded-[3.5rem] bg-[#0a0d14] border-white/5 p-10 relative overflow-hidden group">
-              <div className="absolute top-0 right-0 p-8 opacity-5">
-                 <Globe className="w-32 h-32" />
-              </div>
-              <div className="space-y-6 relative z-10">
-                 <div className="flex items-center gap-3">
-                    <Globe className="w-6 h-6 text-indigo-400" />
-                    <h3 className="text-2xl font-bold font-headline text-white">Google Ranking</h3>
-                 </div>
-                 <p className="text-sm text-muted-foreground font-medium italic">Aapka app Bharat (.in) ke search results ke liye technically perfect hai.</p>
-                 <Button className="w-full h-14 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 font-bold text-[10px] uppercase tracking-widest hover:bg-indigo-500/20" asChild>
-                    <Link href="/SECURITY_SETUP_GUIDE.md">View Security Guide <ArrowRight className="ml-2 w-4 h-4" /></Link>
-                 </Button>
-              </div>
-           </Card>
-        </section>
-
         <section className="relative overflow-hidden">
           <Card className="rounded-[3.5rem] bg-[#0a0d14] border-primary/30 p-10 md:p-16 relative z-10 blue-glow overflow-hidden group">
             <div className="absolute top-0 right-0 p-12 opacity-5 rotate-12 group-hover:rotate-0 transition-all duration-1000">
@@ -264,7 +217,7 @@ export default function Dashboard() {
                   </div>
                   <div className="space-y-3">
                      <h3 className="text-4xl font-bold font-headline text-white tracking-tight">Free Credits Chahiye?</h3>
-                     <p className="text-muted-foreground font-medium text-lg italic">Bas ek short ad dekho aur <span className="text-primary font-bold">+20 credits</span> turant payein.</p>
+                     <p className="text-muted-foreground font-medium text-lg italic">Bas ek 15-second ad dekho aur <span className="text-primary font-bold">+20 credits</span> turant payein.</p>
                   </div>
                </div>
                <Button 
@@ -273,7 +226,7 @@ export default function Dashboard() {
                  className="h-24 px-16 rounded-[2rem] bg-primary font-bold shadow-2xl shadow-primary/40 text-xl hover:scale-105 transition-all group active:scale-95"
                >
                   {adLoading ? <Loader2 className="animate-spin mr-3 w-8 h-8" /> : <SquarePlay className="w-8 h-8 mr-4 group-hover:animate-pulse" />}
-                  {adLoading ? `Ad ends in ${adTimer}s` : "Ad Dekho aur Earn Karo"}
+                  {adLoading ? `Ad ends in ${adTimer}s` : "Watch Ad & Earn Credits"}
                </Button>
             </div>
           </Card>
@@ -282,11 +235,11 @@ export default function Dashboard() {
         <section className="space-y-10">
           <div className="flex justify-between items-end px-4">
             <div>
-              <h2 className="text-3xl font-headline font-bold text-white tracking-tight">Aapke Purane Designs</h2>
-              <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest mt-1">Sabhi projects yahan save hain</p>
+              <h2 className="text-3xl font-headline font-bold text-white tracking-tight">Recent Projects</h2>
+              <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest mt-1">Ready for publishing</p>
             </div>
             <Link href="/projects" className="text-sm font-bold text-primary flex items-center hover:underline group">
-              Saare Dekho <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              View All <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </Link>
           </div>
           
@@ -309,7 +262,7 @@ export default function Dashboard() {
                     </div>
                     <CardContent className="p-8">
                        <h3 className="font-bold text-xl truncate group-hover:text-primary transition-colors text-white">{project.title}</h3>
-                       <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mt-2">{formatDate(project.updatedAt || project.createdAt)} ko banaya</p>
+                       <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mt-2">Edited {formatDate(project.updatedAt || project.createdAt)}</p>
                     </CardContent>
                   </Link>
                 </Card>
@@ -321,11 +274,11 @@ export default function Dashboard() {
                  <Video className="w-10 h-10 text-muted-foreground opacity-20" />
               </div>
               <div className="space-y-2">
-                 <h3 className="text-2xl font-bold font-headline text-white">Abhi koi project nahi hai</h3>
-                 <p className="text-muted-foreground font-medium italic">Chaliye, pehli viral video aaj hi banate hain!</p>
+                 <h3 className="text-2xl font-bold font-headline text-white">No projects yet</h3>
+                 <p className="text-muted-foreground font-medium italic">Create your first viral video masterpiece!</p>
               </div>
               <Button className="rounded-[2rem] h-16 px-12 font-bold shadow-xl shadow-primary/20" asChild>
-                <Link href="/editor">Naya Kaam Shuru Karo</Link>
+                <Link href="/editor">Start Creating</Link>
               </Button>
             </div>
           )}
