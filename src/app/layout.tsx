@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     'Cinematic Thumbnail Maker AI', 
     'VideoMaster AI Studio',
     'Text to Video AI India Free',
-    'VideoMaster.in'
+    'VideoMaster-AI.in'
   ],
   metadataBase: new URL('https://studio-9489287013-59986.web.app'),
   alternates: { 
