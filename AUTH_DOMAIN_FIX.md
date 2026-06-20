@@ -1,20 +1,24 @@
 
-# 🔑 "unauthorized-domain" Error Kaise Fix Karein?
+# 🔑 "unauthorized-domain" Error Ka Final Solution
 
-Agar aapko Google, Facebook ya GitHub Login karte waqt **"unauthorized-domain"** ka error aa raha hai, toh iska matlab hai ki aapka current browser URL Firebase mein registered nahi hai.
+Aapka **Authorized Domain** woh URL hai jo aapke browser ke address bar mein dikh raha hai (e.g., `9002-xxxx.cloudworkstations.dev`). Iske bina login kaam nahi karega.
 
-### Fix Karne Ke Steps (Sirf 1 Minute):
+### Domain Add Karne Ke Steps:
 
-1. **URL Copy Karein**: 
-   - Apne browser ke address bar mein jo link dikh raha hai (e.g., `9002-xxxxx.cloudworkstations.dev`), usey copy kar lein.
+1.  **Domain Copy Karein**: 
+    - Apne app ke **Login Page** par jayein. 
+    - Agar error aaye, toh wahan domain likha dikhega. **Copy** button dabayein.
+    - Ya phir browser URL se sirf domain part copy karein (bin `https://` aur bin kisi slash `/` ke).
 
-2. **Firebase Console Par Jayein**:
-   - 👉 **[Direct Link: Firebase Authorized Domains](https://console.firebase.google.com/project/studio-9489287013-59986/authentication/settings)**
+2.  **Firebase Console Kholein**:
+    - 👉 **[Direct Link: Authorized Domains Page](https://console.firebase.google.com/project/studio-9489287013-59986/authentication/settings)**
 
-3. **Domain Add Karein**:
-   - **"Authorized domains"** tab par click karein.
-   - **"Add domain"** button par click karein.
-   - Apna copy kiya hua URL paste karein aur **Add** dabayein.
+3.  **Domain Add Karein**:
+    - **"Authorized domains"** section mein **"Add domain"** par click karein.
+    - Woh domain paste karein jo aapne abhi copy kiya.
+    - **Add** button dabayein.
 
-4. **App Refresh Karein**:
-   - Ab apne app par wapas jayein aur page ko refresh karein. Login ab smoothly kaam karega!
+4.  **Check Karein**:
+    - Apne app par waapas jayein aur page refresh karein. Login ab 100% chalega!
+
+**Tip**: Har naye workspace ke liye aapko ye ek baar karna pad sakta hai.

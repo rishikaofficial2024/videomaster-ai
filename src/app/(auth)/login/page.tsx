@@ -1,14 +1,14 @@
 
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Video, Chrome, Facebook, Smartphone, ArrowLeft, Sparkles, Loader2, Info, ExternalLink, Github, AlertCircle } from "lucide-react";
+import { Video, Chrome, Facebook, Smartphone, ArrowLeft, Sparkles, Loader2, Info, ExternalLink, Github, AlertCircle, Copy } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { 
@@ -30,10 +30,17 @@ export default function LoginPage() {
   const [otp, setOtp] = useState("");
   const [confirmationResult, setConfirmationResult] = useState<any>(null);
   const [authError, setAuthError] = useState<string | null>(null);
+  const [currentHostname, setCurrentHostname] = useState("");
   
   const router = useRouter();
   const { toast } = useToast();
   const auth = useAuth();
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setCurrentHostname(window.location.hostname);
+    }
+  }, []);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -70,7 +77,7 @@ export default function LoginPage() {
       
       let description = error.message;
       if (error.code === 'auth/unauthorized-domain') {
-        description = "⚠️ Authorized Domain Error! Niche diye gaye link par jaakar apna current URL add karein.";
+        description = "auth/unauthorized-domain";
         setAuthError(description);
       } else if (error.code === 'auth/operation-not-allowed') {
         description = `⚠️ ${providerName} Login disabled hai! Firebase Console mein ise Enable karein.`;
@@ -131,6 +138,11 @@ export default function LoginPage() {
     }
   };
 
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text);
+    toast({ title: "Copied!", description: "Domain copied to clipboard." });
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center p-6 bg-[#05070a] hero-gradient overflow-hidden">
       <div id="recaptcha-container"></div>
@@ -159,17 +171,35 @@ export default function LoginPage() {
         </CardHeader>
 
         <CardContent className="space-y-8 px-10">
-          {authError && (
-            <div className="p-4 bg-destructive/10 border border-destructive/20 rounded-2xl flex flex-col gap-3 animate-in zoom-in-95">
+          {authError === "auth/unauthorized-domain" && (
+            <div className="p-5 bg-destructive/10 border border-destructive/20 rounded-2xl flex flex-col gap-4 animate-in zoom-in-95">
               <div className="flex gap-3">
                 <AlertCircle className="w-5 h-5 text-destructive shrink-0" />
-                <p className="text-[10px] font-bold text-destructive leading-relaxed uppercase tracking-widest">{authError}</p>
+                <div className="space-y-1">
+                  <p className="text-[10px] font-bold text-destructive uppercase tracking-widest">Unauthorized Domain Error</p>
+                  <p className="text-[11px] text-white/70">Niche diye gaye domain ko copy karein aur Firebase Console mein add karein:</p>
+                </div>
               </div>
-              <Button variant="link" className="h-auto p-0 text-[10px] text-destructive font-bold justify-start gap-1" asChild>
+              
+              <div className="flex items-center gap-2 p-3 bg-black/40 rounded-xl border border-white/5 group">
+                <code className="flex-1 text-[10px] font-mono text-primary truncate">{currentHostname}</code>
+                <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg" onClick={() => copyToClipboard(currentHostname)}>
+                  <Copy className="w-3 h-3" />
+                </Button>
+              </div>
+
+              <Button variant="link" className="h-auto p-0 text-[10px] text-primary font-bold justify-start gap-1" asChild>
                 <a href="https://console.firebase.google.com/project/studio-9489287013-59986/authentication/settings" target="_blank" rel="noopener noreferrer">
-                  Fix Error: Add Domain in Settings <ExternalLink className="w-2 h-2" />
+                  Open Firebase Settings <ExternalLink className="w-2 h-2" />
                 </a>
               </Button>
+            </div>
+          )}
+
+          {authError && authError !== "auth/unauthorized-domain" && (
+            <div className="p-4 bg-destructive/10 border border-destructive/20 rounded-2xl flex gap-3 animate-in zoom-in-95">
+              <AlertCircle className="w-5 h-5 text-destructive shrink-0" />
+              <p className="text-[10px] font-bold text-destructive leading-relaxed uppercase tracking-widest">{authError}</p>
             </div>
           )}
 
