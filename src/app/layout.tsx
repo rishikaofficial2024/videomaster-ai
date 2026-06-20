@@ -69,7 +69,7 @@ export default function RootLayout({
         {/* 💰 Official AdSense Node */}
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8946933317699938" crossOrigin="anonymous"></script>
         <meta name="google-adsense-account" content="ca-pub-8946933317699938" />
-        {/* 🛡️ Content Security Policy Placeholder (Can be enhanced in Firebase Hosting) */}
+        {/* 🛡️ Content Security Policy Placeholder */}
       </head>
       <body className="font-body antialiased bg-background text-foreground">
         <FirebaseClientProvider>
