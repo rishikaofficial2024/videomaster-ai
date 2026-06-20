@@ -5,9 +5,10 @@ Aapka app ab **100% COMPLETE** aur **READY-TO-EARN** hai.
 ### 📱 APK Kaise Banayein? (Fastest Way)
 1. **Terminal** kholein (screen ke niche).
 2. Ye command chalayein: `npm run mobile:push`
-3. GitHub par **"Actions"** tab mein build check karein.
-4. Green Tick ✅ aane par APK download kar lein.
-5. Detailed guide: `APK_GUIDE.md` dekhein.
+3. **Important**: Agar terminal mein bahut saare codes dikhein toh ghabraiye mat. Jab aakhri line mein `exit code 0` dikhe, matlab kaam ho gaya!
+4. GitHub par **"Actions"** tab mein build check karein.
+5. Green Tick ✅ aane par APK download kar lein.
+6. Detailed guide: `APK_GUIDE.md` dekhein.
 
 ### 💰 Monetization
 - **Ads**: Integrated with AdSense (pub-8946933317699938).
