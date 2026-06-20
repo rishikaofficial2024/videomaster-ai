@@ -1,35 +1,22 @@
+# 🚀 VideoMaster AI: Quick Launch Hub
 
-# 🚀 VideoMaster AI: Quick Setup & Live Links
+Aapka app technically 100% ready hai. Bas ye final settings ek-ek karke check kar lein.
 
-Aapke app ko live aur stable karne ke liye ye direct links aur details use karein.
+### 1. GitHub Integration (APK Build)
+- **Repo URL**: `https://github.com/rishikaofficial2024/videomaster-ai`
+- **Action**: Terminal mein `git push` commands chalaein (Check `APK_GUIDE.md`).
 
-### 1. Firebase Auth Settings (Sabse Zaroori)
-👉 **Link**: [Firebase Auth Providers](https://console.firebase.google.com/project/studio-9489287013-59986/authentication/providers)
+### 2. Firebase Auth (Direct Links)
+- [Enable Phone Auth](https://console.firebase.google.com/project/studio-9489287013-59986/authentication/providers) -> Bas switch ON karein.
+- [Add Authorized Domain](https://console.firebase.google.com/project/studio-9489287013-59986/authentication/settings) -> Apna browser URL wahan add karein.
 
-**Inhe "Enable" karein:**
-- **Google**: Bas ON switch dabayein.
-- **Phone**: Bas ON switch dabayein (OTP ke liye).
-- **GitHub**: Niche di gayi details wahan dalein.
-
-### 2. GitHub OAuth Details (From Your Screenshot)
-GitHub OAuth App settings mein ye details pehle se set hain:
+### 3. GitHub OAuth (Settings)
 - **Client ID**: `0v23liyd0nsdIH0s0VFK`
-- **Homepage URL**: `https://studio-9489287013-59986.web.app`
 - **Authorization callback URL**: `https://studio-9489287013-59986.firebaseapp.com/__/auth/handler`
+- **Action**: GitHub settings mein Client Secret generate karke Firebase mein dalein.
 
-**⚠️ Aapko kya karna hai?**
-GitHub page par "Generate a new client secret" dabayein aur usey Firebase Console mein GitHub provider ke andar paste kar dein.
+### 4. Revenue & Bank Setup
+- Ads approve karne ke liye [AdSense Console](https://adsense.google.com) par site submit karein.
+- Bank account jodne ke liye `BANK_TRANSFER_GUIDE.md` padhein.
 
-### 3. Authorized Domain Fix
-👉 **Link**: [Authorized Domains](https://console.firebase.google.com/project/studio-9489287013-59986/authentication/settings)
-- **Action**: Apna current browser URL (jis par studio chal raha hai) wahan 'Add domain' mein dalein.
-
-### 4. Code Ko GitHub Par Kaise Bhejein?
-Terminal mein ye commands dalein:
-```bash
-git init
-git remote add origin https://github.com/rishikaofficial2024/videomaster-ai.git
-git add .
-git commit -m "GitHub Auth Configured"
-git push -u origin main
-```
+**Aapka Business ab Global Level par jane ke liye taiyar hai!** 🚀💰
