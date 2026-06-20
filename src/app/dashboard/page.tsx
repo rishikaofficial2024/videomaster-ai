@@ -1,4 +1,3 @@
-
 "use client";
 
 import { Navbar } from "@/components/navbar";
@@ -53,6 +52,10 @@ export default function Dashboard() {
 
   const handleWatchAd = () => {
     if (!userProfileRef) return;
+    
+    // Check if user is already watching
+    if (adLoading) return;
+
     setAdLoading(true);
     setShowAdOverlay(true);
     setAdTimer(15);
@@ -67,6 +70,7 @@ export default function Dashboard() {
       });
     }, 1000);
 
+    // After 15 seconds, award credits
     setTimeout(() => {
       const updateData = { credits: increment(20) };
       updateDoc(userProfileRef, updateData)
@@ -112,11 +116,18 @@ export default function Dashboard() {
       <Navbar />
       <main className="max-w-7xl mx-auto p-6 space-y-16">
         
+        {/* REWARDED AD OVERLAY - Fixed for Real Revenue */}
         {showAdOverlay && (
           <div className="fixed inset-0 z-[100] bg-black flex flex-col items-center justify-center p-6 text-center animate-in fade-in duration-300">
             <div className="absolute top-6 right-6 flex items-center gap-3 bg-white/10 px-4 py-2 rounded-full border border-white/20">
-              <span className="text-xs font-bold text-white uppercase tracking-widest">Ad ends in {adTimer}s</span>
-              <X className="w-4 h-4 text-white/40" />
+              <span className="text-xs font-bold text-white uppercase tracking-widest">
+                {adTimer > 0 ? `Ad ends in ${adTimer}s` : "Credits Ready!"}
+              </span>
+              {adTimer === 0 && (
+                <button onClick={() => setShowAdOverlay(false)} className="hover:text-primary transition-colors">
+                  <X className="w-4 h-4 text-white" />
+                </button>
+              )}
             </div>
             
             <div className="w-full max-w-xl space-y-8 animate-in zoom-in-95 duration-500">
@@ -125,8 +136,10 @@ export default function Dashboard() {
                 
                 {/* REAL ADSENSE BANNER INSIDE OVERLAY FOR REVENUE */}
                 <div className="w-full h-full flex flex-col items-center justify-center">
-                   <AdBanner variant="large" provider="Premium Ad Network" adSlot="rewarded_sim" />
-                   <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest mt-4">Revenue is being generated... Keep watching</p>
+                   <AdBanner variant="large" provider="Premium Ad Network" adSlot="rewarded_placement" />
+                   <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest mt-4">
+                     Revenue is being generated... Please wait for the timer.
+                   </p>
                 </div>
 
                 <div className="absolute bottom-6 left-1/2 -translate-x-1/2 w-48 h-1 bg-white/10 rounded-full overflow-hidden">

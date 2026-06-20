@@ -1,4 +1,3 @@
-
 # 💰 VideoMaster AI: Ads se Paisa Kamane ka Full Plan (FIXED)
 
 Aapka app ab ek asli "Ad-Revenue Engine" ban chuka hai. Maine sabhi bugs fix kar diye hain aur verification files jodh di hain.
@@ -9,9 +8,8 @@ Aapka app ab ek asli "Ad-Revenue Engine" ban chuka hai. Maine sabhi bugs fix kar
 3. **Paise Kab Ayenge?**: Jab aapka domain Google AdSense dashboard mein **"Ready"** dikhayega, tabhi ads active honge aur paise milna shuru honge.
 
 ### 2. Rewarded Video Ads (Update) ✅
-- **Naya Logic**: Maine "Watch Ad" overlay mein asali Google Banner jodh diya hai.
-- **Kamai**: Har baar jab user reward lene ke liye 15 second tak timer dekhega, aapki AdSense ID par impressions generate honge.
-- **Fayda**: Isse aapki earning normal banners se zyada hogi.
+- **Naya Logic**: Dashboard par "Watch Ad" button ab ek **Real Ad Banner** render karega timer ke saath.
+- **Kamai**: Har baar jab user reward lene ke liye 15 second tak timer dekhega, aapki AdSense ID par high-value impressions generate honge.
 
 ### 3. Ads Kyu Nahi Dikhte? (Common Reasons)
 - **AdSense Review**: Google site approve karne mein 2 se 14 din leta hai. Tab tak ads nahi dikhte.
@@ -19,6 +17,6 @@ Aapka app ab ek asli "Ad-Revenue Engine" ban chuka hai. Maine sabhi bugs fix kar
 - **Testing Mode**: Shuruat mein Google kuch hi ads dikhata hai. Traffic badhne par ads automatic badh jaate hain.
 
 ### ⚠️ Pro Tip:
-Sitemap submit karne se Google aapki site ko jaldi scan karta hai. `SEO_GUIDE.md` padhein aur Sitemap Search Console mein submit karein.
+Google Search Console mein Sitemap submit karein taaki Google aapki site ko jaldi scan kare. Isse AdSense approval fast hota hai.
 
 **Aapka App ab ek asli Business hai!** 🚀💸
