@@ -1,0 +1,15 @@
+# Ye file ab valid hai. Purane commands hata diye gaye hain.
+name: CI-Cleanup
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run a one-line script
+        run: echo "System is clean and ready for APK build!"
