@@ -77,11 +77,12 @@ export default function LoginPage() {
       
       let description = error.message;
       if (error.code === 'auth/unauthorized-domain') {
-        description = "auth/unauthorized-domain";
-        setAuthError(description);
+        setAuthError("auth/unauthorized-domain");
       } else if (error.code === 'auth/operation-not-allowed') {
         description = `⚠️ ${providerName} Login disabled hai! Firebase Console mein ise Enable karein.`;
         setAuthError(description);
+      } else if (error.code === 'auth/billing-not-enabled') {
+        setAuthError("auth/billing-not-enabled");
       }
       
       toast({
@@ -114,9 +115,13 @@ export default function LoginPage() {
       setConfirmationResult(result);
       toast({ title: "OTP Sent", description: "Please check your mobile messages." });
     } catch (error: any) {
+      console.error("Phone Auth Error:", error.code, error.message);
       let description = error.message;
       if (error.code === 'auth/operation-not-allowed') {
         description = "⚠️ Phone Login disabled hai! Firebase Console mein 'Phone' ko Enable karein.";
+      } else if (error.code === 'auth/billing-not-enabled') {
+        setAuthError("auth/billing-not-enabled");
+        description = "⚠️ Billing not enabled! Firebase Console mein 'Blaze Plan' par upgrade karein.";
       }
       setAuthError(description);
       toast({ variant: "destructive", title: "Phone Error", description: description });
@@ -171,6 +176,25 @@ export default function LoginPage() {
         </CardHeader>
 
         <CardContent className="space-y-8 px-10">
+          {/* Billing Error Handler */}
+          {authError === "auth/billing-not-enabled" && (
+            <div className="p-5 bg-destructive/10 border border-destructive/20 rounded-2xl flex flex-col gap-4 animate-in zoom-in-95">
+              <div className="flex gap-3">
+                <AlertCircle className="w-5 h-5 text-destructive shrink-0" />
+                <div className="space-y-1">
+                  <p className="text-[10px] font-bold text-destructive uppercase tracking-widest">Billing Not Enabled</p>
+                  <p className="text-[11px] text-white/70 leading-relaxed">Phone Auth ke liye aapko Firebase project ko **Blaze Plan** par upgrade karna hoga. Ye Google ki policy hai.</p>
+                </div>
+              </div>
+              <Button variant="link" className="h-auto p-0 text-[10px] text-primary font-bold justify-start gap-1" asChild>
+                <a href="https://console.firebase.google.com/project/studio-9489287013-59986/usage/details" target="_blank" rel="noopener noreferrer">
+                  Upgrade to Blaze Plan <ExternalLink className="w-2 h-2" />
+                </a>
+              </Button>
+            </div>
+          )}
+
+          {/* Unauthorized Domain Error Handler */}
           {authError === "auth/unauthorized-domain" && (
             <div className="p-5 bg-destructive/10 border border-destructive/20 rounded-2xl flex flex-col gap-4 animate-in zoom-in-95">
               <div className="flex gap-3">
@@ -196,7 +220,7 @@ export default function LoginPage() {
             </div>
           )}
 
-          {authError && authError !== "auth/unauthorized-domain" && (
+          {authError && authError !== "auth/unauthorized-domain" && authError !== "auth/billing-not-enabled" && (
             <div className="p-4 bg-destructive/10 border border-destructive/20 rounded-2xl flex gap-3 animate-in zoom-in-95">
               <AlertCircle className="w-5 h-5 text-destructive shrink-0" />
               <p className="text-[10px] font-bold text-destructive leading-relaxed uppercase tracking-widest">{authError}</p>
