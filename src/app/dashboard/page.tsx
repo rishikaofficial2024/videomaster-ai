@@ -6,12 +6,12 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { 
   Plus, Sparkles, Loader2, Coins, 
-  Video, Gift, SquarePlay, Star, ArrowRight, CheckCircle2, X, HeartPulse, Crown, Terminal as TerminalIcon, Copy, ShieldCheck, Zap
+  Video, Gift, SquarePlay, Star, ArrowRight, CheckCircle2, X, HeartPulse, Crown, Terminal as TerminalIcon, Copy, ShieldCheck, Zap, Calendar
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useUser, useFirestore, useCollection, useDoc, useMemoFirebase } from "@/firebase";
-import { collection, query, orderBy, limit, doc, updateDoc, increment } from "firebase/firestore";
+import { collection, query, orderBy, limit, doc, updateDoc, increment, serverTimestamp } from "firebase/firestore";
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
@@ -26,6 +26,7 @@ export default function Dashboard() {
   const [adLoading, setAdLoading] = useState(false);
   const [showAdOverlay, setShowAdOverlay] = useState(false);
   const [adTimer, setAdTimer] = useState(15);
+  const [claimingTrial, setClaimingTrial] = useState(false);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -90,23 +91,41 @@ export default function Dashboard() {
     }, 15000);
   };
 
+  const handleClaimTrial = async () => {
+    if (!userProfileRef || claimingTrial) return;
+    setClaimingTrial(true);
+    
+    const trialData = {
+      isPremium: true,
+      subscriptionPlan: "pro",
+      credits: increment(500),
+      trialClaimed: true,
+      updatedAt: serverTimestamp(),
+    };
+
+    try {
+      await updateDoc(userProfileRef, trialData);
+      toast({
+        title: "Trial Activated!",
+        description: "Ab aap 7 dino tak Pro features aur extra credits use kar sakte hain.",
+      });
+    } catch (e: any) {
+      toast({
+        variant: "destructive",
+        title: "Claim Failed",
+        description: "Bhaai, kuch error aa gaya. Dobara try karein.",
+      });
+    } finally {
+      setClaimingTrial(false);
+    }
+  };
+
   const copyPushCommand = () => {
     navigator.clipboard.writeText("npm run mobile:push");
     toast({
       title: "Command Copied!",
       description: "Ab Terminal dhoond kar Paste karein.",
     });
-  };
-
-  const formatDate = (timestamp: any) => {
-    if (!timestamp) return "Abhi abhi";
-    if (!mounted) return "...";
-    try {
-      const date = timestamp.seconds ? new Date(timestamp.seconds * 1000) : new Date(timestamp);
-      return date.toLocaleDateString('en-IN', { month: 'short', day: 'numeric' });
-    } catch (e) {
-      return "Haal hi mein";
-    }
   };
 
   if (userLoading || !mounted) {
@@ -186,7 +205,7 @@ export default function Dashboard() {
                 <div className="flex items-center gap-3">
                   <Coins className="w-6 h-6 text-primary" />
                   <span className="text-5xl font-bold font-headline text-white">
-                    {profile?.isPremium ? '∞' : (profile?.credits ?? 0)}
+                    {profile?.isPremium && profile?.subscriptionPlan !== 'free' ? '∞' : (profile?.credits ?? 0)}
                   </span>
                 </div>
              </div>
@@ -195,6 +214,32 @@ export default function Dashboard() {
              </Button>
           </div>
         </header>
+
+        {/* Free Pro Trial Section */}
+        {!profile?.trialClaimed && (
+          <section className="animate-in slide-in-from-bottom-5 duration-1000">
+            <Card className="rounded-[3.5rem] bg-gradient-to-r from-indigo-600/20 via-primary/10 to-transparent border-indigo-500/30 p-10 flex flex-col md:flex-row items-center justify-between gap-8 group overflow-hidden relative">
+               <div className="absolute -top-10 -left-10 w-40 h-40 bg-indigo-500/10 blur-[80px]" />
+               <div className="flex items-center gap-8 text-center md:text-left relative z-10">
+                  <div className="w-20 h-20 bg-indigo-500/20 rounded-[2rem] flex items-center justify-center border-2 border-indigo-500/20 animate-float">
+                     <Calendar className="w-10 h-10 text-indigo-400" />
+                  </div>
+                  <div className="space-y-2">
+                     <h3 className="text-3xl font-bold font-headline text-white">7-Day Free Pro Trial!</h3>
+                     <p className="text-muted-foreground font-medium italic">Bhaai, Pro features ko free mein try karein. Unlimited AI access aur zero watermark.</p>
+                  </div>
+               </div>
+               <Button 
+                onClick={handleClaimTrial} 
+                disabled={claimingTrial}
+                className="h-16 px-12 rounded-2xl bg-indigo-600 hover:bg-indigo-700 font-bold shadow-xl shadow-indigo-600/30 relative z-10"
+               >
+                  {claimingTrial ? <Loader2 className="animate-spin mr-2" /> : <Zap className="w-5 h-5 mr-2" />}
+                  Claim Free Trial
+               </Button>
+            </Card>
+          </section>
+        )}
 
         {/* Quick Launch & Sync Hub */}
         <section className="grid md:grid-cols-2 gap-8">
@@ -265,7 +310,7 @@ export default function Dashboard() {
                </div>
                <Button 
                  onClick={handleWatchAd} 
-                 disabled={adLoading || profile?.isPremium}
+                 disabled={adLoading || (profile?.isPremium && profile?.subscriptionPlan !== 'free' && !profile?.trialClaimed)}
                  className="h-24 px-16 rounded-[2rem] bg-primary font-bold shadow-2xl shadow-primary/40 text-xl hover:scale-105 transition-all group active:scale-95"
                >
                   {adLoading ? <Loader2 className="animate-spin mr-3 w-8 h-8" /> : <SquarePlay className="w-8 h-8 mr-4 group-hover:animate-pulse" />}
