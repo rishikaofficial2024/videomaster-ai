@@ -22,9 +22,9 @@ service cloud.firestore {
       // Users can only read/write their own profiles
       allow read: if isOwner(userId) || isAdmin();
       
-      // Prevent users from giving themselves unlimited credits or admin status
+      // Prevent users from giving themselves unlimited credits, pro status or admin status
       allow create, update: if isOwner(userId) && 
-                            (!request.resource.data.diff(resource.data).affectedKeys().hasAny(['isAdmin', 'subscriptionPlan']) || isAdmin());
+                            (!request.resource.data.diff(resource.data).affectedKeys().hasAny(['isAdmin', 'subscriptionPlan', 'credits']) || isAdmin());
       
       // Global admin management access
       allow delete: if isAdmin();
