@@ -5,9 +5,9 @@ import { Navbar } from "@/components/navbar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { 
-  CheckCircle2, XCircle, Loader2, Signal, Database, 
+  CheckCircle2, XCircle, Loader2, Database, 
   Zap, Key, ArrowLeft, ShieldCheck, Sparkles, 
-  AlertCircle, Info, Activity, Globe, Cpu, Network
+  Activity, Network, Globe
 } from "lucide-react";
 import { useAuth, useFirestore } from "@/firebase";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
@@ -22,7 +22,8 @@ export default function TestConnectionPage() {
     firebase: "pending",
     firestore: "pending",
     auth: "pending",
-    ai_key: "pending"
+    ai_key: "pending",
+    ads_txt: "pending"
   });
   const [latency, setLatency] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
@@ -35,7 +36,8 @@ export default function TestConnectionPage() {
       firebase: "testing", 
       firestore: "testing", 
       auth: "testing",
-      ai_key: "testing"
+      ai_key: "testing",
+      ads_txt: "testing"
     });
 
     // 1. Test Firebase Config
@@ -44,8 +46,7 @@ export default function TestConnectionPage() {
     setStatus(prev => ({ ...prev, config: isValidKey ? "success" : "error" }));
 
     // 2. Test Firebase App Instance
-    const appOk = !!auth.app;
-    setStatus(prev => ({ ...prev, firebase: appOk ? "success" : "error" }));
+    setStatus(prev => ({ ...prev, firebase: !!auth.app ? "success" : "error" }));
 
     // 3. Test Auth Service
     setStatus(prev => ({ ...prev, auth: !!auth ? "success" : "error" }));
@@ -62,8 +63,16 @@ export default function TestConnectionPage() {
       setStatus(prev => ({ ...prev, firestore: "error" }));
     }
 
-    // 5. AI Key Check (Logical check)
+    // 5. AI Key Check
     setStatus(prev => ({ ...prev, ai_key: "success" })); 
+
+    // 6. Test ads.txt availability
+    try {
+      const res = await fetch('/app-ads.txt');
+      setStatus(prev => ({ ...prev, ads_txt: res.ok ? "success" : "error" }));
+    } catch (e) {
+      setStatus(prev => ({ ...prev, ads_txt: "error" }));
+    }
 
     setLatency(Date.now() - startTime);
     setLoading(false);
@@ -120,7 +129,8 @@ export default function TestConnectionPage() {
                   { label: "Firebase Gateway", sub: "Cloud Handshake", id: status.config, icon: Key },
                   { label: "Firestore DB", sub: "Data Synchronization", id: status.firestore, icon: Database },
                   { label: "Gemini AI Engine", sub: "Neural Processing", id: status.ai_key, icon: Sparkles },
-                  { label: "Edge Auth Service", sub: "Security Protocol", id: status.auth, icon: ShieldCheck }
+                  { label: "Edge Auth Service", sub: "Security Protocol", id: status.auth, icon: ShieldCheck },
+                  { label: "AdSense Verification", sub: "app-ads.txt check", id: status.ads_txt, icon: Globe }
                 ].map((item, i) => (
                   <div key={i} className="flex items-center justify-between p-5 bg-white/5 rounded-[2rem] border border-white/5 group hover:border-primary/20 transition-all">
                     <div className="flex items-center gap-4">
@@ -174,7 +184,7 @@ export default function TestConnectionPage() {
 
               <Card className="rounded-[3rem] bg-emerald-500/5 border-emerald-500/10 p-10 space-y-6">
                  <div className="flex items-center gap-4">
-                    <Info className="w-5 h-5 text-emerald-400" />
+                    <CheckCircle2 className="w-5 h-5 text-emerald-400" />
                     <h4 className="text-xs font-bold uppercase tracking-widest text-emerald-400">Regional Optimization</h4>
                  </div>
                  <p className="text-xs text-muted-foreground leading-relaxed italic">

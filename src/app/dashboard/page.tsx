@@ -4,15 +4,14 @@ import { Navbar } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { 
-  Plus, Sparkles, ChevronRight, Loader2, Coins, 
-  ArrowUpRight, Video, Activity, Gift, SquarePlay, Star, ArrowRight, Globe, CheckCircle2, X, Rocket, ShieldCheck, Crown, HeartPulse, ShieldAlert
+  Plus, Sparkles, Loader2, Coins, 
+  Video, Gift, SquarePlay, Star, ArrowRight, CheckCircle2, X, HeartPulse, Crown
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useUser, useFirestore, useCollection, useDoc, useMemoFirebase } from "@/firebase";
 import { collection, query, orderBy, limit, doc, updateDoc, increment } from "firebase/firestore";
 import { useState, useEffect } from "react";
-import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 import { AdBanner } from "@/components/ads/ad-banner";
@@ -103,7 +102,7 @@ export default function Dashboard() {
 
   if (userLoading || !mounted) {
     return (
-      <div className="h-screen flex items-center justify-center bg-background">
+      <div className="h-screen flex items-center justify-center bg-[#05070a]">
         <Loader2 className="w-10 h-10 animate-spin text-primary" />
       </div>
     );
@@ -143,7 +142,7 @@ export default function Dashboard() {
                 </div>
               </div>
               <div className="flex items-center justify-center gap-2">
-                 <ShieldCheck className="w-4 h-4 text-primary" />
+                 <CheckCircle2 className="w-4 h-4 text-emerald-500" />
                  <p className="text-[10px] text-white/60 font-bold uppercase tracking-[0.3em]">AdSense Impression Verified</p>
               </div>
             </div>
@@ -153,7 +152,7 @@ export default function Dashboard() {
         <header className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-10">
           <div className="space-y-4">
             <div className="flex flex-wrap gap-2">
-              <div className={cn("flex items-center gap-2 px-4 py-1.5 bg-emerald-500/10 rounded-full border border-emerald-500/20 w-fit")}>
+              <div className="flex items-center gap-2 px-4 py-1.5 bg-emerald-500/10 rounded-full border border-emerald-500/20 w-fit">
                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
                  <span className="text-[10px] font-bold text-emerald-500 uppercase tracking-[0.2em]">
                    MONETIZATION ACTIVE: APP-ADS.TXT VERIFIED
