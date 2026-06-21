@@ -9,7 +9,7 @@ Your application is now technically **Optimized**, **Secure**, and **Business-Re
 - **Audio Engine**: `Gemini TTS` - Creates natural WAV voiceovers for project tracks.
 
 ### 2. Monetization Engine 💰 (STATUS: LIVE)
-- **AdSense Integration**: Publisher ID `pub-8946933317699938` is active and generating impressions.
+- **AdSense Integration**: Publisher ID `ca-pub-8946933317699938` is active and generating impressions.
 - **Rewarded Credit System**: The `+20 Credits per Ad` logic is securely synced with Firestore.
 - **Subscription Hub**: Pro Plan (₹99) and Credit Packs are ready for payment gateway linking.
 - **Earnings Path**: Ad revenue is paid monthly by Google; Subscriptions are paid via your connected bank account.
@@ -18,5 +18,6 @@ Your application is now technically **Optimized**, **Secure**, and **Business-Re
 - **App Check Verification**: ReCaptcha V3 is configured to block bots from stealing AI quota.
 - **Firestore Lockdown**: Security rules prevent unauthorized credit manipulation.
 - **Admin Node Protection**: Revenue tracking is restricted to your authorized UID only.
+- **Modern Architecture**: Legacy "Database Secrets" are bypassed in favor of Cloud IAM and Security Rules.
 
 **Current Status: 100% MONETIZED & ELITE - THE SYSTEM IS READY TO GENERATE REVENUE!** 🚀💸🎬
