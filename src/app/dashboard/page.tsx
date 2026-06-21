@@ -232,31 +232,6 @@ export default function Dashboard() {
           </Card>
         </section>
 
-        {!profile?.trialClaimed && (
-          <section className="animate-in slide-in-from-bottom-5 duration-1000">
-            <Card className="rounded-[3.5rem] bg-gradient-to-r from-indigo-600/20 via-primary/10 to-transparent border-indigo-500/30 p-10 flex flex-col md:flex-row items-center justify-between gap-8 group overflow-hidden relative">
-               <div className="absolute -top-10 -left-10 w-40 h-40 bg-indigo-500/10 blur-[80px]" />
-               <div className="flex items-center gap-8 text-center md:text-left relative z-10">
-                  <div className="w-20 h-20 bg-indigo-500/20 rounded-[2rem] flex items-center justify-center border-2 border-indigo-500/20 animate-float">
-                     <Calendar className="w-10 h-10 text-indigo-400" />
-                  </div>
-                  <div className="space-y-2">
-                     <h3 className="text-3xl font-bold font-headline text-white">7-Day Premium Trial</h3>
-                     <p className="text-muted-foreground font-medium italic">Experience the Pro Studio at zero cost. Unlock unlimited AI and remove watermarks.</p>
-                  </div>
-               </div>
-               <Button 
-                onClick={handleClaimTrial} 
-                disabled={claimingTrial}
-                className="h-16 px-12 rounded-2xl bg-indigo-600 hover:bg-indigo-700 font-bold shadow-xl shadow-indigo-600/30 relative z-10"
-               >
-                  {claimingTrial ? <Loader2 className="animate-spin mr-2" /> : <Zap className="w-5 h-5 mr-2" />}
-                  Claim Free Trial
-               </Button>
-            </Card>
-          </section>
-        )}
-
         <section className="grid md:grid-cols-2 gap-8">
            <Card className="rounded-[3rem] bg-[#0a0d14] border-red-500/30 p-10 relative overflow-hidden group">
               <div className="flex flex-col gap-6 relative z-10">
@@ -325,7 +300,7 @@ export default function Dashboard() {
                </div>
                <Button 
                  onClick={handleWatchAd} 
-                 disabled={adLoading || (profile?.isPremium && profile?.subscriptionPlan !== 'free' && !profile?.trialClaimed)}
+                 disabled={adLoading || (profile?.isPremium && profile?.subscriptionPlan !== 'free')}
                  className="h-24 px-16 rounded-[2.5rem] bg-primary font-bold shadow-2xl shadow-primary/40 text-xl hover:scale-105 transition-all group active:scale-95"
                >
                   {adLoading ? <Loader2 className="animate-spin mr-3 w-8 h-8" /> : <SquarePlay className="w-8 h-8 mr-4 group-hover:animate-pulse" />}

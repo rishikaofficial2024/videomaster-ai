@@ -1,4 +1,3 @@
-
 "use client";
 
 import { Navbar } from "@/components/navbar";
@@ -97,7 +96,7 @@ export default function TerminalGuidePage() {
 
           <Card className="rounded-[3rem] bg-emerald-500/5 border-emerald-500/10 p-10 text-center space-y-4">
             <div className="flex justify-center">
-               <CheckCircle2 className="w-12 h-12 text-emerald-500" />
+               <CheckCircle2 className="w-12 h-12 text-emerald-400" />
             </div>
             <h4 className="text-xl font-bold font-headline">What happens next?</h4>
             <p className="text-sm text-muted-foreground italic">Your code will be updated on GitHub, and the APK build process will begin automatically. Your app will be live and secure.</p>

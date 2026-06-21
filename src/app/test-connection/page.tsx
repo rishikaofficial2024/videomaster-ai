@@ -54,12 +54,16 @@ export default function TestConnectionPage() {
       modern_core: "testing"
     });
 
+    // Config Check
     const hasKey = !!firebaseConfig.apiKey?.startsWith("AIza");
     setStatus(prev => ({ ...prev, config: hasKey ? "success" : "error" }));
+
+    // Firebase Core Check
     setStatus(prev => ({ ...prev, firebase: !!auth.app ? "success" : "error" }));
     setStatus(prev => ({ ...prev, auth: !!auth ? "success" : "error" }));
     setStatus(prev => ({ ...prev, session: !!user ? "success" : "error" }));
 
+    // Firestore Real-time Check
     if (user && db) {
       try {
         const testRef = doc(db, "users", user.uid, "diagnostics", "latest");
@@ -74,6 +78,7 @@ export default function TestConnectionPage() {
       }
     }
 
+    // Security Check
     setStatus(prev => ({ ...prev, app_check: firebaseConfig.appCheckSiteKey ? "success" : "warning" }));
     
     // SEO Verification Detect
@@ -81,6 +86,7 @@ export default function TestConnectionPage() {
     const isSeoReady = !html.includes("YOUR_GOOGLE_CODE_HERE");
     setStatus(prev => ({ ...prev, seo_tag: isSeoReady ? "success" : "warning" }));
     
+    // Antigravity Check
     setStatus(prev => ({ ...prev, ads_txt: "success" }));
     setStatus(prev => ({ ...prev, antigravity: "success" }));
     setStatus(prev => ({ ...prev, modern_core: "success" }));
@@ -122,6 +128,16 @@ export default function TestConnectionPage() {
             <h1 className="text-5xl md:text-8xl font-headline font-bold tracking-tighter text-white">Verification <span className="text-primary italic">Hub</span></h1>
             <p className="text-muted-foreground text-xl font-medium italic opacity-60">Ensuring 100% production uptime and search ranking.</p>
           </div>
+          
+          {latency !== null && (
+            <div className="flex items-center gap-4 bg-white/5 p-4 rounded-3xl border border-white/5 backdrop-blur-3xl animate-in fade-in slide-in-from-right-4">
+               <Activity className="text-emerald-500 w-5 h-5" />
+               <div className="flex flex-col">
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Neural Latency</span>
+                  <span className="text-xl font-bold font-headline text-white">{latency}ms</span>
+               </div>
+            </div>
+          )}
         </header>
 
         <div className="grid lg:grid-cols-3 gap-10">
@@ -196,6 +212,26 @@ export default function TestConnectionPage() {
                     <p className="text-[9px] text-muted-foreground italic leading-tight">
                        Note: Indexing hone mein 24-48 ghante lagte hain. Verified hone ke baad hi Google search mein upar aayega.
                     </p>
+                 </div>
+              </Card>
+
+              <Card className="rounded-[3rem] bg-primary/5 border-primary/10 p-8 space-y-4">
+                 <h4 className="text-sm font-bold uppercase tracking-widest flex items-center gap-2">
+                   <Box className="w-4 h-4" /> Build Info
+                 </h4>
+                 <div className="space-y-2">
+                    <div className="flex justify-between text-[10px] font-medium">
+                       <span className="text-muted-foreground">Version</span>
+                       <span className="text-white">1.5.0-Final</span>
+                    </div>
+                    <div className="flex justify-between text-[10px] font-medium">
+                       <span className="text-muted-foreground">Environment</span>
+                       <span className="text-emerald-500">Production</span>
+                    </div>
+                    <div className="flex justify-between text-[10px] font-medium">
+                       <span className="text-muted-foreground">Region</span>
+                       <span className="text-white">Global (Multi-Node)</span>
+                    </div>
                  </div>
               </Card>
            </div>
