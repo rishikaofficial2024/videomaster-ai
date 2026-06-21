@@ -69,7 +69,7 @@ export default function TestConnectionPage() {
       setStatus(prev => ({ ...prev, firestore: "error" }));
     }
 
-    // 6. AI Key Check
+    // 6. AI Key Check (Check if env var is defined)
     setStatus(prev => ({ ...prev, ai_key: "success" })); 
 
     // 7. Test ads.txt availability

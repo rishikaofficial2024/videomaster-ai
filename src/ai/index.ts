@@ -1,9 +1,9 @@
-'use client';
-
-import './genkit.js';
 /**
  * Barrel file for Genkit AI flows.
+ * 
+ * NOTE: Do NOT use 'use client' here. These flows are server-side actions.
  */
+import './genkit.js';
 import './flows/ai-auto-caption-and-subtitle-generation-flow.js';
 import './flows/ai-video-content-optimization-flow.js';
 import './flows/ai-video-generation-flow.js';

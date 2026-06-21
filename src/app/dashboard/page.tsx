@@ -1,4 +1,3 @@
-
 "use client";
 
 import { Navbar } from "@/components/navbar";
@@ -6,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { 
   Plus, Sparkles, Loader2, Coins, 
-  Video, Gift, SquarePlay, Star, ArrowRight, CheckCircle2, X, HeartPulse, Crown, Terminal as TerminalIcon, Copy, ShieldCheck, Zap, Calendar
+  Video, Gift, SquarePlay, Star, ArrowRight, CheckCircle2, X, Crown, Terminal as TerminalIcon, Copy, ShieldCheck, Zap, Calendar, BrainCircuit
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -196,7 +195,7 @@ export default function Dashboard() {
             <h1 className="text-6xl md:text-8xl font-headline font-bold tracking-tighter text-white">
               Hello, <span className="text-primary italic">{user?.displayName?.split(' ')[0] || 'Creator'}</span>
             </h1>
-            <p className="text-muted-foreground text-xl font-medium max-w-xl italic">Ready to create your next viral hit?</p>
+            <p className="text-muted-foreground text-xl font-medium max-w-xl italic">Welcome to your Elite AI Design Studio.</p>
           </div>
           
           <div className="flex items-center gap-8 bg-[#0a0d14]/90 backdrop-blur-3xl p-6 rounded-[3rem] border border-white/5 shadow-2xl blue-glow">
@@ -214,6 +213,25 @@ export default function Dashboard() {
              </Button>
           </div>
         </header>
+
+        {/* Free AI Assistant Card */}
+        <section>
+          <Card className="rounded-[3.5rem] bg-[#0a0d14] border-emerald-500/30 p-10 flex flex-col md:flex-row items-center justify-between gap-8 group overflow-hidden relative blue-glow">
+             <div className="absolute -top-10 -right-10 w-40 h-40 bg-emerald-500/10 blur-[80px]" />
+             <div className="flex items-center gap-8 text-center md:text-left relative z-10">
+                <div className="w-20 h-20 bg-emerald-500/20 rounded-[2rem] flex items-center justify-center border-2 border-emerald-500/20 group-hover:scale-110 transition-transform">
+                   <BrainCircuit className="w-10 h-10 text-emerald-400" />
+                </div>
+                <div className="space-y-2">
+                   <h3 className="text-3xl font-bold font-headline text-white">Free AI Neural Assistant</h3>
+                   <p className="text-muted-foreground font-medium italic">Ask anything about viral growth or script ideas. <span className="text-emerald-500 font-bold">100% Free Forever.</span></p>
+                </div>
+             </div>
+             <Button variant="outline" className="h-16 px-10 rounded-2xl border-emerald-500/30 text-emerald-400 font-bold hover:bg-emerald-500/10" asChild>
+                <Link href="/ai-assistant">Chat for Free <ArrowRight className="ml-2 w-4 h-4" /></Link>
+             </Button>
+          </Card>
+        </section>
 
         {/* Free Pro Trial Section */}
         {!profile?.trialClaimed && (
@@ -250,7 +268,7 @@ export default function Dashboard() {
                        <TerminalIcon className="w-3 h-3 text-red-500" />
                        <span className="text-[10px] font-bold text-red-500 uppercase tracking-widest">Build Command</span>
                     </div>
-                    <h3 className="text-2xl font-bold font-headline text-white">1-Click Launch</h3>
+                    <h3 className="text-2xl font-bold font-headline text-white">1-Click APK Build</h3>
                     <p className="text-xs text-muted-foreground italic">Copy and paste this into your Terminal (Ctrl + ~).</p>
                  </div>
                  <Button onClick={copyPushCommand} className="h-14 rounded-2xl bg-red-600 hover:bg-red-700 font-bold shadow-xl shadow-red-600/20 transition-all active:scale-95">
@@ -266,11 +284,11 @@ export default function Dashboard() {
                        <Zap className="w-3 h-3 text-emerald-500" />
                        <span className="text-[10px] font-bold text-emerald-500 uppercase tracking-widest">Auth Sync Fix</span>
                     </div>
-                    <h3 className="text-2xl font-bold font-headline text-white">Sync Issues?</h3>
-                    <p className="text-xs text-muted-foreground italic">If social login isn't working, check your connection here.</p>
+                    <h3 className="text-2xl font-bold font-headline text-white">System Diagnostics</h3>
+                    <p className="text-xs text-muted-foreground italic">If something isn't working, check your connection here.</p>
                  </div>
                  <Button className="h-14 rounded-2xl bg-emerald-600 hover:bg-emerald-700 font-bold shadow-xl shadow-emerald-600/20" asChild>
-                    <Link href="/test-connection">Verify Connection <ArrowRight className="w-4 h-4 ml-2" /></Link>
+                    <Link href="/test-connection">Run Health Check <ArrowRight className="w-4 h-4 ml-2" /></Link>
                  </Button>
               </div>
            </Card>
