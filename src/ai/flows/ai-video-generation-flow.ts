@@ -1,8 +1,9 @@
+
 'use server';
 /**
  * @fileOverview An AI agent that generates cinematic video clips from text prompts using Veo.
  * 
- * 🚀 STABILITY PATCH: Added clear error handling for Billing/Quota issues.
+ * 🚀 STABILITY PATCH: Professional English localization and error handling.
  */
 
 import { ai, z } from '@/ai/genkit';
@@ -70,14 +71,14 @@ const videoGenerationFlow = ai.defineFlow(
         videoDataUri: `data:video/mp4;base64,${base64}`,
       };
     } catch (e: any) {
-      // CLEAR USER ERROR MESSAGE
+      // Professional English Error Messaging
       if (e.message.includes('403') || e.message.includes('billing') || e.message.includes('permission')) {
-        throw new Error("⚠️ Video generation ke liye Google Cloud Billing mandatory hai. [Fix]: Google Cloud Console mein card link karein.");
+        throw new Error("⚠️ Google Cloud Billing is required for video generation. [Fix]: Link a valid payment method in your Google Cloud Console.");
       }
       if (e.message.includes('429')) {
-        throw new Error("⚠️ Rate limit hit! Thoda intezaar karein aur phir se koshish karein.");
+        throw new Error("⚠️ AI Rate Limit Reached. Please wait a few moments and try again.");
       }
-      throw e;
+      throw new Error(`AI Video Generation failed: ${e.message}`);
     }
   }
 );

@@ -104,8 +104,8 @@ export default function EditorPage() {
     if ((profile?.credits ?? 0) < cost) {
       toast({
         variant: "destructive",
-        title: "Credits Khatam!",
-        description: `Ye kaam karne ke liye ${cost} credits chahiye. Ad dekh kar earn karein ya Pro banein.`,
+        title: "Insufficient Credits",
+        description: `You need ${cost} credits for this action. Watch an ad or upgrade to Pro for more.`,
       });
       return false;
     }
@@ -192,14 +192,14 @@ export default function EditorPage() {
   const handleGenerateScript = async () => {
     if (!scriptTopic || !checkCredits(2)) return;
     setIsProcessing(true);
-    setProcessingMessage("Writing viral script...");
+    setProcessingMessage("Generating viral script...");
     try {
       const result = await generateAiScript({ topic: scriptTopic, platform: 'YouTube' });
       deductCredits(2);
       handleSave({ aiNotes: result.script });
-      toast({ title: "Script Generated", description: "Aapki script AI tab mein ready hai." });
+      toast({ title: "Script Ready", description: "Your script has been added to the AI tab." });
     } catch (e: any) {
-      toast({ variant: "destructive", title: "Error", description: e.message });
+      toast({ variant: "destructive", title: "AI Error", description: e.message });
     } finally {
       setIsProcessing(false);
     }
@@ -208,15 +208,15 @@ export default function EditorPage() {
   const handleGenerateVideo = async () => {
     if (!videoPrompt || !checkCredits(20)) return;
     setIsProcessing(true);
-    setProcessingMessage("AI clip is being rendered...");
+    setProcessingMessage("Rendering cinematic AI clip...");
     try {
       const result = await generateAiVideo({ prompt: videoPrompt });
       setVideoData(result.videoDataUri);
       deductCredits(20);
       handleSave({ videoDataUri: result.videoDataUri });
-      toast({ title: "Clip Ready", description: "AI clip timeline mein jodh di gayi hai." });
+      toast({ title: "Clip Rendered", description: "Your AI clip is now on the timeline." });
     } catch (e: any) {
-      toast({ variant: "destructive", title: "Generation Error", description: e.message });
+      toast({ variant: "destructive", title: "Rendering Error", description: e.message });
     } finally {
       setIsProcessing(false);
     }
@@ -246,17 +246,17 @@ export default function EditorPage() {
               className="bg-transparent font-bold text-lg focus:outline-none w-64 truncate text-white border-b border-transparent focus:border-primary/50 transition-all"
             />
             <span className="text-[10px] font-bold text-emerald-500/60 uppercase tracking-widest">
-              {isSaving ? "Saving..." : "Project Saved"}
+              {isSaving ? "Syncing..." : "Sync Completed"}
             </span>
           </div>
         </div>
         <div className="flex items-center gap-3">
           <Button variant="ghost" size="sm" className="rounded-xl font-bold gap-2 text-muted-foreground hover:text-white" onClick={() => handleSave()}>
-            Save Draft
+            Save State
           </Button>
           <Button className="h-10 px-8 rounded-xl font-bold bg-primary shadow-xl shadow-primary/20 hover:scale-105 active:scale-95 transition-all group">
             {profile?.isPremium ? <Download className="w-4 h-4 mr-2" /> : <Lock className="w-3 h-3 mr-2 text-white/50" />}
-            {profile?.isPremium ? "Export Video" : "Unlock 4K Export"}
+            {profile?.isPremium ? "Export Master" : "Unlock 4K Export"}
           </Button>
         </div>
       </div>
@@ -265,10 +265,10 @@ export default function EditorPage() {
         <div className="w-20 bg-[#0a0d14] border-r border-white/5 flex flex-col items-center py-8 gap-10">
            {[
              { icon: Film, id: 'media', label: 'Media' },
-             { icon: Wand2, id: 'ai', label: 'AI Tools' },
+             { icon: Wand2, id: 'ai', label: 'AI Suite' },
              { icon: Music, id: 'audio', label: 'Audio' },
-             { icon: Type, id: 'text', label: 'Text' },
-             { icon: Palette, id: 'style', label: 'Style' }
+             { icon: Type, id: 'text', label: 'Titles' },
+             { icon: Palette, id: 'style', label: 'Styles' }
            ].map((item) => (
              <button 
                key={item.id} 
@@ -293,7 +293,7 @@ export default function EditorPage() {
            {activeTab === 'media' && (
              <div className="space-y-6">
                 <div className="flex items-center justify-between">
-                   <h3 className="text-sm font-bold uppercase tracking-widest text-white">Media Library</h3>
+                   <h3 className="text-sm font-bold uppercase tracking-widest text-white">Project Assets</h3>
                    <Button variant="ghost" size="icon" className="rounded-full" onClick={() => fileInputRef.current?.click()}>
                       <Plus className="w-4 h-4" />
                    </Button>
@@ -314,7 +314,7 @@ export default function EditorPage() {
                    <div className="p-3 bg-primary/20 rounded-full text-primary">
                       <Upload className="w-6 h-6" />
                    </div>
-                   <span className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Import from Gallery</span>
+                   <span className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Import Asset</span>
                 </Button>
 
                 <div className="grid grid-cols-2 gap-4">
@@ -354,14 +354,14 @@ export default function EditorPage() {
                 <div className="space-y-4">
                    <div className="flex items-center gap-2 mb-2">
                       <Sparkles className="w-4 h-4 text-primary" />
-                      <h4 className="text-[10px] font-bold uppercase tracking-widest text-primary">AI Content Suite</h4>
+                      <h4 className="text-[10px] font-bold uppercase tracking-widest text-primary">AI Creative Engine</h4>
                    </div>
                    
                    <div className="p-4 bg-white/5 rounded-3xl border border-white/5 space-y-4">
-                      <label className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest ml-1">Script Topic</label>
+                      <label className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest ml-1">Video Topic</label>
                       <textarea 
                          className="w-full bg-black/40 border border-white/5 rounded-2xl p-4 text-xs h-24 outline-none focus:border-primary/50 transition-all resize-none"
-                         placeholder="What is your video about?"
+                         placeholder="Describe your video theme..."
                          value={scriptTopic}
                          onChange={(e) => setScriptTopic(e.target.value)}
                       />
@@ -371,15 +371,15 @@ export default function EditorPage() {
                    </div>
 
                    <div className="p-4 bg-indigo-500/5 rounded-3xl border border-indigo-500/10 space-y-4">
-                      <label className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest ml-1">AI Video Generator</label>
+                      <label className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest ml-1">Scene Description</label>
                       <textarea 
                          className="w-full bg-black/40 border border-indigo-500/10 rounded-2xl p-4 text-xs h-24 outline-none focus:border-indigo-500/50 transition-all resize-none"
-                         placeholder="Describe the cinematic scene..."
+                         placeholder="Describe the visuals for AI generation..."
                          value={videoPrompt}
                          onChange={(e) => setVideoPrompt(e.target.value)}
                       />
                       <Button className="w-full h-11 rounded-xl font-bold bg-indigo-600 shadow-lg shadow-indigo-600/20" onClick={handleGenerateVideo} disabled={isProcessing}>
-                         {isProcessing ? <Loader2 className="w-4 h-4 animate-spin" /> : "Render AI Clip (20 Cr)"}
+                         {isProcessing ? <Loader2 className="w-4 h-4 animate-spin" /> : "Generate Video (20 Cr)"}
                       </Button>
                    </div>
                 </div>
@@ -407,7 +407,7 @@ export default function EditorPage() {
                      <div className="w-20 h-20 bg-white/5 rounded-full flex items-center justify-center mx-auto">
                         <VideoIcon className="w-10 h-10" />
                      </div>
-                     <p className="text-[10px] font-bold uppercase tracking-[0.3em]">Ready for Creation</p>
+                     <p className="text-[10px] font-bold uppercase tracking-[0.3em]">Studio Ready</p>
                   </div>
                 ) : (
                   <>
@@ -451,7 +451,7 @@ export default function EditorPage() {
                  <div className="flex items-center gap-6">
                     <div className="flex items-center gap-2">
                        <Film className="w-4 h-4 text-primary" />
-                       <span className="text-[10px] font-bold uppercase tracking-widest text-white">Project Timeline</span>
+                       <span className="text-[10px] font-bold uppercase tracking-widest text-white">Timeline</span>
                     </div>
                     <div className="h-4 w-px bg-white/10" />
                     <span className="text-[10px] font-mono text-muted-foreground">00:00:00 / 00:00:15</span>
@@ -464,21 +464,21 @@ export default function EditorPage() {
 
               <div className="flex-1 overflow-x-auto p-4 space-y-3 scrollbar-hide">
                  <div className="h-14 bg-white/[0.03] rounded-2xl flex items-center px-4 relative group border border-dashed border-white/5">
-                    <span className="absolute left-4 -top-5 text-[8px] font-bold text-primary/40 uppercase tracking-widest">Video Track 1</span>
+                    <span className="absolute left-4 -top-5 text-[8px] font-bold text-primary/40 uppercase tracking-widest">Master Video 1</span>
                     {videoData && (
                       <div className="h-10 w-48 bg-primary/20 border border-primary/30 rounded-xl flex items-center px-4 gap-3 cursor-grab active:cursor-grabbing">
                          <div className="w-8 h-6 bg-black/40 rounded-md" />
-                         <span className="text-[9px] font-bold text-white uppercase truncate">Clip_01_AI_Render</span>
+                         <span className="text-[9px] font-bold text-white uppercase truncate">Clip_Asset_AI</span>
                       </div>
                     )}
                  </div>
 
                  <div className="h-14 bg-white/[0.03] rounded-2xl flex items-center px-4 relative group border border-dashed border-white/5">
-                    <span className="absolute left-4 -top-5 text-[8px] font-bold text-indigo-400/40 uppercase tracking-widest">Audio Track 1</span>
+                    <span className="absolute left-4 -top-5 text-[8px] font-bold text-indigo-400/40 uppercase tracking-widest">Master Audio 1</span>
                     {audioData && (
                       <div className="h-10 w-64 bg-indigo-500/20 border border-indigo-500/30 rounded-xl flex items-center px-4 gap-3 cursor-grab">
                          <Music className="w-3 h-3 text-indigo-400" />
-                         <span className="text-[9px] font-bold text-white uppercase truncate">Voiceover_Main_Track</span>
+                         <span className="text-[9px] font-bold text-white uppercase truncate">Voiceover_Layer</span>
                       </div>
                     )}
                  </div>
@@ -490,13 +490,13 @@ export default function EditorPage() {
            <div className="space-y-6">
               <div className="flex items-center gap-2">
                  <Settings2 className="w-4 h-4 text-emerald-400" />
-                 <h4 className="text-[10px] font-bold uppercase tracking-widest text-emerald-400">Clip Inspector</h4>
+                 <h4 className="text-[10px] font-bold uppercase tracking-widest text-emerald-400">Inspector</h4>
               </div>
               
               <div className="space-y-8">
                  <div className="space-y-4">
                     <div className="flex justify-between items-center">
-                       <span className="text-[10px] font-bold text-muted-foreground uppercase">Opacity</span>
+                       <span className="text-[10px] font-bold text-muted-foreground uppercase">Layer Alpha</span>
                        <span className="text-[10px] font-mono text-primary">100%</span>
                     </div>
                     <Slider defaultValue={[100]} max={100} step={1} className="w-full" />
@@ -504,7 +504,7 @@ export default function EditorPage() {
 
                  <div className="space-y-4">
                     <div className="flex justify-between items-center">
-                       <span className="text-[10px] font-bold text-muted-foreground uppercase">Volume</span>
+                       <span className="text-[10px] font-bold text-muted-foreground uppercase">Gain</span>
                        <span className="text-[10px] font-mono text-primary">80%</span>
                     </div>
                     <Slider defaultValue={[80]} max={100} step={1} className="w-full" />
@@ -517,7 +517,7 @@ export default function EditorPage() {
                     </div>
                     <div className="space-y-2">
                        <span className="text-[9px] font-bold text-muted-foreground uppercase ml-1">Scale</span>
-                       <div className="h-11 bg-white/5 rounded-xl border border-white/5 flex items-center justify-center font-bold text-xs">Fit</div>
+                       <div className="h-11 bg-white/5 rounded-xl border border-white/5 flex items-center justify-center font-bold text-xs">Aspect Fit</div>
                     </div>
                  </div>
               </div>
@@ -526,7 +526,7 @@ export default function EditorPage() {
            <div className="pt-8 border-t border-white/5 space-y-6">
               <div className="flex items-center gap-2">
                  <Layout className="w-4 h-4 text-indigo-400" />
-                 <h4 className="text-[10px] font-bold uppercase tracking-widest text-indigo-400">Canvas Settings</h4>
+                 <h4 className="text-[10px] font-bold uppercase tracking-widest text-indigo-400">Canvas</h4>
               </div>
               <div className="grid grid-cols-3 gap-2">
                  {['9:16', '16:9', '1:1'].map((ratio) => (
@@ -551,7 +551,7 @@ export default function EditorPage() {
               </div>
               <div className="space-y-2">
                 <p className="text-2xl font-bold font-headline text-white tracking-tight">{processingMessage}</p>
-                <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.4em] animate-pulse">Encoding Neural Assets</p>
+                <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.4em] animate-pulse">Encoding Digital Assets</p>
               </div>
            </div>
         </div>
