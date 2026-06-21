@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { 
   Users, Coins, ShieldCheck, Lock, Loader2, Banknote, TrendingUp,
-  Activity, CheckCircle2, Star, ShieldAlert, MoreVertical, Landmark, PieChart, DollarSign, Globe, Info, ExternalLink
+  Activity, CheckCircle2, Star, ShieldAlert, MoreVertical, Landmark, PieChart, DollarSign, Globe, Info, ExternalLink, CreditCard
 } from "lucide-react";
 import { useFirestore, useCollection, useMemoFirebase } from "@/firebase";
 import { collection, query, limit, orderBy, getCountFromServer, doc, updateDoc, increment, getDocs } from "firebase/firestore";
@@ -111,13 +111,13 @@ export default function AdminDashboard() {
             <h1 className="text-5xl md:text-7xl font-headline font-bold tracking-tighter text-white">
               Revenue <span className="text-primary">Hub</span>
             </h1>
-            <p className="text-muted-foreground font-medium italic">Track your earnings and network performance.</p>
+            <p className="text-muted-foreground font-medium italic text-lg">Track your real-world earnings and payout gateways.</p>
           </div>
           
           <div className="flex items-center gap-4 bg-white/5 p-4 rounded-3xl border border-white/5 backdrop-blur-3xl">
              <div className="flex flex-col px-4 border-r border-white/10">
-                <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-1">Total Network Users</span>
-                <span className="text-2xl font-bold font-headline text-emerald-500">{totalUsersCount ?? "..."}</span>
+                <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-1">Network Capacity</span>
+                <span className="text-2xl font-bold font-headline text-emerald-500">{totalUsersCount ?? "..."} Users</span>
              </div>
              <ShieldCheck className="w-8 h-8 text-primary opacity-20" />
           </div>
@@ -147,7 +147,7 @@ export default function AdminDashboard() {
               <h3 className="text-4xl font-bold font-headline text-white">₹{adRevenueEstimate.toFixed(2)}</h3>
               <div className="flex items-center gap-2 text-[10px] text-muted-foreground font-bold">
                 <Activity className="w-3 h-3 text-primary" /> 
-                PROJECTED EARNINGS
+                PROJECTED PAYOUT
               </div>
             </div>
           </Card>
@@ -158,9 +158,9 @@ export default function AdminDashboard() {
             </div>
             <div className="space-y-4 relative z-10">
               <p className="text-[10px] font-bold text-indigo-400 uppercase tracking-widest">Domain Center</p>
-              <h3 className="text-2xl font-bold font-headline text-white">Free Domain</h3>
+              <h3 className="text-2xl font-bold font-headline text-white">Elite .tech</h3>
               <Button variant="link" className="p-0 h-auto text-[10px] font-bold text-indigo-400 uppercase tracking-widest" asChild>
-                <Link href="/FREE_DOMAIN_GUIDE.md">How to get for $0?</Link>
+                <Link href="/README.md">Check Domain Setup</Link>
               </Button>
             </div>
           </Card>
@@ -168,11 +168,44 @@ export default function AdminDashboard() {
           <Card className="rounded-[3rem] bg-[#0a0d14] border-white/10 p-8 blue-glow relative overflow-hidden group flex flex-col items-center justify-center">
              <div className="space-y-4 text-center">
                <h4 className="text-sm font-bold text-white uppercase tracking-widest">Withdrawal</h4>
-               <Button variant="outline" className="rounded-full border-white/10 text-[10px] font-bold uppercase tracking-widest h-10 px-6" asChild>
-                 <a href="/BANK_TRANSFER_GUIDE.md">Setup Bank Account</a>
+               <Button className="rounded-full bg-emerald-600 hover:bg-emerald-700 text-[10px] font-bold uppercase tracking-widest h-10 px-6" asChild>
+                 <a href="/BANK_TRANSFER_GUIDE.md">Payout Instructions</a>
                </Button>
              </div>
           </Card>
+        </section>
+
+        {/* 💳 EXTERNAL PAYOUT DASHBOARDS */}
+        <section className="grid md:grid-cols-2 gap-8">
+           <Card className="rounded-[3rem] bg-orange-500/5 border-orange-500/20 p-10 flex flex-col md:flex-row items-center justify-between gap-8 group">
+              <div className="flex items-center gap-8">
+                <div className="w-20 h-20 bg-orange-500/10 rounded-[2rem] flex items-center justify-center border border-orange-500/20">
+                   <PieChart className="w-10 h-10 text-orange-400" />
+                </div>
+                <div className="space-y-2">
+                   <h3 className="text-2xl font-bold font-headline text-white">Google AdSense</h3>
+                   <p className="text-muted-foreground text-sm max-w-sm italic">Check actual Ad earnings and verify your site for payouts.</p>
+                </div>
+              </div>
+              <Button variant="outline" className="h-14 px-8 rounded-2xl border-orange-500/30 text-orange-400 font-bold" asChild>
+                 <a href="https://adsense.google.com" target="_blank">Login to AdSense <ExternalLink className="ml-2 w-4 h-4" /></a>
+              </Button>
+           </Card>
+
+           <Card className="rounded-[3rem] bg-blue-500/5 border-blue-500/20 p-10 flex flex-col md:flex-row items-center justify-between gap-8 group">
+              <div className="flex items-center gap-8">
+                <div className="w-20 h-20 bg-blue-500/10 rounded-[2rem] flex items-center justify-center border border-blue-500/20">
+                   <CreditCard className="w-10 h-10 text-blue-400" />
+                </div>
+                <div className="space-y-2">
+                   <h3 className="text-2xl font-bold font-headline text-white">Razorpay Dashboard</h3>
+                   <p className="text-muted-foreground text-sm max-w-sm italic">Track your Pro Plan sales and initiate bank withdrawals.</p>
+                </div>
+              </div>
+              <Button variant="outline" className="h-14 px-8 rounded-2xl border-blue-500/30 text-blue-400 font-bold" asChild>
+                 <a href="https://dashboard.razorpay.com" target="_blank">Login to Razorpay <ExternalLink className="ml-2 w-4 h-4" /></a>
+              </Button>
+           </Card>
         </section>
 
         <section>
