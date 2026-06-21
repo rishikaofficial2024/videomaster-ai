@@ -1,3 +1,4 @@
+
 "use client";
 
 import { Navbar } from "@/components/navbar";
@@ -6,7 +7,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { 
   Plus, Sparkles, Loader2, Coins, 
   Video, Gift, Play, Star, ArrowRight, CheckCircle2, X, Crown, Terminal as TerminalIcon, Copy, ShieldCheck, Zap, Calendar, BrainCircuit,
-  Tornado, Share2, MessageCircle, Instagram, Twitter, Smartphone, AlertTriangle, Download
+  Tornado, Share2, MessageCircle, Instagram, Twitter, Smartphone, AlertTriangle, Download, FileText
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -110,22 +111,27 @@ export default function Dashboard() {
       <Navbar />
       <main className="max-w-7xl mx-auto p-6 space-y-16">
         
-        {/* 🚨 PULSING TERMINAL LOCATOR STRIP */}
+        {/* 🚀 EMERGENCY TERMINAL LOCATOR STRIP */}
         <div className="relative group overflow-hidden rounded-[2.5rem]">
            <div className="absolute inset-0 bg-red-600 animate-pulse opacity-50" />
            <div className="relative bg-red-600/90 p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-2xl border-2 border-red-400/50 backdrop-blur-xl">
               <div className="flex items-center gap-6 text-white">
                  <div className="p-4 bg-white/20 rounded-full animate-bounce">
-                    <AlertTriangle className="w-8 h-8" />
+                    <AlertTriangle className="w-10 h-10" />
                  </div>
                  <div className="space-y-1">
-                    <h2 className="text-2xl font-black font-headline uppercase tracking-tight">Terminal Dhoondne Mein Help Chahiye?</h2>
-                    <p className="text-sm font-bold opacity-80 italic">Aap 3 din se dhoond rahe hain, isliye maine naya MAP banaya hai.</p>
+                    <h2 className="text-3xl font-black font-headline uppercase tracking-tight">KISI DOOSRI SITE PAR MAT JAIYE!</h2>
+                    <p className="text-sm font-bold opacity-90 italic">Terminal aapke phone ke UPAR LEFT MENU (≡) ke andar hai.</p>
                  </div>
               </div>
-              <Button size="lg" className="bg-white text-red-600 hover:bg-white/90 font-black rounded-[2rem] h-16 px-12 text-xl shadow-2xl group-hover:scale-105 transition-all" asChild>
-                 <Link href="/terminal-guide">Dikhaiye Terminal Kahan Hai <ArrowRight className="ml-3 w-6 h-6" /></Link>
-              </Button>
+              <div className="flex flex-wrap gap-4">
+                 <Button size="lg" className="bg-white text-red-600 hover:bg-white/90 font-black rounded-[2rem] h-16 px-12 text-xl shadow-2xl group-hover:scale-105 transition-all" asChild>
+                    <Link href="/terminal-guide">Asli Terminal Dikhao <ArrowRight className="ml-3 w-6 h-6" /></Link>
+                 </Button>
+                 <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10 font-bold rounded-[2rem] h-16 px-8" asChild>
+                    <a href="/CHECKLIST.md">Final Checklist <FileText className="ml-2 w-5 h-5" /></a>
+                 </Button>
+              </div>
            </div>
         </div>
 
@@ -281,46 +287,6 @@ export default function Dashboard() {
                  Claim +20 Credits
               </Button>
            </Card>
-        </section>
-
-        {/* 📽️ RECENT PROJECTS GRID */}
-        <section className="space-y-8">
-           <div className="flex items-center justify-between">
-              <h2 className="text-3xl font-headline font-bold text-white">Mission <span className="text-primary">Logs</span></h2>
-              <Button variant="link" className="text-primary font-bold" asChild>
-                 <Link href="/projects">View All Productions <ArrowRight className="ml-2 w-4 h-4" /></Link>
-              </Button>
-           </div>
-           
-           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {projects?.map((p: any) => (
-                <Card key={p.id} className="rounded-[2.5rem] bg-[#0a0d14] border-white/5 overflow-hidden group hover:border-primary/30 transition-all">
-                   <div className="aspect-video relative">
-                      <Image 
-                        src={p.thumbnailUrl || `https://picsum.photos/seed/${p.id}/600/400`} 
-                        alt={p.title} 
-                        fill 
-                        className="object-cover opacity-60 group-hover:opacity-100 transition-opacity" 
-                      />
-                      <Link href={`/editor?id=${p.id}`} className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all">
-                         <div className="bg-primary p-4 rounded-full shadow-2xl">
-                            <Plus className="w-6 h-6 text-white" />
-                         </div>
-                      </Link>
-                   </div>
-                   <div className="p-6">
-                      <h4 className="font-bold text-white truncate">{p.title}</h4>
-                      <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest mt-1">Status: {p.status || 'Draft'}</p>
-                   </div>
-                </Card>
-              ))}
-              <Link href="/editor" className="aspect-video rounded-[2.5rem] border-2 border-dashed border-white/10 flex flex-col items-center justify-center gap-4 hover:border-primary/40 hover:bg-primary/5 transition-all group">
-                 <div className="p-4 bg-white/5 rounded-full group-hover:bg-primary/20 transition-all">
-                    <Plus className="w-8 h-8 text-muted-foreground group-hover:text-primary" />
-                 </div>
-                 <span className="text-xs font-bold text-muted-foreground uppercase tracking-widest">New Production</span>
-              </Link>
-           </div>
         </section>
 
       </main>
