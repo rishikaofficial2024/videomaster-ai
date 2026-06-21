@@ -5,7 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { 
   Plus, Sparkles, Loader2, Coins, 
-  Video, Gift, SquarePlay, Star, ArrowRight, CheckCircle2, X, Crown, Terminal as TerminalIcon, Copy, ShieldCheck, Zap, Calendar, BrainCircuit
+  Video, Gift, SquarePlay, Star, ArrowRight, CheckCircle2, X, Crown, Terminal as TerminalIcon, Copy, ShieldCheck, Zap, Calendar, BrainCircuit,
+  Tornado
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -179,9 +180,9 @@ export default function Dashboard() {
           <div className="space-y-4">
             <div className="flex flex-wrap gap-2">
               <div className="flex items-center gap-2 px-4 py-1.5 bg-emerald-500/10 rounded-full border border-emerald-500/20 w-fit">
-                 <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
+                 <Tornado className="w-3.5 h-3.5 text-emerald-500 animate-spin" />
                  <span className="text-[10px] font-bold text-emerald-500 uppercase tracking-[0.2em]">
-                   MONETIZATION ACTIVE • AD-VERIFIED HUB
+                   ANTIGRAVITY MODE ENABLED • VIRAL SYNC ACTIVE
                  </span>
               </div>
               <Link href="/terminal-guide">
@@ -222,7 +223,7 @@ export default function Dashboard() {
                 </div>
                 <div className="space-y-2">
                    <h3 className="text-3xl font-bold font-headline text-white">AI Neural Assistant</h3>
-                   <p className="text-muted-foreground font-medium italic">Guidance on viral strategies and conversion scripting. <span className="text-emerald-500 font-bold">Free Creative Mode.</span></p>
+                   <p className="text-muted-foreground font-medium italic">Viral ideation with <span className="text-emerald-500 font-bold">Antigravity Mode.</span> Get gravity-defying creator tips.</p>
                 </div>
              </div>
              <Button variant="outline" className="h-16 px-10 rounded-2xl border-emerald-500/30 text-emerald-400 font-bold hover:bg-emerald-500/10" asChild>

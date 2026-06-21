@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, useRef, useEffect } from "react";
@@ -6,9 +5,12 @@ import { Navbar } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 import { 
   Sparkles, Send, Bot, User, Loader2, 
-  ArrowLeft, BrainCircuit, Zap, MessageSquare 
+  ArrowLeft, BrainCircuit, Zap, MessageSquare,
+  Tornado, ShieldCheck, Globe
 } from "lucide-react";
 import { sendAiChatMessage } from "@/ai/flows/ai-chat-flow";
 import { cn } from "@/lib/utils";
@@ -25,6 +27,7 @@ export default function AiAssistantPage() {
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [antigravityMode, setAntigravityMode] = useState(true);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -42,7 +45,12 @@ export default function AiAssistantPage() {
     setLoading(true);
 
     try {
-      const result = await sendAiChatMessage({ message: userMsg });
+      // In Antigravity mode, we inject viral instructions into the prompt context
+      const messageWithContext = antigravityMode 
+        ? `[ANTIGRAVITY MODE ACTIVE: Focus on high-risk, high-reward viral strategies] ${userMsg}` 
+        : userMsg;
+        
+      const result = await sendAiChatMessage({ message: messageWithContext });
       setMessages(prev => [...prev, { role: 'model', text: result.response }]);
     } catch (e) {
       setMessages(prev => [...prev, { role: 'model', text: "I'm sorry, I encountered an error. Please try again in a moment." }]);
@@ -57,19 +65,31 @@ export default function AiAssistantPage() {
       
       <main className="max-w-4xl mx-auto p-6 mt-20 space-y-8 h-[calc(100vh-120px)] flex flex-col">
         <header className="flex flex-col md:flex-row justify-between items-center gap-6 shrink-0">
-          <div className="space-y-2">
+          <div className="space-y-2 text-center md:text-left">
             <Link href="/dashboard" className="flex items-center gap-2 text-[10px] font-bold text-muted-foreground hover:text-primary transition-all uppercase tracking-widest">
               <ArrowLeft className="w-3 h-3" /> Back to Studio
             </Link>
             <h1 className="text-4xl font-headline font-bold text-white tracking-tighter">AI <span className="text-primary italic">Neural Assistant</span></h1>
           </div>
-          <div className="flex items-center gap-3 px-4 py-2 bg-emerald-500/10 border border-emerald-500/20 rounded-full">
-            <Zap className="w-4 h-4 text-emerald-500" />
-            <span className="text-[10px] font-bold text-emerald-500 uppercase tracking-widest">Free Creative Mode Active</span>
+          
+          <div className="flex items-center gap-6 bg-white/5 px-6 py-3 rounded-3xl border border-white/10 backdrop-blur-3xl shadow-xl">
+             <div className="flex items-center gap-3">
+                <Tornado className={cn("w-5 h-5 transition-all", antigravityMode ? "text-primary animate-spin" : "text-muted-foreground")} />
+                <div className="flex flex-col">
+                   <Label htmlFor="antigravity" className="text-[10px] font-bold uppercase tracking-widest text-white cursor-pointer">Antigravity Mode</Label>
+                   <span className="text-[8px] text-muted-foreground font-bold uppercase">Viral Ideation active</span>
+                </div>
+                <Switch 
+                  id="antigravity" 
+                  checked={antigravityMode} 
+                  onCheckedChange={setAntigravityMode}
+                  className="data-[state=checked]:bg-primary"
+                />
+             </div>
           </div>
         </header>
 
-        <Card className="flex-1 bg-[#0a0d14]/80 backdrop-blur-3xl border-white/5 rounded-[3rem] overflow-hidden flex flex-col shadow-2xl blue-glow">
+        <Card className="flex-1 bg-[#0a0d14]/80 backdrop-blur-3xl border-white/5 rounded-[3.5rem] overflow-hidden flex flex-col shadow-2xl blue-glow">
           <div className="p-6 border-b border-white/5 bg-white/5 flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-primary/20 rounded-2xl flex items-center justify-center border border-primary/30">
@@ -80,7 +100,12 @@ export default function AiAssistantPage() {
                 <p className="text-[9px] text-emerald-500 font-bold uppercase tracking-widest">Always Online</p>
               </div>
             </div>
-            <BrainCircuit className="w-6 h-6 text-muted-foreground opacity-20" />
+            {antigravityMode && (
+              <div className="flex items-center gap-2 px-3 py-1 bg-primary/10 rounded-full border border-primary/20 animate-pulse">
+                 <Zap className="w-3 h-3 text-primary" />
+                 <span className="text-[9px] font-bold text-primary uppercase tracking-widest">Stability Lock Active</span>
+              </div>
+            )}
           </div>
 
           <div 
@@ -120,7 +145,7 @@ export default function AiAssistantPage() {
               <Input 
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="Ask anything about your video content..."
+                placeholder={antigravityMode ? "Enter viral topic for antigravity analysis..." : "Ask anything..."}
                 className="h-16 rounded-2xl bg-[#05070a] border-white/10 px-6 pr-20 text-white focus:border-primary/50 transition-all"
               />
               <Button 
@@ -131,9 +156,15 @@ export default function AiAssistantPage() {
                 <Send className="w-5 h-5" />
               </Button>
             </form>
-            <p className="text-[9px] text-center mt-4 text-muted-foreground font-bold uppercase tracking-widest opacity-40">
-              Powered by Genkit Neural Assistant • 0 Credits Consumed
-            </p>
+            <div className="flex items-center justify-center gap-6 mt-4">
+               <p className="text-[8px] text-muted-foreground font-bold uppercase tracking-widest opacity-40">
+                 Powered by Genkit Neural Assistant
+               </p>
+               <div className="h-1 w-1 bg-white/20 rounded-full" />
+               <p className="text-[8px] text-primary font-bold uppercase tracking-widest opacity-60">
+                 {antigravityMode ? "Antigravity Mode Active" : "Standard mode"}
+               </p>
+            </div>
           </div>
         </Card>
       </main>

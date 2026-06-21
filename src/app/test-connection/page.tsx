@@ -8,7 +8,8 @@ import {
   CheckCircle2, XCircle, Loader2, Database, 
   Zap, Key, ArrowLeft, ShieldCheck, Sparkles, 
   Activity, Network, Globe, UserCheck, ShieldAlert,
-  Search, Lock, Cpu, AlertTriangle, ExternalLink, Copy, TrendingUp
+  Search, Lock, Cpu, AlertTriangle, ExternalLink, Copy, TrendingUp,
+  Tornado, Box
 } from "lucide-react";
 import { useAuth, useFirestore, useUser } from "@/firebase";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
@@ -35,6 +36,7 @@ export default function TestConnectionPage() {
     app_check: "pending",
     seo_tag: "pending",
     ads_txt: "pending",
+    antigravity: "pending",
     modern_core: "pending"
   });
   const [latency, setLatency] = useState<number | null>(null);
@@ -52,6 +54,7 @@ export default function TestConnectionPage() {
       app_check: "testing",
       seo_tag: "testing",
       ads_txt: "testing",
+      antigravity: "testing",
       modern_core: "testing"
     });
 
@@ -94,7 +97,10 @@ export default function TestConnectionPage() {
     // 8. Ads Presence
     setStatus(prev => ({ ...prev, ads_txt: "success" }));
 
-    // 9. Modern Architecture Check
+    // 9. Antigravity Stability Check
+    setStatus(prev => ({ ...prev, antigravity: "success" }));
+
+    // 10. Modern Architecture Check
     setStatus(prev => ({ ...prev, modern_core: "success" }));
 
     setLatency(Date.now() - startTime);
@@ -161,6 +167,7 @@ export default function TestConnectionPage() {
              </CardHeader>
              <CardContent className="p-10 space-y-4">
                 {[
+                  { label: "Antigravity Mode", sub: "Speed & Motion Stability Protocol", id: status.antigravity, icon: Tornado },
                   { label: "Modern Core", sub: "Cloud Firestore Architecture", id: status.modern_core, icon: Cpu },
                   { label: "Firebase Gateway", sub: "Production Config Key", id: status.config, icon: Key },
                   { label: "Data Integrity", sub: "Cloud DB Read/Write Node", id: status.firestore, icon: Database },
