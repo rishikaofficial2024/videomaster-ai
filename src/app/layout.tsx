@@ -20,7 +20,8 @@ export const metadata: Metadata = {
     canonical: '/',
   },
   verification: {
-    // STEP 1: Replace 'YOUR_CODE_HERE' with the code from Google Search Console
+    // 🔑 STEP 1: Paste the 'google-site-verification' code from Search Console here
+    // Example: google: 'abc123xyz456'
     google: 'YOUR_VERIFICATION_CODE_HERE',
   },
   openGraph: {

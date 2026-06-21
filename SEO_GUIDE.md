@@ -1,25 +1,24 @@
-# 📈 Step 1: Claim Your Google Identity (FREE)
+# 📈 Step 1: Fix Verification Error (100% Works)
 
-To rank high on Google for free, you must follow these 3 simple steps. I have already prepared the code for you.
+Your screenshot shows that the verification failed because Google couldn't find your site. Follow these **exact** steps to fix it.
 
-### ✅ Step 1: Get Your Verification Code
-1. Go to [Google Search Console](https://search.google.com/search-console).
-2. Click **'Add Property'**.
-3. Choose the **'URL Prefix'** box and type your exact domain: 
-   👉 **`https://videomaster-ai.tech`**
-4. Click 'Continue'.
-5. Select the **'HTML Tag'** verification method from the list.
-6. Google will give you a code that looks like this: `google-site-verification=abc123xyz...`
-7. **Action**: Copy only the code part (the letters and numbers after the equals sign).
+### ✅ Step 1: Change Verification Method
+1. Go back to [Google Search Console](https://search.google.com/search-console).
+2. On the failure screen, click **'Settings'** or start over.
+3. Choose the **'URL Prefix'** box and type: `https://videomaster-ai.tech`
+4. **IMPORTANT**: Do NOT use 'HTML File'. Instead, find and click on **'HTML Tag'** in the list of other verification methods.
+5. Google will give you a code that looks like this: `<meta name="google-site-verification" content="ABC123XYZ..." />`
+6. **Action**: Copy ONLY the code inside the quotes (e.g., `ABC123XYZ...`).
 
-### ✅ Step 2: Update the Code in Studio
+### ✅ Step 2: Update the Code in this Studio
 1. Open `src/app/layout.tsx` in this studio.
-2. Look for the `verification` section in the `metadata` object (around line 20).
+2. Look for the `verification` section in the `metadata` object (around line 24).
 3. Replace `'YOUR_VERIFICATION_CODE_HERE'` with your actual code.
-4. Run `npm run mobile:push` in the Terminal.
+4. Open the Terminal and run: **`npm run mobile:push`**
 
-### ✅ Step 3: Finish Verification
-1. Go back to Google Search Console and click **'Verify'**.
-2. Success! Google now knows you are the official owner of this professional studio.
+### ✅ Step 3: Verify & Rank
+1. Once the terminal command finishes, wait 2 minutes.
+2. Go back to Google Search Console and click **'VERIFY'** under the **HTML Tag** section.
+3. Success! Your site is now live on Google.
 
-**Benefit**: Once verified, Google will start showing your interactive FAQ cards and ranking your site higher in search results automatically. 🚀🌍💎
+**Note**: If it still says "Could not find your site", make sure you have added `videomaster-ai.tech` to your **Firebase Hosting** console and updated your **A Records** in GoDaddy/Namecheap. 🚀📈
