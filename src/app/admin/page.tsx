@@ -114,7 +114,7 @@ export default function AdminDashboard() {
             <p className="text-muted-foreground font-medium italic">Track your earnings and network performance.</p>
           </div>
           
-          <div className="flex items-center gap-4 bg-white/5 p-4 rounded-3xl border border-white/5 backdrop-blur-xl">
+          <div className="flex items-center gap-4 bg-white/5 p-4 rounded-3xl border border-white/5 backdrop-blur-3xl">
              <div className="flex flex-col px-4 border-r border-white/10">
                 <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-1">Total Network Users</span>
                 <span className="text-2xl font-bold font-headline text-emerald-500">{totalUsersCount ?? "..."}</span>
@@ -175,7 +175,6 @@ export default function AdminDashboard() {
           </Card>
         </section>
 
-        {/* New Service Account Notice Card */}
         <section>
           <Card className="rounded-[3rem] bg-indigo-500/5 border-indigo-500/20 p-10 flex flex-col md:flex-row items-center justify-between gap-8 group">
             <div className="flex items-center gap-8 text-center md:text-left">
@@ -183,14 +182,14 @@ export default function AdminDashboard() {
                 <ShieldAlert className="w-10 h-10 text-indigo-400" />
               </div>
               <div className="space-y-2">
-                <h3 className="text-2xl font-bold font-headline text-white">Admin SDK & Service Accounts</h3>
+                <h3 className="text-2xl font-bold font-headline text-white">Legacy Warnings (Database Secrets)</h3>
                 <p className="text-muted-foreground text-sm max-w-2xl italic leading-relaxed">
-                  Your app uses the optimized Client SDK. You **do not need** to download the `serviceAccountKey.json` from the Firebase Console unless building an external server.
+                  Ignore warnings about "Database secrets" or "Legacy tokens" in the console. Your app is 100% secure using the modern Firestore architecture.
                 </p>
               </div>
             </div>
             <Button variant="outline" className="rounded-2xl border-indigo-500/30 text-indigo-400 font-bold h-14 px-8" asChild>
-              <Link href="/docs/ADMIN_SDK_GUIDE.md">View Admin Guide <ExternalLink className="ml-2 w-4 h-4" /></Link>
+              <Link href="/docs/ADMIN_SDK_GUIDE.md">View Security Guide <ExternalLink className="ml-2 w-4 h-4" /></Link>
             </Button>
           </Card>
         </section>

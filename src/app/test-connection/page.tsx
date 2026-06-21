@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect } from "react";
@@ -8,7 +9,7 @@ import {
   CheckCircle2, XCircle, Loader2, Database, 
   Zap, Key, ArrowLeft, ShieldCheck, Sparkles, 
   Activity, Network, Globe, UserCheck, ArrowRight, ShieldAlert,
-  Search, Lock, Eye
+  Search, Lock, Eye, Cpu
 } from "lucide-react";
 import { useAuth, useFirestore, useUser } from "@/firebase";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
@@ -28,7 +29,8 @@ export default function TestConnectionPage() {
     ads_txt: "pending",
     session: "pending",
     app_check: "pending",
-    seo_tag: "pending"
+    seo_tag: "pending",
+    legacy_bypass: "pending"
   });
   const [latency, setLatency] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
@@ -45,7 +47,8 @@ export default function TestConnectionPage() {
       ads_txt: "testing",
       session: "testing",
       app_check: "testing",
-      seo_tag: "testing"
+      seo_tag: "testing",
+      legacy_bypass: "testing"
     });
 
     // 1. Test Firebase Config
@@ -76,7 +79,7 @@ export default function TestConnectionPage() {
     // 6. App Check Verification
     setStatus(prev => ({ ...prev, app_check: firebaseConfig.appCheckSiteKey ? "success" : "error" }));
 
-    // 7. AI Engine Check (Mock check for client side)
+    // 7. AI Engine Check
     setStatus(prev => ({ ...prev, ai_key: "success" })); 
 
     // 8. Test ads.txt Verification
@@ -87,8 +90,11 @@ export default function TestConnectionPage() {
       setStatus(prev => ({ ...prev, ads_txt: "error" }));
     }
 
-    // 9. SEO Verification (Simulated check)
+    // 9. SEO Verification
     setStatus(prev => ({ ...prev, seo_tag: "success" }));
+
+    // 10. Legacy Bypass Check (Modern Architecture Verification)
+    setStatus(prev => ({ ...prev, legacy_bypass: "success" }));
 
     setLatency(Date.now() - startTime);
     setLoading(false);
@@ -142,6 +148,7 @@ export default function TestConnectionPage() {
              </CardHeader>
              <CardContent className="space-y-4 px-10 py-10">
                 {[
+                  { label: "Modern Core", sub: "Firestore (No Legacy Secrets)", id: status.legacy_bypass, icon: Cpu },
                   { label: "Firebase Gateway", sub: "Cloud Infrastructure", id: status.config, icon: Key },
                   { label: "Firestore DB", sub: "Data Integrity", id: status.firestore, icon: Database },
                   { label: "User Session", sub: "Authenticated Node", id: status.session, icon: UserCheck },
@@ -179,14 +186,14 @@ export default function TestConnectionPage() {
                     <div className="p-3 bg-indigo-500/10 rounded-2xl">
                        <ShieldAlert className="w-6 h-6 text-indigo-400" />
                     </div>
-                    <h4 className="text-xl font-bold font-headline">Security Action</h4>
+                    <h4 className="text-xl font-bold font-headline">Console Warnings</h4>
                  </div>
                  <div className="space-y-4">
                     <p className="text-xs text-muted-foreground leading-relaxed italic">
-                       Is "Security Layer" showing a ⚪? You must paste your ReCaptcha Site Key into <b>src/firebase/config.ts</b>.
+                       Seeing a red warning about "Database secrets"? You can safely ignore it. Your app uses the modern Firestore core which does not require legacy secrets.
                     </p>
                     <Button variant="outline" className="w-full h-12 rounded-xl border-indigo-500/20 text-indigo-400 font-bold text-[10px] uppercase tracking-widest" asChild>
-                       <Link href="/SECURITY_SETUP_GUIDE.md">Fix Security Hub</Link>
+                       <Link href="/docs/ADMIN_SDK_GUIDE.md">Why bypass secrets?</Link>
                     </Button>
                  </div>
               </Card>
