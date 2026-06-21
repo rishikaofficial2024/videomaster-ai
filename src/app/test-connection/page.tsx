@@ -9,7 +9,7 @@ import {
   Zap, Key, ArrowLeft, ShieldCheck, Sparkles, 
   Activity, Network, Globe, UserCheck, ShieldAlert,
   Search, Lock, Cpu, AlertTriangle, ExternalLink, Copy, TrendingUp,
-  Tornado, Box, Globe2
+  Tornado, Box, Globe2, Smartphone
 } from "lucide-react";
 import { useAuth, useFirestore, useUser } from "@/firebase";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
@@ -187,30 +187,21 @@ export default function TestConnectionPage() {
               <Card className="rounded-[3rem] bg-emerald-500/5 border-emerald-500/10 p-10 space-y-8">
                  <div className="flex items-center gap-4">
                     <div className="p-3 bg-emerald-500/10 rounded-2xl animate-pulse">
-                       <Sparkles className="w-6 h-6 text-emerald-400" />
+                       <Smartphone className="w-6 h-6 text-emerald-400" />
                     </div>
-                    <h4 className="text-xl font-bold font-headline">SEO Activator</h4>
+                    <h4 className="text-xl font-bold font-headline">Android Build Node</h4>
                  </div>
                  <div className="space-y-6">
                     <p className="text-xs text-muted-foreground leading-relaxed italic">
-                       Google ko apna app dikhane ke liye ye steps karein:
+                       Manual Android build karne ke liye instructions yahan dekhein:
                     </p>
-                    <div className="space-y-4">
-                       <div className="p-4 bg-black/40 rounded-xl border border-white/5">
-                          <p className="text-[10px] font-bold text-primary uppercase mb-2">Step 1: Copy Sitemap</p>
-                          <div className="flex items-center justify-between gap-2">
-                             <code className="text-[9px] truncate font-mono text-primary/70">videomaster-ai.tech/sitemap.xml</code>
-                             <Button variant="ghost" size="icon" className="h-8 w-8" onClick={copySitemap}><Copy size={12}/></Button>
-                          </div>
-                       </div>
-                       <Button className="w-full h-12 rounded-xl bg-emerald-600 hover:bg-emerald-700 font-bold text-[10px] uppercase tracking-widest gap-2" asChild>
-                          <a href="https://search.google.com/search-console/sitemaps" target="_blank">
-                             Submit to Google <ExternalLink size={14} />
-                          </a>
-                       </Button>
-                    </div>
+                    <Button className="w-full h-12 rounded-xl bg-emerald-600 hover:bg-emerald-700 font-bold text-[10px] uppercase tracking-widest gap-2" asChild>
+                       <Link href="/docs/ANDROID_STUDIO_GUIDE.md">
+                          Open Build Guide <ExternalLink size={14} />
+                       </Link>
+                    </Button>
                     <p className="text-[9px] text-muted-foreground italic leading-tight">
-                       Note: Indexing hone mein 24-48 ghante lagte hain. Verified hone ke baad hi Google search mein upar aayega.
+                       GitHub repo se ZIP download karke Android Studio mein open karein.
                     </p>
                  </div>
               </Card>
