@@ -12,6 +12,6 @@ export const firebaseConfig = {
   appId: "1:522287974416:web:096cfdb016260b3f74a295",
   
   // 🛡️ SECURITY STEP: Paste your reCAPTCHA "SITE KEY" here.
-  // DO NOT paste the Secret Key here. The Secret Key goes into the Firebase Console.
+  // Obtain this from: https://www.google.com/recaptcha/admin/create
   appCheckSiteKey: "" 
 };

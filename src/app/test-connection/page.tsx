@@ -66,7 +66,7 @@ export default function TestConnectionPage() {
       const testDocRef = doc(db, "connection_tests", "status");
       await setDoc(testDocRef, { 
         lastTest: serverTimestamp(),
-        message: "Diagnostics connection test" 
+        message: "Elite Diagnostics sequence initiated" 
       }, { merge: true });
       setStatus(prev => ({ ...prev, firestore: "success" }));
     } catch (e: any) {
@@ -76,7 +76,7 @@ export default function TestConnectionPage() {
     // 6. App Check Verification
     setStatus(prev => ({ ...prev, app_check: firebaseConfig.appCheckSiteKey ? "success" : "error" }));
 
-    // 7. AI Engine Check
+    // 7. AI Engine Check (Mock check for client side)
     setStatus(prev => ({ ...prev, ai_key: "success" })); 
 
     // 8. Test ads.txt Verification
@@ -87,7 +87,7 @@ export default function TestConnectionPage() {
       setStatus(prev => ({ ...prev, ads_txt: "error" }));
     }
 
-    // 9. SEO Verification (Placeholder check)
+    // 9. SEO Verification (Simulated check)
     setStatus(prev => ({ ...prev, seo_tag: "success" }));
 
     setLatency(Date.now() - startTime);
@@ -118,7 +118,7 @@ export default function TestConnectionPage() {
               Back to Studio
             </Link>
             <h1 className="text-5xl md:text-7xl font-headline font-bold tracking-tighter text-white">Verification <span className="text-primary">Hub</span></h1>
-            <p className="text-muted-foreground font-medium text-xl italic opacity-60">Complete your final setup steps here.</p>
+            <p className="text-muted-foreground font-medium text-xl italic opacity-60">Complete your final production setup steps here.</p>
           </div>
           
           <div className="flex items-center gap-4 bg-white/5 p-4 rounded-3xl border border-white/5 backdrop-blur-3xl">
@@ -146,8 +146,8 @@ export default function TestConnectionPage() {
                   { label: "Firestore DB", sub: "Data Integrity", id: status.firestore, icon: Database },
                   { label: "User Session", sub: "Authenticated Node", id: status.session, icon: UserCheck },
                   { label: "Security Layer", sub: "App Check Verification", id: status.app_check, icon: Lock },
-                  { label: "SEO Indexing", sub: "Google Verification Tag", id: status.seo_tag, icon: Search },
-                  { label: "Monetization", sub: "app-ads.txt presence", id: status.ads_txt, icon: Globe }
+                  { label: "SEO Indexing", sub: "Google Search Verification", id: status.seo_tag, icon: Search },
+                  { label: "Monetization", sub: "app-ads.txt Presence", id: status.ads_txt, icon: Globe }
                 ].map((item, i) => (
                   <div key={i} className="flex items-center justify-between p-5 bg-white/5 rounded-[2rem] border border-white/5 group hover:border-primary/20 transition-all">
                     <div className="flex items-center gap-4">
@@ -186,7 +186,7 @@ export default function TestConnectionPage() {
                        Is "Security Layer" showing a ⚪? You must paste your ReCaptcha Site Key into <b>src/firebase/config.ts</b>.
                     </p>
                     <Button variant="outline" className="w-full h-12 rounded-xl border-indigo-500/20 text-indigo-400 font-bold text-[10px] uppercase tracking-widest" asChild>
-                       <Link href="/SECURITY_SETUP_GUIDE.md">Fix Security</Link>
+                       <Link href="/SECURITY_SETUP_GUIDE.md">Fix Security Hub</Link>
                     </Button>
                  </div>
               </Card>
@@ -196,14 +196,14 @@ export default function TestConnectionPage() {
                     <div className="p-3 bg-emerald-500/10 rounded-2xl">
                        <Eye className="w-6 h-6 text-emerald-400" />
                     </div>
-                    <h4 className="text-xl font-bold font-headline">SEO Action</h4>
+                    <h4 className="text-xl font-bold font-headline">SEO Ranking</h4>
                  </div>
                  <div className="space-y-4">
                     <p className="text-xs text-muted-foreground leading-relaxed italic">
-                       To rank on Google, paste your verification code in <b>src/app/layout.tsx</b>.
+                       To rank on Google, paste your unique verification code in <b>src/app/layout.tsx</b>.
                     </p>
                     <Button variant="outline" className="w-full h-12 rounded-xl border-emerald-500/20 text-emerald-400 font-bold text-[10px] uppercase tracking-widest" asChild>
-                       <Link href="/SEO_GUIDE.md">Fix Ranking</Link>
+                       <Link href="/SEO_GUIDE.md">Fix Ranking Engine</Link>
                     </Button>
                  </div>
               </Card>

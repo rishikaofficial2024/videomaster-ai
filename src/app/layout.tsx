@@ -4,15 +4,15 @@ import { Toaster } from "@/components/ui/toaster";
 import { FirebaseClientProvider } from '@/firebase';
 
 export const metadata: Metadata = {
-  title: 'VideoMaster AI - Free AI Video Generator & Viral Script Maker',
-  description: 'Create viral YouTube Shorts and Reels 10x faster. VideoMaster AI is the world\'s most stable studio for global creators. Get 100 FREE AI credits on signup!',
+  title: 'VideoMaster AI - Professional AI Video Studio & Viral Script Maker',
+  description: 'Produce high-converting YouTube Shorts and Reels 10x faster. VideoMaster AI is a stable, professional design studio for global creators. Claim 100 FREE AI credits on registration.',
   keywords: [
-    'Free AI Video Generator', 
-    'AI Script Writer for YouTube', 
-    'Viral Reels Maker AI', 
-    'Cinematic AI Thumbnail Maker', 
+    'Professional AI Video Generator', 
+    'Viral Script Writer for Social Media', 
+    'HD Reel Maker AI', 
+    'Cinematic AI Thumbnail Designer', 
     'VideoMaster AI Tech Studio',
-    'Best AI Tool for Content Creators',
+    'Best AI Production Tool for Creators',
     'VideoMaster-AI.tech'
   ],
   metadataBase: new URL('https://videomaster-ai.tech'),
@@ -20,13 +20,12 @@ export const metadata: Metadata = {
     canonical: '/',
   },
   verification: {
-    // 🔑 FINAL STEP SEO: Paste your 'google-site-verification' code from Search Console here
-    // Example: google: 'abc123xyz456'
+    // 🔑 SEO VERIFICATION: Replace 'YOUR_VERIFICATION_CODE_HERE' with your code from Google Search Console.
     google: 'YOUR_VERIFICATION_CODE_HERE',
   },
   openGraph: {
-    title: 'VideoMaster AI - Elite Viral Studio for Modern Creators',
-    description: 'Transform your ideas into professional videos with AI. 100 Free Credits inside!',
+    title: 'VideoMaster AI - The Ultimate Production Studio for Modern Creators',
+    description: 'Transform cinematic ideas into professional video assets with Elite AI. 100 Free Credits included!',
     url: 'https://videomaster-ai.tech',
     siteName: 'VideoMaster AI',
     locale: 'en_US',
@@ -36,14 +35,14 @@ export const metadata: Metadata = {
         url: 'https://picsum.photos/seed/videomaster-og/1200/630',
         width: 1200,
         height: 630,
-        alt: 'VideoMaster AI Professional Design Studio Preview',
+        alt: 'VideoMaster AI Professional Design Studio Mission Control',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'VideoMaster AI - Master the Viral Social Game',
-    description: 'The first elite AI design studio for tech-savvy creators. 10x faster workflow.',
+    description: 'The premier AI design studio for tech-savvy content creators. 10x faster production workflow.',
     images: ['https://picsum.photos/seed/videomaster-twitter/1200/630'],
   },
   robots: {
@@ -68,7 +67,7 @@ export default function RootLayout({
     "@type": "SoftwareApplication",
     "name": "VideoMaster AI",
     "url": "https://videomaster-ai.tech",
-    "description": "Professional AI Video Generator & Script Writer for Content Creators",
+    "description": "Professional AI Video Production & Scripting Engine for Social Media Creators",
     "applicationCategory": "MultimediaApplication",
     "operatingSystem": "Web, Android, iOS",
     "offers": {
@@ -78,10 +77,10 @@ export default function RootLayout({
       "availability": "https://schema.org/InStock"
     },
     "featureList": [
-      "AI Video Generation",
-      "Viral Script Writing",
-      "4K Thumbnail Designer",
-      "Automatic Subtitles",
+      "AI Video Production",
+      "Viral Script Engineering",
+      "4K Cinematic Thumbnail Designer",
+      "Automated Production Subtitles",
       "Neural Chat Assistant"
     ],
     "aggregateRating": {
@@ -102,7 +101,7 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        {/* 💰 Official AdSense Node */}
+        {/* 💰 Global AdSense Integration */}
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8946933317699938" crossOrigin="anonymous"></script>
         <meta name="google-adsense-account" content="ca-pub-8946933317699938" />
       </head>
