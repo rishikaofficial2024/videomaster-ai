@@ -109,7 +109,7 @@ export default function RootLayout({
         "name": "How do I make a viral video with AI?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Use our Viral Optimizer and Script Writer tools to create high-engagement content and trending hashtags optimized for search algorithms."
+          "text": "Use our Viral Optimizer and Script Writer tools to create high-engagement content and trending hashtags automatically."
         }
       },
       {
