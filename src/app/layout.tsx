@@ -13,7 +13,9 @@ export const metadata: Metadata = {
     'Cinematic AI Thumbnail Designer', 
     'VideoMaster AI Tech Studio',
     'Best AI Production Tool for Creators',
-    'VideoMaster-AI.tech'
+    'VideoMaster-AI.tech',
+    'AI Video Maker India',
+    'Free AI Credits Video'
   ],
   metadataBase: new URL('https://videomaster-ai.tech'),
   alternates: { 
