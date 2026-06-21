@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     canonical: '/',
   },
   verification: {
-    // 🔑 STEP 1: Paste the 'google-site-verification' code from Search Console here
+    // 🔑 FINAL STEP SEO: Paste your 'google-site-verification' code from Search Console here
     // Example: google: 'abc123xyz456'
     google: 'YOUR_VERIFICATION_CODE_HERE',
   },
@@ -63,7 +63,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // 📈 ELITE JSON-LD STRUCTURED DATA (Google loves this!)
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
@@ -92,37 +91,6 @@ export default function RootLayout({
     }
   };
 
-  const faqJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {
-        "@type": "Question",
-        "name": "Is VideoMaster AI free to use?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Yes, VideoMaster AI offers 100 free AI credits to all new users to explore the studio and generate professional videos."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "How do I make a viral video with AI?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Use our Viral Optimizer and Script Writer tools to create high-engagement content and trending hashtags automatically."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Does VideoMaster AI support Indian languages?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Yes, our Neural Assistant and Script Writer support multiple global and regional languages including Hindi, English, and more."
-        }
-      }
-    ]
-  };
-
   return (
     <html lang="en" className="dark">
       <head>
@@ -130,17 +98,10 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
         <meta name="theme-color" content="#05070a" />
-        
-        {/* 🧠 Neural SEO Handshake */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-        />
-
         {/* 💰 Official AdSense Node */}
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8946933317699938" crossOrigin="anonymous"></script>
         <meta name="google-adsense-account" content="ca-pub-8946933317699938" />

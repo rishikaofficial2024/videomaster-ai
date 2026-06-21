@@ -1,4 +1,3 @@
-
 /**
  * Firebase configuration object for VideoMaster AI.
  * 
@@ -12,6 +11,7 @@ export const firebaseConfig = {
   messagingSenderId: "522287974416",
   appId: "1:522287974416:web:096cfdb016260b3f74a295",
   
-  // 🔑 SECURITY KEY: Add your ReCaptcha V3 Site Key here after following SECURITY_SETUP_GUIDE.md
+  // 🛡️ FINAL STEP SECURITY: Paste your ReCaptcha V3 Site Key here.
+  // This will turn on the "Verified Requests" in your App Check dashboard.
   appCheckSiteKey: "" 
 };

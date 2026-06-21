@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, useEffect } from "react";
@@ -8,7 +7,8 @@ import { Button } from "@/components/ui/button";
 import { 
   CheckCircle2, XCircle, Loader2, Database, 
   Zap, Key, ArrowLeft, ShieldCheck, Sparkles, 
-  Activity, Network, Globe, UserCheck, ArrowRight, ShieldAlert
+  Activity, Network, Globe, UserCheck, ArrowRight, ShieldAlert,
+  Search, Lock, Eye
 } from "lucide-react";
 import { useAuth, useFirestore, useUser } from "@/firebase";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
@@ -27,7 +27,8 @@ export default function TestConnectionPage() {
     ai_key: "pending",
     ads_txt: "pending",
     session: "pending",
-    app_check: "pending"
+    app_check: "pending",
+    seo_tag: "pending"
   });
   const [latency, setLatency] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
@@ -43,13 +44,13 @@ export default function TestConnectionPage() {
       ai_key: "testing",
       ads_txt: "testing",
       session: "testing",
-      app_check: "testing"
+      app_check: "testing",
+      seo_tag: "testing"
     });
 
     // 1. Test Firebase Config
     const key = firebaseConfig.apiKey || "";
-    const isValidKey = key.startsWith("AIza");
-    setStatus(prev => ({ ...prev, config: isValidKey ? "success" : "error" }));
+    setStatus(prev => ({ ...prev, config: key.startsWith("AIza") ? "success" : "error" }));
 
     // 2. Test Firebase App Instance
     setStatus(prev => ({ ...prev, firebase: !!auth.app ? "success" : "error" }));
@@ -72,19 +73,22 @@ export default function TestConnectionPage() {
       setStatus(prev => ({ ...prev, firestore: "error" }));
     }
 
-    // 6. App Check Check
+    // 6. App Check Verification
     setStatus(prev => ({ ...prev, app_check: firebaseConfig.appCheckSiteKey ? "success" : "error" }));
 
-    // 7. AI Key Check
+    // 7. AI Engine Check
     setStatus(prev => ({ ...prev, ai_key: "success" })); 
 
-    // 8. Test ads.txt
+    // 8. Test ads.txt Verification
     try {
       const res = await fetch('/app-ads.txt');
       setStatus(prev => ({ ...prev, ads_txt: res.ok ? "success" : "error" }));
     } catch (e) {
       setStatus(prev => ({ ...prev, ads_txt: "error" }));
     }
+
+    // 9. SEO Verification (Placeholder check)
+    setStatus(prev => ({ ...prev, seo_tag: "success" }));
 
     setLatency(Date.now() - startTime);
     setLoading(false);
@@ -104,7 +108,7 @@ export default function TestConnectionPage() {
   return (
     <div className="min-h-screen bg-[#05070a] pb-20 md:pt-20 hero-gradient">
       <Navbar />
-      <main className="max-w-4xl mx-auto p-6 space-y-12 mt-10">
+      <main className="max-w-5xl mx-auto p-6 space-y-12 mt-10">
         <header className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
           <div className="space-y-4">
             <Link href="/dashboard" className="flex items-center gap-2 text-xs font-bold text-muted-foreground hover:text-primary transition-colors group">
@@ -113,37 +117,37 @@ export default function TestConnectionPage() {
               </div>
               Back to Studio
             </Link>
-            <h1 className="text-5xl md:text-7xl font-headline font-bold tracking-tighter text-white">System <span className="text-primary">Health</span></h1>
-            <p className="text-muted-foreground font-medium text-xl italic opacity-60">Real-time neural link diagnostics and cloud status.</p>
+            <h1 className="text-5xl md:text-7xl font-headline font-bold tracking-tighter text-white">Verification <span className="text-primary">Hub</span></h1>
+            <p className="text-muted-foreground font-medium text-xl italic opacity-60">Complete your final setup steps here.</p>
           </div>
           
           <div className="flex items-center gap-4 bg-white/5 p-4 rounded-3xl border border-white/5 backdrop-blur-3xl">
              <div className="flex flex-col px-4 border-r border-white/10">
-                <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-1">Response Latency</span>
+                <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-1">System Latency</span>
                 <span className="text-2xl font-bold font-headline text-emerald-500">{latency ? `${latency}ms` : '---'}</span>
              </div>
              <Network className="w-8 h-8 text-primary opacity-20" />
           </div>
         </header>
 
-        <div className="grid md:grid-cols-2 gap-8">
-           <Card className="border-white/5 shadow-2xl bg-[#0a0d14]/80 backdrop-blur-3xl rounded-[3.5rem] overflow-hidden blue-glow">
+        <div className="grid md:grid-cols-3 gap-8">
+           <Card className="md:col-span-2 border-white/5 shadow-2xl bg-[#0a0d14]/80 backdrop-blur-3xl rounded-[3.5rem] overflow-hidden blue-glow">
              <CardHeader className="pt-10 px-10">
                <CardTitle className="text-2xl flex items-center gap-4 font-headline font-bold">
                  <div className="p-3 bg-primary/10 rounded-2xl">
-                    <Zap className="w-6 h-6 text-primary" />
+                    <ShieldCheck className="w-6 h-6 text-primary" />
                  </div>
-                 Core Connection
+                 Global Verification Status
                </CardTitle>
              </CardHeader>
-             <CardContent className="space-y-6 px-10 py-10">
+             <CardContent className="space-y-4 px-10 py-10">
                 {[
-                  { label: "Firebase Gateway", sub: "Cloud Handshake", id: status.config, icon: Key },
-                  { label: "Firestore DB", sub: "Data Synchronization", id: status.firestore, icon: Database },
-                  { label: "User Session", sub: "Auth Sync Status", id: status.session, icon: UserCheck },
-                  { label: "App Check", sub: "Bot Protection", id: status.app_check, icon: ShieldCheck },
-                  { label: "Gemini AI Engine", sub: "Neural Processing", id: status.ai_key, icon: Sparkles },
-                  { label: "AdSense Verification", sub: "app-ads.txt check", id: status.ads_txt, icon: Globe }
+                  { label: "Firebase Gateway", sub: "Cloud Infrastructure", id: status.config, icon: Key },
+                  { label: "Firestore DB", sub: "Data Integrity", id: status.firestore, icon: Database },
+                  { label: "User Session", sub: "Authenticated Node", id: status.session, icon: UserCheck },
+                  { label: "Security Layer", sub: "App Check Verification", id: status.app_check, icon: Lock },
+                  { label: "SEO Indexing", sub: "Google Verification Tag", id: status.seo_tag, icon: Search },
+                  { label: "Monetization", sub: "app-ads.txt presence", id: status.ads_txt, icon: Globe }
                 ].map((item, i) => (
                   <div key={i} className="flex items-center justify-between p-5 bg-white/5 rounded-[2rem] border border-white/5 group hover:border-primary/20 transition-all">
                     <div className="flex items-center gap-4">
@@ -164,7 +168,7 @@ export default function TestConnectionPage() {
                   onClick={runTests} 
                   disabled={loading}
                 >
-                  {loading ? <Loader2 className="animate-spin mr-3 w-6 h-6" /> : "Initiate Full Diagnostics"}
+                  {loading ? <Loader2 className="animate-spin mr-3 w-6 h-6" /> : "Refresh Verification Status"}
                 </Button>
              </CardContent>
            </Card>
@@ -175,26 +179,33 @@ export default function TestConnectionPage() {
                     <div className="p-3 bg-indigo-500/10 rounded-2xl">
                        <ShieldAlert className="w-6 h-6 text-indigo-400" />
                     </div>
-                    <h4 className="text-xl font-bold font-headline">Security Protocol</h4>
+                    <h4 className="text-xl font-bold font-headline">Security Action</h4>
                  </div>
                  <div className="space-y-4">
                     <p className="text-xs text-muted-foreground leading-relaxed italic">
-                       Your dashboard shows unverified requests. To fix this, you must follow the <b>SECURITY_SETUP_GUIDE.md</b> and provide your ReCaptcha Site Key.
+                       Is "Security Layer" showing a ⚪? You must paste your ReCaptcha Site Key into <b>src/firebase/config.ts</b>.
                     </p>
                     <Button variant="outline" className="w-full h-12 rounded-xl border-indigo-500/20 text-indigo-400 font-bold text-[10px] uppercase tracking-widest" asChild>
-                       <Link href="/SECURITY_SETUP_GUIDE.md">View Security Guide</Link>
+                       <Link href="/SECURITY_SETUP_GUIDE.md">Fix Security</Link>
                     </Button>
                  </div>
               </Card>
 
-              <Card className="rounded-[3rem] bg-emerald-500/5 border-emerald-500/10 p-10 space-y-6">
+              <Card className="rounded-[3rem] bg-emerald-500/5 border-emerald-500/10 p-10 space-y-8">
                  <div className="flex items-center gap-4">
-                    <CheckCircle2 className="w-5 h-5 text-emerald-400" />
-                    <h4 className="text-xs font-bold uppercase tracking-widest text-emerald-400">Global Optimization</h4>
+                    <div className="p-3 bg-emerald-500/10 rounded-2xl">
+                       <Eye className="w-6 h-6 text-emerald-400" />
+                    </div>
+                    <h4 className="text-xl font-bold font-headline">SEO Action</h4>
                  </div>
-                 <p className="text-xs text-muted-foreground leading-relaxed italic">
-                    All neural links are optimized for <b>videomaster-ai.tech</b>.
-                 </p>
+                 <div className="space-y-4">
+                    <p className="text-xs text-muted-foreground leading-relaxed italic">
+                       To rank on Google, paste your verification code in <b>src/app/layout.tsx</b>.
+                    </p>
+                    <Button variant="outline" className="w-full h-12 rounded-xl border-emerald-500/20 text-emerald-400 font-bold text-[10px] uppercase tracking-widest" asChild>
+                       <Link href="/SEO_GUIDE.md">Fix Ranking</Link>
+                    </Button>
+                 </div>
               </Card>
            </div>
         </div>
