@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { 
   Users, Coins, ShieldCheck, Lock, Loader2, Banknote, TrendingUp,
-  Activity, CheckCircle2, Star, ShieldAlert, MoreVertical, Landmark, PieChart, DollarSign, Globe
+  Activity, CheckCircle2, Star, ShieldAlert, MoreVertical, Landmark, PieChart, DollarSign, Globe, Info, ExternalLink
 } from "lucide-react";
 import { useFirestore, useCollection, useMemoFirebase } from "@/firebase";
 import { collection, query, limit, orderBy, getCountFromServer, doc, updateDoc, increment, getDocs } from "firebase/firestore";
@@ -132,7 +132,7 @@ export default function AdminDashboard() {
               <p className="text-[10px] font-bold text-emerald-500 uppercase tracking-widest">Subscription Revenue</p>
               <h3 className="text-4xl font-bold font-headline text-white">₹{totalRevenue.toLocaleString()}</h3>
               <div className="flex items-center gap-2 text-[10px] text-muted-foreground font-bold">
-                <TrendingUp className="w-3 h-3 text-emerald-500" /> 
+                <TrendingUp className="w-3 h-3 text-emerald-400" /> 
                 LIFETIME EARNINGS
               </div>
             </div>
@@ -165,13 +165,33 @@ export default function AdminDashboard() {
             </div>
           </Card>
 
-          <Card className="rounded-[3rem] bg-[#0a0d14] border-white/10 p-8 blue-glow relative overflow-hidden group text-center flex flex-col items-center justify-center">
-             <div className="space-y-4">
+          <Card className="rounded-[3rem] bg-[#0a0d14] border-white/10 p-8 blue-glow relative overflow-hidden group flex flex-col items-center justify-center">
+             <div className="space-y-4 text-center">
                <h4 className="text-sm font-bold text-white uppercase tracking-widest">Withdrawal</h4>
-               <Button variant="outline" className="rounded-full border-white/10 text-xs font-bold" asChild>
+               <Button variant="outline" className="rounded-full border-white/10 text-[10px] font-bold uppercase tracking-widest h-10 px-6" asChild>
                  <a href="/BANK_TRANSFER_GUIDE.md">Setup Bank Account</a>
                </Button>
              </div>
+          </Card>
+        </section>
+
+        {/* New Service Account Notice Card */}
+        <section>
+          <Card className="rounded-[3rem] bg-indigo-500/5 border-indigo-500/20 p-10 flex flex-col md:flex-row items-center justify-between gap-8 group">
+            <div className="flex items-center gap-8 text-center md:text-left">
+              <div className="w-20 h-20 bg-indigo-500/20 rounded-[2rem] flex items-center justify-center border border-indigo-500/20">
+                <ShieldAlert className="w-10 h-10 text-indigo-400" />
+              </div>
+              <div className="space-y-2">
+                <h3 className="text-2xl font-bold font-headline text-white">Admin SDK & Service Accounts</h3>
+                <p className="text-muted-foreground text-sm max-w-2xl italic leading-relaxed">
+                  Your app uses the optimized Client SDK. You **do not need** to download the `serviceAccountKey.json` from the Firebase Console unless building an external server.
+                </p>
+              </div>
+            </div>
+            <Button variant="outline" className="rounded-2xl border-indigo-500/30 text-indigo-400 font-bold h-14 px-8" asChild>
+              <Link href="/docs/ADMIN_SDK_GUIDE.md">View Admin Guide <ExternalLink className="ml-2 w-4 h-4" /></Link>
+            </Button>
           </Card>
         </section>
 
