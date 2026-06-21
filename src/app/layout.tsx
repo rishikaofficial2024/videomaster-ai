@@ -19,6 +19,10 @@ export const metadata: Metadata = {
   alternates: { 
     canonical: '/',
   },
+  verification: {
+    // STEP 1: Replace 'YOUR_CODE_HERE' with the code from Google Search Console
+    google: 'YOUR_VERIFICATION_CODE_HERE',
+  },
   openGraph: {
     title: 'VideoMaster AI - Elite Viral Studio for Modern Creators',
     description: 'Transform your ideas into professional videos with AI. 100 Free Credits inside!',
@@ -105,6 +109,14 @@ export default function RootLayout({
         "acceptedAnswer": {
           "@type": "Answer",
           "text": "Use our Viral Optimizer and Script Writer tools to create high-engagement content and trending hashtags optimized for search algorithms."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does VideoMaster AI support Indian languages?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, our Neural Assistant and Script Writer support multiple global and regional languages including Hindi, English, and more."
         }
       }
     ]
