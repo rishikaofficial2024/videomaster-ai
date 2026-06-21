@@ -7,7 +7,9 @@ export const metadata: Metadata = {
   title: 'VideoMaster AI - Professional AI Video Studio & Viral Script Maker',
   description: 'Produce high-converting YouTube Shorts and Reels 10x faster. VideoMaster AI is a stable, professional design studio for global creators. Claim 100 FREE AI credits on registration.',
   keywords: [
-    'Professional AI Video Generator', 
+    'VideoMaster AI Tech',
+    'VideoMaster AI Studio',
+    'Best AI Video Maker videomaster-ai.tech', 
     'Viral Script Writer for Social Media', 
     'HD Reel Maker AI', 
     'Cinematic AI Thumbnail Designer', 

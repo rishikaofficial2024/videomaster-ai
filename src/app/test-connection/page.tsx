@@ -8,7 +8,7 @@ import {
   CheckCircle2, XCircle, Loader2, Database, 
   Zap, Key, ArrowLeft, ShieldCheck, Sparkles, 
   Activity, Network, Globe, UserCheck, ShieldAlert,
-  Search, Lock, Cpu, AlertTriangle, ExternalLink, Copy
+  Search, Lock, Cpu, AlertTriangle, ExternalLink, Copy, TrendingUp
 } from "lucide-react";
 import { useAuth, useFirestore, useUser } from "@/firebase";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
@@ -110,12 +110,17 @@ export default function TestConnectionPage() {
     toast({ title: "Sitemap URL Copied!", description: "Paste this into Google Search Console." });
   };
 
+  const copyKeyword = (text: string) => {
+    navigator.clipboard.writeText(text);
+    toast({ title: "Keyword Copied!", description: `Search for "${text}" on Google.` });
+  };
+
   const StatusIcon = ({ state }: { state: string }) => {
-    if (state === "testing") return <Loader2 className="w-5 h-5 animate-spin text-primary" />;
-    if (state === "success") return <CheckCircle2 className="w-5 h-5 text-emerald-500" />;
-    if (state === "warning") return <AlertTriangle className="w-5 h-5 text-amber-500" />;
-    if (state === "error") return <XCircle className="w-5 h-5 text-destructive" />;
-    return <Activity className="w-5 h-5 text-muted-foreground opacity-20" />;
+    if (state === "testing") return <Loader2 className="animate-spin text-primary" size={20} />;
+    if (state === "success") return <CheckCircle2 className="text-emerald-500" size={20} />;
+    if (state === "warning") return <AlertTriangle className="text-amber-500" size={20} />;
+    if (state === "error") return <XCircle className="text-destructive" size={20} />;
+    return <Activity className="text-muted-foreground opacity-20" size={20} />;
   };
 
   return (
@@ -132,7 +137,7 @@ export default function TestConnectionPage() {
               Back to Studio
             </Link>
             <h1 className="text-5xl md:text-8xl font-headline font-bold tracking-tighter text-white">Verification <span className="text-primary italic">Hub</span></h1>
-            <p className="text-muted-foreground text-xl font-medium italic opacity-60">Ensuring 100% production uptime and security compliance.</p>
+            <p className="text-muted-foreground text-xl font-medium italic opacity-60">Ensuring 100% production uptime and search ranking.</p>
           </div>
           
           <div className="flex items-center gap-6 bg-[#0a0d14]/80 backdrop-blur-3xl p-6 rounded-[2.5rem] border border-white/5 shadow-2xl">
@@ -156,18 +161,18 @@ export default function TestConnectionPage() {
              </CardHeader>
              <CardContent className="p-10 space-y-4">
                 {[
-                  { label: "Modern Core", sub: "Cloud Firestore (Legacy Secret Bypassed)", id: status.modern_core, icon: Cpu },
-                  { label: "Firebase Gateway", sub: "Infrastructure Handshake", id: status.config, icon: Key },
+                  { label: "Modern Core", sub: "Cloud Firestore Architecture", id: status.modern_core, icon: Cpu },
+                  { label: "Firebase Gateway", sub: "Production Config Key", id: status.config, icon: Key },
                   { label: "Data Integrity", sub: "Cloud DB Read/Write Node", id: status.firestore, icon: Database },
                   { label: "Auth Session", sub: "User Identity Sync", id: status.session, icon: UserCheck },
-                  { label: "Security Layer", sub: "App Check Sites Verification", id: status.app_check, icon: Lock },
-                  { label: "SEO Indexing", sub: "Google Search Ranking Node", id: status.seo_tag, icon: Search },
-                  { label: "Monetization", sub: "app-ads.txt Presence", id: status.ads_txt, icon: Globe }
+                  { label: "Security Layer", sub: "App Check Status", id: status.app_check, icon: Lock },
+                  { label: "SEO Indexing", sub: "Google Search Ranking", id: status.seo_tag, icon: Search },
+                  { label: "Monetization", sub: "Ads Readiness", id: status.ads_txt, icon: Globe }
                 ].map((item, i) => (
                   <div key={i} className="flex items-center justify-between p-6 bg-white/5 rounded-[2rem] border border-white/5 hover:border-primary/20 transition-all group">
                     <div className="flex items-center gap-5">
                       <div className="p-3 bg-black/40 rounded-2xl text-muted-foreground group-hover:text-primary transition-colors">
-                        <item.icon className="w-5 h-5" />
+                        <item.icon size={20} />
                       </div>
                       <div className="flex flex-col">
                         <span className="font-bold text-white group-hover:text-primary transition-colors">{item.label}</span>
@@ -183,52 +188,69 @@ export default function TestConnectionPage() {
                   onClick={runTests} 
                   disabled={loading}
                 >
-                  {loading ? <Loader2 className="animate-spin mr-3 w-6 h-6" /> : <Zap className="mr-3 w-6 h-6 group-hover:animate-pulse" />}
+                  {loading ? <Loader2 className="animate-spin mr-3" size={24} /> : <Zap className="mr-3 group-hover:animate-pulse" size={24} />}
                   Refresh System Diagnostics
                 </Button>
              </CardContent>
            </Card>
 
            <div className="space-y-8">
+              {/* Ranking Pulse Card */}
+              <Card className="rounded-[3rem] bg-primary/5 border-primary/10 p-10 space-y-6 blue-glow">
+                 <div className="flex items-center gap-4">
+                    <div className="p-3 bg-primary/10 rounded-2xl">
+                       <TrendingUp className="w-6 h-6 text-primary" />
+                    </div>
+                    <h4 className="text-xl font-bold font-headline text-white">Google Ranker</h4>
+                 </div>
+                 <div className="space-y-4">
+                    <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Golden Search Keywords:</p>
+                    <div className="space-y-2">
+                       {[
+                         "VideoMaster AI Tech",
+                         "videomaster-ai.tech",
+                         "Best AI Video Maker VideoMaster"
+                       ].map((k) => (
+                         <div key={k} className="flex items-center justify-between p-3 bg-black/40 rounded-xl border border-white/5 group hover:border-primary/30 transition-all">
+                            <code className="text-[10px] text-primary truncate font-mono">{k}</code>
+                            <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => copyKeyword(k)}>
+                              <Copy size={14} />
+                            </Button>
+                         </div>
+                       ))}
+                    </div>
+                    <p className="text-[9px] text-muted-foreground italic leading-relaxed">
+                      Search these terms on Google after submitting your sitemap to see your app rank.
+                    </p>
+                 </div>
+              </Card>
+
               <Card className="rounded-[3rem] bg-emerald-500/5 border-emerald-500/10 p-10 space-y-8">
                  <div className="flex items-center gap-4">
                     <div className="p-3 bg-emerald-500/10 rounded-2xl animate-pulse">
                        <Sparkles className="w-6 h-6 text-emerald-400" />
                     </div>
-                    <h4 className="text-xl font-bold font-headline">Google Ranker</h4>
+                    <h4 className="text-xl font-bold font-headline">SEO Activator</h4>
                  </div>
                  <div className="space-y-6">
                     <p className="text-xs text-muted-foreground leading-relaxed italic">
-                       Submit your sitemap to Google Search Console to activate global ranking in 24 hours.
+                       Submit your sitemap to Google Search Console to activate global ranking.
                     </p>
                     <div className="p-5 bg-black/40 rounded-2xl border border-white/5 space-y-3">
                        <span className="text-[8px] font-bold text-primary uppercase tracking-widest">Production Sitemap</span>
                        <div className="flex items-center justify-between gap-3">
                           <code className="text-[10px] truncate font-mono text-primary">https://videomaster-ai.tech/sitemap.xml</code>
                           <Button variant="ghost" size="icon" className="h-10 w-10 bg-white/5 hover:bg-primary/20" onClick={copySitemap}>
-                            <Copy className="w-4 h-4" />
+                            <Copy size={16} />
                           </Button>
                        </div>
                     </div>
                     <Button className="w-full h-14 rounded-2xl bg-emerald-600 hover:bg-emerald-700 font-bold text-[10px] uppercase tracking-widest gap-2" asChild>
                        <a href="https://search.google.com/search-console/sitemaps" target="_blank">
-                          Submit to Search Console <ExternalLink className="w-3 h-3" />
+                          Submit to Google <ExternalLink size={14} />
                        </a>
                     </Button>
                  </div>
-              </Card>
-
-              <Card className="rounded-[3rem] bg-primary/5 border-primary/10 p-10 space-y-4">
-                 <div className="flex items-center gap-4">
-                    <div className="p-3 bg-primary/10 rounded-2xl">
-                       <Globe className="w-6 h-6 text-primary" />
-                    </div>
-                    <h4 className="text-xl font-bold font-headline text-white">Live Node</h4>
-                 </div>
-                 <p className="text-xs text-muted-foreground italic">Your application is broadcast-ready. Share your custom domain to start monetizing:</p>
-                 <code className="block p-4 bg-black/40 rounded-2xl text-[10px] text-primary font-bold border border-primary/20 text-center">
-                   https://videomaster-ai.tech
-                 </code>
               </Card>
            </div>
         </div>

@@ -3,6 +3,13 @@
 
 Your VideoMaster AI app is optimized for high organic search ranking. Follow this guide to ensure Google indexes your site in under 24 hours.
 
+### 🔍 Golden Keywords (Search these to find your app)
+If you want to see your app at the top of Google, search for these exact terms:
+1. **`VideoMaster AI Tech`** (Your primary brand)
+2. **`videomaster-ai.tech`** (Exact domain)
+3. **`Best AI Video Maker videomaster-ai`**
+4. **`Viral Script Maker VideoMaster`**
+
 ### ✅ Step 1: Firebase Domain Connection
 Before Google can verify your site, it must be live on your custom domain:
 1.  **Firebase Console**: Go to the **Hosting** section.
