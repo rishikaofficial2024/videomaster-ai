@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, useEffect } from "react";
@@ -8,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { 
   CheckCircle2, XCircle, Loader2, Database, 
   Zap, Key, ArrowLeft, ShieldCheck, Sparkles, 
-  Activity, Network, Globe, UserCheck
+  Activity, Network, Globe, UserCheck, ArrowRight
 } from "lucide-react";
 import { useAuth, useFirestore, useUser } from "@/firebase";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
@@ -193,13 +192,13 @@ export default function TestConnectionPage() {
               <Card className="rounded-[3rem] bg-emerald-500/5 border-emerald-500/10 p-10 space-y-6">
                  <div className="flex items-center gap-4">
                     <CheckCircle2 className="w-5 h-5 text-emerald-400" />
-                    <h4 className="text-xs font-bold uppercase tracking-widest text-emerald-400">Regional Optimization</h4>
+                    <h4 className="text-xs font-bold uppercase tracking-widest text-emerald-400">Global Optimization</h4>
                  </div>
                  <p className="text-xs text-muted-foreground leading-relaxed italic">
-                    Aapka app Bharat (India) ke servers par optimized hai. Metadata branding `.in` domain ke liye fully configured hai.
+                    Your application is fully optimized for the <b>.tech</b> ecosystem. Metadata and SEO parameters are synced with <b>videomaster-ai.tech</b>.
                  </p>
                  <Button variant="outline" className="w-full h-12 rounded-xl border-emerald-500/20 text-emerald-400 font-bold text-[10px] uppercase tracking-widest hover:bg-emerald-500/10" asChild>
-                    <a href="https://console.firebase.google.com/project/studio-9489287013-59986/authentication/settings" target="_blank">Fix Social Login <ArrowRight className="ml-2 w-3 h-3" /></a>
+                    <a href="https://console.firebase.google.com/project/studio-9489287013-59986/authentication/settings" target="_blank">Sync Custom Domain <ArrowRight className="ml-2 w-3 h-3" /></a>
                  </Button>
               </Card>
            </div>
