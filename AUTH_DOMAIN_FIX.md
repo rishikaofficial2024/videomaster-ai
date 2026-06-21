@@ -1,24 +1,24 @@
 
-# 🔑 "unauthorized-domain" Error Ka Final Solution
+# 🔑 "unauthorized-domain" Error Solution
 
-Aapka **Authorized Domain** woh URL hai jo aapke browser ke address bar mein dikh raha hai (e.g., `9002-xxxx.cloudworkstations.dev`). Iske bina login kaam nahi karega.
+Your **Authorized Domain** is the URL shown in your browser's address bar (e.g., `videomaster-ai.tech`). Without this, social login and phone auth will not function.
 
-### Domain Add Karne Ke Steps:
+### Steps to Resolve:
 
-1.  **Domain Copy Karein**: 
-    - Apne app ke **Login Page** par jayein. 
-    - Agar error aaye, toh wahan domain likha dikhega. **Copy** button dabayein.
-    - Ya phir browser URL se sirf domain part copy karein (bin `https://` aur bin kisi slash `/` ke).
+1.  **Copy Domain**: 
+    - Go to your app's **Login Page**. 
+    - Click the **Troubleshoot** button or look at the error card.
+    - Click the **Copy** button next to the domain name.
 
-2.  **Firebase Console Kholein**:
+2.  **Open Firebase Console**:
     - 👉 **[Direct Link: Authorized Domains Page](https://console.firebase.google.com/project/studio-9489287013-59986/authentication/settings)**
 
-3.  **Domain Add Karein**:
-    - **"Authorized domains"** section mein **"Add domain"** par click karein.
-    - Woh domain paste karein jo aapne abhi copy kiya.
-    - **Add** button dabayein.
+3.  **Register Domain**:
+    - In the **"Authorized domains"** section, click **"Add domain"**.
+    - Paste the domain you copied.
+    - Click **Add**.
 
-4.  **Check Karein**:
-    - Apne app par waapas jayein aur page refresh karein. Login ab 100% chalega!
+4.  **Verification**:
+    - Refresh your login page. Authentication should now work 100% correctly!
 
-**Tip**: Har naye workspace ke liye aapko ye ek baar karna pad sakta hai.
+**Note**: You may need to do this once for every new workspace or custom domain you add.

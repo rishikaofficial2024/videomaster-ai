@@ -54,7 +54,7 @@ export default function LoginPage() {
       setAuthError(error.code || error.message);
       toast({
         variant: "destructive",
-        title: "Login Failed",
+        title: "Authentication Failed",
         description: error.message,
       });
     } finally {
@@ -83,8 +83,8 @@ export default function LoginPage() {
       
       toast({
         variant: "destructive",
-        title: `${providerName} Sync Error`,
-        description: "Firebase configuration required. Please check troubleshooting below.",
+        title: `${providerName} Connection Error`,
+        description: "Firebase configuration required. See troubleshooting details below.",
       });
     } finally {
       setLoading(false);
@@ -99,11 +99,11 @@ export default function LoginPage() {
       const verifier = new RecaptchaVerifier(auth, 'recaptcha-container', { 'size': 'invisible' });
       const result = await signInWithPhoneNumber(auth, phone, verifier);
       setConfirmationResult(result);
-      toast({ title: "OTP Sent", description: "Check your messages." });
+      toast({ title: "Verification Sent", description: "Please check your mobile device for the OTP." });
     } catch (error: any) {
       setAuthError(error.code);
       if (error.code === 'auth/billing-not-enabled') setShowTroubleshoot(true);
-      toast({ variant: "destructive", title: "Phone Error", description: error.message });
+      toast({ variant: "destructive", title: "Mobile Service Error", description: error.message });
     } finally {
       setLoading(false);
     }
@@ -116,7 +116,7 @@ export default function LoginPage() {
       await confirmationResult.confirm(otp);
       router.push("/dashboard");
     } catch (error: any) {
-      toast({ variant: "destructive", title: "Invalid OTP" });
+      toast({ variant: "destructive", title: "Invalid Verification Code" });
     } finally {
       setLoading(false);
     }
@@ -124,7 +124,7 @@ export default function LoginPage() {
 
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
-    toast({ title: "Copied!", description: "Domain copied to clipboard." });
+    toast({ title: "Copied!", description: "Domain copied to your clipboard." });
   };
 
   return (
@@ -133,7 +133,7 @@ export default function LoginPage() {
       
       <div className="fixed top-8 left-8">
         <Link href="/" className="flex items-center gap-2 font-bold text-muted-foreground hover:text-primary transition-colors">
-          <ArrowLeft className="w-4 h-4" /> Back Home
+          <ArrowLeft className="w-4 h-4" /> Back to Landing
         </Link>
       </div>
 
@@ -146,7 +146,7 @@ export default function LoginPage() {
             </div>
           </div>
           <CardTitle className="text-3xl font-headline font-bold text-white">Enter Studio</CardTitle>
-          <CardDescription className="italic">Continue your cinematic journey</CardDescription>
+          <CardDescription className="italic">Continue your cinematic creation process</CardDescription>
         </CardHeader>
 
         <CardContent className="space-y-6 px-10">
@@ -155,13 +155,13 @@ export default function LoginPage() {
               <div className="flex gap-3">
                 <ShieldCheck className="w-5 h-5 text-red-500 shrink-0" />
                 <div className="space-y-1">
-                  <p className="text-[10px] font-bold text-red-500 uppercase tracking-widest">Connection Setup Required</p>
-                  <p className="text-[11px] text-white/70">To enable login, add this domain to your Firebase Authorized Domains:</p>
+                  <p className="text-[10px] font-bold text-red-500 uppercase tracking-widest text-left">Configuration Required</p>
+                  <p className="text-[11px] text-white/70 text-left">To enable login, add this domain to your Firebase Authorized Domains:</p>
                 </div>
               </div>
               
               <div className="flex items-center gap-2 p-3 bg-black/40 rounded-xl border border-white/10">
-                <code className="flex-1 text-[10px] font-mono text-primary truncate">{currentHostname}</code>
+                <code className="flex-1 text-[10px] font-mono text-primary truncate text-left">{currentHostname}</code>
                 <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => copyToClipboard(currentHostname)}>
                   <Copy className="w-3 h-3" />
                 </Button>
@@ -170,7 +170,7 @@ export default function LoginPage() {
               <div className="grid grid-cols-1 gap-2">
                 <Button className="w-full h-10 rounded-xl bg-red-600 hover:bg-red-700 text-[9px] font-bold uppercase tracking-wider" asChild>
                   <a href="https://console.firebase.google.com/project/studio-9489287013-59986/authentication/providers" target="_blank">
-                    1. Enable Social Providers <ExternalLink className="ml-2 w-3 h-3" />
+                    1. Enable Providers <ExternalLink className="ml-2 w-3 h-3" />
                   </a>
                 </Button>
                 <Button variant="outline" className="w-full h-10 rounded-xl border-red-500/30 text-[9px] font-bold uppercase tracking-wider" asChild>
@@ -178,31 +178,24 @@ export default function LoginPage() {
                     2. Add Authorized Domain <ExternalLink className="ml-2 w-3 h-3" />
                   </a>
                 </Button>
-                {authError === 'auth/billing-not-enabled' && (
-                  <Button variant="destructive" className="w-full h-10 rounded-xl text-[9px] font-bold uppercase tracking-wider" asChild>
-                    <a href="https://console.firebase.google.com/project/studio-9489287013-59986/usage/details" target="_blank">
-                      3. Enable Blaze Plan for Phone Auth <ExternalLink className="ml-2 w-3 h-3" />
-                    </a>
-                  </Button>
-                )}
               </div>
             </div>
           )}
 
           <Tabs defaultValue="email" className="w-full">
             <TabsList className="grid w-full grid-cols-2 bg-white/5 rounded-2xl p-1 mb-6">
-              <TabsTrigger value="email" className="rounded-xl font-bold text-[10px] uppercase py-2.5">Email</TabsTrigger>
+              <TabsTrigger value="email" className="rounded-xl font-bold text-[10px] uppercase py-2.5">Email Access</TabsTrigger>
               <TabsTrigger value="phone" className="rounded-xl font-bold text-[10px] uppercase py-2.5">Mobile OTP</TabsTrigger>
             </TabsList>
 
             <TabsContent value="email" className="space-y-4">
               <div className="space-y-2">
-                <Label className="text-[10px] uppercase tracking-widest text-primary ml-1">Email</Label>
+                <Label className="text-[10px] uppercase tracking-widest text-primary ml-1 text-left block">Email Address</Label>
                 <Input type="email" placeholder="name@example.com" className="h-12 rounded-xl bg-black/40 border-white/10 text-white" value={email} onChange={(e) => setEmail(e.target.value)} />
               </div>
               <div className="space-y-2">
-                <Label className="text-[10px] uppercase tracking-widest text-primary ml-1">Password</Label>
-                <Input type="password" className="h-12 rounded-xl bg-black/40 border-white/10 text-white" value={password} onChange={(e) => setPassword(e.target.value)} />
+                <Label className="text-[10px] uppercase tracking-widest text-primary ml-1 text-left block">Secure Password</Label>
+                <Input type="password" placeholder="••••••••" className="h-12 rounded-xl bg-black/40 border-white/10 text-white" value={password} onChange={(e) => setPassword(e.target.value)} />
               </div>
               <Button onClick={handleLogin} className="w-full h-14 text-lg font-bold rounded-xl shadow-xl shadow-primary/20" disabled={loading}>
                 {loading ? <Loader2 className="animate-spin" /> : "Sign In to Studio"}
@@ -213,21 +206,21 @@ export default function LoginPage() {
               {!confirmationResult ? (
                 <div className="space-y-4">
                   <div className="space-y-2">
-                    <Label className="text-[10px] uppercase tracking-widest text-primary ml-1">Mobile Number</Label>
+                    <Label className="text-[10px] uppercase tracking-widest text-primary ml-1 text-left block">Mobile Number</Label>
                     <Input type="tel" placeholder="+1 123 456 7890" className="h-12 rounded-xl bg-black/40 border-white/10 text-white" value={phone} onChange={(e) => setPhone(e.target.value)} />
                   </div>
                   <Button onClick={handlePhoneSignIn} className="w-full h-14 text-lg font-bold rounded-xl shadow-xl shadow-primary/20" disabled={loading || !phone}>
-                    {loading ? <Loader2 className="animate-spin" /> : "Send OTP"}
+                    {loading ? <Loader2 className="animate-spin" /> : "Request Verification Code"}
                   </Button>
                 </div>
               ) : (
                 <div className="space-y-4">
                   <div className="space-y-2">
-                    <Label className="text-[10px] uppercase tracking-widest text-primary ml-1">Enter OTP</Label>
+                    <Label className="text-[10px] uppercase tracking-widest text-primary ml-1 text-left block">Verification Code</Label>
                     <Input placeholder="123456" className="h-12 rounded-xl bg-black/40 border-white/10 text-center tracking-widest text-xl font-bold text-white" value={otp} onChange={(e) => setOtp(e.target.value)} maxLength={6} />
                   </div>
                   <Button onClick={handleVerifyOtp} className="w-full h-14 text-lg font-bold rounded-xl shadow-xl shadow-primary/20" disabled={loading || otp.length < 6}>
-                    {loading ? <Loader2 className="animate-spin" /> : "Verify & Continue"}
+                    {loading ? <Loader2 className="animate-spin" /> : "Verify & Authorize"}
                   </Button>
                 </div>
               )}
@@ -241,7 +234,7 @@ export default function LoginPage() {
             </Button>
             <Button variant="outline" className="h-12 rounded-xl gap-2 font-bold border-white/10 bg-black/20 hover:bg-primary/5 p-1" onClick={() => handleSocialLogin('facebook')} disabled={loading}>
               <Facebook className="w-4 h-4 text-blue-600" />
-              <span className="text-[9px]">FB</span>
+              <span className="text-[9px]">Facebook</span>
             </Button>
             <Button variant="outline" className="h-12 rounded-xl gap-2 font-bold border-white/10 bg-black/20 hover:bg-primary/5 p-1" onClick={() => handleSocialLogin('github')} disabled={loading}>
               <Github className="w-4 h-4 text-white" />
@@ -251,10 +244,10 @@ export default function LoginPage() {
         </CardContent>
         <CardFooter className="flex flex-col space-y-4 pb-10 pt-4">
           <div className="text-xs text-center text-muted-foreground font-medium">
-            New to the studio? <Link href="/signup" className="text-primary font-bold hover:underline">Create Account</Link>
+            New to the studio? <Link href="/signup" className="text-primary font-bold hover:underline">Create Professional Account</Link>
           </div>
           <Button variant="ghost" className="text-[10px] font-bold uppercase tracking-widest gap-2 text-muted-foreground" onClick={() => setShowTroubleshoot(!showTroubleshoot)}>
-            <HelpCircle className="w-3 h-3" /> Troubleshoot Login
+            <HelpCircle className="w-3 h-3" /> Troubleshoot Login Issues
           </Button>
         </CardFooter>
       </Card>
