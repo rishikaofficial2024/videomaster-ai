@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { 
   Video, ArrowRight, Sparkles, Wand2, 
   Download, Play, Zap, Cpu, BarChart3, Crown, Check, ShieldCheck,
-  Search, Globe, MessageSquare, Award, Gift, Coins
+  Search, Globe, MessageSquare, Award, Gift, Coins, SquarePlay
 } from "lucide-react";
 import Image from "next/image";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
