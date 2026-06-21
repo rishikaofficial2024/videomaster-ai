@@ -8,7 +8,7 @@ import {
   CheckCircle2, XCircle, Loader2, Database, 
   Zap, Key, ArrowLeft, ShieldCheck, Sparkles, 
   Activity, Network, Globe, UserCheck, ArrowRight, ShieldAlert,
-  Search, Lock, Eye, Cpu
+  Search, Lock, Eye, Cpu, AlertTriangle
 } from "lucide-react";
 import { useAuth, useFirestore, useUser } from "@/firebase";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
@@ -93,8 +93,11 @@ export default function TestConnectionPage() {
       setStatus(prev => ({ ...prev, ads_txt: "error" }));
     }
 
-    // 9. SEO Verification
-    setStatus(prev => ({ ...prev, seo_tag: "success" }));
+    // 9. SEO Verification Check
+    // We check if the layout.tsx has been updated with a real verification code
+    // This is a simulated check that usually requires server-side inspection
+    const isSeoConfigured = !document.documentElement.innerHTML.includes("YOUR_VERIFICATION_CODE_HERE");
+    setStatus(prev => ({ ...prev, seo_tag: isSeoConfigured ? "success" : "warning" }));
 
     // 10. Legacy Bypass Check (Modern Architecture Verification)
     setStatus(prev => ({ ...prev, legacy_bypass: "success" }));
@@ -110,6 +113,7 @@ export default function TestConnectionPage() {
   const StatusIcon = ({ state }: { state: string }) => {
     if (state === "testing") return <Loader2 className="w-5 h-5 animate-spin text-primary" />;
     if (state === "success") return <CheckCircle2 className="w-5 h-5 text-emerald-500" />;
+    if (state === "warning") return <AlertTriangle className="w-5 h-5 text-amber-500" />;
     if (state === "error") return <XCircle className="w-5 h-5 text-destructive" />;
     return <Activity className="w-5 h-5 text-muted-foreground opacity-20" />;
   };
@@ -173,6 +177,16 @@ export default function TestConnectionPage() {
                   </div>
                 ))}
 
+                {status.seo_tag === 'warning' && (
+                  <div className="mt-4 p-4 bg-amber-500/10 border border-amber-500/20 rounded-2xl flex items-center gap-4">
+                     <AlertTriangle className="w-6 h-6 text-amber-500" />
+                     <p className="text-xs text-amber-200/80 italic">
+                        <b>SEO Action Required:</b> Your Google Verification code is missing. Google cannot rank your site yet. 
+                        <Link href="/SEO_GUIDE.md" className="underline ml-1 font-bold">Fix this now</Link>
+                     </p>
+                  </div>
+                )}
+
                 <Button 
                   className="w-full h-20 font-bold rounded-[2rem] shadow-2xl shadow-primary/30 text-lg transition-all active:scale-95 mt-6" 
                   onClick={runTests} 
@@ -184,7 +198,7 @@ export default function TestConnectionPage() {
            </Card>
 
            <div className="space-y-8">
-              <Card className="rounded-[3rem] bg-indigo-500/5 border-indigo-500/10 p-10 space-y-8">
+              <Card className="rounded-[3rem] bg-indigo-500/5 border-indigo-500/20 p-10 space-y-8">
                  <div className="flex items-center gap-4">
                     <div className="p-3 bg-indigo-500/10 rounded-2xl">
                        <ShieldAlert className="w-6 h-6 text-indigo-400" />
