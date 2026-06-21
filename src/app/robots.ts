@@ -5,8 +5,8 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: '*',
       allow: '/',
-      disallow: ['/dashboard/', '/editor/', '/profile/'],
+      disallow: ['/dashboard/', '/editor/', '/profile/', '/admin/'],
     },
-    sitemap: 'https://videomaster-ai.in/sitemap.xml',
+    sitemap: 'https://videomaster-ai.tech/sitemap.xml',
   }
 }

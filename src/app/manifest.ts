@@ -4,7 +4,7 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: 'VideoMaster AI',
     short_name: 'VideoMaster',
-    description: 'India\'s #1 Professional AI Video Studio & Script Writer',
+    description: 'The Professional AI Video Studio & Script Writer (.tech)',
     start_url: '/',
     display: 'standalone',
     background_color: '#05070a',

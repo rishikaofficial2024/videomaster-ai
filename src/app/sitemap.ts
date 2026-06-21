@@ -1,8 +1,7 @@
-
 import { MetadataRoute } from 'next'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://studio-9489287013-59986.web.app'
+  const baseUrl = 'https://videomaster-ai.tech'
   const currentDate = new Date()
   
   return [

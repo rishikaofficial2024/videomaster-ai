@@ -4,27 +4,27 @@ import { Toaster } from "@/components/ui/toaster";
 import { FirebaseClientProvider } from '@/firebase';
 
 export const metadata: Metadata = {
-  title: 'VideoMaster AI - India\'s No.1 AI Video Studio (.in)',
-  description: 'Create viral YouTube Shorts and Reels 10x faster. VideoMaster AI is the most stable studio for Indian creators. Get 100 FREE credits on signup!',
+  title: 'VideoMaster AI - World\'s No.1 AI Video Studio (.tech)',
+  description: 'Create viral YouTube Shorts and Reels 10x faster. VideoMaster AI is the most stable studio for global creators. Get 100 FREE credits on signup!',
   keywords: [
-    'AI Video Generator India', 
+    'AI Video Generator', 
     'Viral Reels Maker AI', 
     'Best AI Script Writer YouTube', 
     'Cinematic Thumbnail Maker AI', 
     'VideoMaster AI Studio',
-    'Text to Video AI India Free',
-    'VideoMaster-AI.in'
+    'Text to Video AI Free',
+    'VideoMaster-AI.tech'
   ],
-  metadataBase: new URL('https://studio-9489287013-59986.web.app'),
+  metadataBase: new URL('https://videomaster-ai.tech'),
   alternates: { 
     canonical: '/',
   },
   openGraph: {
-    title: 'VideoMaster AI - Viral Studio for Indian Creators',
+    title: 'VideoMaster AI - Viral Studio for Modern Creators',
     description: 'Transform your ideas into professional videos with AI. 100 Free Credits inside!',
-    url: 'https://studio-9489287013-59986.web.app',
+    url: 'https://videomaster-ai.tech',
     siteName: 'VideoMaster AI',
-    locale: 'en_IN',
+    locale: 'en_US',
     type: 'website',
     images: [
       {
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'VideoMaster AI - Master the Viral Game',
-    description: 'India\'s first elite AI design studio for creators.',
+    description: 'The first elite AI design studio for tech-savvy creators.',
     images: ['https://picsum.photos/seed/videomaster-twitter/1200/630'],
   },
   robots: {

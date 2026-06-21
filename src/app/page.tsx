@@ -21,7 +21,7 @@ export default function LandingPage() {
           <div className="bg-primary p-2.5 rounded-2xl shadow-xl shadow-primary/30 group-hover:scale-110 transition-transform duration-500">
             <Video className="h-6 w-6 text-white" />
           </div>
-          <span className="font-headline font-bold text-2xl tracking-tighter">VideoMaster<span className="text-primary italic">AI.in</span></span>
+          <span className="font-headline font-bold text-2xl tracking-tighter">VideoMaster<span className="text-primary italic">AI.tech</span></span>
         </Link>
         <nav className="ml-auto flex items-center gap-10">
           <div className="hidden lg:flex gap-10">
@@ -53,7 +53,7 @@ export default function LandingPage() {
                 Master the <span className="text-primary italic">Viral Game.</span>
               </h1>
               <p className="max-w-3xl text-muted-foreground text-xl md:text-3xl font-medium leading-relaxed italic animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-200">
-                Professional AI design studio for the next generation of Indian creators. 10x faster scripts, 4K thumbnails, and cinematic HD videos.
+                Professional AI design studio for the next generation of global creators. 10x faster scripts, 4K thumbnails, and cinematic HD videos.
               </p>
               <div className="flex flex-col sm:flex-row gap-6 animate-in fade-in slide-in-from-bottom-10 duration-1000 delay-300">
                 <Button asChild size="lg" className="h-20 px-16 rounded-[2rem] text-xl font-bold shadow-2xl shadow-primary/40 hover:scale-105 transition-all active:scale-95">
@@ -147,9 +147,9 @@ export default function LandingPage() {
             
             <div className="grid md:grid-cols-3 gap-10 max-w-6xl mx-auto">
               {[
-                { name: "Starter", price: "₹0", features: ["100 Free Credits", "720p Exports", "Basic AI Editor", "Community Support"] },
-                { name: "Pro Creator", price: "₹99", features: ["Unlimited AI Credits", "4K Ultra HD", "Advanced Layering", "Priority Support", "No Watermark"], popular: true },
-                { name: "Production", price: "₹499", features: ["Everything in Pro", "Team Collaboration", "API Integration", "Custom AI Models"] }
+                { name: "Starter", price: "$0", features: ["100 Free Credits", "720p Exports", "Basic AI Editor", "Community Support"] },
+                { name: "Pro Creator", price: "$9.99", features: ["Unlimited AI Credits", "4K Ultra HD", "Advanced Layering", "Priority Support", "No Watermark"], popular: true },
+                { name: "Production", price: "$49.99", features: ["Everything in Pro", "Team Collaboration", "API Integration", "Custom AI Models"] }
               ].map((plan, i) => (
                 <div key={i} className={cn(
                   "premium-card p-16 flex flex-col space-y-10 relative overflow-hidden group",
@@ -171,7 +171,7 @@ export default function LandingPage() {
                     ))}
                   </ul>
                   <Button asChild className={cn("h-20 rounded-[1.5rem] font-bold text-xl transition-all active:scale-95", plan.popular ? "bg-primary shadow-2xl shadow-primary/30" : "bg-white/5 border border-white/10 hover:bg-white/10 text-white")}>
-                    <Link href="/signup">{plan.price === "₹0" ? "Start Creating" : "Go Pro Now"}</Link>
+                    <Link href="/signup">{plan.price === "$0" ? "Start Creating" : "Go Pro Now"}</Link>
                   </Button>
                 </div>
               ))}
@@ -184,7 +184,7 @@ export default function LandingPage() {
         <div className="container mx-auto flex flex-col items-center gap-12">
           <div className="flex items-center gap-4">
              <Video className="w-8 h-8 text-primary" />
-             <span className="text-3xl font-headline font-bold tracking-tighter">VideoMaster<span className="text-primary">AI</span></span>
+             <span className="text-3xl font-headline font-bold tracking-tighter">VideoMaster<span className="text-primary">AI.tech</span></span>
           </div>
           <div className="flex flex-wrap justify-center gap-12 text-sm font-bold uppercase tracking-widest text-muted-foreground">
              <Link href="/privacy" className="hover:text-primary transition-colors">Privacy</Link>
@@ -192,7 +192,7 @@ export default function LandingPage() {
              <Link href="/admin" className="hover:text-primary transition-colors">Admin</Link>
              <Link href="/test-connection" className="hover:text-primary transition-colors">Support</Link>
           </div>
-          <p className="text-xs text-muted-foreground/40 font-bold uppercase tracking-[0.5em]">© 2024 VideoMaster AI India Hub</p>
+          <p className="text-xs text-muted-foreground/40 font-bold uppercase tracking-[0.5em]">© 2024 VideoMaster AI Tech Hub</p>
         </div>
       </footer>
     </div>
