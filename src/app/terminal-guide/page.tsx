@@ -3,7 +3,7 @@
 import { Navbar } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Terminal, ArrowLeft, MousePointer2, Keyboard, CheckCircle2, Copy, Info, Monitor, AlertCircle, Smartphone, Tablet } from "lucide-react";
+import { Terminal, ArrowLeft, MousePointer2, Keyboard, CheckCircle2, Copy, Info, Monitor, AlertCircle, Smartphone, XCircle, Menu } from "lucide-react";
 import Link from "next/link";
 import { useToast } from "@/hooks/use-toast";
 
@@ -32,47 +32,52 @@ export default function TerminalGuidePage() {
           <p className="text-muted-foreground text-xl font-medium italic">Mobile ho ya Laptop, Terminal yahan milega:</p>
         </header>
 
+        {/* ❌ WHAT IS NOT A TERMINAL */}
+        <section>
+          <Card className="rounded-[3rem] bg-red-500/5 border-2 border-red-500/20 p-8 space-y-6">
+             <div className="flex items-center gap-4 text-red-500">
+                <XCircle className="w-8 h-8" />
+                <h3 className="text-2xl font-bold font-headline uppercase">Ye Terminal NAHI hai:</h3>
+             </div>
+             <p className="text-muted-foreground italic">"Route Static / Turbopack Enabled" wala box terminal nahi hai. Woh sirf information box hai.</p>
+          </Card>
+        </section>
+
         <section className="grid gap-8">
           {/* 📱 MOBILE SPECIAL GUIDE */}
-          <Card className="rounded-[3rem] bg-emerald-500/10 border-2 border-emerald-500/50 p-10 space-y-6 text-center shadow-[0_0_50px_rgba(16,185,129,0.1)]">
+          <Card className="rounded-[3rem] bg-emerald-500/10 border-2 border-emerald-500/50 p-10 space-y-8 text-center shadow-[0_0_50px_rgba(16,185,129,0.1)]">
              <div className="flex justify-center mb-4">
                 <div className="p-4 bg-emerald-500/20 rounded-full">
                    <Smartphone className="w-12 h-12 text-emerald-500" />
                 </div>
              </div>
-             <h3 className="text-3xl font-bold font-headline text-white">MOBILE PHONE STEPS</h3>
-             <div className="space-y-4 text-left max-w-md mx-auto">
-                <div className="flex gap-4 items-start">
-                   <div className="w-8 h-8 rounded-full bg-emerald-500 text-black flex-shrink-0 flex items-center justify-center font-bold">1</div>
-                   <p className="text-white/80">Screen ke <span className="font-bold text-emerald-400">Sabse Niche (Bottom)</span> se upar ki taraf swipe karein.</p>
+             <h3 className="text-3xl font-bold font-headline text-white uppercase">MOBILE PAR TERMINAL KAISE KHOLEIN</h3>
+             
+             <div className="space-y-6 text-left max-w-md mx-auto">
+                <div className="flex gap-6 items-start p-4 bg-white/5 rounded-2xl border border-white/5">
+                   <div className="w-10 h-10 rounded-full bg-emerald-500 text-black flex-shrink-0 flex items-center justify-center font-black">1</div>
+                   <div className="space-y-1">
+                      <p className="text-white font-bold">Top-Left Menu Icon</p>
+                      <p className="text-xs text-muted-foreground">Screen ke sabse upar baayein kone mein 3 lines (≡) par click karein.</p>
+                   </div>
                 </div>
-                <div className="flex gap-4 items-start">
-                   <div className="w-8 h-8 rounded-full bg-emerald-500 text-black flex-shrink-0 flex items-center justify-center font-bold">2</div>
-                   <p className="text-white/80">Agar swipe nahi ho raha, toh upar <span className="font-bold text-emerald-400">3 Dots (⋮) ya Menu</span> par click karke "Terminal" dhoondein.</p>
-                </div>
-                <div className="flex gap-4 items-start">
-                   <div className="w-8 h-8 rounded-full bg-emerald-500 text-black flex-shrink-0 flex items-center justify-center font-bold">3</div>
-                   <p className="text-white/80">Terminal khulne ke baad wahan <span className="font-bold text-emerald-400">Daba kar rakhein (Long Press)</span> aur Paste karein.</p>
-                </div>
-             </div>
-          </Card>
 
-          {/* 💻 LAPTOP GUIDE */}
-          <Card className="rounded-[3rem] bg-primary/5 border-primary/20 p-10 space-y-6 text-center blue-glow">
-             <div className="flex justify-center mb-4">
-                <div className="p-4 bg-primary/20 rounded-full">
-                   <Monitor className="w-12 h-12 text-primary" />
+                <div className="flex gap-6 items-start p-4 bg-white/5 rounded-2xl border border-white/5">
+                   <div className="w-10 h-10 rounded-full bg-emerald-500 text-black flex-shrink-0 flex items-center justify-center font-black">2</div>
+                   <div className="space-y-1">
+                      <p className="text-white font-bold">Terminal Option</p>
+                      <p className="text-xs text-muted-foreground">Menu ke andar scroll karke "Terminal" dhoondein aur fir "New Terminal" dabayein.</p>
+                   </div>
+                </div>
+
+                <div className="flex gap-6 items-start p-4 bg-white/5 rounded-2xl border border-white/5">
+                   <div className="w-10 h-10 rounded-full bg-emerald-500 text-black flex-shrink-0 flex items-center justify-center font-black">3</div>
+                   <div className="space-y-1">
+                      <p className="text-white font-bold">Paste Command</p>
+                      <p className="text-xs text-muted-foreground">Jab niche kaala box khul jaye, toh wahan daba kar rakhein aur Paste karein.</p>
+                   </div>
                 </div>
              </div>
-             <h3 className="text-2xl font-bold font-headline">LAPTOP / PC STEPS</h3>
-             <div className="flex justify-center gap-4 items-center">
-                <div className="px-6 py-4 bg-white/10 rounded-2xl border border-white/20 font-bold text-2xl shadow-xl">Ctrl</div>
-                <span className="text-3xl font-bold text-primary">+</span>
-                <div className="px-6 py-4 bg-white/10 rounded-2xl border border-white/20 font-bold text-2xl shadow-xl">~</div>
-             </div>
-             <p className="text-muted-foreground italic">
-                (Tilde key Esc key ke thik niche hoti hai)
-             </p>
           </Card>
 
           <Card className="rounded-[3rem] bg-[#0a0d14]/80 backdrop-blur-3xl border-white/5 p-10 space-y-8">
