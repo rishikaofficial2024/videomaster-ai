@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, useEffect } from "react";
@@ -31,7 +30,6 @@ export default function LoginPage() {
   const [otp, setOtp] = useState("");
   const [confirmationResult, setConfirmationResult] = useState<any>(null);
   const [authError, setAuthError] = useState<string | null>(null);
-  const [showTroubleshoot, setShowTroubleshoot] = useState(false);
   
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -48,9 +46,6 @@ export default function LoginPage() {
       router.push(returnUrl);
     } catch (error: any) {
       setAuthError(error.code);
-      if (error.code === 'auth/unauthorized-domain' || error.code === 'auth/operation-not-allowed') {
-        setShowTroubleshoot(true);
-      }
       toast({
         variant: "destructive",
         title: "Access Denied",
@@ -74,9 +69,6 @@ export default function LoginPage() {
       router.push(returnUrl);
     } catch (error: any) {
       setAuthError(error.code);
-      if (error.code === 'auth/unauthorized-domain' || error.code === 'auth/operation-not-allowed') {
-        setShowTroubleshoot(true);
-      }
       toast({
         variant: "destructive",
         title: "Social Sync Error",
@@ -98,7 +90,6 @@ export default function LoginPage() {
       toast({ title: "OTP Sent", description: "Identity token dispatched to your mobile device." });
     } catch (error: any) {
       setAuthError(error.code);
-      if (error.code === 'auth/unauthorized-domain') setShowTroubleshoot(true);
       toast({ variant: "destructive", title: "Mobile Verification Error", description: error.message });
     } finally {
       setLoading(false);
@@ -235,13 +226,18 @@ export default function LoginPage() {
                   <DialogTitle className="text-2xl font-headline font-bold text-white flex items-center gap-3">
                     <ShieldCheck className="w-6 h-6 text-primary" /> Security Diagnostics
                   </DialogTitle>
-                  <DialogDescription className="text-sm italic">Owner Setup: Whitelist these domains in Firebase Console to enable access.</DialogDescription>
+                  <DialogDescription className="text-sm italic">Owner Setup: Add these domains to your Firebase settings to enable login.</DialogDescription>
                 </DialogHeader>
                 <div className="space-y-4">
                   <div className="space-y-2">
                     {authorizedDomains.map(domain => (
                       <div key={domain} className="flex items-center justify-between p-3 bg-black/40 rounded-xl border border-white/5 group hover:border-primary/30 transition-all">
-                        <code className="text-[10px] font-mono text-primary truncate">{domain}</code>
+                        <div className="flex flex-col">
+                           <code className="text-[10px] font-mono text-primary truncate">{domain}</code>
+                           <span className="text-[8px] text-muted-foreground uppercase font-bold tracking-tight">
+                             {domain.includes('tech') ? 'Primary' : (domain === 'localhost' ? 'Testing' : 'Default')}
+                           </span>
+                        </div>
                         <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-primary/10" onClick={() => copyToClipboard(domain)}>
                           <Copy className="w-3.5 h-3.5" />
                         </Button>
@@ -251,12 +247,7 @@ export default function LoginPage() {
                   <div className="grid gap-2 pt-2">
                     <Button className="w-full h-12 rounded-xl bg-red-600 hover:bg-red-700 text-[10px] font-bold uppercase tracking-widest" asChild>
                       <a href="https://console.firebase.google.com/project/studio-9489287013-59986/authentication/settings" target="_blank">
-                        Step 1: Authorized Domains <ExternalLink className="ml-2 w-3 h-3" />
-                      </a>
-                    </Button>
-                    <Button variant="outline" className="w-full h-12 rounded-xl border-white/10 text-[10px] font-bold uppercase tracking-widest" asChild>
-                      <a href="https://console.firebase.google.com/project/studio-9489287013-59986/authentication/providers" target="_blank">
-                        Step 2: Enable Providers <ExternalLink className="ml-2 w-3 h-3" />
+                        Open Auth Settings <ExternalLink className="ml-2 w-3 h-3" />
                       </a>
                     </Button>
                   </div>
