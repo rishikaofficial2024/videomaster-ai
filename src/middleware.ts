@@ -3,8 +3,6 @@
  * with Next.js 'output: export' which is required for Capacitor mobile builds.
  * 
  * Route protection is handled client-side via the <AuthGuard /> component 
- * in sensitive route layouts.
+ * in sensitive route layouts (e.g., /dashboard, /editor).
  */
-export const config = {
-  unstable_allowMiddleware: false,
-};
+export {};
