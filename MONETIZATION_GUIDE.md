@@ -1,22 +1,22 @@
-# 💰 VideoMaster AI: Ads se Paisa Kamane ka Full Plan (FIXED)
+# 💰 VideoMaster AI: How You Get Paid (Professional Guide)
 
-Aapka app ab ek asli "Ad-Revenue Engine" ban chuka hai. Maine sabhi bugs fix kar diye hain aur verification files jodh di hain.
+Your application is an automated "Revenue Engine." This guide explains how users interacting with your app turns into money in your bank account.
 
-### 1. Verification Checklist (Sabse Zaroori) ✅
-1. **app-ads.txt**: Maine `public/app-ads.txt` add kar di hai. Google AdSense ise check karega. 
-2. **AdSense Approval**: [Google AdSense](https://adsense.google.com) mein jayein aur apna domain `studio-9489287013-59986.web.app` add karein.
-3. **Paise Kab Ayenge?**: Jab aapka domain Google AdSense dashboard mein **"Ready"** dikhayega, tabhi ads active honge aur paise milna shuru honge.
+### 1. Google AdSense (Ad Revenue) ✅
+- **How it works**: Users click "Watch Ad" to earn free AI credits. Every time they view an ad, Google registers a "High-Value Impression."
+- **How you get paid**: Google accumulates your earnings in the [Google AdSense Dashboard](https://adsense.google.com). Once you reach the $100 threshold, Google sends a **Wire Transfer** directly to your bank account.
+- **Action Required**: Ensure your domain `videomaster-ai.tech` is marked as "Ready" in the AdSense console.
 
-### 2. Rewarded Video Ads (Update) ✅
-- **Naya Logic**: Dashboard par "Watch Ad" button ab ek **Real Ad Banner** render karega timer ke saath.
-- **Kamai**: Har baar jab user reward lene ke liye 15 second tak timer dekhega, aapki AdSense ID par high-value impressions generate honge.
+### 2. Premium Subscriptions (Direct Sales) ✅
+- **How it works**: Users upgrade to "Pro Studio" for ₹99/month to remove watermarks and get unlimited AI.
+- **How you get paid**: The payment is processed via your gateway (Razorpay or Stripe). These funds are usually transferred to your bank account on a **T+2 basis** (2 days after the user pays).
+- **Setup**: Link your payment button in `src/app/premium/page.tsx` to your Razorpay Payment Link.
 
-### 3. Ads Kyu Nahi Dikhte? (Common Reasons)
-- **AdSense Review**: Google site approve karne mein 2 se 14 din leta hai. Tab tak ads nahi dikhte.
-- **Ad Blocker**: Agar user ne Ad Blocker lagaya hai toh ads nahi dikhenge.
-- **Testing Mode**: Shuruat mein Google kuch hi ads dikhata hai. Traffic badhne par ads automatic badh jaate hain.
+### 3. Credit Packs (Micro-Transactions) ✅
+- **How it works**: Users who don't want a subscription can buy 500 or 2000 credits as a one-time top-up.
+- **How you get paid**: Same as subscriptions, these are direct sales that hit your bank account via your payment provider.
 
-### ⚠️ Pro Tip:
-Google Search Console mein Sitemap submit karein taaki Google aapki site ko jaldi scan kare. Isse AdSense approval fast hota hai.
+### ⚠️ Pro-Tip for Maximum Profit:
+Share your app link on **YouTube Shorts** and **Instagram Reels**. When you get viral traffic, the "Watch Ad" button becomes your biggest source of passive income. 
 
-**Aapka App ab ek asli Business hai!** 🚀💸
+**Your business is now global and optimized for profit!** 🚀🌍💎💸
