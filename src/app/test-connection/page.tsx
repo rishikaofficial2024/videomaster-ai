@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect } from "react";
@@ -7,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { 
   CheckCircle2, XCircle, Loader2, Database, 
   Zap, Key, ArrowLeft, ShieldCheck, Sparkles, 
-  Activity, Network, Globe, UserCheck, ArrowRight
+  Activity, Network, Globe, UserCheck, ArrowRight, ShieldAlert
 } from "lucide-react";
 import { useAuth, useFirestore, useUser } from "@/firebase";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
@@ -25,7 +26,8 @@ export default function TestConnectionPage() {
     auth: "pending",
     ai_key: "pending",
     ads_txt: "pending",
-    session: "pending"
+    session: "pending",
+    app_check: "pending"
   });
   const [latency, setLatency] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
@@ -40,7 +42,8 @@ export default function TestConnectionPage() {
       auth: "testing",
       ai_key: "testing",
       ads_txt: "testing",
-      session: "testing"
+      session: "testing",
+      app_check: "testing"
     });
 
     // 1. Test Firebase Config
@@ -69,10 +72,13 @@ export default function TestConnectionPage() {
       setStatus(prev => ({ ...prev, firestore: "error" }));
     }
 
-    // 6. AI Key Check (Check if env var is defined)
+    // 6. App Check Check
+    setStatus(prev => ({ ...prev, app_check: firebaseConfig.appCheckSiteKey ? "success" : "error" }));
+
+    // 7. AI Key Check
     setStatus(prev => ({ ...prev, ai_key: "success" })); 
 
-    // 7. Test ads.txt availability
+    // 8. Test ads.txt
     try {
       const res = await fetch('/app-ads.txt');
       setStatus(prev => ({ ...prev, ads_txt: res.ok ? "success" : "error" }));
@@ -135,8 +141,8 @@ export default function TestConnectionPage() {
                   { label: "Firebase Gateway", sub: "Cloud Handshake", id: status.config, icon: Key },
                   { label: "Firestore DB", sub: "Data Synchronization", id: status.firestore, icon: Database },
                   { label: "User Session", sub: "Auth Sync Status", id: status.session, icon: UserCheck },
+                  { label: "App Check", sub: "Bot Protection", id: status.app_check, icon: ShieldCheck },
                   { label: "Gemini AI Engine", sub: "Neural Processing", id: status.ai_key, icon: Sparkles },
-                  { label: "Edge Auth Service", sub: "Security Protocol", id: status.auth, icon: ShieldCheck },
                   { label: "AdSense Verification", sub: "app-ads.txt check", id: status.ads_txt, icon: Globe }
                 ].map((item, i) => (
                   <div key={i} className="flex items-center justify-between p-5 bg-white/5 rounded-[2rem] border border-white/5 group hover:border-primary/20 transition-all">
@@ -167,25 +173,17 @@ export default function TestConnectionPage() {
               <Card className="rounded-[3rem] bg-indigo-500/5 border-indigo-500/10 p-10 space-y-8">
                  <div className="flex items-center gap-4">
                     <div className="p-3 bg-indigo-500/10 rounded-2xl">
-                       <Activity className="w-6 h-6 text-indigo-400" />
+                       <ShieldAlert className="w-6 h-6 text-indigo-400" />
                     </div>
-                    <h4 className="text-xl font-bold font-headline">Neural Status</h4>
+                    <h4 className="text-xl font-bold font-headline">Security Protocol</h4>
                  </div>
-                 <div className="space-y-6">
-                    <div className="flex justify-between text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
-                       <span>CPU Load</span>
-                       <span className="text-emerald-500">Normal</span>
-                    </div>
-                    <div className="h-2 w-full bg-white/5 rounded-full overflow-hidden">
-                       <div className="h-full bg-emerald-500 w-[12%] animate-pulse" />
-                    </div>
-                    <div className="flex justify-between text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
-                       <span>AI Sync Accuracy</span>
-                       <span className="text-primary">99.9%</span>
-                    </div>
-                    <div className="h-2 w-full bg-white/5 rounded-full overflow-hidden">
-                       <div className="h-full bg-primary w-[99%]" />
-                    </div>
+                 <div className="space-y-4">
+                    <p className="text-xs text-muted-foreground leading-relaxed italic">
+                       Your dashboard shows unverified requests. To fix this, you must follow the <b>SECURITY_SETUP_GUIDE.md</b> and provide your ReCaptcha Site Key.
+                    </p>
+                    <Button variant="outline" className="w-full h-12 rounded-xl border-indigo-500/20 text-indigo-400 font-bold text-[10px] uppercase tracking-widest" asChild>
+                       <Link href="/SECURITY_SETUP_GUIDE.md">View Security Guide</Link>
+                    </Button>
                  </div>
               </Card>
 
@@ -195,11 +193,8 @@ export default function TestConnectionPage() {
                     <h4 className="text-xs font-bold uppercase tracking-widest text-emerald-400">Global Optimization</h4>
                  </div>
                  <p className="text-xs text-muted-foreground leading-relaxed italic">
-                    Your application is fully optimized for the <b>.tech</b> ecosystem. Metadata and SEO parameters are synced with <b>videomaster-ai.tech</b>.
+                    All neural links are optimized for <b>videomaster-ai.tech</b>.
                  </p>
-                 <Button variant="outline" className="w-full h-12 rounded-xl border-emerald-500/20 text-emerald-400 font-bold text-[10px] uppercase tracking-widest hover:bg-emerald-500/10" asChild>
-                    <a href="https://console.firebase.google.com/project/studio-9489287013-59986/authentication/settings" target="_blank">Sync Custom Domain <ArrowRight className="ml-2 w-3 h-3" /></a>
-                 </Button>
               </Card>
            </div>
         </div>
