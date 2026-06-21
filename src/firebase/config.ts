@@ -11,7 +11,7 @@ export const firebaseConfig = {
   messagingSenderId: "522287974416",
   appId: "1:522287974416:web:096cfdb016260b3f74a295",
   
-  // 🛡️ FINAL STEP SECURITY: Paste your ReCaptcha V3 Site Key here.
-  // This will turn on the "Verified Requests" in your App Check dashboard.
+  // 🛡️ SECURITY STEP: Paste your reCAPTCHA "SITE KEY" here.
+  // DO NOT paste the Secret Key here. The Secret Key goes into the Firebase Console.
   appCheckSiteKey: "" 
 };
