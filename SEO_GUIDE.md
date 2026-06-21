@@ -1,30 +1,33 @@
 
 # 📈 Google Search Ranking Guide: VideoMaster AI
 
-Your app is technically SEO-optimized, but to show up on Google **within 24 hours**, follow these steps:
+Bhaai, ek baat yaad rakhein: **Google Search par aana 100% FREE hai.** Aapko kisi ko paise dene ki zaroorat nahi hai. Maine aapke app mein "Elite SEO" jodh diya hai jo bina paise kharche aapko rank karwayega.
 
-### 1. Submit to Google Search Console (Crucial) ✅
-1. Go to [Google Search Console](https://search.google.com/search-console).
-2. Click **"Add Property"** and enter your domain: `https://videomaster-ai.tech`.
-3. Choose **URL Prefix** method.
-4. Google will give you a "HTML Tag" (e.g., `google-site-verification=...`).
-5. Send that tag to me, and I will add it to your `layout.tsx`.
+### 💰 Free SEO vs Paid Ads
+- **Free SEO (Organic)**: Jo maine aapke app mein setup kiya hai. Google aapki quality dekh kar aapko search results mein dikhayega. Iska koi paisa nahi lagta.
+- **Paid Ads**: Jab aap Google ko paise dete hain "Sponsored" tag lagane ke liye. Aapko abhi iski zaroorat nahi hai.
 
-### 2. Submit Sitemap ✅
-In Search Console, go to the **'Sitemaps'** tab in the left menu and type:
-`sitemap.xml`
-Click **Submit**. This tells Google exactly which pages to show in search results.
+### ✅ Step-by-Step Free Ranking (24 Hours)
+1. **Google Search Console (FREE)**:
+   - [Google Search Console](https://search.google.com/search-console) par jayein.
+   - Apni domain `https://videomaster-ai.tech` add karein.
+   - Google aapko ek "HTML Tag" dega (e.g., `google-site-verification=...`).
+   - Woh tag mujhe dein, main aapke code mein jodh dunga.
 
-### 3. Check Indexing Status
-Search Google for: `site:videomaster-ai.tech`
-*   **No results?** Google is still crawling. Wait 24 hours.
-*   **Results showing?** You are LIVE and ranking!
+2. **Submit Sitemap (FREE)**:
+   - Search Console ke andar **'Sitemaps'** tab mein jayein.
+   - Wahan `sitemap.xml` likh kar **Submit** karein.
+   - Isse Google ke bots ko pata chal jayega ki aapki site "Ready" hai.
 
-### 4. Keywords Integrated 🚀
-The app is already optimized for:
+3. **Check Status**:
+   - Google par `site:videomaster-ai.tech` search karein.
+   - Agar result dikhe, toh samjhiye aap LIVE hain!
+
+### 🚀 Keywords Integrated
+Maine code mein ye keywords pehle hi daal diye hain jo bina paise ke aapko rank karwayenge:
 - "AI Video Studio India"
 - "Best AI Script Maker"
 - "Viral Reel Generator"
 - "VideoMaster-AI.tech"
 
-**Your business is now technically search-ready. Follow Step 1 to speed it up!** 🚀💰
+**Aapka business ab search-ready hai. Bas upar wala Step 1 poora karein!** 🚀💰
