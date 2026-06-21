@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, useEffect, useRef } from "react";
@@ -49,7 +48,7 @@ export default function EditorPage() {
   const [projectId, setProjectId] = useState<string | null>(projectIdFromUrl);
   const [isNewProject, setIsNewProject] = useState(!projectIdFromUrl);
   
-  const [title, setTitle] = useState("Untitled Project");
+  const [title, setTitle] = useState("Untitled Masterpiece");
   const [isPlaying, setIsPlaying] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -83,7 +82,7 @@ export default function EditorPage() {
 
   useEffect(() => {
     if (project) {
-      setTitle(project.title || "Untitled Project");
+      setTitle(project.title || "Untitled Masterpiece");
       setVideoData(project.videoDataUri || null);
       setAudioData(project.audioDataUri || null);
       setThumbnailUrl(project.thumbnailUrl || null);
@@ -104,8 +103,8 @@ export default function EditorPage() {
     if ((profile?.credits ?? 0) < cost) {
       toast({
         variant: "destructive",
-        title: "Insufficient Credits",
-        description: `You need ${cost} credits for this action. Watch an ad or upgrade to Pro for more.`,
+        title: "Credit Balance Low",
+        description: `This operation requires ${cost} credits. Please watch an ad or upgrade to Pro to continue.`,
       });
       return false;
     }
@@ -186,20 +185,20 @@ export default function EditorPage() {
     }
     
     handleSave({ mediaAssets: updatedAssets });
-    toast({ title: "Asset Imported", description: `${file.name} added to library.` });
+    toast({ title: "Resource Imported", description: `"${file.name}" added to project library.` });
   };
 
   const handleGenerateScript = async () => {
     if (!scriptTopic || !checkCredits(2)) return;
     setIsProcessing(true);
-    setProcessingMessage("Generating viral script...");
+    setProcessingMessage("Neural Script Engineering...");
     try {
       const result = await generateAiScript({ topic: scriptTopic, platform: 'YouTube' });
       deductCredits(2);
       handleSave({ aiNotes: result.script });
-      toast({ title: "Script Ready", description: "Your script has been added to the AI tab." });
+      toast({ title: "Script Engineered", description: "Viral strategy added to the AI tab." });
     } catch (e: any) {
-      toast({ variant: "destructive", title: "AI Error", description: e.message });
+      toast({ variant: "destructive", title: "Neural Sync Error", description: e.message });
     } finally {
       setIsProcessing(false);
     }
@@ -208,15 +207,15 @@ export default function EditorPage() {
   const handleGenerateVideo = async () => {
     if (!videoPrompt || !checkCredits(20)) return;
     setIsProcessing(true);
-    setProcessingMessage("Rendering cinematic AI clip...");
+    setProcessingMessage("Cinematic Render Initiated...");
     try {
       const result = await generateAiVideo({ prompt: videoPrompt });
       setVideoData(result.videoDataUri);
       deductCredits(20);
       handleSave({ videoDataUri: result.videoDataUri });
-      toast({ title: "Clip Rendered", description: "Your AI clip is now on the timeline." });
+      toast({ title: "Visual Assets Ready", description: "The AI cinematic clip has been added to your timeline." });
     } catch (e: any) {
-      toast({ variant: "destructive", title: "Rendering Error", description: e.message });
+      toast({ variant: "destructive", title: "Render Protocol Error", description: e.message });
     } finally {
       setIsProcessing(false);
     }
@@ -246,17 +245,17 @@ export default function EditorPage() {
               className="bg-transparent font-bold text-lg focus:outline-none w-64 truncate text-white border-b border-transparent focus:border-primary/50 transition-all"
             />
             <span className="text-[10px] font-bold text-emerald-500/60 uppercase tracking-widest">
-              {isSaving ? "Syncing..." : "Sync Completed"}
+              {isSaving ? "Syncing State..." : "Cloud Sync Verified"}
             </span>
           </div>
         </div>
         <div className="flex items-center gap-3">
           <Button variant="ghost" size="sm" className="rounded-xl font-bold gap-2 text-muted-foreground hover:text-white" onClick={() => handleSave()}>
-            Save State
+            Checkpoint Save
           </Button>
-          <Button className="h-10 px-8 rounded-xl font-bold bg-primary shadow-xl shadow-primary/20 hover:scale-105 active:scale-95 transition-all group">
+          <Button className="h-10 px-8 rounded-2xl font-bold bg-primary shadow-xl shadow-primary/20 hover:scale-105 active:scale-95 transition-all group">
             {profile?.isPremium ? <Download className="w-4 h-4 mr-2" /> : <Lock className="w-3 h-3 mr-2 text-white/50" />}
-            {profile?.isPremium ? "Export Master" : "Unlock 4K Export"}
+            {profile?.isPremium ? "Master Production" : "Unlock 4K Master"}
           </Button>
         </div>
       </div>
@@ -264,11 +263,11 @@ export default function EditorPage() {
       <div className="flex-1 flex overflow-hidden">
         <div className="w-20 bg-[#0a0d14] border-r border-white/5 flex flex-col items-center py-8 gap-10">
            {[
-             { icon: Film, id: 'media', label: 'Media' },
+             { icon: Film, id: 'media', label: 'Media Hub' },
              { icon: Wand2, id: 'ai', label: 'AI Suite' },
-             { icon: Music, id: 'audio', label: 'Audio' },
-             { icon: Type, id: 'text', label: 'Titles' },
-             { icon: Palette, id: 'style', label: 'Styles' }
+             { icon: Music, id: 'audio', label: 'Audio Node' },
+             { icon: Type, id: 'text', label: 'Title Lab' },
+             { icon: Palette, id: 'style', label: 'FX Styles' }
            ].map((item) => (
              <button 
                key={item.id} 
@@ -293,7 +292,7 @@ export default function EditorPage() {
            {activeTab === 'media' && (
              <div className="space-y-6">
                 <div className="flex items-center justify-between">
-                   <h3 className="text-sm font-bold uppercase tracking-widest text-white">Project Assets</h3>
+                   <h3 className="text-sm font-bold uppercase tracking-widest text-white">Project Library</h3>
                    <Button variant="ghost" size="icon" className="rounded-full" onClick={() => fileInputRef.current?.click()}>
                       <Plus className="w-4 h-4" />
                    </Button>
@@ -308,13 +307,13 @@ export default function EditorPage() {
                 />
 
                 <Button 
-                  className="w-full h-32 border-2 border-dashed border-white/10 rounded-[2rem] bg-white/5 hover:bg-white/10 flex flex-col items-center justify-center gap-3 transition-all"
+                  className="w-full h-32 border-2 border-dashed border-white/10 rounded-[2.5rem] bg-white/5 hover:bg-white/10 flex flex-col items-center justify-center gap-3 transition-all"
                   onClick={() => fileInputRef.current?.click()}
                 >
                    <div className="p-3 bg-primary/20 rounded-full text-primary">
                       <Upload className="w-6 h-6" />
                    </div>
-                   <span className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Import Asset</span>
+                   <span className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Import Resource</span>
                 </Button>
 
                 <div className="grid grid-cols-2 gap-4">
@@ -354,44 +353,44 @@ export default function EditorPage() {
                 <div className="space-y-4">
                    <div className="flex items-center gap-2 mb-2">
                       <Sparkles className="w-4 h-4 text-primary" />
-                      <h4 className="text-[10px] font-bold uppercase tracking-widest text-primary">AI Creative Engine</h4>
+                      <h4 className="text-[10px] font-bold uppercase tracking-widest text-primary">AI Neural Core</h4>
                    </div>
                    
-                   <div className="p-4 bg-white/5 rounded-3xl border border-white/5 space-y-4">
-                      <label className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest ml-1">Video Topic</label>
+                   <div className="p-4 bg-white/5 rounded-[2rem] border border-white/5 space-y-4">
+                      <label className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest ml-1">Viral Narrative Topic</label>
                       <textarea 
                          className="w-full bg-black/40 border border-white/5 rounded-2xl p-4 text-xs h-24 outline-none focus:border-primary/50 transition-all resize-none"
-                         placeholder="Describe your video theme..."
+                         placeholder="Describe your production theme..."
                          value={scriptTopic}
                          onChange={(e) => setScriptTopic(e.target.value)}
                       />
-                      <Button className="w-full h-11 rounded-xl font-bold bg-primary/20 text-primary hover:bg-primary/30" onClick={handleGenerateScript} disabled={isProcessing}>
-                         {isProcessing ? <Loader2 className="w-4 h-4 animate-spin" /> : "Write Script (2 Cr)"}
+                      <Button className="w-full h-11 rounded-2xl font-bold bg-primary/20 text-primary hover:bg-primary/30" onClick={handleGenerateScript} disabled={isProcessing}>
+                         {isProcessing ? <Loader2 className="w-4 h-4 animate-spin" /> : "Engineer Script (2 Cr)"}
                       </Button>
                    </div>
 
-                   <div className="p-4 bg-indigo-500/5 rounded-3xl border border-indigo-500/10 space-y-4">
-                      <label className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest ml-1">Scene Description</label>
+                   <div className="p-4 bg-indigo-500/5 rounded-[2rem] border border-indigo-500/10 space-y-4">
+                      <label className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest ml-1">Visual Protocol Prompt</label>
                       <textarea 
                          className="w-full bg-black/40 border border-indigo-500/10 rounded-2xl p-4 text-xs h-24 outline-none focus:border-indigo-500/50 transition-all resize-none"
-                         placeholder="Describe the visuals for AI generation..."
+                         placeholder="Detail the visuals for cinematic AI generation..."
                          value={videoPrompt}
                          onChange={(e) => setVideoPrompt(e.target.value)}
                       />
-                      <Button className="w-full h-11 rounded-xl font-bold bg-indigo-600 shadow-lg shadow-indigo-600/20" onClick={handleGenerateVideo} disabled={isProcessing}>
-                         {isProcessing ? <Loader2 className="w-4 h-4 animate-spin" /> : "Generate Video (20 Cr)"}
+                      <Button className="w-full h-11 rounded-2xl font-bold bg-indigo-600 shadow-lg shadow-indigo-600/20" onClick={handleGenerateVideo} disabled={isProcessing}>
+                         {isProcessing ? <Loader2 className="w-4 h-4 animate-spin" /> : "Render Cinematic (20 Cr)"}
                       </Button>
                    </div>
                 </div>
 
                 {!profile?.isPremium && (
                   <Link href="/premium">
-                    <Card className="p-6 bg-gradient-to-br from-primary/20 to-indigo-500/20 border-primary/30 rounded-[2rem] hover:scale-105 transition-all group">
+                    <Card className="p-6 bg-gradient-to-br from-primary/20 to-indigo-500/20 border-primary/30 rounded-[2.5rem] hover:scale-105 transition-all group">
                        <div className="flex items-center gap-3 mb-2">
                           <Crown className="w-5 h-5 text-primary group-hover:rotate-12 transition-transform" />
-                          <h5 className="text-xs font-bold uppercase tracking-widest">Go Pro Studio</h5>
+                          <h5 className="text-xs font-bold uppercase tracking-widest">Master Pro Studio</h5>
                        </div>
-                       <p className="text-[9px] text-muted-foreground italic font-medium">Remove watermark & get unlimited AI credits.</p>
+                       <p className="text-[9px] text-muted-foreground italic font-medium">Remove watermarks & unlock infinite AI processing.</p>
                     </Card>
                   </Link>
                 )}
@@ -407,11 +406,11 @@ export default function EditorPage() {
                      <div className="w-20 h-20 bg-white/5 rounded-full flex items-center justify-center mx-auto">
                         <VideoIcon className="w-10 h-10" />
                      </div>
-                     <p className="text-[10px] font-bold uppercase tracking-[0.3em]">Studio Ready</p>
+                     <p className="text-[10px] font-bold uppercase tracking-[0.3em]">Studio Engine Ready</p>
                   </div>
                 ) : (
                   <>
-                    {thumbnailUrl && !isPlaying && <img src={thumbnailUrl} alt="Preview" className="w-full h-full object-cover" />}
+                    {thumbnailUrl && !isPlaying && <img src={thumbnailUrl} alt="Visual Preview" className="w-full h-full object-cover" />}
                     {videoData && (
                       <video 
                         ref={videoRef}
@@ -423,7 +422,7 @@ export default function EditorPage() {
                     )}
                     {!profile?.isPremium && (
                       <div className="absolute top-8 right-8 bg-black/40 backdrop-blur-xl px-4 py-1.5 rounded-full border border-white/10">
-                         <span className="text-[8px] font-bold text-white/40 uppercase tracking-[0.3em]">VideoMaster AI Watermark</span>
+                         <span className="text-[8px] font-bold text-white/40 uppercase tracking-[0.3em]">Master AI Watermark</span>
                       </div>
                     )}
                   </>
@@ -451,7 +450,7 @@ export default function EditorPage() {
                  <div className="flex items-center gap-6">
                     <div className="flex items-center gap-2">
                        <Film className="w-4 h-4 text-primary" />
-                       <span className="text-[10px] font-bold uppercase tracking-widest text-white">Timeline</span>
+                       <span className="text-[10px] font-bold uppercase tracking-widest text-white">Production Timeline</span>
                     </div>
                     <div className="h-4 w-px bg-white/10" />
                     <span className="text-[10px] font-mono text-muted-foreground">00:00:00 / 00:00:15</span>
@@ -464,21 +463,21 @@ export default function EditorPage() {
 
               <div className="flex-1 overflow-x-auto p-4 space-y-3 scrollbar-hide">
                  <div className="h-14 bg-white/[0.03] rounded-2xl flex items-center px-4 relative group border border-dashed border-white/5">
-                    <span className="absolute left-4 -top-5 text-[8px] font-bold text-primary/40 uppercase tracking-widest">Master Video 1</span>
+                    <span className="absolute left-4 -top-5 text-[8px] font-bold text-primary/40 uppercase tracking-widest">Primary Video Track</span>
                     {videoData && (
                       <div className="h-10 w-48 bg-primary/20 border border-primary/30 rounded-xl flex items-center px-4 gap-3 cursor-grab active:cursor-grabbing">
                          <div className="w-8 h-6 bg-black/40 rounded-md" />
-                         <span className="text-[9px] font-bold text-white uppercase truncate">Clip_Asset_AI</span>
+                         <span className="text-[9px] font-bold text-white uppercase truncate">Master_AI_Resource</span>
                       </div>
                     )}
                  </div>
 
                  <div className="h-14 bg-white/[0.03] rounded-2xl flex items-center px-4 relative group border border-dashed border-white/5">
-                    <span className="absolute left-4 -top-5 text-[8px] font-bold text-indigo-400/40 uppercase tracking-widest">Master Audio 1</span>
+                    <span className="absolute left-4 -top-5 text-[8px] font-bold text-indigo-400/40 uppercase tracking-widest">Primary Audio Track</span>
                     {audioData && (
                       <div className="h-10 w-64 bg-indigo-500/20 border border-indigo-500/30 rounded-xl flex items-center px-4 gap-3 cursor-grab">
                          <Music className="w-3 h-3 text-indigo-400" />
-                         <span className="text-[9px] font-bold text-white uppercase truncate">Voiceover_Layer</span>
+                         <span className="text-[9px] font-bold text-white uppercase truncate">Neural_Voiceover_Node</span>
                       </div>
                     )}
                  </div>
@@ -490,7 +489,7 @@ export default function EditorPage() {
            <div className="space-y-6">
               <div className="flex items-center gap-2">
                  <Settings2 className="w-4 h-4 text-emerald-400" />
-                 <h4 className="text-[10px] font-bold uppercase tracking-widest text-emerald-400">Inspector</h4>
+                 <h4 className="text-[10px] font-bold uppercase tracking-widest text-emerald-400">Resource Inspector</h4>
               </div>
               
               <div className="space-y-8">
@@ -504,7 +503,7 @@ export default function EditorPage() {
 
                  <div className="space-y-4">
                     <div className="flex justify-between items-center">
-                       <span className="text-[10px] font-bold text-muted-foreground uppercase">Gain</span>
+                       <span className="text-[10px] font-bold text-muted-foreground uppercase">Gain Profile</span>
                        <span className="text-[10px] font-mono text-primary">80%</span>
                     </div>
                     <Slider defaultValue={[80]} max={100} step={1} className="w-full" />
@@ -512,11 +511,11 @@ export default function EditorPage() {
 
                  <div className="grid grid-cols-2 gap-4 pt-4">
                     <div className="space-y-2">
-                       <span className="text-[9px] font-bold text-muted-foreground uppercase ml-1">Speed</span>
+                       <span className="text-[9px] font-bold text-muted-foreground uppercase ml-1">Playback Speed</span>
                        <div className="h-11 bg-white/5 rounded-xl border border-white/5 flex items-center justify-center font-bold text-xs">1.0x</div>
                     </div>
                     <div className="space-y-2">
-                       <span className="text-[9px] font-bold text-muted-foreground uppercase ml-1">Scale</span>
+                       <span className="text-[9px] font-bold text-muted-foreground uppercase ml-1">Scaling Mode</span>
                        <div className="h-11 bg-white/5 rounded-xl border border-white/5 flex items-center justify-center font-bold text-xs">Aspect Fit</div>
                     </div>
                  </div>
@@ -526,12 +525,12 @@ export default function EditorPage() {
            <div className="pt-8 border-t border-white/5 space-y-6">
               <div className="flex items-center gap-2">
                  <Layout className="w-4 h-4 text-indigo-400" />
-                 <h4 className="text-[10px] font-bold uppercase tracking-widest text-indigo-400">Canvas</h4>
+                 <h4 className="text-[10px] font-bold uppercase tracking-widest text-indigo-400">Production Canvas</h4>
               </div>
               <div className="grid grid-cols-3 gap-2">
                  {['9:16', '16:9', '1:1'].map((ratio) => (
                    <Button key={ratio} variant="outline" className={cn(
-                     "h-12 rounded-xl text-[10px] font-bold border-white/5",
+                     "h-12 rounded-2xl text-[10px] font-bold border-white/5",
                      ratio === '9:16' && "border-primary/50 text-primary bg-primary/5"
                    )}>
                      {ratio}
@@ -551,7 +550,7 @@ export default function EditorPage() {
               </div>
               <div className="space-y-2">
                 <p className="text-2xl font-bold font-headline text-white tracking-tight">{processingMessage}</p>
-                <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.4em] animate-pulse">Encoding Digital Assets</p>
+                <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.4em] animate-pulse">Encoding Digital Resources</p>
               </div>
            </div>
         </div>

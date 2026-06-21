@@ -51,9 +51,7 @@ export default function Dashboard() {
   const { data: projects, loading: projectsLoading } = useCollection(projectsQuery);
 
   const handleWatchAd = () => {
-    if (!userProfileRef) return;
-    
-    if (adLoading) return;
+    if (!userProfileRef || adLoading) return;
 
     setAdLoading(true);
     setShowAdOverlay(true);
@@ -90,7 +88,7 @@ export default function Dashboard() {
     }, 15000);
   };
 
-  const handleClaimTrial = async () => {
+  const handleClaimTrial = () => {
     if (!userProfileRef || claimingTrial) return;
     setClaimingTrial(true);
     
@@ -102,21 +100,22 @@ export default function Dashboard() {
       updatedAt: serverTimestamp(),
     };
 
-    try {
-      await updateDoc(userProfileRef, trialData);
-      toast({
-        title: "Pro Trial Activated!",
-        description: "You now have full access to elite AI features for 7 days.",
-      });
-    } catch (e: any) {
-      toast({
-        variant: "destructive",
-        title: "Trial Claim Error",
-        description: "A sync error occurred. Please refresh the page and try again.",
-      });
-    } finally {
-      setClaimingTrial(false);
-    }
+    updateDoc(userProfileRef, trialData)
+      .then(() => {
+        toast({
+          title: "Pro Trial Activated!",
+          description: "You now have full access to elite AI features for 7 days.",
+        });
+      })
+      .catch(async (e: any) => {
+        const permissionError = new FirestorePermissionError({
+          path: userProfileRef.path,
+          operation: 'update',
+          requestResourceData: trialData,
+        } satisfies SecurityRuleContext);
+        errorEmitter.emit('permission-error', permissionError);
+      })
+      .finally(() => setClaimingTrial(false));
   };
 
   const copyPushCommand = () => {
@@ -154,7 +153,7 @@ export default function Dashboard() {
             </div>
             
             <div className="w-full max-w-xl space-y-8 animate-in zoom-in-95 duration-500">
-              <div className="aspect-video md:aspect-[16/9] bg-[#0a0d14] rounded-[2rem] border-2 border-primary/20 flex flex-col items-center justify-center p-6 space-y-6 relative overflow-hidden shadow-2xl">
+              <div className="aspect-video md:aspect-[16/9] bg-[#0a0d14] rounded-[2.5rem] border-2 border-primary/20 flex flex-col items-center justify-center p-6 space-y-6 relative overflow-hidden shadow-2xl">
                 <div className="absolute inset-0 bg-gradient-to-t from-primary/10 to-transparent" />
                 
                 <div className="w-full h-full flex flex-col items-center justify-center">
@@ -195,10 +194,10 @@ export default function Dashboard() {
             <h1 className="text-6xl md:text-8xl font-headline font-bold tracking-tighter text-white">
               Hello, <span className="text-primary italic">{user?.displayName?.split(' ')[0] || 'Creator'}</span>
             </h1>
-            <p className="text-muted-foreground text-xl font-medium max-w-xl italic">Welcome to your Master Creative Studio.</p>
+            <p className="text-muted-foreground text-xl font-medium max-w-xl italic">Welcome to your Elite Creative Studio.</p>
           </div>
           
-          <div className="flex items-center gap-8 bg-[#0a0d14]/90 backdrop-blur-3xl p-6 rounded-[3rem] border border-white/5 shadow-2xl blue-glow">
+          <div className="flex items-center gap-8 bg-[#0a0d14]/90 backdrop-blur-3xl p-6 rounded-[3.5rem] border border-white/5 shadow-2xl blue-glow">
              <div className="flex flex-col px-8 border-r border-white/10">
                 <span className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground mb-2">AI Processing Credits</span>
                 <div className="flex items-center gap-3">
@@ -208,7 +207,7 @@ export default function Dashboard() {
                   </span>
                 </div>
              </div>
-             <Button className="rounded-[2rem] h-20 font-bold px-12 shadow-2xl shadow-primary/40 transition-all hover:scale-105 active:scale-95 text-lg" asChild>
+             <Button className="rounded-[2.5rem] h-20 font-bold px-12 shadow-2xl shadow-primary/40 transition-all hover:scale-105 active:scale-95 text-lg" asChild>
                 <Link href="/editor"><Plus className="w-6 h-6 mr-3" /> New Production</Link>
              </Button>
           </div>
@@ -326,7 +325,7 @@ export default function Dashboard() {
                <Button 
                  onClick={handleWatchAd} 
                  disabled={adLoading || (profile?.isPremium && profile?.subscriptionPlan !== 'free' && !profile?.trialClaimed)}
-                 className="h-24 px-16 rounded-[2rem] bg-primary font-bold shadow-2xl shadow-primary/40 text-xl hover:scale-105 transition-all group active:scale-95"
+                 className="h-24 px-16 rounded-[2.5rem] bg-primary font-bold shadow-2xl shadow-primary/40 text-xl hover:scale-105 transition-all group active:scale-95"
                >
                   {adLoading ? <Loader2 className="animate-spin mr-3 w-8 h-8" /> : <SquarePlay className="w-8 h-8 mr-4 group-hover:animate-pulse" />}
                   {adLoading ? `Securely Processing...` : "Watch Ad & Claim Credits"}
