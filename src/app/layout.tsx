@@ -24,8 +24,8 @@ export const metadata: Metadata = {
     canonical: '/',
   },
   verification: {
-    // 🔑 SEO VERIFICATION: Replace 'YOUR_VERIFICATION_CODE_HERE' with your code from Google Search Console.
-    google: 'YOUR_VERIFICATION_CODE_HERE',
+    // 🔑 STEP 1: Replace 'YOUR_GOOGLE_CODE' with the code from Google Search Console (HTML Tag method)
+    google: 'YOUR_GOOGLE_CODE_HERE',
   },
   openGraph: {
     title: 'VideoMaster AI - The Ultimate Production Studio for Modern Creators',
