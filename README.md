@@ -16,12 +16,9 @@ Your application is now **100% COMPLETE**, **SECURE**, and **READY-TO-EARN**. Th
 ## 💰 Monetization & Ads
 - **Publisher ID**: `ca-pub-8946933317699938`
 - **Verification**: `app-ads.txt` is live. Register your site at [Google AdSense](https://adsense.google.com) for approval.
-- **Rewarded System**: Users can watch ads to earn free credits (+20 per ad).
+- **Revenue Tracking**: Visit the **Admin Panel** to see your earnings.
 
-## 📈 Tech Stack
-- **AI Engine**: Genkit (Gemini Pro & Flash)
-- **Frontend**: Next.js 15 + ShadCN UI
-- **Backend**: Firebase (Auth & Firestore)
-- **Mobile**: Capacitor (Android APK)
+## 🌐 Domain Setup
+- **Free Domain Guide**: [Check FREE_DOMAIN_GUIDE.md](./FREE_DOMAIN_GUIDE.md) for instructions on how to get a custom domain for $0.
 
 **Your Business is now LIVE and fully optimized!** 🚀💸🎬

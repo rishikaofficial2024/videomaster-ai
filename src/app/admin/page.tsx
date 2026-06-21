@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { 
   Users, Coins, ShieldCheck, Lock, Loader2, Banknote, TrendingUp,
-  Activity, CheckCircle2, Star, ShieldAlert, MoreVertical, Landmark, PieChart, DollarSign
+  Activity, CheckCircle2, Star, ShieldAlert, MoreVertical, Landmark, PieChart, DollarSign, Globe
 } from "lucide-react";
 import { useFirestore, useCollection, useMemoFirebase } from "@/firebase";
 import { collection, query, limit, orderBy, getCountFromServer, doc, updateDoc, increment, getDocs } from "firebase/firestore";
@@ -27,6 +27,7 @@ import {
   DropdownMenuTrigger 
 } from "@/components/ui/dropdown-menu";
 import { useToast } from "@/hooks/use-toast";
+import Link from "next/link";
 
 export default function AdminDashboard() {
   const db = useFirestore();
@@ -59,19 +60,15 @@ export default function AdminDashboard() {
     try {
       const usersSnap = await getDocs(collection(db, "users"));
       let revenue = 0;
-      let adClicks = 0;
       
       usersSnap.forEach((doc) => {
         const data = doc.data();
         revenue += (data.totalSpent || 0);
-        // Estimate: Every 20 credits watched via ad roughly contributes ₹0.50 to ₹1.00 in ad revenue
-        // We track this via a simple multiplier for the dashboard
         if (data.isPremium && data.subscriptionPlan === 'pro') revenue += 99;
         if (data.isPremium && data.subscriptionPlan === 'business') revenue += 499;
       });
       
       setTotalRevenue(revenue);
-      // Simulated Ad Revenue logic (based on average high-value impressions in India)
       setAdRevenueEstimate(revenue * 0.15); 
     } catch (e) {
       console.error("Revenue calculation failed", e);
@@ -91,7 +88,7 @@ export default function AdminDashboard() {
       const userRef = doc(db, "users", userId);
       await updateDoc(userRef, data);
       toast({ title: "Updated!", description: "User settings updated successfully." });
-      calculateTotalRevenue(); // Refresh stats
+      calculateTotalRevenue(); 
     } catch (e: any) {
       toast({ variant: "destructive", title: "Error", description: e.message });
     } finally {
@@ -126,8 +123,7 @@ export default function AdminDashboard() {
           </div>
         </header>
 
-        {/* Financial Overview Cards */}
-        <section className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <section className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <Card className="rounded-[3rem] bg-[#0a0d14] border-emerald-500/30 p-8 blue-glow relative overflow-hidden group">
             <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:scale-110 transition-transform">
               <Landmark className="w-24 h-24" />
@@ -151,17 +147,29 @@ export default function AdminDashboard() {
               <h3 className="text-4xl font-bold font-headline text-white">₹{adRevenueEstimate.toFixed(2)}</h3>
               <div className="flex items-center gap-2 text-[10px] text-muted-foreground font-bold">
                 <Activity className="w-3 h-3 text-primary" /> 
-                PROJECTED FROM AD IMPRESSIONS
+                PROJECTED EARNINGS
               </div>
             </div>
           </Card>
 
-          <Card className="rounded-[3rem] bg-[#0a0d14] border-indigo-500/30 p-8 blue-glow relative overflow-hidden group text-center flex flex-col items-center justify-center">
+          <Card className="rounded-[3rem] bg-[#0a0d14] border-indigo-500/30 p-8 blue-glow relative overflow-hidden group">
+            <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:scale-110 transition-transform">
+              <Globe className="w-24 h-24" />
+            </div>
+            <div className="space-y-4 relative z-10">
+              <p className="text-[10px] font-bold text-indigo-400 uppercase tracking-widest">Domain Center</p>
+              <h3 className="text-2xl font-bold font-headline text-white">Free Domain</h3>
+              <Button variant="link" className="p-0 h-auto text-[10px] font-bold text-indigo-400 uppercase tracking-widest" asChild>
+                <Link href="/FREE_DOMAIN_GUIDE.md">How to get for $0?</Link>
+              </Button>
+            </div>
+          </Card>
+
+          <Card className="rounded-[3rem] bg-[#0a0d14] border-white/10 p-8 blue-glow relative overflow-hidden group text-center flex flex-col items-center justify-center">
              <div className="space-y-4">
-               <h4 className="text-sm font-bold text-indigo-400 uppercase tracking-widest">Payout Status</h4>
-               <p className="text-xs text-muted-foreground italic px-4">Earnings are processed via Razorpay & AdSense monthly.</p>
-               <Button variant="outline" className="rounded-full border-indigo-500/20 text-xs font-bold" asChild>
-                 <a href="/BANK_TRANSFER_GUIDE.md">Withdrawal Setup</a>
+               <h4 className="text-sm font-bold text-white uppercase tracking-widest">Withdrawal</h4>
+               <Button variant="outline" className="rounded-full border-white/10 text-xs font-bold" asChild>
+                 <a href="/BANK_TRANSFER_GUIDE.md">Setup Bank Account</a>
                </Button>
              </div>
           </Card>
@@ -172,7 +180,7 @@ export default function AdminDashboard() {
               <CardHeader className="p-8 border-b border-white/5 flex flex-row items-center justify-between">
                 <div>
                   <CardTitle className="text-xl font-headline font-bold">User Management</CardTitle>
-                  <CardDescription>Directly modify roles, credits, and subscription status.</CardDescription>
+                  <CardDescription>Modify roles, credits, and subscription status.</CardDescription>
                 </div>
                 <Users className="w-6 h-6 text-muted-foreground opacity-20" />
               </CardHeader>
