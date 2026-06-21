@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { 
   Video, ArrowRight, Sparkles, Wand2, 
   Download, Play, Zap, Cpu, BarChart3, Crown, Check, ShieldCheck,
-  Search, Globe, MessageSquare, Award, Gift, Coins, SquarePlay
+  Search, Globe, MessageSquare, Award, Gift, Coins
 } from "lucide-react";
 import Image from "next/image";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
@@ -119,7 +119,7 @@ export default function LandingPage() {
                   <div className="premium-card p-2 aspect-video bg-black/40 overflow-hidden blue-glow flex items-center justify-center">
                      <div className="text-center space-y-4">
                         <div className="w-20 h-20 bg-primary/20 rounded-full flex items-center justify-center mx-auto animate-pulse">
-                           <SquarePlay className="w-10 h-10 text-primary" />
+                           <Play className="w-10 h-10 text-primary" />
                         </div>
                         <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.4em]">Rewarded Impression Active</p>
                         <div className="w-48 h-1 bg-white/10 rounded-full overflow-hidden mx-auto">

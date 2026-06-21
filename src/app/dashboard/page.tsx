@@ -5,8 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { 
   Plus, Sparkles, Loader2, Coins, 
-  Video, Gift, SquarePlay, Star, ArrowRight, CheckCircle2, X, Crown, Terminal as TerminalIcon, Copy, ShieldCheck, Zap, Calendar, BrainCircuit,
-  Tornado, Share2, MessageCircle, Instagram, Twitter
+  Video, Gift, Play, Star, ArrowRight, CheckCircle2, X, Crown, Terminal as TerminalIcon, Copy, ShieldCheck, Zap, Calendar, BrainCircuit,
+  Tornado, Share2, MessageCircle, Instagram, Twitter, Smartphone
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -178,6 +178,28 @@ export default function Dashboard() {
           </div>
         </header>
 
+        {/* 📱 ANDROID BUILD QUICK ACCESS */}
+        <section>
+          <Card className="rounded-[3.5rem] bg-emerald-500/5 border-emerald-500/20 p-10 relative overflow-hidden group">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-12 relative z-10">
+               <div className="flex items-center gap-8 text-center md:text-left">
+                  <div className="w-20 h-20 bg-emerald-500/10 rounded-[2rem] flex items-center justify-center border border-emerald-500/20 group-hover:rotate-12 transition-transform">
+                     <Smartphone className="w-10 h-10 text-emerald-400" />
+                  </div>
+                  <div className="space-y-2">
+                     <h3 className="text-3xl font-bold font-headline text-white">Download My APK</h3>
+                     <p className="text-muted-foreground font-medium italic">Get your Android App file directly from the Cloud.</p>
+                  </div>
+               </div>
+               <Button className="h-16 px-12 rounded-2xl bg-emerald-600 hover:bg-emerald-700 font-bold gap-3 shadow-2xl shadow-emerald-600/20" asChild>
+                  <Link href="/build-status">
+                    <Download className="w-5 h-5" /> Download App (Hindi Guide)
+                  </Link>
+               </Button>
+            </div>
+          </Card>
+        </section>
+
         {/* 📢 VIRAL EXPANSION HUB */}
         <section>
           <Card className="rounded-[3.5rem] bg-indigo-500/5 border-indigo-500/20 p-10 relative overflow-hidden group">
@@ -236,7 +258,7 @@ export default function Dashboard() {
                 disabled={adLoading}
                 className="h-16 w-full rounded-2xl bg-primary font-bold shadow-xl shadow-primary/20 hover:scale-[1.02]"
               >
-                 {adLoading ? <Loader2 className="animate-spin mr-2" /> : <SquarePlay className="w-5 h-5 mr-2" />}
+                 {adLoading ? <Loader2 className="animate-spin mr-2" /> : <Play className="w-5 h-5 mr-2" />}
                  Claim +20 Credits
               </Button>
            </Card>

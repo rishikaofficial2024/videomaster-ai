@@ -9,7 +9,7 @@ import {
   Zap, Key, ArrowLeft, ShieldCheck, Sparkles, 
   Activity, Network, Globe, UserCheck, ShieldAlert,
   Search, Lock, Cpu, AlertTriangle, ExternalLink, Copy, TrendingUp,
-  Tornado, Box, Globe2, Smartphone
+  Tornado, Box, Globe2, Smartphone, Download
 } from "lucide-react";
 import { useAuth, useFirestore, useUser } from "@/firebase";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
@@ -192,17 +192,19 @@ export default function TestConnectionPage() {
                     <h4 className="text-xl font-bold font-headline">Android Build Node</h4>
                  </div>
                  <div className="space-y-6">
-                    <p className="text-xs text-muted-foreground leading-relaxed italic">
-                       Manual Android build karne ke liye instructions yahan dekhein:
+                    <p className="text-xs text-muted-foreground leading-relaxed italic text-center">
+                       Download your APK or transfer files to Android Studio.
                     </p>
-                    <Button className="w-full h-12 rounded-xl bg-emerald-600 hover:bg-emerald-700 font-bold text-[10px] uppercase tracking-widest gap-2" asChild>
-                       <Link href="/docs/ANDROID_STUDIO_GUIDE.md">
-                          Open Build Guide <ExternalLink size={14} />
+                    <Button className="w-full h-16 rounded-xl bg-emerald-600 hover:bg-emerald-700 font-bold gap-2 shadow-xl shadow-emerald-600/20" asChild>
+                       <Link href="/build-status">
+                          <Download size={18} /> My Build Status (Hindi)
                        </Link>
                     </Button>
-                    <p className="text-[9px] text-muted-foreground italic leading-tight">
-                       GitHub repo se ZIP download karke Android Studio mein open karein.
-                    </p>
+                    <Button variant="outline" className="w-full h-12 rounded-xl border-emerald-500/30 text-emerald-400 font-bold text-[10px] uppercase tracking-widest gap-2" asChild>
+                       <Link href="/docs/ANDROID_STUDIO_GUIDE.md">
+                          Transfer Guide <ExternalLink size={14} />
+                       </Link>
+                    </Button>
                  </div>
               </Card>
 
