@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogTrigger } from "@/components/ui/dialog";
 import { Video, Chrome, Facebook, ArrowLeft, Loader2, ExternalLink, Github, Copy, HelpCircle, ShieldCheck, AlertCircle, AlertTriangle, CheckCircle2 } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
@@ -30,7 +31,6 @@ export default function LoginPage() {
   const [otp, setOtp] = useState("");
   const [confirmationResult, setConfirmationResult] = useState<any>(null);
   const [authError, setAuthError] = useState<string | null>(null);
-  const [currentHostname, setCurrentHostname] = useState("");
   const [showTroubleshoot, setShowTroubleshoot] = useState(false);
   
   const router = useRouter();
@@ -38,12 +38,6 @@ export default function LoginPage() {
   const returnUrl = searchParams.get("returnUrl") || "/dashboard";
   const { toast } = useToast();
   const auth = useAuth();
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      setCurrentHostname(window.location.hostname);
-    }
-  }, []);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -54,11 +48,13 @@ export default function LoginPage() {
       router.push(returnUrl);
     } catch (error: any) {
       setAuthError(error.code);
-      if (error.code === 'auth/unauthorized-domain' || error.code === 'auth/operation-not-allowed') setShowTroubleshoot(true);
+      if (error.code === 'auth/unauthorized-domain' || error.code === 'auth/operation-not-allowed') {
+        setShowTroubleshoot(true);
+      }
       toast({
         variant: "destructive",
         title: "Access Denied",
-        description: error.message || "Invalid credentials or unauthorized node.",
+        description: error.code === 'auth/unauthorized-domain' ? "Domain not authorized. Check Diagnostics below." : "Invalid credentials or unauthorized node.",
       });
     } finally {
       setLoading(false);
@@ -84,7 +80,7 @@ export default function LoginPage() {
       toast({
         variant: "destructive",
         title: "Social Sync Error",
-        description: "A configuration block is preventing access. Please see the troubleshooting card.",
+        description: error.code === 'auth/unauthorized-domain' ? "This domain is not yet authorized in Firebase." : "Configuration block detected.",
       });
     } finally {
       setLoading(false);
@@ -145,51 +141,6 @@ export default function LoginPage() {
       </div>
 
       <div className="w-full max-w-md space-y-8 animate-in fade-in duration-700">
-        {(authError || showTroubleshoot) && (
-          <Card className="border-red-500/40 bg-red-500/5 backdrop-blur-3xl rounded-[2.5rem] overflow-hidden shadow-2xl">
-            <div className="bg-red-500 h-1.5 w-full" />
-            <CardHeader className="pb-2">
-              <div className="flex items-center gap-3">
-                <AlertTriangle className="w-5 h-5 text-red-500" />
-                <CardTitle className="text-sm font-bold uppercase tracking-widest text-red-500">Permanent Fix Required</CardTitle>
-              </div>
-              <CardDescription className="text-xs italic text-white/60">
-                Owners: You must add these domains to your Firebase settings to enable login:
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <div className="flex flex-col gap-2">
-                  {authorizedDomains.map(domain => (
-                    <div key={domain} className="flex items-center justify-between p-2.5 bg-black/40 rounded-xl border border-white/5 group hover:border-primary/30 transition-all">
-                      <code className="text-[10px] font-mono text-primary truncate">{domain}</code>
-                      <Button variant="ghost" size="icon" className="h-7 w-7 rounded-lg hover:bg-primary/10" onClick={() => copyToClipboard(domain)}>
-                        <Copy className="w-3.5 h-3.5" />
-                      </Button>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <div className="grid grid-cols-1 gap-2 pt-2">
-                <Button className="w-full h-12 rounded-xl bg-red-600 hover:bg-red-700 text-[10px] font-bold uppercase tracking-wider shadow-lg shadow-red-600/20" asChild>
-                  <a href="https://console.firebase.google.com/project/studio-9489287013-59986/authentication/settings" target="_blank">
-                    Step 2: Add Domains to Firebase <ExternalLink className="ml-2 w-3.5 h-3.5" />
-                  </a>
-                </Button>
-                <Button variant="outline" className="w-full h-12 rounded-xl border-white/10 hover:bg-white/5 text-[10px] font-bold uppercase tracking-wider" asChild>
-                  <a href="https://console.firebase.google.com/project/studio-9489287013-59986/authentication/providers" target="_blank">
-                    Step 3: Enable Providers <ExternalLink className="ml-2 w-3.5 h-3.5" />
-                  </a>
-                </Button>
-              </div>
-              <div className="flex items-center gap-2 p-3 bg-emerald-500/10 rounded-xl border border-emerald-500/20">
-                 <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
-                 <p className="text-[9px] text-emerald-500 font-bold uppercase">Login will work instantly after adding these.</p>
-              </div>
-            </CardContent>
-          </Card>
-        )}
-
         <Card className="border-primary/10 bg-[#0a0d14]/80 backdrop-blur-3xl shadow-2xl rounded-[3.5rem] overflow-hidden blue-glow">
           <div className="h-2 bg-primary w-full shadow-[0_0_20px_rgba(59,130,246,0.5)]" />
           <CardHeader className="text-center pt-10 pb-4">
@@ -272,9 +223,46 @@ export default function LoginPage() {
             <div className="text-xs text-center text-muted-foreground font-medium italic">
               New to Studio? <Link href="/signup" className="text-primary font-bold hover:underline not-italic">Register Identity</Link>
             </div>
-            <Button variant="ghost" className="text-[10px] font-bold uppercase tracking-widest gap-2 text-muted-foreground hover:text-white" onClick={() => setShowTroubleshoot(!showTroubleshoot)}>
-              <HelpCircle className="w-3 h-3" /> Connection Diagnostics
-            </Button>
+            
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant="ghost" className="text-[10px] font-bold uppercase tracking-widest gap-2 text-muted-foreground hover:text-white">
+                  <HelpCircle className="w-3 h-3" /> Connection Diagnostics
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="bg-[#0a0d14] border-white/10 rounded-[2.5rem] p-10 max-w-md">
+                <DialogHeader className="mb-6">
+                  <DialogTitle className="text-2xl font-headline font-bold text-white flex items-center gap-3">
+                    <ShieldCheck className="w-6 h-6 text-primary" /> Security Diagnostics
+                  </DialogTitle>
+                  <DialogDescription className="text-sm italic">Owner Setup: Whitelist these domains in Firebase Console to enable access.</DialogDescription>
+                </DialogHeader>
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    {authorizedDomains.map(domain => (
+                      <div key={domain} className="flex items-center justify-between p-3 bg-black/40 rounded-xl border border-white/5 group hover:border-primary/30 transition-all">
+                        <code className="text-[10px] font-mono text-primary truncate">{domain}</code>
+                        <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-primary/10" onClick={() => copyToClipboard(domain)}>
+                          <Copy className="w-3.5 h-3.5" />
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="grid gap-2 pt-2">
+                    <Button className="w-full h-12 rounded-xl bg-red-600 hover:bg-red-700 text-[10px] font-bold uppercase tracking-widest" asChild>
+                      <a href="https://console.firebase.google.com/project/studio-9489287013-59986/authentication/settings" target="_blank">
+                        Step 1: Authorized Domains <ExternalLink className="ml-2 w-3 h-3" />
+                      </a>
+                    </Button>
+                    <Button variant="outline" className="w-full h-12 rounded-xl border-white/10 text-[10px] font-bold uppercase tracking-widest" asChild>
+                      <a href="https://console.firebase.google.com/project/studio-9489287013-59986/authentication/providers" target="_blank">
+                        Step 2: Enable Providers <ExternalLink className="ml-2 w-3 h-3" />
+                      </a>
+                    </Button>
+                  </div>
+                </div>
+              </DialogContent>
+            </Dialog>
           </CardFooter>
         </Card>
       </div>

@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogTrigger } from "@/components/ui/dialog";
 import { Video, Chrome, Facebook, Loader2, AlertCircle, Copy, ExternalLink, ArrowLeft, HelpCircle, ShieldCheck, AlertTriangle } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { 
@@ -29,19 +30,11 @@ export default function SignupPage() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [authError, setAuthError] = useState<string | null>(null);
-  const [currentHostname, setCurrentHostname] = useState("");
-  const [showTroubleshoot, setShowTroubleshoot] = useState(false);
   
   const router = useRouter();
   const { toast } = useToast();
   const auth = useAuth();
   const db = useFirestore();
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      setCurrentHostname(window.location.hostname);
-    }
-  }, []);
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -67,7 +60,6 @@ export default function SignupPage() {
         usageStats: { totalVideos: 0, aiGenerations: 0 }
       };
 
-      // Elite Production: Avoid awaiting mutations for Optimistic UI responsiveness
       setDoc(userRef, userData).catch(async (serverError) => {
         const permissionError = new FirestorePermissionError({
           path: userRef.path,
@@ -79,9 +71,12 @@ export default function SignupPage() {
 
       router.push("/dashboard");
     } catch (error: any) {
-      setAuthError(error.code || error.message);
-      if (error.code === 'auth/unauthorized-domain') setShowTroubleshoot(true);
-      toast({ variant: "destructive", title: "Registration Error", description: error.message });
+      setAuthError(error.code);
+      toast({ 
+        variant: "destructive", 
+        title: "Registration Error", 
+        description: error.code === 'auth/unauthorized-domain' ? "Security check required. See diagnostics." : error.message 
+      });
     } finally {
       setLoading(false);
     }
@@ -119,8 +114,7 @@ export default function SignupPage() {
 
       router.push("/dashboard");
     } catch (error: any) {
-      setAuthError(error.code || error.message);
-      if (error.code === 'auth/unauthorized-domain') setShowTroubleshoot(true);
+      setAuthError(error.code);
       toast({ variant: "destructive", title: "Social Sync Error", description: error.message });
     } finally {
       setLoading(false);
@@ -129,7 +123,7 @@ export default function SignupPage() {
 
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
-    toast({ title: "Copied!", description: "Domain copied to your clipboard." });
+    toast({ title: "Copied!" });
   };
 
   return (
@@ -141,34 +135,6 @@ export default function SignupPage() {
       </div>
 
       <div className="w-full max-w-md space-y-8 animate-in fade-in duration-700">
-        {(authError === "auth/unauthorized-domain" || showTroubleshoot) && (
-          <Card className="border-red-500/40 bg-red-500/5 backdrop-blur-3xl rounded-[2.5rem] overflow-hidden shadow-2xl">
-            <div className="bg-red-500 h-1 w-full" />
-            <CardHeader className="pb-2">
-              <div className="flex items-center gap-3">
-                <AlertTriangle className="w-5 h-5 text-red-500" />
-                <CardTitle className="text-sm font-bold uppercase tracking-widest text-red-500">Security Gate Blocked</CardTitle>
-              </div>
-              <CardDescription className="text-xs italic text-white/60">
-                Please authorize this domain in your Firebase Console to enable registration.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex items-center gap-2 p-3 bg-black/40 rounded-xl border border-white/10">
-                <code className="flex-1 text-[10px] font-mono text-primary truncate text-left">{currentHostname}</code>
-                <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => copyToClipboard(currentHostname)}>
-                  <Copy className="w-3 h-3" />
-                </Button>
-              </div>
-              <Button className="w-full h-11 rounded-xl bg-red-600 font-bold text-[10px] uppercase tracking-wider" asChild>
-                <a href="https://console.firebase.google.com/project/studio-9489287013-59986/authentication/settings" target="_blank">
-                  Open Auth Settings <ExternalLink className="ml-2 w-3 h-3" />
-                </a>
-              </Button>
-            </CardContent>
-          </Card>
-        )}
-
         <Card className="border-primary/10 bg-[#0a0d14]/80 backdrop-blur-3xl shadow-2xl rounded-[3rem] overflow-hidden blue-glow">
           <div className="h-2 bg-primary w-full" />
           <CardHeader className="text-center pt-10 pb-4">
@@ -219,6 +185,31 @@ export default function SignupPage() {
             <div className="text-xs text-center text-muted-foreground font-medium">
               Already have an account? <Link href="/login" className="text-primary font-bold hover:underline">Sign in instead</Link>
             </div>
+            
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant="ghost" className="text-[10px] font-bold uppercase tracking-widest gap-2 text-muted-foreground hover:text-white">
+                  <HelpCircle className="w-3 h-3" /> Connection Diagnostics
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="bg-[#0a0d14] border-white/10 rounded-[2.5rem] p-10 max-w-md text-white">
+                <DialogHeader className="mb-6">
+                  <DialogTitle className="text-2xl font-headline font-bold">Security Diagnostics</DialogTitle>
+                  <DialogDescription className="italic">Owner: Add these domains to Firebase to enable Registration.</DialogDescription>
+                </DialogHeader>
+                <div className="space-y-3">
+                   {["videomaster-ai.tech", "localhost"].map(d => (
+                     <div key={d} className="flex items-center justify-between p-3 bg-black/40 rounded-xl border border-white/5">
+                        <code className="text-[10px] font-mono text-primary">{d}</code>
+                        <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => copyToClipboard(d)}><Copy className="w-3.5 h-3.5" /></Button>
+                     </div>
+                   ))}
+                   <Button className="w-full mt-4 bg-red-600 hover:bg-red-700" asChild>
+                     <a href="https://console.firebase.google.com/project/studio-9489287013-59986/authentication/settings" target="_blank">Open Firebase Settings</a>
+                   </Button>
+                </div>
+              </DialogContent>
+            </Dialog>
           </CardFooter>
         </Card>
       </div>
