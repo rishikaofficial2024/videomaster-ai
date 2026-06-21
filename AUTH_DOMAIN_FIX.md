@@ -1,7 +1,8 @@
 
+
 # 🔑 STOP Login Errors: The Permanent Fix
 
-If you see an error during login, it means your domain (e.g., `videomaster-ai.tech` or the project URL) is not "whitelisted" in the Firebase security settings. Follow these 2 steps to fix it forever:
+If you see an error during login, it means your domain (e.g., `videomaster-ai.tech` or the preview URL) is not "whitelisted" in the Firebase security settings. Follow these 2 steps to fix it forever:
 
 ### Step 1: Copy your current Domain
 1. Open your app's **Login Page**.
