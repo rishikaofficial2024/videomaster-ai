@@ -6,7 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { 
   Plus, Sparkles, Loader2, Coins, 
   Video, Gift, Play, Star, ArrowRight, CheckCircle2, X, Crown, Terminal as TerminalIcon, Copy, ShieldCheck, Zap, Calendar, BrainCircuit,
-  Tornado, Share2, MessageCircle, Instagram, Twitter, Smartphone, AlertTriangle
+  Tornado, Share2, MessageCircle, Instagram, Twitter, Smartphone, AlertTriangle, Download
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -110,15 +110,23 @@ export default function Dashboard() {
       <Navbar />
       <main className="max-w-7xl mx-auto p-6 space-y-16">
         
-        {/* 🚨 EMERGENCY TERMINAL LOCATOR STRIP */}
-        <div className="bg-red-600 p-4 rounded-2xl flex items-center justify-between shadow-2xl animate-bounce">
-           <div className="flex items-center gap-4 text-white font-bold">
-              <AlertTriangle className="w-6 h-6" />
-              <span className="text-sm md:text-lg">Terminal Nahi Mil Raha? (Click Here)</span>
+        {/* 🚨 PULSING TERMINAL LOCATOR STRIP */}
+        <div className="relative group overflow-hidden rounded-[2.5rem]">
+           <div className="absolute inset-0 bg-red-600 animate-pulse opacity-50" />
+           <div className="relative bg-red-600/90 p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-2xl border-2 border-red-400/50 backdrop-blur-xl">
+              <div className="flex items-center gap-6 text-white">
+                 <div className="p-4 bg-white/20 rounded-full animate-bounce">
+                    <AlertTriangle className="w-8 h-8" />
+                 </div>
+                 <div className="space-y-1">
+                    <h2 className="text-2xl font-black font-headline uppercase tracking-tight">Terminal Dhoondne Mein Help Chahiye?</h2>
+                    <p className="text-sm font-bold opacity-80 italic">Aap 3 din se dhoond rahe hain, isliye maine naya MAP banaya hai.</p>
+                 </div>
+              </div>
+              <Button size="lg" className="bg-white text-red-600 hover:bg-white/90 font-black rounded-[2rem] h-16 px-12 text-xl shadow-2xl group-hover:scale-105 transition-all" asChild>
+                 <Link href="/terminal-guide">Dikhaiye Terminal Kahan Hai <ArrowRight className="ml-3 w-6 h-6" /></Link>
+              </Button>
            </div>
-           <Button variant="secondary" className="font-bold rounded-xl" asChild>
-              <Link href="/terminal-guide">Find Terminal Now</Link>
-           </Button>
         </div>
 
         {showAdOverlay && (
@@ -217,7 +225,7 @@ export default function Dashboard() {
             <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-indigo-500/10 blur-[80px]" />
             <div className="flex flex-col md:flex-row items-center justify-between gap-12 relative z-10">
                <div className="flex items-center gap-8 text-center md:text-left">
-                  <div className="w-20 h-20 bg-indigo-500/20 rounded-[2rem] flex items-center justify-center border border-indigo-500/20 group-hover:rotate-12 transition-transform">
+                  <div className="w-20 h-20 bg-indigo-500/20 rounded-[2rem] flex items-center justify-center border border-emerald-500/20 group-hover:rotate-12 transition-transform">
                      <Share2 className="w-10 h-10 text-indigo-400" />
                   </div>
                   <div className="space-y-2">
