@@ -1,7 +1,6 @@
-
 'use server';
 /**
- * @fileOverview A professional Genkit AI chat assistant for creative guidance.
+ * @fileOverview A professional Genkit AI chat assistant for creative guidance and viral growth.
  */
 
 import { ai, geminiModel, z } from '@/ai/genkit';
@@ -29,7 +28,15 @@ const aiChatFlow = ai.defineFlow(
   async (input) => {
     const { text } = await ai.generate({
       model: geminiModel,
-      system: 'You are the VideoMaster AI Assistant. You help content creators with viral video ideas, high-conversion scripts, and social media growth strategies. Maintain a professional, energetic, and highly encouraging tone. Always aim to provide actionable tips for virality.',
+      system: `You are the VideoMaster AI Growth Strategist. 
+      Your mission is to help content creators:
+      1. Generate viral video ideas.
+      2. Write high-conversion scripts.
+      3. GROW their audience by sharing this app.
+      
+      Maintain a professional, energetic, and highly encouraging tone. 
+      If asked about "how to grow" or "how to get more credits", encourage them to use the Viral Expansion Hub in the dashboard to share the app with friends.
+      Always aim to provide actionable tips for virality.`,
       prompt: input.message,
     });
 
