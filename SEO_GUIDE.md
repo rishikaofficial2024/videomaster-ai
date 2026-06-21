@@ -1,24 +1,30 @@
 
-# 📈 Google Search Mein Top Par Kaise Aayein? (Manual Speedup)
+# 📈 Google Search Ranking Guide: VideoMaster AI
 
-Aapka app technically SEO-ready hai, lekin Google ko "khabar" dene ke liye ye steps follow karein. Isse aapka app **24 ghante** mein search results mein dikhne lagega.
+Your app is technically SEO-optimized, but to show up on Google **within 24 hours**, follow these steps:
 
-### 1. Google Search Console (Sabse Fast Tarika) ✅
-1. [Google Search Console](https://search.google.com/search-console) par login karein.
-2. **"Add Property"** par click karein aur apna URL dalein: `https://studio-9489287013-59986.web.app`.
-3. **Verification**: Google aapko ek `meta` tag dega (jaise `google-site-verification=...`). Ise mujhe batayein, main `src/app/layout.tsx` mein jodh dunga.
-4. **Sitemap Submit**: Search Console mein left menu mein 'Sitemaps' par jayein aur `sitemap.xml` likh kar submit karein. 
+### 1. Submit to Google Search Console (Crucial) ✅
+1. Go to [Google Search Console](https://search.google.com/search-console).
+2. Click **"Add Property"** and enter your domain: `https://videomaster-ai.tech`.
+3. Choose **URL Prefix** method.
+4. Google will give you a "HTML Tag" (e.g., `google-site-verification=...`).
+5. Send that tag to me, and I will add it to your `layout.tsx`.
 
-### 2. Google Search Mein Check Kaise Karein?
-Google par jaakar search karein: `site:studio-9489287013-59986.web.app`
-*   Agar results dikhte hain: Matlab indexing shuru ho gayi hai! ✅
-*   Agar "No results" dikhta hai: Matlab Google crawl kar raha hai, 24 ghante wait karein.
+### 2. Submit Sitemap ✅
+In Search Console, go to the **'Sitemaps'** tab in the left menu and type:
+`sitemap.xml`
+Click **Submit**. This tells Google exactly which pages to show in search results.
 
-### 3. Ranking Badhane ke Tips 🚀
-- **Backlinks**: Apne app ka link apne YouTube channel, Instagram bio aur Facebook groups mein share karein. Google ko jab bahar se traffic dikhta hai, toh wo site ko top par lata hai.
-- **Keywords**: Maine app mein pehle se hi ye keywords jodh diye hain:
-  - "AI Video Studio India"
-  - "Best AI Script Maker"
-  - "Viral Reel Generator"
+### 3. Check Indexing Status
+Search Google for: `site:videomaster-ai.tech`
+*   **No results?** Google is still crawling. Wait 24 hours.
+*   **Results showing?** You are LIVE and ranking!
 
-**Aapka Business ab live aur search-ready hai!** 🚀💰
+### 4. Keywords Integrated 🚀
+The app is already optimized for:
+- "AI Video Studio India"
+- "Best AI Script Maker"
+- "Viral Reel Generator"
+- "VideoMaster-AI.tech"
+
+**Your business is now technically search-ready. Follow Step 1 to speed it up!** 🚀💰
