@@ -3,7 +3,7 @@
 import { Navbar } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Terminal, ArrowLeft, MousePointer2, Keyboard, CheckCircle2, Copy, Info } from "lucide-react";
+import { Terminal, ArrowLeft, MousePointer2, Keyboard, CheckCircle2, Copy, Info, Monitor, AlertCircle } from "lucide-react";
 import Link from "next/link";
 import { useToast } from "@/hooks/use-toast";
 
@@ -27,48 +27,41 @@ export default function TerminalGuidePage() {
             <ArrowLeft className="w-4 h-4" /> Back to Dashboard
           </Link>
           <h1 className="text-5xl md:text-7xl font-headline font-bold text-white tracking-tighter">
-            Terminal <span className="text-primary italic">Guide</span>
+            Terminal <span className="text-primary italic">Finder</span>
           </h1>
-          <p className="text-muted-foreground text-xl font-medium italic">Finding the Terminal is easy. Just follow these simple steps:</p>
+          <p className="text-muted-foreground text-xl font-medium italic">Bhaai, Terminal yahan hai! Niche diye gaye photo-steps dekhein:</p>
         </header>
 
         <section className="grid gap-8">
-          {/* Visual Help */}
-          <Card className="rounded-[3rem] bg-primary/5 border-primary/20 p-10 space-y-6 text-center blue-glow">
+          {/* 🚨 THE EMERGENCY HELP CARD */}
+          <Card className="rounded-[3rem] bg-red-500/10 border-2 border-red-500/50 p-10 space-y-6 text-center shadow-[0_0_50px_rgba(239,68,68,0.2)] animate-in zoom-in-95 duration-500">
              <div className="flex justify-center mb-4">
-                <div className="p-4 bg-primary/20 rounded-full animate-bounce">
-                   <Info className="w-10 h-10 text-primary" />
+                <div className="p-4 bg-red-500/20 rounded-full animate-pulse">
+                   <AlertCircle className="w-12 h-12 text-red-500" />
                 </div>
              </div>
-             <h3 className="text-2xl font-bold font-headline">Fastest Method (Keyboard)</h3>
-             <p className="text-muted-foreground text-lg">
-                Press <span className="text-white font-bold bg-white/10 px-3 py-1 rounded">Ctrl</span> + <span className="text-white font-bold bg-white/10 px-3 py-1 rounded">~</span> on your keyboard.
-                <br />
-                <span className="text-xs text-primary font-bold uppercase tracking-widest">(This key is right below the Esc key)</span>
+             <h3 className="text-3xl font-bold font-headline text-white">YAHAN HAI TERMINAL!</h3>
+             <p className="text-xl text-white/80 leading-relaxed">
+                Apni screen ke <span className="underline font-bold text-red-400 text-2xl">SABSE NICHE (Bottom)</span> dekhein. 
+                Wahan ek kaala box hai jismein <span className="bg-white/10 px-2 rounded font-mono">Terminal</span> likha hoga.
              </p>
+             <div className="p-4 bg-black rounded-2xl border border-white/20 flex flex-col items-center gap-4">
+                <Monitor className="w-24 h-24 text-primary opacity-40" />
+                <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.4em]">Look for the bottom panel in this window</span>
+             </div>
           </Card>
 
-          <Card className="rounded-[3rem] bg-[#0a0d14]/80 backdrop-blur-3xl border-white/5 p-10 space-y-8">
-            <div className="flex items-center gap-6">
-              <div className="w-16 h-16 bg-emerald-500/20 rounded-2xl flex items-center justify-center border border-emerald-500/30">
-                <MousePointer2 className="w-8 h-8 text-emerald-500" />
-              </div>
-              <h3 className="text-2xl font-bold font-headline">Using the Mouse</h3>
-            </div>
-            <div className="space-y-4">
-               <p className="text-muted-foreground text-lg leading-relaxed">
-                 1. Look at the <span className="text-white font-bold underline">BOTTOM</span> of your screen (Bottom Panel).
-               </p>
-               <p className="text-muted-foreground text-lg leading-relaxed">
-                 2. Click on the tab named <span className="text-white font-bold">"Terminal"</span>.
-               </p>
-               <p className="text-muted-foreground text-lg leading-relaxed">
-                 3. A command panel will open where you can type.
-               </p>
-            </div>
-            <div className="p-4 bg-black rounded-2xl border border-white/10 flex items-center justify-center">
-               <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.4em]">Look at the bottom of this window</span>
-            </div>
+          {/* Shortcut Card */}
+          <Card className="rounded-[3rem] bg-primary/5 border-primary/20 p-10 space-y-6 text-center blue-glow">
+             <h3 className="text-2xl font-bold font-headline">Sabse Tez Tarika (Keyboard)</h3>
+             <div className="flex justify-center gap-4 items-center">
+                <div className="px-6 py-4 bg-white/10 rounded-2xl border border-white/20 font-bold text-2xl shadow-xl">Ctrl</div>
+                <span className="text-3xl font-bold text-primary">+</span>
+                <div className="px-6 py-4 bg-white/10 rounded-2xl border border-white/20 font-bold text-2xl shadow-xl">~</div>
+             </div>
+             <p className="text-muted-foreground italic">
+                (Tilde key Esc key ke thik niche hoti hai)
+             </p>
           </Card>
 
           <Card className="rounded-[3rem] bg-[#0a0d14]/80 backdrop-blur-3xl border-white/5 p-10 space-y-8">
@@ -76,35 +69,29 @@ export default function TerminalGuidePage() {
               <div className="w-16 h-16 bg-primary/20 rounded-2xl flex items-center justify-center border border-primary/30">
                 <Keyboard className="w-8 h-8 text-primary" />
               </div>
-              <h3 className="text-2xl font-bold font-headline">Paste the Command</h3>
+              <h3 className="text-2xl font-bold font-headline text-white">Ab Ye Command Paste Karein</h3>
             </div>
             <div className="space-y-6">
                <p className="text-muted-foreground text-lg italic">
-                 Click the button below to copy the command, then go to the Terminal, <span className="text-white font-bold">Right Click &gt; Paste</span>, and press **Enter**.
+                 1. Niche wale button par click karke command copy karein. <br />
+                 2. Terminal mein jaakar **Right Click > Paste** karein. <br />
+                 3. **ENTER** dabayein.
                </p>
                <div className="group relative">
                  <div className="p-8 bg-black rounded-3xl border-2 border-primary/30 font-mono text-primary text-xl md:text-3xl font-bold text-center shadow-2xl flex flex-col items-center gap-6 overflow-hidden">
                    <div className="absolute inset-0 bg-primary/5 group-hover:bg-primary/10 transition-colors" />
                    <span>npm run mobile:push</span>
-                   <Button onClick={copyCommand} className="relative z-10 rounded-full h-14 px-8 font-bold gap-2">
-                     <Copy className="w-5 h-5" /> Copy Command
+                   <Button onClick={copyCommand} className="relative z-10 rounded-full h-16 px-12 font-bold gap-3 text-lg">
+                     <Copy className="w-6 h-6" /> Copy Command
                    </Button>
                  </div>
                </div>
             </div>
           </Card>
-
-          <Card className="rounded-[3rem] bg-emerald-500/5 border-emerald-500/10 p-10 text-center space-y-4">
-            <div className="flex justify-center">
-               <CheckCircle2 className="w-12 h-12 text-emerald-400" />
-            </div>
-            <h4 className="text-xl font-bold font-headline">What happens next?</h4>
-            <p className="text-sm text-muted-foreground italic">Your code will be updated on GitHub, and the APK build process will begin automatically. Your app will be live and secure.</p>
-          </Card>
         </section>
 
         <div className="text-center">
-           <Button className="h-16 px-12 rounded-2xl font-bold text-lg" asChild>
+           <Button variant="ghost" className="h-16 px-12 rounded-2xl font-bold text-muted-foreground hover:text-white" asChild>
               <Link href="/dashboard">Return to Dashboard</Link>
            </Button>
         </div>

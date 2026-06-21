@@ -6,7 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { 
   Plus, Sparkles, Loader2, Coins, 
   Video, Gift, Play, Star, ArrowRight, CheckCircle2, X, Crown, Terminal as TerminalIcon, Copy, ShieldCheck, Zap, Calendar, BrainCircuit,
-  Tornado, Share2, MessageCircle, Instagram, Twitter, Smartphone
+  Tornado, Share2, MessageCircle, Instagram, Twitter, Smartphone, AlertTriangle
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -110,6 +110,17 @@ export default function Dashboard() {
       <Navbar />
       <main className="max-w-7xl mx-auto p-6 space-y-16">
         
+        {/* 🚨 EMERGENCY TERMINAL LOCATOR STRIP */}
+        <div className="bg-red-600 p-4 rounded-2xl flex items-center justify-between shadow-2xl animate-bounce">
+           <div className="flex items-center gap-4 text-white font-bold">
+              <AlertTriangle className="w-6 h-6" />
+              <span className="text-sm md:text-lg">Terminal Nahi Mil Raha? (Click Here)</span>
+           </div>
+           <Button variant="secondary" className="font-bold rounded-xl" asChild>
+              <Link href="/terminal-guide">Find Terminal Now</Link>
+           </Button>
+        </div>
+
         {showAdOverlay && (
           <div className="fixed inset-0 z-[100] bg-black flex flex-col items-center justify-center p-6 text-center animate-in fade-in duration-300">
             <div className="absolute top-6 right-6 flex items-center gap-3 bg-white/10 px-4 py-2 rounded-full border border-white/20">
