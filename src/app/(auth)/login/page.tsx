@@ -124,7 +124,7 @@ export default function LoginPage() {
 
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
-    toast({ title: "Copied!", description: "Domain node copied to clipboard." });
+    toast({ title: "Copied!", description: "Domain copied to clipboard." });
   };
 
   return (
@@ -147,28 +147,31 @@ export default function LoginPage() {
                 <CardTitle className="text-sm font-bold uppercase tracking-widest text-red-500">Permanent Fix Required</CardTitle>
               </div>
               <CardDescription className="text-xs italic text-white/60">
-                Owners: This domain is not whitelisted in Firebase. Login will fail until you complete these steps.
+                Owners: Add these 3 domains to Firebase "Authorized domains" to fix login:
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <p className="text-[9px] font-bold text-muted-foreground uppercase ml-1">1. Copy this Domain:</p>
-                <div className="flex items-center gap-2 p-3 bg-black/40 rounded-xl border border-white/10">
-                  <code className="flex-1 text-[10px] font-mono text-primary truncate text-left">{currentHostname}</code>
-                  <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => copyToClipboard(currentHostname)}>
-                    <Copy className="w-3 h-3" />
-                  </Button>
+                <div className="flex flex-col gap-2">
+                  {["videomaster-ai.tech", "studio-9489287013-59986.web.app", "localhost"].map(domain => (
+                    <div key={domain} className="flex items-center justify-between p-2 bg-black/40 rounded-lg border border-white/5">
+                      <code className="text-[9px] font-mono text-primary truncate">{domain}</code>
+                      <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => copyToClipboard(domain)}>
+                        <Copy className="w-3 h-3" />
+                      </Button>
+                    </div>
+                  ))}
                 </div>
               </div>
               <div className="grid grid-cols-1 gap-2">
                 <Button className="w-full h-11 rounded-xl bg-red-600 hover:bg-red-700 text-[10px] font-bold uppercase tracking-wider" asChild>
                   <a href="https://console.firebase.google.com/project/studio-9489287013-59986/authentication/settings" target="_blank">
-                    Step 2: Add Domain to Firebase <ExternalLink className="ml-2 w-3 h-3" />
+                    Step 2: Add Domains to Firebase <ExternalLink className="ml-2 w-3 h-3" />
                   </a>
                 </Button>
                 <Button variant="outline" className="w-full h-11 rounded-xl border-red-500/30 text-[10px] font-bold uppercase tracking-wider" asChild>
                   <a href="https://console.firebase.google.com/project/studio-9489287013-59986/authentication/providers" target="_blank">
-                    Step 3: Enable Sign-in Providers <ExternalLink className="ml-2 w-3 h-3" />
+                    Step 3: Enable Providers <ExternalLink className="ml-2 w-3 h-3" />
                   </a>
                 </Button>
               </div>
