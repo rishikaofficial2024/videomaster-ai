@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Video, Chrome, Facebook, ArrowLeft, Loader2, ExternalLink, Github, Copy, HelpCircle, ShieldCheck, AlertCircle } from "lucide-react";
+import { Video, Chrome, Facebook, ArrowLeft, Loader2, ExternalLink, Github, Copy, HelpCircle, ShieldCheck, AlertCircle, Info } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { 
@@ -51,7 +51,8 @@ export default function LoginPage() {
       await signInWithEmailAndPassword(auth, email, password);
       router.push("/dashboard");
     } catch (error: any) {
-      setAuthError(error.code || error.message);
+      setAuthError(error.code);
+      if (error.code === 'auth/operation-not-allowed') setShowTroubleshoot(true);
       toast({
         variant: "destructive",
         title: "Authentication Failed",
@@ -77,14 +78,14 @@ export default function LoginPage() {
       console.error("Auth Error:", error.code, error.message);
       setAuthError(error.code);
       
-      if (error.code === 'auth/unauthorized-domain' || error.code === 'auth/operation-not-allowed' || error.code === 'auth/invalid-credential') {
+      if (error.code === 'auth/unauthorized-domain' || error.code === 'auth/operation-not-allowed' || error.code === 'auth/configuration-not-found') {
         setShowTroubleshoot(true);
       }
       
       toast({
         variant: "destructive",
         title: `${providerName} Connection Error`,
-        description: "Firebase configuration required. See troubleshooting details below.",
+        description: "Configuration fix required. See diagnostics below.",
       });
     } finally {
       setLoading(false);
@@ -99,10 +100,10 @@ export default function LoginPage() {
       const verifier = new RecaptchaVerifier(auth, 'recaptcha-container', { 'size': 'invisible' });
       const result = await signInWithPhoneNumber(auth, phone, verifier);
       setConfirmationResult(result);
-      toast({ title: "Verification Sent", description: "Please check your mobile device for the OTP." });
+      toast({ title: "Verification Sent", description: "Please check your mobile device." });
     } catch (error: any) {
       setAuthError(error.code);
-      if (error.code === 'auth/billing-not-enabled') setShowTroubleshoot(true);
+      if (error.code === 'auth/operation-not-allowed' || error.code === 'auth/unauthorized-domain') setShowTroubleshoot(true);
       toast({ variant: "destructive", title: "Mobile Service Error", description: error.message });
     } finally {
       setLoading(false);
@@ -124,7 +125,14 @@ export default function LoginPage() {
 
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
-    toast({ title: "Copied!", description: "Domain copied to your clipboard." });
+    toast({ title: "Copied!", description: "Domain copied to clipboard." });
+  };
+
+  const getErrorMessage = (code: string | null) => {
+    if (code === 'auth/unauthorized-domain') return "This domain is not authorized in your Firebase console.";
+    if (code === 'auth/operation-not-allowed') return "The sign-in method you tried is disabled in Firebase.";
+    if (code === 'auth/invalid-api-key') return "Firebase API Key is invalid or expired.";
+    return "A configuration error is blocking your access.";
   };
 
   return (
@@ -133,7 +141,7 @@ export default function LoginPage() {
       
       <div className="fixed top-8 left-8">
         <Link href="/" className="flex items-center gap-2 font-bold text-muted-foreground hover:text-primary transition-colors">
-          <ArrowLeft className="w-4 h-4" /> Back to Landing
+          <ArrowLeft className="w-4 h-4" /> Back to Home
         </Link>
       </div>
 
@@ -145,8 +153,8 @@ export default function LoginPage() {
               <Video className="w-8 h-8 text-white" />
             </div>
           </div>
-          <CardTitle className="text-3xl font-headline font-bold text-white">Enter Studio</CardTitle>
-          <CardDescription className="italic">Continue your cinematic creation process</CardDescription>
+          <CardTitle className="text-3xl font-headline font-bold text-white">Studio Access</CardTitle>
+          <CardDescription className="italic">Authorized personnel and creators only</CardDescription>
         </CardHeader>
 
         <CardContent className="space-y-6 px-10">
@@ -155,27 +163,30 @@ export default function LoginPage() {
               <div className="flex gap-3">
                 <ShieldCheck className="w-5 h-5 text-red-500 shrink-0" />
                 <div className="space-y-1">
-                  <p className="text-[10px] font-bold text-red-500 uppercase tracking-widest text-left">Configuration Required</p>
-                  <p className="text-[11px] text-white/70 text-left">To enable login, add this domain to your Firebase Authorized Domains:</p>
+                  <p className="text-[10px] font-bold text-red-500 uppercase tracking-widest text-left">Permanent Fix Required</p>
+                  <p className="text-[11px] text-white/70 text-left">{getErrorMessage(authError)}</p>
                 </div>
               </div>
               
-              <div className="flex items-center gap-2 p-3 bg-black/40 rounded-xl border border-white/10">
-                <code className="flex-1 text-[10px] font-mono text-primary truncate text-left">{currentHostname}</code>
-                <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => copyToClipboard(currentHostname)}>
-                  <Copy className="w-3 h-3" />
-                </Button>
+              <div className="space-y-2">
+                <p className="text-[9px] font-bold text-muted-foreground uppercase ml-1">Copy this Domain:</p>
+                <div className="flex items-center gap-2 p-3 bg-black/40 rounded-xl border border-white/10">
+                  <code className="flex-1 text-[10px] font-mono text-primary truncate text-left">{currentHostname}</code>
+                  <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => copyToClipboard(currentHostname)}>
+                    <Copy className="w-3 h-3" />
+                  </Button>
+                </div>
               </div>
               
               <div className="grid grid-cols-1 gap-2">
-                <Button className="w-full h-10 rounded-xl bg-red-600 hover:bg-red-700 text-[9px] font-bold uppercase tracking-wider" asChild>
-                  <a href="https://console.firebase.google.com/project/studio-9489287013-59986/authentication/providers" target="_blank">
-                    1. Enable Providers <ExternalLink className="ml-2 w-3 h-3" />
+                <Button className="w-full h-11 rounded-xl bg-red-600 hover:bg-red-700 text-[10px] font-bold uppercase tracking-wider" asChild>
+                  <a href="https://console.firebase.google.com/project/studio-9489287013-59986/authentication/settings" target="_blank">
+                    Step 1: Add Domain to Firebase <ExternalLink className="ml-2 w-3 h-3" />
                   </a>
                 </Button>
-                <Button variant="outline" className="w-full h-10 rounded-xl border-red-500/30 text-[9px] font-bold uppercase tracking-wider" asChild>
-                  <a href="https://console.firebase.google.com/project/studio-9489287013-59986/authentication/settings" target="_blank">
-                    2. Add Authorized Domain <ExternalLink className="ml-2 w-3 h-3" />
+                <Button variant="outline" className="w-full h-11 rounded-xl border-red-500/30 text-[10px] font-bold uppercase tracking-wider" asChild>
+                  <a href="https://console.firebase.google.com/project/studio-9489287013-59986/authentication/providers" target="_blank">
+                    Step 2: Enable All Providers <ExternalLink className="ml-2 w-3 h-3" />
                   </a>
                 </Button>
               </div>
@@ -184,21 +195,21 @@ export default function LoginPage() {
 
           <Tabs defaultValue="email" className="w-full">
             <TabsList className="grid w-full grid-cols-2 bg-white/5 rounded-2xl p-1 mb-6">
-              <TabsTrigger value="email" className="rounded-xl font-bold text-[10px] uppercase py-2.5">Email Access</TabsTrigger>
+              <TabsTrigger value="email" className="rounded-xl font-bold text-[10px] uppercase py-2.5">Credentials</TabsTrigger>
               <TabsTrigger value="phone" className="rounded-xl font-bold text-[10px] uppercase py-2.5">Mobile OTP</TabsTrigger>
             </TabsList>
 
             <TabsContent value="email" className="space-y-4">
               <div className="space-y-2">
-                <Label className="text-[10px] uppercase tracking-widest text-primary ml-1 text-left block">Email Address</Label>
-                <Input type="email" placeholder="name@example.com" className="h-12 rounded-xl bg-black/40 border-white/10 text-white" value={email} onChange={(e) => setEmail(e.target.value)} />
+                <Label className="text-[10px] uppercase tracking-widest text-primary ml-1 text-left block">Email Identity</Label>
+                <Input type="email" placeholder="creator@studio.tech" className="h-12 rounded-xl bg-black/40 border-white/10 text-white" value={email} onChange={(e) => setEmail(e.target.value)} />
               </div>
               <div className="space-y-2">
-                <Label className="text-[10px] uppercase tracking-widest text-primary ml-1 text-left block">Secure Password</Label>
+                <Label className="text-[10px] uppercase tracking-widest text-primary ml-1 text-left block">Access Code</Label>
                 <Input type="password" placeholder="••••••••" className="h-12 rounded-xl bg-black/40 border-white/10 text-white" value={password} onChange={(e) => setPassword(e.target.value)} />
               </div>
               <Button onClick={handleLogin} className="w-full h-14 text-lg font-bold rounded-xl shadow-xl shadow-primary/20" disabled={loading}>
-                {loading ? <Loader2 className="animate-spin" /> : "Sign In to Studio"}
+                {loading ? <Loader2 className="animate-spin" /> : "Authorize Entry"}
               </Button>
             </TabsContent>
 
@@ -206,27 +217,32 @@ export default function LoginPage() {
               {!confirmationResult ? (
                 <div className="space-y-4">
                   <div className="space-y-2">
-                    <Label className="text-[10px] uppercase tracking-widest text-primary ml-1 text-left block">Mobile Number</Label>
-                    <Input type="tel" placeholder="+1 123 456 7890" className="h-12 rounded-xl bg-black/40 border-white/10 text-white" value={phone} onChange={(e) => setPhone(e.target.value)} />
+                    <Label className="text-[10px] uppercase tracking-widest text-primary ml-1 text-left block">Mobile Node Number</Label>
+                    <Input type="tel" placeholder="+91 1234567890" className="h-12 rounded-xl bg-black/40 border-white/10 text-white" value={phone} onChange={(e) => setPhone(e.target.value)} />
                   </div>
                   <Button onClick={handlePhoneSignIn} className="w-full h-14 text-lg font-bold rounded-xl shadow-xl shadow-primary/20" disabled={loading || !phone}>
-                    {loading ? <Loader2 className="animate-spin" /> : "Request Verification Code"}
+                    {loading ? <Loader2 className="animate-spin" /> : "Request Verification Token"}
                   </Button>
                 </div>
               ) : (
                 <div className="space-y-4">
                   <div className="space-y-2">
-                    <Label className="text-[10px] uppercase tracking-widest text-primary ml-1 text-left block">Verification Code</Label>
-                    <Input placeholder="123456" className="h-12 rounded-xl bg-black/40 border-white/10 text-center tracking-widest text-xl font-bold text-white" value={otp} onChange={(e) => setOtp(e.target.value)} maxLength={6} />
+                    <Label className="text-[10px] uppercase tracking-widest text-primary ml-1 text-left block">Verification Token (6-Digit)</Label>
+                    <Input placeholder="123456" className="h-12 rounded-xl bg-black/40 border-white/10 text-center tracking-[0.3em] text-xl font-bold text-white" value={otp} onChange={(e) => setOtp(e.target.value)} maxLength={6} />
                   </div>
                   <Button onClick={handleVerifyOtp} className="w-full h-14 text-lg font-bold rounded-xl shadow-xl shadow-primary/20" disabled={loading || otp.length < 6}>
-                    {loading ? <Loader2 className="animate-spin" /> : "Verify & Authorize"}
+                    {loading ? <Loader2 className="animate-spin" /> : "Verify Identity"}
                   </Button>
                 </div>
               )}
             </TabsContent>
           </Tabs>
           
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center"><span className="w-full border-t border-white/5"></span></div>
+            <div className="relative flex justify-center text-[10px] uppercase font-bold text-muted-foreground"><span className="bg-[#0a0d14] px-4">Federated Auth</span></div>
+          </div>
+
           <div className="grid grid-cols-3 gap-3">
             <Button variant="outline" className="h-12 rounded-xl gap-2 font-bold border-white/10 bg-black/20 hover:bg-primary/5 p-1" onClick={() => handleSocialLogin('google')} disabled={loading}>
               <Chrome className="w-4 h-4 text-red-500" />
@@ -244,10 +260,10 @@ export default function LoginPage() {
         </CardContent>
         <CardFooter className="flex flex-col space-y-4 pb-10 pt-4">
           <div className="text-xs text-center text-muted-foreground font-medium">
-            New to the studio? <Link href="/signup" className="text-primary font-bold hover:underline">Create Professional Account</Link>
+            New node? <Link href="/signup" className="text-primary font-bold hover:underline">Register New Identity</Link>
           </div>
           <Button variant="ghost" className="text-[10px] font-bold uppercase tracking-widest gap-2 text-muted-foreground" onClick={() => setShowTroubleshoot(!showTroubleshoot)}>
-            <HelpCircle className="w-3 h-3" /> Troubleshoot Login Issues
+            <HelpCircle className="w-3 h-3" /> Connection Diagnostics
           </Button>
         </CardFooter>
       </Card>
