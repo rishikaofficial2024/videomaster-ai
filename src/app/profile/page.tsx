@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState } from "react";
@@ -16,11 +15,12 @@ import { doc, updateDoc } from "firebase/firestore";
 import { signOut } from "firebase/auth";
 import { useAuth } from "@/firebase";
 import { useRouter } from "next/navigation";
-import { PlaceHolderImages } from "@/lib/placeholder-images";
 import { useToast } from "@/hooks/use-toast";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
+import { errorEmitter } from "@/firebase/error-emitter";
+import { FirestorePermissionError, type SecurityRuleContext } from "@/firebase/errors";
 
 export default function ProfilePage() {
   const { user, loading: userLoading } = useUser();
@@ -48,15 +48,24 @@ export default function ProfilePage() {
   const handleUpdateProfile = async () => {
     if (!profileRef || !newDisplayName) return;
     setSaving(true);
-    try {
-      await updateDoc(profileRef, { displayName: newDisplayName });
-      toast({ title: "Success!", description: "Profile updated successfully." });
-      setIsEditing(false);
-    } catch (e: any) {
-      toast({ variant: "destructive", title: "Update Failed", description: e.message });
-    } finally {
-      setSaving(false);
-    }
+    const updateData = { displayName: newDisplayName };
+    
+    updateDoc(profileRef, updateData)
+      .then(() => {
+        toast({ title: "Success!", description: "Profile updated successfully." });
+        setIsEditing(false);
+      })
+      .catch(async (serverError) => {
+        const permissionError = new FirestorePermissionError({
+          path: profileRef.path,
+          operation: 'update',
+          requestResourceData: updateData,
+        } satisfies SecurityRuleContext);
+        errorEmitter.emit('permission-error', permissionError);
+      })
+      .finally(() => {
+        setSaving(false);
+      });
   };
 
   if (userLoading || profileLoading) {

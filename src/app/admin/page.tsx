@@ -1,4 +1,3 @@
-
 "use client";
 
 import { Navbar } from "@/components/navbar";
@@ -28,6 +27,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useToast } from "@/hooks/use-toast";
 import Link from "next/link";
+import { errorEmitter } from "@/firebase/error-emitter";
+import { FirestorePermissionError, type SecurityRuleContext } from "@/firebase/errors";
 
 export default function AdminDashboard() {
   const db = useFirestore();
@@ -84,16 +85,24 @@ export default function AdminDashboard() {
 
   const handleUpdateUser = async (userId: string, data: any) => {
     setUpdatingUser(userId);
-    try {
-      const userRef = doc(db, "users", userId);
-      await updateDoc(userRef, data);
-      toast({ title: "Updated!", description: "User settings updated successfully." });
-      calculateTotalRevenue(); 
-    } catch (e: any) {
-      toast({ variant: "destructive", title: "Error", description: e.message });
-    } finally {
-      setUpdatingUser(null);
-    }
+    const userRef = doc(db, "users", userId);
+    
+    updateDoc(userRef, data)
+      .then(() => {
+        toast({ title: "Updated!", description: "User settings updated successfully." });
+        calculateTotalRevenue(); 
+      })
+      .catch(async (serverError) => {
+        const permissionError = new FirestorePermissionError({
+          path: userRef.path,
+          operation: 'update',
+          requestResourceData: data,
+        } satisfies SecurityRuleContext);
+        errorEmitter.emit('permission-error', permissionError);
+      })
+      .finally(() => {
+        setUpdatingUser(null);
+      });
   };
 
   if (!mounted) return null;

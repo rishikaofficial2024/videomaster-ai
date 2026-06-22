@@ -1,11 +1,10 @@
-
 "use client";
 
 import { useState } from "react";
 import { Navbar } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Crown, Check, Zap, Cloud, Video, ShieldCheck, Loader2, Star, Rocket, Building2, CheckCircle2, Banknote, CreditCard, ArrowRight, Coins, Gem } from "lucide-react";
+import { Crown, Check, Zap, Building2, CheckCircle2, Banknote, ArrowRight, Coins, Gem, Loader2, Star, Rocket } from "lucide-react";
 import { useUser, useFirestore, useDoc } from "@/firebase";
 import { doc, updateDoc, increment } from "firebase/firestore";
 import { useToast } from "@/hooks/use-toast";
@@ -85,22 +84,26 @@ export default function PremiumPage() {
     }
 
     try {
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      // Simulate network latency for professional feel
+      await new Promise(resolve => setTimeout(resolve, 1500));
       
-      updateDoc(userRef, data).catch(async (e) => {
-        const permissionError = new FirestorePermissionError({
-          path: userRef.path,
-          operation: "update",
-          requestResourceData: data
-        } satisfies SecurityRuleContext);
-        errorEmitter.emit("permission-error", permissionError);
-      });
-      
-      setShowSuccess(true);
-      toast({
-        title: type === 'plan' ? "Welcome to Pro Studio!" : "Credits Added!",
-        description: "Your account has been updated successfully.",
-      });
+      updateDoc(userRef, data)
+        .then(() => {
+          setShowSuccess(true);
+          toast({
+            title: type === 'plan' ? "Welcome to Pro Studio!" : "Credits Added!",
+            description: "Your account has been updated successfully.",
+          });
+        })
+        .catch(async (e) => {
+          const permissionError = new FirestorePermissionError({
+            path: userRef.path,
+            operation: "update",
+            requestResourceData: data
+          } satisfies SecurityRuleContext);
+          errorEmitter.emit("permission-error", permissionError);
+        });
+        
     } catch (e: any) {
       toast({
         variant: "destructive",

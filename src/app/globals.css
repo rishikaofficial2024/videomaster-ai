@@ -58,6 +58,10 @@
   box-shadow: 0 0 80px -20px hsla(217, 91%, 60%, 0.2);
 }
 
+.shadow-glow {
+  box-shadow: 0 0 20px hsla(217, 91%, 60%, 0.4);
+}
+
 .glass-panel {
   @apply bg-[#0a0d14]/60 backdrop-blur-2xl border border-white/5;
 }
@@ -97,4 +101,13 @@
 
 .animate-progress {
   animation: progress 10s linear infinite;
+}
+
+.animate-spin-slow {
+  animation: spin 12s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
