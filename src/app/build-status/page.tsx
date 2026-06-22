@@ -6,7 +6,7 @@ import { Card } from "@/components/ui/card";
 import { 
   Download, Smartphone, CheckCircle2, Loader2, 
   ArrowLeft, ExternalLink, ShieldCheck, Zap,
-  Globe, Info, Laptop, Github, MessageSquare, Tornado, Box, Sparkles
+  Globe, Info, Laptop, Github, MessageSquare, Tornado, Box, Sparkles, Wand2
 } from "lucide-react";
 import Link from "next/link";
 import { useState, useEffect } from "react";
@@ -39,10 +39,10 @@ export default function BuildStatusPage() {
           <div className="inline-flex items-center gap-2 px-4 py-1 bg-primary/10 rounded-full border border-primary/20 text-primary text-[10px] font-bold uppercase tracking-[0.3em] mb-4">
              <Sparkles className="w-3 h-3" /> Magic APK Engine Active
           </div>
-          <h1 className="text-5xl md:text-8xl font-headline font-bold text-white tracking-tighter">
-            Magic <span className="text-primary italic">Build</span>
+          <h1 className="text-5xl md:text-8xl font-headline font-bold text-white tracking-tighter leading-none">
+            Build <span className="text-primary italic">Pulse</span>
           </h1>
-          <p className="text-muted-foreground text-xl font-medium italic">Aapka mobile phone factory se juda hua hai.</p>
+          <p className="text-muted-foreground text-xl font-medium italic">Checking your cloud factory for the latest APK.</p>
         </header>
 
         <section className="grid gap-8">
@@ -78,29 +78,29 @@ export default function BuildStatusPage() {
 
              <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-8">
                 <div className="text-center md:text-left">
-                   <h3 className="text-2xl font-bold text-white font-headline">APK READY!</h3>
-                   <p className="text-xs text-muted-foreground italic">Jaadu ho gaya! Ab download karein.</p>
+                   <h3 className="text-2xl font-bold text-white font-headline">FACTORY LINK READY</h3>
+                   <p className="text-xs text-muted-foreground italic">Click below to see build logs and download the APK.</p>
                 </div>
                 <Button className="h-16 px-12 rounded-2xl bg-emerald-600 hover:bg-emerald-700 font-black text-lg gap-3 shadow-2xl shadow-emerald-600/40 group hover:scale-105 transition-all" asChild>
                    <a href={githubLink} target="_blank">
-                      <Download className="w-6 h-6 group-hover:bounce" /> APK DOWNLOAD LINK
+                      <Download className="w-6 h-6 group-hover:bounce" /> GO TO DOWNLOAD PAGE
                    </a>
                 </Button>
              </div>
           </Card>
 
-          <Card className="rounded-[3rem] bg-indigo-500/5 border-indigo-500/10 p-10 flex flex-col md:flex-row items-center justify-between gap-10">
+          <Card className="rounded-[3rem] bg-primary/10 border-primary/20 p-10 flex flex-col md:flex-row items-center justify-between gap-10">
              <div className="flex items-center gap-6">
-                <div className="w-16 h-16 bg-indigo-500/10 rounded-2xl flex items-center justify-center border border-indigo-500/20">
-                   <MessageSquare className="w-8 h-8 text-indigo-400" />
+                <div className="w-16 h-16 bg-primary/20 rounded-2xl flex items-center justify-center border border-primary/30">
+                   <Wand2 className="w-8 h-8 text-primary" />
                 </div>
-                <div className="space-y-1">
-                   <h4 className="text-xl font-bold font-headline text-white">Download Kaise Karein? (Hindi)</h4>
-                   <p className="text-sm text-muted-foreground italic">Artifacts dhoondne ka secret tarika.</p>
+                <div className="space-y-1 text-center md:text-left">
+                   <h4 className="text-xl font-bold font-headline text-white uppercase">How it works (Jaadu)</h4>
+                   <p className="text-sm text-muted-foreground italic">Jab aap terminal mein command chalate hain, GitHub ek naya APK bana kar wahan rakh deta hai.</p>
                 </div>
              </div>
-             <Button variant="outline" className="h-14 px-8 rounded-2xl border-indigo-500/30 text-indigo-400 font-bold" asChild>
-                <Link href="/APK_GUIDE.md">Direct Instructions</Link>
+             <Button variant="outline" className="h-14 px-8 rounded-2xl border-white/10 text-white font-bold" asChild>
+                <Link href="/APK_GUIDE.md">Step-by-Step Guide</Link>
              </Button>
           </Card>
         </section>

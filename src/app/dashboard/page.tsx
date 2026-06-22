@@ -10,8 +10,8 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useUser, useFirestore, useCollection, useDoc, useMemoFirebase } from "@/firebase";
-import { collection, query, orderBy, limit, doc, updateDoc, increment, serverTimestamp } from "firebase/firestore";
+import { useUser, useFirestore, useDoc, useMemoFirebase } from "@/firebase";
+import { doc, updateDoc, increment, serverTimestamp } from "firebase/firestore";
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
@@ -68,6 +68,11 @@ export default function Dashboard() {
     }, 15000);
   };
 
+  const copyCommand = () => {
+    navigator.clipboard.writeText("npm run mobile:push");
+    toast({ title: "Command Copied!", description: "Now paste it in the Terminal." });
+  };
+
   if (userLoading || !mounted) {
     return (
       <div className="h-screen flex items-center justify-center bg-[#05070a]">
@@ -79,27 +84,31 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen pb-32 md:pt-24 bg-[#05070a] hero-gradient">
       <Navbar />
-      <main className="max-w-7xl mx-auto p-6 space-y-16">
+      <main className="max-w-7xl mx-auto p-6 space-y-12">
         
-        {/* 🪄 MAGIC BUILD STRIP (EMERGENCY) */}
-        <div className="relative group overflow-hidden rounded-[2.5rem]">
-           <div className="absolute inset-0 bg-primary animate-pulse opacity-30" />
-           <div className="relative bg-primary/20 p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-2xl border-2 border-primary/50 backdrop-blur-3xl">
-              <div className="flex items-center gap-6 text-white">
-                 <div className="p-4 bg-primary rounded-full animate-bounce shadow-glow shadow-primary">
-                    <Wand2 className="w-10 h-10" />
+        {/* 🪄 MAGIC BUILD ENGINE (ULTIMATE UI) */}
+        <div className="relative group overflow-hidden rounded-[3.5rem]">
+           <div className="absolute inset-0 bg-gradient-to-r from-primary/40 via-purple-500/40 to-primary/40 animate-pulse" />
+           <div className="relative bg-[#0a0d14]/80 p-10 flex flex-col lg:flex-row items-center justify-between gap-10 shadow-2xl border-2 border-primary/50 backdrop-blur-3xl">
+              <div className="flex items-center gap-8 text-white">
+                 <div className="p-5 bg-primary rounded-full animate-bounce shadow-[0_0_50px_rgba(59,130,246,0.8)]">
+                    <Wand2 className="w-12 h-12" />
                  </div>
-                 <div className="space-y-1">
-                    <h2 className="text-3xl font-black font-headline uppercase tracking-tight">MAGIC BUILD ENGINE</h2>
-                    <p className="text-sm font-bold opacity-90 italic">Aapka Mobile = Remote Control. Bas command dabayein aur APK payein.</p>
+                 <div className="space-y-2">
+                    <h2 className="text-4xl font-black font-headline uppercase tracking-tight leading-none">MAGIC APK FACTORY</h2>
+                    <p className="text-lg font-bold text-primary-foreground/80 italic">Mobile Phone = Remote Control. APK will be built in the cloud.</p>
                  </div>
               </div>
-              <div className="flex flex-wrap gap-4">
-                 <Button size="lg" className="bg-white text-primary hover:bg-white/90 font-black rounded-[2rem] h-16 px-12 text-xl shadow-2xl group-hover:scale-105 transition-all" asChild>
-                    <Link href="/build-status">APK Status Dekho <ArrowRight className="ml-3 w-6 h-6" /></Link>
-                 </Button>
-                 <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10 font-bold rounded-[2rem] h-16 px-8" asChild>
-                    <Link href="/terminal-guide">Terminal Guide</Link>
+              
+              <div className="flex flex-col sm:flex-row gap-6 w-full lg:w-auto">
+                 <div className="bg-black/60 rounded-[2rem] p-4 border border-white/10 flex items-center justify-between gap-6 px-8">
+                    <code className="text-primary font-bold text-lg">npm run mobile:push</code>
+                    <Button variant="ghost" size="icon" onClick={copyCommand} className="hover:bg-primary/20 text-primary">
+                       <Copy className="w-6 h-6" />
+                    </Button>
+                 </div>
+                 <Button size="lg" className="bg-white text-primary hover:bg-white/90 font-black rounded-[2rem] h-20 px-12 text-2xl shadow-2xl group-hover:scale-105 transition-all" asChild>
+                    <Link href="/terminal-guide">FIND TERMINAL NOW <ArrowRight className="ml-3 w-8 h-8" /></Link>
                  </Button>
               </div>
            </div>
@@ -110,7 +119,7 @@ export default function Dashboard() {
             <h1 className="text-6xl md:text-8xl font-headline font-bold tracking-tighter text-white">
               Studio <span className="text-primary italic">Live</span>
             </h1>
-            <p className="text-muted-foreground text-xl font-medium max-w-xl italic">Create, Build, Dominate. Everything is automated.</p>
+            <p className="text-muted-foreground text-xl font-medium max-w-xl italic">Create, Build, Dominate. Everything is automated for you.</p>
           </div>
           
           <div className="flex items-center gap-8 bg-[#0a0d14]/90 backdrop-blur-3xl p-6 rounded-[3.5rem] border border-white/5 shadow-2xl blue-glow">
@@ -134,12 +143,12 @@ export default function Dashboard() {
                     <Smartphone className="w-10 h-10 text-emerald-400" />
                  </div>
                  <div className="space-y-2">
-                    <h3 className="text-3xl font-bold font-headline text-white">Magic APK Download</h3>
-                    <p className="text-muted-foreground font-medium italic">Direct link to your Android app.</p>
+                    <h3 className="text-3xl font-bold font-headline text-white">Download APK</h3>
+                    <p className="text-muted-foreground font-medium italic">Your build status and direct link.</p>
                  </div>
               </div>
-              <Button className="h-16 w-full rounded-2xl bg-emerald-600 font-bold shadow-xl shadow-emerald-600/20" asChild>
-                 <Link href="/build-status">Get My APK Now</Link>
+              <Button className="h-16 w-full rounded-2xl bg-emerald-600 font-bold shadow-xl shadow-emerald-600/20 text-lg" asChild>
+                 <Link href="/build-status">APK STATUS DEKHO</Link>
               </Button>
            </Card>
 
@@ -153,7 +162,7 @@ export default function Dashboard() {
                     <p className="text-muted-foreground font-medium italic">Watch ads for +20 Credits.</p>
                  </div>
               </div>
-              <Button onClick={handleWatchAd} disabled={adLoading} className="h-16 w-full rounded-2xl bg-primary font-bold">
+              <Button onClick={handleWatchAd} disabled={adLoading} className="h-16 w-full rounded-2xl bg-primary font-bold text-lg">
                  {adLoading ? <Loader2 className="animate-spin mr-2" /> : <Play className="w-5 h-5 mr-2" />}
                  Watch Ad & Earn
               </Button>
