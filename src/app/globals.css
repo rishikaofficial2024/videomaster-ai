@@ -79,6 +79,15 @@
   50% { opacity: 0.8; filter: blur(60px); transform: scale(1.1); }
 }
 
+/* Scrollbar Hide Logic */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 /* Elite Studio Scrollbar */
 ::-webkit-scrollbar {
   width: 5px;
