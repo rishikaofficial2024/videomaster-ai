@@ -42,8 +42,7 @@ function LoginForm() {
       });
       router.push(returnUrl);
     } catch (error: any) {
-      console.error("Login Error Code:", error.code);
-      
+      // Logic for handling common Firebase Auth errors
       let errorMessage = "Invalid email or password. Please try again.";
       
       if (error.code === 'auth/user-not-found') {
@@ -51,14 +50,14 @@ function LoginForm() {
       } else if (error.code === 'auth/wrong-password') {
         errorMessage = "Incorrect password. Please check and try again.";
       } else if (error.code === 'auth/too-many-requests') {
-        errorMessage = "Too many failed attempts. Please try again later or reset password.";
+        errorMessage = "Too many failed attempts. Please try again later.";
       } else if (error.code === 'auth/invalid-credential') {
-        errorMessage = "Authentication failed. Please check your credentials or Sign Up.";
+        errorMessage = "Login failed. Check your password or click 'Create Account' if you haven't joined yet.";
       }
 
       toast({
         variant: "destructive",
-        title: "Login Security Alert",
+        title: "Security Alert",
         description: errorMessage,
       });
     } finally {
@@ -70,7 +69,6 @@ function LoginForm() {
     try {
       setLoading(true);
       const provider = new GoogleAuthProvider();
-      // Ensure the popup works by using a stable auth domain
       await signInWithPopup(auth, provider);
       router.push(returnUrl);
     } catch (error: any) {
@@ -150,6 +148,14 @@ function LoginForm() {
   );
 }
 
+function LoginWrapper() {
+  return (
+    <Suspense fallback={<div className="p-10 text-center animate-pulse text-primary font-bold uppercase tracking-widest">Handshake...</div>}>
+      <LoginForm />
+    </Suspense>
+  );
+}
+
 export default function LoginPage() {
   return (
     <div className="min-h-screen flex items-center justify-center p-6 bg-[#05070a] relative">
@@ -174,9 +180,7 @@ export default function LoginPage() {
             <CardDescription className="italic text-muted-foreground">Access your professional AI tools</CardDescription>
           </CardHeader>
 
-          <Suspense fallback={<div className="p-10 text-center animate-pulse text-primary font-bold uppercase tracking-widest">Initialising Handshake...</div>}>
-            <LoginForm />
-          </Suspense>
+          <LoginWrapper />
 
           <CardFooter className="flex flex-col space-y-4 pb-8 pt-2">
             <div className="text-sm text-center text-muted-foreground">
@@ -192,7 +196,7 @@ export default function LoginPage() {
         <div className="bg-white/5 border border-white/5 p-4 rounded-2xl flex items-start gap-4 animate-in slide-in-from-bottom-2 duration-700">
            <AlertCircle className="w-5 h-5 text-primary shrink-0 mt-0.5" />
            <p className="text-xs text-muted-foreground italic leading-relaxed">
-             <b>Tip:</b> Agar aapne abhi tak Signup nahi kiya hai, toh pehle upar "Create Account" link par click karein. Signup ke bina Login fail hoga.
+             <b>Dhyan Dein:</b> Agar login fail ho raha hai, toh check karein ki aapne pehle upar <b>"Create Account"</b> se Signup kiya hai ya nahi. Signup ke bina entry nahi milegi.
            </p>
         </div>
       </div>
