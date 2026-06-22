@@ -32,9 +32,6 @@ export default function LandingPage() {
             <Link href="/templates" className="text-sm font-bold uppercase tracking-widest text-muted-foreground hover:text-primary transition-all">Templates</Link>
           </div>
           <div className="flex items-center gap-6">
-            <Link className="text-sm font-bold uppercase tracking-widest text-muted-foreground hover:text-primary transition-all" href="/login">
-              Sign In
-            </Link>
             <Button asChild className="rounded-full px-10 h-14 font-bold shadow-2xl shadow-primary/30 transition-all hover:scale-105 active:scale-95">
               <Link href="/signup">Claim 100 Free Credits</Link>
             </Button>
@@ -58,13 +55,20 @@ export default function LandingPage() {
               <p className="max-w-3xl text-muted-foreground text-xl md:text-3xl font-medium leading-relaxed italic">
                 Generate professional YouTube Shorts and Reels instantly. Claim <span className="text-white font-bold">100 FREE credits</span> on signup and earn more by watching ads. No credit card required.
               </p>
-              <div className="flex flex-col sm:flex-row gap-6">
-                <Button asChild size="lg" className="h-20 px-16 rounded-[2rem] text-xl font-bold shadow-2xl shadow-primary/40 hover:scale-105 transition-all active:scale-95 bg-primary">
-                  <Link href="/signup">Claim My Free Credits <ArrowRight className="ml-3 w-7 h-7" /></Link>
-                </Button>
-                <Button variant="outline" size="lg" className="h-20 px-16 rounded-[2rem] text-xl font-bold bg-white/5 border-white/10 hover:bg-white/10 transition-all">
-                  <Play className="mr-3 w-6 h-6 fill-primary text-primary" /> Watch Demo
-                </Button>
+              <div className="flex flex-col items-center space-y-6">
+                <div className="flex flex-col sm:flex-row gap-6">
+                  <Button asChild size="lg" className="h-20 px-16 rounded-[2rem] text-xl font-bold shadow-2xl shadow-primary/40 hover:scale-105 transition-all active:scale-95 bg-primary">
+                    <Link href="/signup">Claim My Free Credits <ArrowRight className="ml-3 w-7 h-7" /></Link>
+                  </Button>
+                  <Button variant="outline" size="lg" className="h-20 px-16 rounded-[2rem] text-xl font-bold bg-white/5 border-white/10 hover:bg-white/10 transition-all">
+                    <Play className="mr-3 w-6 h-6 fill-primary text-primary" /> Watch Demo
+                  </Button>
+                </div>
+                <div className="pt-4">
+                  <p className="text-muted-foreground text-sm font-bold uppercase tracking-[0.3em] italic">
+                    Already a member? <Link href="/login" className="text-primary hover:underline hover:text-primary/80 transition-colors">Sign In Here</Link>
+                  </p>
+                </div>
               </div>
             </div>
 
