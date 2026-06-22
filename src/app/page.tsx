@@ -1,11 +1,11 @@
+
 "use client";
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { 
-  Video, ArrowRight, Sparkles, Wand2, 
-  Download, Play, Zap, Cpu, BarChart3, Crown, Check, ShieldCheck,
-  Search, Globe, MessageSquare, Award, Gift, Coins
+  Video, ArrowRight, Play, Zap, Cpu, Crown, Check, 
+  Gift, Coins, UserCircle, ShieldCheck
 } from "lucide-react";
 import Image from "next/image";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
@@ -25,59 +25,58 @@ export default function LandingPage() {
           </div>
           <span className="font-headline font-bold text-2xl tracking-tighter">VideoMaster<span className="text-primary italic">AI.tech</span></span>
         </Link>
-        <nav className="ml-auto flex items-center gap-10">
-          <div className="hidden lg:flex gap-10">
-            <Link href="#features" className="text-sm font-bold uppercase tracking-widest text-muted-foreground hover:text-primary transition-all">Features</Link>
-            <Link href="#pricing" className="text-sm font-bold uppercase tracking-widest text-muted-foreground hover:text-primary transition-all">Pricing</Link>
-            <Link href="/templates" className="text-sm font-bold uppercase tracking-widest text-muted-foreground hover:text-primary transition-all">Templates</Link>
-          </div>
-          <div className="flex items-center gap-6">
-            <Button asChild className="rounded-full px-10 h-14 font-bold shadow-2xl shadow-primary/30 transition-all hover:scale-105 active:scale-95">
-              <Link href="/signup">Claim 100 Free Credits</Link>
-            </Button>
-          </div>
+        <nav className="ml-auto hidden lg:flex items-center gap-10">
+          <Link href="#features" className="text-xs font-black uppercase tracking-[0.3em] text-muted-foreground hover:text-primary transition-all">Features</Link>
+          <Link href="#pricing" className="text-xs font-black uppercase tracking-[0.3em] text-muted-foreground hover:text-primary transition-all">Pricing</Link>
         </nav>
       </header>
       
       <main className="flex-1 mt-24">
-        {/* 🎬 HERO SECTION - OPTIMIZED FOR "FREE" CONVERSION */}
+        {/* 🎬 HERO SECTION - CENTRAL SIGN IN FOCUS */}
         <section className="w-full py-24 lg:py-40 relative overflow-hidden">
           <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-primary/10 rounded-full blur-[150px] -z-10" />
           
           <div className="container px-6 mx-auto">
             <div className="flex flex-col items-center text-center space-y-12 mb-28">
               <div className="inline-flex items-center gap-3 px-6 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-bold uppercase tracking-[0.4em] animate-pulse">
-                <Gift className="w-4 h-4" /> 100% Free to Get Started
+                <Gift className="w-4 h-4" /> 100 FREE CREDITS ON ENTRY
               </div>
+              
               <h1 className="text-6xl md:text-[10rem] font-bold tracking-tighter font-headline max-w-7xl leading-[0.85]">
-                AI Video Studio <span className="text-primary italic">For Free.</span>
+                AI Video Studio <span className="text-primary italic">Now Open.</span>
               </h1>
+              
               <p className="max-w-3xl text-muted-foreground text-xl md:text-3xl font-medium leading-relaxed italic">
-                Generate professional YouTube Shorts and Reels instantly. Claim <span className="text-white font-bold">100 FREE credits</span> on signup and earn more by watching ads. No credit card required.
+                Generate viral YouTube Shorts and Reels instantly. Claim your <span className="text-white font-bold">100 FREE credits</span> and start creating.
               </p>
-              <div className="flex flex-col items-center space-y-6">
-                <div className="flex flex-col sm:flex-row gap-6">
-                  <Button asChild size="lg" className="h-20 px-16 rounded-[2rem] text-xl font-bold shadow-2xl shadow-primary/40 hover:scale-105 transition-all active:scale-95 bg-primary">
-                    <Link href="/signup">Claim My Free Credits <ArrowRight className="ml-3 w-7 h-7" /></Link>
+
+              {/* 🎯 CENTRAL BUTTON HUB */}
+              <div className="flex flex-col items-center gap-8 w-full max-w-2xl mx-auto">
+                <div className="flex flex-col sm:flex-row gap-6 w-full justify-center">
+                  <Button asChild size="lg" className="h-20 px-12 rounded-[2rem] text-xl font-black uppercase tracking-tight shadow-2xl shadow-primary/40 hover:scale-105 transition-all active:scale-95 bg-primary">
+                    <Link href="/signup">Create New Account <ArrowRight className="ml-3 w-7 h-7" /></Link>
                   </Button>
-                  <Button variant="outline" size="lg" className="h-20 px-16 rounded-[2rem] text-xl font-bold bg-white/5 border-white/10 hover:bg-white/10 transition-all">
-                    <Play className="mr-3 w-6 h-6 fill-primary text-primary" /> Watch Demo
+                  
+                  <Button asChild variant="outline" size="lg" className="h-20 px-12 rounded-[2rem] text-xl font-black uppercase tracking-tight bg-white/5 border-white/10 hover:bg-primary/20 hover:border-primary/50 transition-all group">
+                    <Link href="/login">
+                      <UserCircle className="mr-3 w-7 h-7 text-primary group-hover:scale-110 transition-transform" /> 
+                      Sign In to Studio
+                    </Link>
                   </Button>
                 </div>
-                <div className="pt-4">
-                  <p className="text-muted-foreground text-sm font-bold uppercase tracking-[0.3em] italic">
-                    Already a member? <Link href="/login" className="text-primary hover:underline hover:text-primary/80 transition-colors">Sign In Here</Link>
-                  </p>
+
+                <div className="flex items-center gap-4 text-[10px] font-black uppercase tracking-[0.5em] text-muted-foreground opacity-40">
+                  <ShieldCheck className="w-3 h-3" /> Secure Node Access Active
                 </div>
               </div>
             </div>
 
             <div className="relative max-w-7xl mx-auto">
-              <div className="premium-card overflow-hidden blue-glow">
+              <div className="premium-card overflow-hidden blue-glow border-2 border-white/5">
                 {heroImg && (
                   <Image
                     alt="AI Video Generator Dashboard Preview"
-                    className="w-full aspect-video object-cover opacity-80"
+                    className="w-full aspect-video object-cover opacity-60"
                     height={720}
                     src={heroImg.imageUrl}
                     width={1280}
@@ -85,30 +84,34 @@ export default function LandingPage() {
                   />
                 )}
                 <div className="absolute inset-0 bg-gradient-to-t from-[#05070a] via-transparent to-transparent"></div>
+                <div className="absolute inset-0 flex items-center justify-center">
+                   <div className="w-24 h-24 bg-primary/20 rounded-full flex items-center justify-center border-4 border-primary animate-pulse cursor-pointer hover:scale-110 transition-transform">
+                      <Play className="w-10 h-10 fill-primary text-primary ml-1" />
+                   </div>
+                </div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* 🛠️ REWARDS SECTION - EXPLAINING THE FREE ENGINE */}
-        <section className="w-full py-40 bg-indigo-500/5 border-y border-white/5 relative overflow-hidden">
-          <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-indigo-500/5 via-transparent to-transparent opacity-50" />
+        {/* 🛠️ REWARDS SECTION */}
+        <section id="features" className="w-full py-40 bg-indigo-500/5 border-y border-white/5 relative overflow-hidden">
           <div className="container px-6 mx-auto relative z-10">
             <div className="grid lg:grid-cols-2 gap-20 items-center">
                <div className="space-y-8">
                   <div className="inline-flex items-center gap-3 px-5 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-[10px] font-bold uppercase tracking-[0.3em]">
-                    <Coins className="w-4 h-4" /> Infinite Economy
+                    <Coins className="w-4 h-4" /> REWARD PROTOCOL
                   </div>
-                  <h2 className="text-5xl md:text-7xl font-bold font-headline tracking-tighter text-white">Create Without <span className="text-indigo-400 italic">Limits.</span></h2>
+                  <h2 className="text-5xl md:text-7xl font-bold font-headline tracking-tighter text-white">Earn Free AI <span className="text-indigo-400 italic">Credits.</span></h2>
                   <p className="text-muted-foreground text-xl leading-relaxed italic">
-                    Our unique **Reward Protocol** allows you to earn AI credits by viewing high-value professional ads. No need for expensive subscriptions—just create, earn, and dominate.
+                    Click "Watch Ad" in your dashboard to earn +20 credits instantly. No subscription required for basic AI production.
                   </p>
                   <ul className="space-y-6">
                      {[
-                       "Instant 100 Credits on Identity Verification",
-                       "+20 Credits for every Rewarded Placement viewed",
-                       "Full access to AI Scripting & Cinematic Engines",
-                       "No hidden fees or recurring charges"
+                       "Instant 100 Credits on Registration",
+                       "+20 Credits for every Ad Impression",
+                       "Full access to Script & Video Engines",
+                       "1-Click Android APK Export"
                      ].map((feat, i) => (
                        <li key={i} className="flex items-center gap-4 text-white font-bold italic">
                           <Check className="w-6 h-6 text-emerald-500" /> {feat}
@@ -123,22 +126,11 @@ export default function LandingPage() {
                   <div className="premium-card p-2 aspect-video bg-black/40 overflow-hidden blue-glow flex items-center justify-center">
                      <div className="text-center space-y-4">
                         <div className="w-20 h-20 bg-primary/20 rounded-full flex items-center justify-center mx-auto animate-pulse">
-                           <Play className="w-10 h-10 text-primary" />
+                           <Zap className="w-10 h-10 text-primary" />
                         </div>
-                        <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.4em]">Rewarded Impression Active</p>
+                        <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.4em]">Syncing Credits...</p>
                         <div className="w-48 h-1 bg-white/10 rounded-full overflow-hidden mx-auto">
                            <div className="h-full bg-primary animate-progress" />
-                        </div>
-                     </div>
-                  </div>
-                  <div className="absolute -bottom-10 -right-10 bg-[#0a0d14] border border-white/10 p-6 rounded-[2rem] shadow-2xl">
-                     <div className="flex items-center gap-4">
-                        <div className="p-3 bg-emerald-500/20 rounded-xl">
-                           <Coins className="text-emerald-400" />
-                        </div>
-                        <div>
-                           <p className="text-[10px] font-bold text-muted-foreground uppercase">Credits Earned</p>
-                           <p className="text-xl font-bold text-white">+500 Today</p>
                         </div>
                      </div>
                   </div>
@@ -151,19 +143,18 @@ export default function LandingPage() {
         <section className="w-full py-40 bg-[#05070a]">
           <div className="container px-6 mx-auto max-w-4xl">
              <div className="text-center mb-20">
-                <h2 className="text-5xl font-headline font-bold mb-4">Common <span className="text-primary">Questions</span></h2>
-                <p className="text-muted-foreground italic">How we keep VideoMaster AI 100% accessible.</p>
+                <h2 className="text-5xl font-headline font-bold mb-4 uppercase tracking-tighter">Common <span className="text-primary">Questions</span></h2>
+                <p className="text-muted-foreground italic tracking-widest text-xs font-black uppercase opacity-40">Operational Standards</p>
              </div>
              
              <Accordion type="single" collapsible className="space-y-4">
                 {[
-                  { q: "Is it actually free?", a: "Yes. Every tool in the studio can be used for free by using the credits you get on signup or earn through our rewards system." },
-                  { q: "How do I earn more credits?", a: "Simply click the 'Watch Ad' button in your dashboard. Each 15-second professional ad gives you +20 credits instantly." },
-                  { q: "Can I remove watermarks for free?", a: "Watermarks are included in the free tier. Upgrading to Pro removes them, but free users still get high-quality HD exports." },
-                  { q: "Where can I share my invite link?", a: "In your dashboard Expansion Hub, you'll find a message ready to be sent to WhatsApp, Instagram, or Telegram." }
+                  { q: "Is it actually free?", a: "Yes. Every tool can be used for free using signup credits or rewarded ad credits." },
+                  { q: "How do I earn more credits?", a: "Simply watch a 15-second ad in your dashboard to get +20 credits instantly." },
+                  { q: "Can I build an Android App?", a: "Yes. We provide a direct link to download your production APK in 1-click." }
                 ].map((item, i) => (
                   <AccordionItem key={i} value={`item-${i}`} className="border-white/5 bg-white/5 rounded-3xl px-8 py-2">
-                    <AccordionTrigger className="text-lg font-bold hover:no-underline hover:text-primary transition-colors">{item.q}</AccordionTrigger>
+                    <AccordionTrigger className="text-lg font-bold hover:no-underline hover:text-primary transition-colors uppercase tracking-tight">{item.q}</AccordionTrigger>
                     <AccordionContent className="text-muted-foreground text-base italic leading-relaxed">
                       {item.a}
                     </AccordionContent>
@@ -172,16 +163,19 @@ export default function LandingPage() {
              </Accordion>
           </div>
         </section>
-
       </main>
 
-      <footer className="py-32 px-10 border-t border-white/5 glass-panel">
-        <div className="container mx-auto flex flex-col items-center gap-12">
+      <footer className="py-20 px-10 border-t border-white/5 glass-panel">
+        <div className="container mx-auto flex flex-col items-center gap-8">
           <div className="flex items-center gap-4">
              <Video className="w-8 h-8 text-primary" />
              <span className="text-3xl font-headline font-bold tracking-tighter">VideoMaster<span className="text-primary">AI.tech</span></span>
           </div>
-          <p className="text-xs text-muted-foreground/40 font-bold uppercase tracking-[0.5em]">Made for creators, by creators. 100% Accessible.</p>
+          <div className="flex gap-10 opacity-40">
+             <Link href="/privacy" className="text-[10px] font-bold uppercase tracking-widest hover:text-primary">Privacy</Link>
+             <Link href="/terms" className="text-[10px] font-bold uppercase tracking-widest hover:text-primary">Terms</Link>
+          </div>
+          <p className="text-[9px] text-muted-foreground/30 font-black uppercase tracking-[0.8em]">Production Build v1.6.0 Stable</p>
         </div>
       </footer>
     </div>
