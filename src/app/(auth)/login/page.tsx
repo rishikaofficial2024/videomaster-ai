@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, Suspense } from "react";
@@ -8,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Video, Chrome, ArrowLeft, Loader2, Eye, EyeOff, ShieldCheck, Info } from "lucide-react";
+import { Video, Chrome, ArrowLeft, Loader2, Eye, EyeOff, ShieldCheck } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { 
@@ -113,7 +112,7 @@ function LoginForm() {
 
         <TabsContent value="phone" className="space-y-4">
           <div className="text-center p-8 opacity-40 italic text-sm border-2 border-dashed border-white/5 rounded-2xl">
-             Mobile OTP system is syncing with the region. Please use the Email tab for now.
+             Mobile OTP system is syncing. Please use Email for now.
           </div>
         </TabsContent>
       </Tabs>
