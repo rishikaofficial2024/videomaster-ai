@@ -6,23 +6,19 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { 
   CheckCircle2, XCircle, Loader2, Database, 
-  Zap, Key, ArrowLeft, ShieldCheck, Sparkles, 
-  Activity, Network, Globe, UserCheck, ShieldAlert,
-  Search, Lock, Cpu, AlertTriangle, ExternalLink, Copy, TrendingUp,
-  Tornado, Box, Globe2, Smartphone, Download, Server, Link2, Blocks, DollarSign, RefreshCw
+  Zap, ArrowLeft, ShieldCheck, 
+  Activity, Globe, Info, Cpu, AlertTriangle, 
+  TrendingUp, Tornado, Globe2, Link2, Blocks, DollarSign, RefreshCw 
 } from "lucide-react";
 import { useAuth, useFirestore, useUser } from "@/firebase";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { firebaseConfig } from "@/firebase/config";
-import { useToast } from "@/hooks/use-toast";
 import Link from "next/link";
-import { cn } from "@/lib/utils";
 
 export default function TestConnectionPage() {
   const auth = useAuth();
   const db = useFirestore();
   const { user } = useUser();
-  const { toast } = useToast();
   
   const [status, setStatus] = useState({
     config: "pending",

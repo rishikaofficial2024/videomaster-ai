@@ -2,22 +2,20 @@
 
 import { Navbar } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { 
   Plus, Sparkles, Loader2, Coins, 
-  Video, Gift, Play, Star, ArrowRight, CheckCircle2, X, Crown, Terminal as TerminalIcon, Copy, ShieldCheck, Zap, Calendar, BrainCircuit,
-  Tornado, Share2, MessageCircle, Instagram, Twitter, Smartphone, AlertTriangle, Download, FileText, Wand2, History, LayoutTemplate, Activity, Blocks
+  Play, ArrowRight, CheckCircle2, Copy, ShieldCheck, Zap,
+  Tornado, Share2, MessageCircle, Instagram, Twitter, Smartphone, History, LayoutTemplate, Blocks
 } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import { useUser, useFirestore, useDoc, useMemoFirebase, useCollection } from "@/firebase";
-import { doc, updateDoc, increment, serverTimestamp, collection, query, limit, orderBy } from "firebase/firestore";
+import { doc, updateDoc, increment, collection, query, limit, orderBy } from "firebase/firestore";
 import { useState, useEffect } from "react";
-import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 import { AdBanner } from "@/components/ads/ad-banner";
 import { errorEmitter } from '@/firebase/error-emitter';
-import { FirestorePermissionError, type SecurityRuleContext } from '@/firebase/errors';
+import { FirestorePermissionError } from '@/firebase/errors';
 import { useRouter } from "next/navigation";
 
 export default function Dashboard() {
@@ -69,7 +67,7 @@ export default function Dashboard() {
     
     setTimeout(() => {
       const updateData = { credits: increment(20) };
-      updateDoc(userProfileRef, updateData).catch(async (e) => {
+      updateDoc(userProfileRef, updateData).catch(async () => {
           errorEmitter.emit('permission-error', new FirestorePermissionError({
             path: userProfileRef.path,
             operation: 'update',
