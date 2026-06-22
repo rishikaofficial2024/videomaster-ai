@@ -2,7 +2,7 @@
  * Firebase configuration object for VideoMaster AI.
  * 
  * ✅ STATUS: Production Ready.
- * ✅ DOMAIN: videomaster-ai.tech (Primary Auth Node)
+ * ✅ BRANDED: Locked to videomaster-ai.tech (Primary Node)
  */
 export const firebaseConfig = {
   apiKey: "AIzaSyCz-pMZtY7_OVr9IyyHiIqwPWnpP3Lb21w",

@@ -1,4 +1,3 @@
-
 "use client";
 
 import { Navbar } from "@/components/navbar";
@@ -62,7 +61,7 @@ export default function PrivacyPolicy() {
 
           <section className="p-10 bg-emerald-500/5 rounded-[3rem] border border-emerald-500/10 space-y-4">
             <h2 className="text-xl font-headline font-bold text-white">Compliance Contact</h2>
-            <p className="text-sm opacity-70">For privacy concerns or data deletion requests, contact our compliance node: <b>legal@videomaster-ai.web.app</b></p>
+            <p className="text-sm opacity-70">For privacy concerns or data deletion requests, contact our compliance node: <b>legal@videomaster-ai.tech</b></p>
           </section>
         </div>
       </main>

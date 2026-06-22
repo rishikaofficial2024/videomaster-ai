@@ -114,7 +114,8 @@ export default function LoginPage() {
     toast({ title: "Copied!", description: `"${text}" copied to clipboard.` });
   };
 
-  const authorizedDomains = [
+  // ✅ BRANDED LOCK: Removed default Firebase domains from view
+  const brandedDomains = [
     "videomaster-ai.tech",
     "localhost"
   ];
@@ -139,16 +140,16 @@ export default function LoginPage() {
               </div>
             </div>
             <CardTitle className="text-3xl font-headline font-bold text-white tracking-tight">Studio Access</CardTitle>
-            <CardDescription className="italic text-muted-foreground">Verify your identity to enter the neural core</CardDescription>
+            <CardDescription className="italic text-muted-foreground">Sync with videomaster-ai.tech node</CardDescription>
           </CardHeader>
 
           <CardContent className="space-y-6 px-10">
             {authError === 'auth/unauthorized-domain' && (
               <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-2xl space-y-2 animate-in slide-in-from-top-2">
                  <div className="flex items-center gap-2 text-red-500 font-bold text-[10px] uppercase">
-                    <AlertTriangle className="w-4 h-4" /> Domain Authorization Required
+                    <AlertTriangle className="w-4 h-4" /> Branded Domain Required
                  </div>
-                 <p className="text-[11px] text-muted-foreground italic">Your current domain is not yet whitelisted in Firebase Console.</p>
+                 <p className="text-[11px] text-muted-foreground italic">Your brand domain is not yet active in the cloud factory.</p>
                  <Button variant="link" className="p-0 h-auto text-[10px] text-primary" asChild>
                    <Link href="/AUTH_DOMAIN_FIX.md">Read Fix Guide</Link>
                  </Button>
@@ -228,24 +229,24 @@ export default function LoginPage() {
             <Dialog>
               <DialogTrigger asChild>
                 <Button variant="ghost" className="text-[10px] font-bold uppercase tracking-widest gap-2 text-muted-foreground hover:text-white">
-                  <HelpCircle className="w-3 h-3" /> Connection Diagnostics
+                  <HelpCircle className="w-3 h-3" /> Security Diagnostics
                 </Button>
               </DialogTrigger>
               <DialogContent className="bg-[#0a0d14] border-white/10 rounded-[2.5rem] p-10 max-w-md">
                 <DialogHeader className="mb-6">
                   <DialogTitle className="text-2xl font-headline font-bold text-white flex items-center gap-3">
-                    <ShieldCheck className="w-6 h-6 text-primary" /> Security Diagnostics
+                    <ShieldCheck className="w-6 h-6 text-primary" /> Brand Integrity
                   </DialogTitle>
-                  <DialogDescription className="text-sm italic">Owner Setup: Copy these domains and paste them in the box from your screenshot.</DialogDescription>
+                  <DialogDescription className="text-sm italic">The studio is now locked to your custom brand domain.</DialogDescription>
                 </DialogHeader>
                 <div className="space-y-4">
                   <div className="space-y-2">
-                    {authorizedDomains.map(domain => (
+                    {brandedDomains.map(domain => (
                       <div key={domain} className="flex items-center justify-between p-3 bg-black/40 rounded-xl border border-white/5 group hover:border-primary/30 transition-all">
                         <div className="flex flex-col">
                            <code className="text-[10px] font-mono text-primary truncate">{domain}</code>
                            <span className="text-[8px] text-muted-foreground uppercase font-bold tracking-tight">
-                             {domain.includes('tech') ? 'Primary Domain' : 'Testing Domain'}
+                             {domain.includes('tech') ? 'Primary Brand Node' : 'Testing Node'}
                            </span>
                         </div>
                         <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-primary/10" onClick={() => copyToClipboard(domain)}>
@@ -255,9 +256,9 @@ export default function LoginPage() {
                     ))}
                   </div>
                   <div className="grid gap-2 pt-2">
-                    <Button className="w-full h-12 rounded-xl bg-red-600 hover:bg-red-700 text-[10px] font-bold uppercase tracking-widest" asChild>
-                      <a href="https://console.firebase.google.com/project/studio-9489287013-59986/authentication/settings" target="_blank">
-                        Open Auth Settings <ExternalLink className="ml-2 w-3 h-3" />
+                    <Button className="w-full h-12 rounded-xl bg-primary hover:bg-primary/90 text-[10px] font-bold uppercase tracking-widest" asChild>
+                      <a href="https://videomaster-ai.tech" target="_blank">
+                        Visit Live Brand <ExternalLink className="ml-2 w-3 h-3" />
                       </a>
                     </Button>
                   </div>
