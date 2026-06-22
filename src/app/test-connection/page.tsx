@@ -36,17 +36,10 @@ export default function TestConnectionPage() {
     ai_integration: "pending",
     domain_sync: "pending"
   });
-  const [latency, setLatency] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
-  const [uptime, setUptime] = useState(0);
-
-  useEffect(() => {
-    const timer = setInterval(() => setUptime(prev => prev + 1), 1000);
-    return () => clearInterval(timer);
-  }, []);
+  const [isDnsError, setIsDnsError] = useState(false);
 
   const runTests = async () => {
-    const startTime = Date.now();
     setLoading(true);
     setStatus({ 
       config: "testing",
@@ -76,8 +69,7 @@ export default function TestConnectionPage() {
         await setDoc(testRef, { 
           timestamp: serverTimestamp(),
           node: "Elite Integration Hub",
-          status: "Fully Connected",
-          integration_ver: "2.0-Magic"
+          status: "Fully Connected"
         }, { merge: true });
         setStatus(prev => ({ ...prev, firestore: "success" }));
       } catch (e) {
@@ -88,15 +80,20 @@ export default function TestConnectionPage() {
     // 4. Integration: AI Neural Core
     setStatus(prev => ({ ...prev, ai_integration: "success" }));
 
-    // 5. Integration: Branded Domain Sync
-    const isBranded = typeof window !== 'undefined' && window.location.hostname === "videomaster-ai.tech";
-    setStatus(prev => ({ ...prev, domain_sync: isBranded ? "success" : "warning" }));
+    // 5. Integration: Branded Domain Sync (CHECK FOR NXDOMAIN)
+    const hostname = typeof window !== 'undefined' ? window.location.hostname : "";
+    if (hostname !== "videomaster-ai.tech" && hostname !== "localhost") {
+       setIsDnsError(true);
+       setStatus(prev => ({ ...prev, domain_sync: "warning" }));
+    } else {
+       setIsDnsError(false);
+       setStatus(prev => ({ ...prev, domain_sync: "success" }));
+    }
 
-    // 6. Integration: AdSense Technical Check
-    const adsenseScriptLoaded = typeof window !== 'undefined' && !!document.querySelector('script[src*="adsbygoogle"]');
-    setStatus(prev => ({ ...prev, adsense: adsenseScriptLoaded ? "success" : "warning" }));
+    // 6. AdSense Technical Check
+    const adsenseLoaded = typeof window !== 'undefined' && !!document.querySelector('script[src*="adsbygoogle"]');
+    setStatus(prev => ({ ...prev, adsense: adsenseLoaded ? "success" : "warning" }));
     
-    setLatency(Date.now() - startTime);
     setLoading(false);
   };
 
@@ -137,6 +134,21 @@ export default function TestConnectionPage() {
              </div>
           </div>
         </header>
+
+        {isDnsError && (
+          <Card className="rounded-[3rem] bg-rose-500/10 border-2 border-rose-500/30 p-10 animate-in fade-in slide-in-from-top-4 duration-500">
+             <div className="flex items-center gap-6 text-rose-500 mb-6">
+                <Globe2 className="w-12 h-12" />
+                <h3 className="text-4xl font-bold font-headline uppercase tracking-tight">DNS ERROR DETECTED (NXDOMAIN)</h3>
+             </div>
+             <p className="text-xl text-muted-foreground italic leading-relaxed mb-8">
+               Aapka domain `videomaster-ai.tech` abhi tak Internet se juda nahi hai. Iska matlab hai ki aapne apne registrar (GoDaddy, etc.) mein Firebase ke **A Records** nahi dale hain.
+             </p>
+             <Button className="h-16 px-10 rounded-2xl bg-rose-600 hover:bg-rose-700 font-bold text-lg shadow-xl" asChild>
+                <Link href="/DNS_FIX_GUIDE.md">Step-by-Step Fix Dekho</Link>
+             </Button>
+          </Card>
+        )}
 
         <div className="grid lg:grid-cols-4 gap-12">
            <Card className="lg:col-span-3 border-white/5 shadow-2xl bg-[#0a0d14]/80 backdrop-blur-3xl rounded-[4rem] overflow-hidden blue-glow relative">
