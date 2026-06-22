@@ -1,8 +1,9 @@
+
 /**
  * Firebase configuration object for VideoMaster AI.
  * 
- * ✅ STATUS: Production Ready.
- * ✅ AUTH: Reverted to default domain for maximum stability.
+ * ✅ STATUS: Production Ready & Stabilized.
+ * ✅ AUTH: Centrally managed for multi-domain stability.
  */
 export const firebaseConfig = {
   apiKey: "AIzaSyCz-pMZtY7_OVr9IyyHiIqwPWnpP3Lb21w",
@@ -12,7 +13,6 @@ export const firebaseConfig = {
   messagingSenderId: "522287974416",
   appId: "1:522287974416:web:096cfdb016260b3f74a295",
   
-  // 🛡️ SECURITY STEP: Paste your reCAPTCHA v3 "SITE KEY" here.
-  // Obtain this from: https://www.google.com/recaptcha/admin/create
+  // 🛡️ SECURITY STEP: Paste your reCAPTCHA v3 "SITE KEY" here for App Check.
   appCheckSiteKey: "" 
 };

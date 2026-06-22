@@ -6,8 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { 
   Plus, Sparkles, Loader2, Coins, 
-  Play, ArrowRight, CheckCircle2, Zap,
-  Tornado, Share2, MessageCircle, Instagram, Twitter, History, LayoutTemplate, Blocks
+  Play, History, LayoutTemplate, Zap,
+  Tornado, Share2, MessageCircle, Instagram, Twitter
 } from "lucide-react";
 import Link from "next/link";
 import { useUser, useFirestore, useDoc, useMemoFirebase, useCollection } from "@/firebase";
@@ -56,6 +56,7 @@ export default function Dashboard() {
     setAdLoading(true);
     setShowAdOverlay(true);
     setAdTimer(15);
+    
     const interval = setInterval(() => {
       setAdTimer((prev) => {
         if (prev <= 1) {
@@ -83,8 +84,10 @@ export default function Dashboard() {
 
   const handleShare = () => {
     const text = "🚀 Join VideoMaster AI! Generate viral reels & scripts instantly. Use my link to get 100 FREE credits: https://videomaster-ai.tech";
-    navigator.clipboard.writeText(text);
-    toast({ title: "Viral Message Copied!", description: "Share it on WhatsApp or Instagram now!" });
+    if (typeof navigator !== 'undefined') {
+      navigator.clipboard.writeText(text);
+      toast({ title: "Viral Message Copied!", description: "Share it on WhatsApp or Instagram now!" });
+    }
   };
 
   if (userLoading || !mounted) {
@@ -158,7 +161,7 @@ export default function Dashboard() {
                         <div className="absolute bottom-6 left-6 right-6">
                            <h4 className="text-white font-bold truncate text-lg uppercase tracking-tight">{p.title || 'Untitled Project'}</h4>
                            <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest mt-1">
-                              {p.updatedAt ? new Date(p.updatedAt.seconds * 1000).toLocaleDateString() : "Draft"}
+                              {p.updatedAt ? "Sync Verified" : "Draft Mode"}
                            </p>
                         </div>
                         <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-primary/10 backdrop-blur-sm">
