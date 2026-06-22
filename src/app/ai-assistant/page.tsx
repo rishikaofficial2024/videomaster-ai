@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label";
 import { 
   Sparkles, Send, Bot, User, Loader2, 
   ArrowLeft, BrainCircuit, Zap, MessageSquare,
-  Tornado, ShieldCheck, Globe, Share2, TrendingUp, Cpu, Rocket
+  Tornado, ShieldCheck, Globe, Share2, TrendingUp, Cpu, Rocket, ArrowRight
 } from "lucide-react";
 import { sendAiChatMessage } from "@/ai/flows/ai-chat-flow";
 import { cn } from "@/lib/utils";
