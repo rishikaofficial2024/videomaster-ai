@@ -116,8 +116,6 @@ export default function LoginPage() {
 
   const authorizedDomains = [
     "videomaster-ai.tech",
-    "studio-9489287013-59986.web.app",
-    "studio-9489287013-59986.firebaseapp.com",
     "localhost"
   ];
 
@@ -151,6 +149,9 @@ export default function LoginPage() {
                     <AlertTriangle className="w-4 h-4" /> Domain Authorization Required
                  </div>
                  <p className="text-[11px] text-muted-foreground italic">Your current domain is not yet whitelisted in Firebase Console.</p>
+                 <Button variant="link" className="p-0 h-auto text-[10px] text-primary" asChild>
+                   <Link href="/AUTH_DOMAIN_FIX.md">Read Fix Guide</Link>
+                 </Button>
               </div>
             )}
 
@@ -235,7 +236,7 @@ export default function LoginPage() {
                   <DialogTitle className="text-2xl font-headline font-bold text-white flex items-center gap-3">
                     <ShieldCheck className="w-6 h-6 text-primary" /> Security Diagnostics
                   </DialogTitle>
-                  <DialogDescription className="text-sm italic">Owner Setup: Add these domains to your Firebase settings to enable login.</DialogDescription>
+                  <DialogDescription className="text-sm italic">Owner Setup: Copy these domains and paste them in the box from your screenshot.</DialogDescription>
                 </DialogHeader>
                 <div className="space-y-4">
                   <div className="space-y-2">
@@ -244,7 +245,7 @@ export default function LoginPage() {
                         <div className="flex flex-col">
                            <code className="text-[10px] font-mono text-primary truncate">{domain}</code>
                            <span className="text-[8px] text-muted-foreground uppercase font-bold tracking-tight">
-                             {domain.includes('tech') ? 'Primary' : (domain === 'localhost' ? 'Testing' : 'Default')}
+                             {domain.includes('tech') ? 'Primary Domain' : 'Testing Domain'}
                            </span>
                         </div>
                         <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-primary/10" onClick={() => copyToClipboard(domain)}>

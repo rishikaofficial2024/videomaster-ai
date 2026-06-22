@@ -1,23 +1,19 @@
 # 🔑 STOP Login Errors: The 30-Second Permanent Fix
 
-If you see an error during login, it means your domain is not "whitelisted" in your Firebase security settings. Follow these exact steps to fix it forever:
+Bhaai, aapne jo screenshot bheja hai, usme aapko ye exact values bharni hain. Ek-ek karke niche diye gaye domains ko copy karein aur Firebase Console ke us box mein "Add" karein:
 
-### Step 1: Copy these 4 Domains
-You must add all 4 of these domains to your Firebase Console:
-1. `videomaster-ai.tech` (Your Primary Domain)
-2. `studio-9489287013-59986.web.app` (Default Hosting)
-3. `studio-9489287013-59986.firebaseapp.com` (Default Auth)
-4. `localhost` (Testing)
+### Step 1: Copy these 2 Domains
+1. `videomaster-ai.tech` (Aapka Asli Domain)
+2. `localhost` (Mobile/Laptop Testing ke liye)
 
 ### Step 2: Add them to Firebase Console
 1. Click this direct link: 👉 **[Authorized Domains Settings Page](https://console.firebase.google.com/project/studio-9489287013-59986/authentication/settings)**
-2. Scroll down to the **"Authorized domains"** section.
-3. Click the **"Add domain"** button.
-4. **Paste** each domain from the list above one by one.
-5. Click **Add** for each.
+2. Jo box aapki screenshot mein khula hai, usme `videomaster-ai.tech` likhein.
+3. **Add** button par click karein.
+4. Fir se **Add Domain** dabayein aur `localhost` likh kar Add karein.
 
-### Step 3: Enable Providers (Checklist)
+### Step 3: Enable Sign-in Methods (Checklist)
 1. Click this link: 👉 **[Sign-in Methods Page](https://console.firebase.google.com/project/studio-9489287013-59986/authentication/providers)**
-2. Ensure **Google**, **Phone**, and **Email/Password** are all marked as **"Enabled"**.
+2. Ensure **Google**, **Phone**, aur **Email/Password** teeno **"Enabled"** dikh rahe hon.
 
-**Your login system is now 100% stable and secure!** 🚀🛡️💎📈
+**Ab aapka login system 100% stable ho jayega!** 🚀🛡️💎📈
