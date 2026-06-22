@@ -1,3 +1,4 @@
+
 "use client";
 
 import { Navbar } from "@/components/navbar";
@@ -190,7 +191,9 @@ export default function Dashboard() {
                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
                         <div className="absolute bottom-6 left-6 right-6">
                            <h4 className="text-white font-bold truncate text-lg uppercase tracking-tight">{p.title || 'Untitled Masterpiece'}</h4>
-                           <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest mt-1">Edited {new Date(p.updatedAt?.seconds * 1000 || Date.now()).toLocaleDateString()}</p>
+                           <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest mt-1">
+                              Edited {p.updatedAt ? new Date(p.updatedAt.seconds * 1000).toLocaleDateString() : "Recently"}
+                           </p>
                         </div>
                         <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-primary/10 backdrop-blur-sm">
                            <Play className="w-12 h-12 text-white fill-current" />

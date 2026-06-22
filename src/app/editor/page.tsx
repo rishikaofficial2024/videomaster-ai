@@ -1,13 +1,14 @@
+
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, Suspense } from "react";
 import { Navbar } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
 import { 
   Pause, Play, SkipBack, SkipForward,
   Wand2, Download, Sparkles, ChevronLeft, Loader2, Video as VideoIcon,
   Plus, RefreshCw, Palette, Mic2, 
-  Trash2, TrendingUp, Tags, BarChart4, Music, Star, Volume2,
+  Trash2, TrendingUp, Tags, Music, Star, Volume2,
   Upload, Scissors, Layers, Film, Image as ImageIcon,
   Settings2, MoveHorizontal, Type, Layout, Crown, Lock
 } from "lucide-react";
@@ -34,7 +35,7 @@ interface MediaAsset {
   duration?: number;
 }
 
-export default function EditorPage() {
+function EditorContent() {
   const searchParams = useSearchParams();
   const projectIdFromUrl = searchParams.get("id");
   const router = useRouter();
@@ -556,5 +557,20 @@ export default function EditorPage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function EditorPage() {
+  return (
+    <Suspense fallback={
+      <div className="h-screen flex items-center justify-center bg-[#05070a]">
+        <div className="text-center space-y-6">
+           <Loader2 className="w-12 h-12 animate-spin text-primary mx-auto" />
+           <p className="text-[10px] font-bold uppercase tracking-[0.5em] text-muted-foreground animate-pulse">Syncing Neural Timeline</p>
+        </div>
+      </div>
+    }>
+      <EditorContent />
+    </Suspense>
   );
 }
