@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -12,9 +13,8 @@ import { doc } from "firebase/firestore";
 
 const navItems = [
   { name: "Home", href: "/dashboard", icon: Home },
-  { name: "Search", href: "/projects", icon: Search },
-  { name: "Assistant", href: "/ai-assistant", icon: Bot },
   { name: "Explore", href: "/templates", icon: Compass },
+  { name: "Assistant", href: "/ai-assistant", icon: Bot },
   { name: "Premium", href: "/premium", icon: Crown },
   { name: "Profile", href: "/profile", icon: User },
 ];
