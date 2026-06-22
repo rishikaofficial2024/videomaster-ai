@@ -1,21 +1,18 @@
-
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogTrigger } from "@/components/ui/dialog";
-import { Video, Chrome, Facebook, Loader2, AlertCircle, Copy, ExternalLink, ArrowLeft, HelpCircle, ShieldCheck, AlertTriangle } from "lucide-react";
+import { Video, Chrome, Loader2, Eye, EyeOff, ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { 
   createUserWithEmailAndPassword, 
   updateProfile, 
   signInWithPopup, 
-  GoogleAuthProvider, 
-  FacebookAuthProvider 
+  GoogleAuthProvider 
 } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { useAuth, useFirestore } from "@/firebase";
@@ -27,9 +24,9 @@ export default function SignupPage() {
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [authError, setAuthError] = useState<string | null>(null);
   
   const router = useRouter();
   const { toast } = useToast();
@@ -39,7 +36,6 @@ export default function SignupPage() {
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setAuthError(null);
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
@@ -55,7 +51,6 @@ export default function SignupPage() {
         isAdmin: false,
         subscriptionPlan: "free",
         credits: 100,
-        photoURL: "",
         createdAt: new Date().toISOString(),
         usageStats: { totalVideos: 0, aiGenerations: 0 }
       };
@@ -71,22 +66,20 @@ export default function SignupPage() {
 
       router.push("/dashboard");
     } catch (error: any) {
-      setAuthError(error.code);
       toast({ 
         variant: "destructive", 
-        title: "Registration Error", 
-        description: error.code === 'auth/unauthorized-domain' ? "Security check required. See diagnostics." : error.message 
+        title: "Registration Failed", 
+        description: error.message 
       });
     } finally {
       setLoading(false);
     }
   };
 
-  const handleSocialSignup = async (providerName: 'google' | 'facebook') => {
+  const handleSocialSignup = async () => {
     try {
       setLoading(true);
-      setAuthError(null);
-      const provider = providerName === 'google' ? new GoogleAuthProvider() : new FacebookAuthProvider();
+      const provider = new GoogleAuthProvider();
       const result = await signInWithPopup(auth, provider);
       
       const user = result.user;
@@ -98,7 +91,6 @@ export default function SignupPage() {
         isAdmin: false,
         subscriptionPlan: "free",
         credits: 100,
-        photoURL: user.photoURL || "",
         createdAt: new Date().toISOString(),
         usageStats: { totalVideos: 0, aiGenerations: 0 }
       };
@@ -114,102 +106,85 @@ export default function SignupPage() {
 
       router.push("/dashboard");
     } catch (error: any) {
-      setAuthError(error.code);
-      toast({ variant: "destructive", title: "Social Sync Error", description: error.message });
+      toast({ variant: "destructive", title: "Google Error", description: error.message });
     } finally {
       setLoading(false);
     }
   };
 
-  const copyToClipboard = (text: string) => {
-    navigator.clipboard.writeText(text);
-    toast({ title: "Copied!" });
-  };
-
   return (
-    <div className="min-h-screen flex items-center justify-center p-6 bg-[#05070a] hero-gradient relative">
+    <div className="min-h-screen flex items-center justify-center p-6 bg-[#05070a] relative">
       <div className="fixed top-8 left-8">
-        <Link href="/" className="flex items-center gap-2 font-bold text-muted-foreground hover:text-primary transition-colors">
-          <ArrowLeft className="w-4 h-4" /> Back to Landing
+        <Link href="/login" className="flex items-center gap-2 font-bold text-muted-foreground hover:text-primary transition-colors">
+          <ArrowLeft className="w-4 h-4" /> Back to Login
         </Link>
       </div>
 
-      <div className="w-full max-w-md space-y-8 animate-in fade-in duration-700">
-        <Card className="border-primary/10 bg-[#0a0d14]/80 backdrop-blur-3xl shadow-2xl rounded-[3rem] overflow-hidden blue-glow">
-          <div className="h-2 bg-primary w-full" />
-          <CardHeader className="text-center pt-10 pb-4">
-            <div className="flex justify-center mb-4">
-              <div className="bg-primary rounded-2xl p-4 shadow-xl shadow-primary/30">
-                <Video className="w-8 h-8 text-white" />
-              </div>
+      <div className="w-full max-w-md animate-in fade-in duration-500">
+        <Card className="border-white/5 bg-[#0a0d14] rounded-[2rem] shadow-2xl overflow-hidden">
+          <div className="h-1.5 bg-primary w-full" />
+          <CardHeader className="text-center pt-8">
+            <div className="flex justify-center mb-2">
+              <Video className="w-10 h-10 text-primary" />
             </div>
-            <CardTitle className="text-3xl font-headline font-bold text-white">Join Studio</CardTitle>
-            <CardDescription className="italic">Claim 100 Free AI Credits upon successful registration</CardDescription>
+            <CardTitle className="text-2xl font-bold">Join Studio</CardTitle>
+            <CardDescription>Get 100 FREE AI Credits instantly</CardDescription>
           </CardHeader>
 
-          <CardContent className="space-y-6 px-10">
+          <CardContent className="space-y-6">
             <form onSubmit={handleSignup} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <Label className="text-[10px] uppercase tracking-widest text-primary ml-1 text-left block">First Name</Label>
-                  <Input placeholder="John" required className="h-12 rounded-xl bg-black/40 border-white/10 text-white" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
+                  <Label className="text-[10px] uppercase text-primary ml-1">First Name</Label>
+                  <Input placeholder="John" required className="h-12 bg-black/40 border-white/10" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
                 </div>
                 <div className="space-y-1">
-                  <Label className="text-[10px] uppercase tracking-widest text-primary ml-1 text-left block">Last Name</Label>
-                  <Input placeholder="Doe" required className="h-12 rounded-xl bg-black/40 border-white/10 text-white" value={lastName} onChange={(e) => setLastName(e.target.value)} />
+                  <Label className="text-[10px] uppercase text-primary ml-1">Last Name</Label>
+                  <Input placeholder="Doe" required className="h-12 bg-black/40 border-white/10" value={lastName} onChange={(e) => setLastName(e.target.value)} />
                 </div>
               </div>
               <div className="space-y-1">
-                <Label className="text-[10px] uppercase tracking-widest text-primary ml-1 text-left block">Email Address</Label>
-                <Input type="email" placeholder="john@example.com" required className="h-12 rounded-xl bg-black/40 border-white/10 text-white" value={email} onChange={(e) => setEmail(e.target.value)} />
+                <Label className="text-[10px] uppercase text-primary ml-1">Email</Label>
+                <Input type="email" placeholder="john@example.com" required className="h-12 bg-black/40 border-white/10" value={email} onChange={(e) => setEmail(e.target.value)} />
               </div>
               <div className="space-y-1">
-                <Label className="text-[10px] uppercase tracking-widest text-primary ml-1 text-left block">Secure Password</Label>
-                <Input type="password" placeholder="Min. 8 characters" required className="h-12 rounded-xl bg-black/40 border-white/10 text-white" value={password} onChange={(e) => setPassword(e.target.value)} />
+                <Label className="text-[10px] uppercase text-primary ml-1">Password</Label>
+                <div className="relative">
+                  <Input 
+                    type={showPassword ? "text" : "password"} 
+                    placeholder="Min. 8 characters" 
+                    required 
+                    className="h-12 bg-black/40 border-white/10 pr-12" 
+                    value={password} 
+                    onChange={(e) => setPassword(e.target.value)} 
+                  />
+                  <button 
+                    type="button" 
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-white"
+                  >
+                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  </button>
+                </div>
               </div>
-              <Button type="submit" className="w-full h-14 text-lg font-bold rounded-xl shadow-xl shadow-primary/20" disabled={loading}>
+              <Button type="submit" className="w-full h-12 font-bold" disabled={loading}>
                 {loading ? <Loader2 className="animate-spin" /> : "Start Free Journey"}
               </Button>
             </form>
             
-            <div className="grid grid-cols-2 gap-4">
-              <Button variant="outline" className="h-12 rounded-xl gap-2 font-bold border-white/10 bg-black/20 hover:bg-primary/5" onClick={() => handleSocialSignup('google')} disabled={loading}>
-                <Chrome className="w-4 h-4 text-red-500" /> Google
-              </Button>
-              <Button variant="outline" className="h-12 rounded-xl gap-2 font-bold border-white/10 bg-black/20 hover:bg-primary/5" onClick={() => handleSocialSignup('facebook')} disabled={loading}>
-                <Facebook className="w-4 h-4 text-blue-600" /> Facebook
-              </Button>
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center"><span className="w-full border-t border-white/5"></span></div>
+              <div className="relative flex justify-center text-[10px] uppercase font-bold text-muted-foreground"><span className="bg-[#0a0d14] px-4">Or sign up with</span></div>
             </div>
+
+            <Button variant="outline" className="w-full h-12 gap-2 border-white/10 bg-black/20" onClick={handleSocialSignup} disabled={loading}>
+              <Chrome className="w-4 h-4 text-red-500" /> Sign up with Google
+            </Button>
           </CardContent>
-          <CardFooter className="flex flex-col space-y-4 pb-10 pt-4">
-            <div className="text-xs text-center text-muted-foreground font-medium">
-              Already have an account? <Link href="/login" className="text-primary font-bold hover:underline">Sign in instead</Link>
+          <CardFooter className="flex flex-col space-y-4 pb-8 pt-2">
+            <div className="text-sm text-center text-muted-foreground">
+              Already have an account? <Link href="/login" className="text-primary font-bold hover:underline">Sign In</Link>
             </div>
-            
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button variant="ghost" className="text-[10px] font-bold uppercase tracking-widest gap-2 text-muted-foreground hover:text-white">
-                  <HelpCircle className="w-3 h-3" /> Connection Diagnostics
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="bg-[#0a0d14] border-white/10 rounded-[2.5rem] p-10 max-w-md text-white">
-                <DialogHeader className="mb-6">
-                  <DialogTitle className="text-2xl font-headline font-bold">Security Diagnostics</DialogTitle>
-                  <DialogDescription className="italic">Owner: Add these domains to Firebase to enable Registration.</DialogDescription>
-                </DialogHeader>
-                <div className="space-y-3">
-                   {["videomaster-ai.tech", "localhost"].map(d => (
-                     <div key={d} className="flex items-center justify-between p-3 bg-black/40 rounded-xl border border-white/5">
-                        <code className="text-[10px] font-mono text-primary">{d}</code>
-                        <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => copyToClipboard(d)}><Copy className="w-3.5 h-3.5" /></Button>
-                     </div>
-                   ))}
-                   <Button className="w-full mt-4 bg-red-600 hover:bg-red-700" asChild>
-                     <a href="https://console.firebase.google.com/project/studio-9489287013-59986/authentication/settings" target="_blank">Open Firebase Settings</a>
-                   </Button>
-                </div>
-              </DialogContent>
-            </Dialog>
           </CardFooter>
         </Card>
       </div>
