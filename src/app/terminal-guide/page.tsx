@@ -1,10 +1,9 @@
-
 "use client";
 
 import { Navbar } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Terminal, ArrowLeft, Smartphone, XCircle, Menu, ChevronDown, AlertTriangle, Info, Globe, Copy } from "lucide-react";
+import { Terminal, ArrowLeft, Smartphone, XCircle, Menu, ChevronDown, AlertTriangle, Info, Globe, Copy, MousePointer2 } from "lucide-react";
 import Link from "next/link";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
@@ -28,56 +27,58 @@ export default function TerminalGuidePage() {
           <Link href="/dashboard" className="inline-flex items-center gap-2 text-xs font-bold text-muted-foreground hover:text-primary transition-all uppercase tracking-widest">
             <ArrowLeft className="w-4 h-4" /> Back to Studio
           </Link>
-          <h1 className="text-5xl md:text-7xl font-headline font-bold text-white tracking-tighter">
-            Terminal <span className="text-primary italic">Map</span>
+          <h1 className="text-5xl md:text-8xl font-headline font-bold text-white tracking-tighter">
+            Terminal <span className="text-primary italic">Finder</span>
           </h1>
           <p className="text-muted-foreground text-xl font-medium italic text-red-500 animate-pulse">
-            ⚠️ DO NOT go to any other website (like nodejs.org). Everything is ALREADY inside this tab!
+            ⚠️ DO NOT LEAVE THIS TAB. The Terminal is already inside your screen!
           </p>
         </header>
 
         {/* 📱 MOBILE VISUAL SIMULATOR */}
         <section className="relative">
           <div className="absolute -inset-4 bg-primary/20 blur-3xl rounded-full opacity-50" />
-          <Card className="rounded-[3rem] bg-[#0a0d14] border-2 border-primary/50 p-8 space-y-10 relative overflow-hidden shadow-2xl">
+          <Card className="rounded-[4rem] bg-[#0a0d14] border-2 border-primary/50 p-10 space-y-12 relative overflow-hidden shadow-[0_0_100px_rgba(59,130,246,0.2)]">
              <div className="text-center space-y-2">
-                <h3 className="text-2xl font-bold font-headline text-white uppercase tracking-tight">MOBILE STEPS (Very Important)</h3>
-                <p className="text-sm text-muted-foreground italic">Browser ke upar wala menu nahi, Firebase Studio ka menu dekhein:</p>
+                <h3 className="text-3xl font-bold font-headline text-white uppercase tracking-tight">MOBILE SIMULATOR (Dhyan Se)</h3>
+                <p className="text-muted-foreground italic">Follow the arrows to find the "Black Box":</p>
              </div>
 
-             <div className="grid md:grid-cols-2 gap-12 items-center">
-                <div className="space-y-6">
-                   <div className="relative aspect-[9/16] max-w-[280px] mx-auto bg-black rounded-[2.5rem] border-4 border-white/10 p-4 shadow-inner overflow-hidden group">
-                      <div className="h-10 border-b border-white/10 flex items-center px-2 justify-between">
-                         <div className="p-1 bg-red-600 rounded-md border border-white animate-bounce">
-                            <Menu className="w-4 h-4 text-white" />
+             <div className="grid md:grid-cols-2 gap-16 items-center">
+                <div className="relative">
+                   <div className="relative aspect-[9/16] max-w-[300px] mx-auto bg-black rounded-[3rem] border-8 border-white/10 p-5 shadow-2xl overflow-hidden group">
+                      <div className="h-12 border-b border-white/10 flex items-center px-2 justify-between">
+                         <div className="relative">
+                            <div className="p-1.5 bg-red-600 rounded-lg border border-white animate-bounce shadow-xl shadow-red-600/50">
+                               <Menu className="w-5 h-5 text-white" />
+                            </div>
+                            <div className="absolute -right-20 top-0 bg-red-600 text-white text-[10px] font-black px-2 py-1 rounded-full whitespace-nowrap shadow-2xl">CLICK ≡ FIRST</div>
                          </div>
-                         <div className="text-[8px] font-bold text-white/40 uppercase">FIREBASE STUDIO (IDX)</div>
-                         <div className="w-4 h-4 rounded-full bg-white/5" />
+                         <div className="text-[10px] font-bold text-white/40 uppercase tracking-widest">FIREBASE STUDIO</div>
+                         <div className="w-5 h-5 rounded-full bg-white/5" />
                       </div>
                       
-                      <div className="absolute top-12 left-4 z-20 flex flex-col items-center">
-                         <div className="bg-red-600 text-white text-[10px] font-black px-2 py-1 rounded-full shadow-2xl animate-pulse">CLICK HERE FIRST</div>
-                         <div className="w-0.5 h-6 bg-red-600" />
+                      <div className="mt-8 space-y-6">
+                         <div className="p-4 bg-white/10 rounded-2xl border border-white/10 flex items-center justify-between">
+                            <span className="text-xs font-bold text-white uppercase tracking-widest opacity-40">Explorer</span>
+                         </div>
+                         <div className="p-4 bg-primary/20 rounded-2xl border border-primary/50 flex items-center justify-between relative">
+                            <span className="text-xs font-black text-primary uppercase tracking-widest">Terminal</span>
+                            <ChevronDown className="w-4 h-4 text-primary" />
+                            <MousePointer2 className="absolute -right-4 -bottom-4 w-8 h-8 text-white animate-bounce" />
+                         </div>
+                         <div className="ml-6 p-3 bg-primary/10 rounded-xl border border-primary/30 flex items-center gap-2 animate-pulse">
+                            <div className="w-2 h-2 bg-primary rounded-full" />
+                            <span className="text-[10px] font-black text-primary uppercase">New Terminal</span>
+                         </div>
                       </div>
 
-                      <div className="mt-4 space-y-4">
-                         <div className="p-3 bg-white/10 rounded-xl border border-white/10 flex items-center justify-between">
-                            <span className="text-[10px] font-bold text-white uppercase tracking-widest">Terminal</span>
-                            <ChevronDown className="w-3 h-3 text-white/40" />
+                      <div className="absolute bottom-0 inset-x-0 h-40 bg-[#05070a] border-t-2 border-primary/50 p-4 space-y-3">
+                         <div className="flex items-center gap-3">
+                            <span className="text-emerald-500 font-bold text-sm">$</span>
+                            <span className="text-white/60 text-xs font-mono">npm run mobile:push</span>
                          </div>
-                         <div className="ml-4 p-2 bg-primary/10 rounded-lg border border-primary/30 flex items-center gap-2 animate-pulse">
-                            <div className="w-1.5 h-1.5 bg-primary rounded-full" />
-                            <span className="text-[9px] font-black text-primary uppercase">New Terminal</span>
-                         </div>
-                      </div>
-
-                      <div className="absolute bottom-0 inset-x-0 h-32 bg-[#05070a] border-t border-primary/30 p-3 space-y-2">
-                         <div className="flex items-center gap-2">
-                            <span className="text-emerald-500 font-bold text-[8px]">$</span>
-                            <span className="text-white/60 text-[8px] font-mono">npm run mobile:push</span>
-                         </div>
-                         <div className="w-1 h-3 bg-primary animate-pulse" />
+                         <div className="w-1.5 h-4 bg-primary animate-pulse" />
                       </div>
                    </div>
                 </div>
@@ -87,31 +88,31 @@ export default function TerminalGuidePage() {
                      { 
                        num: "1", 
                        title: "TOP-LEFT MENU (≡)", 
-                       desc: "Browser ke top left kone mein 3 lines hain. Use click karein.",
+                       desc: "Browser ke sabse upar baayein kone mein 3 horizontal lines hain. Unhe click karein.",
                        icon: Menu
                      },
                      { 
                        num: "2", 
                        title: "TERMINAL > NEW", 
-                       desc: "Menu mein 'Terminal' dhoondein aur 'New Terminal' select karein.",
+                       desc: "Menu ke andar 'Terminal' par click karein, fir 'New Terminal' select karein.",
                        icon: Terminal
                      },
                      { 
                        num: "3", 
-                       title: "PASTE COMMAND", 
-                       desc: "Niche jo Black Box khulega wahan command paste karein aur Enter dabayein.",
+                       title: "PASTE & GO", 
+                       desc: "Niche jo 'Black Box' khulega wahan command paste karke Enter/Go dabayein.",
                        icon: Smartphone
                      }
                    ].map((step, i) => (
-                     <div key={i} className="flex gap-6 items-start p-6 bg-white/5 rounded-3xl border border-white/5 group hover:border-primary/30 transition-all">
-                        <div className="w-12 h-12 rounded-2xl bg-red-500/20 text-red-500 flex-shrink-0 flex items-center justify-center font-black text-xl border border-red-500/30 shadow-lg shadow-red-500/10">
+                     <div key={i} className="flex gap-8 items-start p-8 bg-white/5 rounded-[2.5rem] border border-white/5 group hover:border-primary/40 transition-all shadow-lg hover:shadow-primary/5">
+                        <div className="w-14 h-14 rounded-2xl bg-red-500/20 text-red-500 flex-shrink-0 flex items-center justify-center font-black text-2xl border border-red-500/30 shadow-xl">
                            {step.num}
                         </div>
-                        <div className="space-y-1">
-                           <h4 className="text-white font-bold uppercase tracking-widest flex items-center gap-2">
-                             <step.icon className="w-4 h-4 text-red-500" /> {step.title}
+                        <div className="space-y-2">
+                           <h4 className="text-white text-xl font-bold uppercase tracking-tight flex items-center gap-3">
+                             <step.icon className="w-5 h-5 text-red-500" /> {step.title}
                            </h4>
-                           <p className="text-sm text-muted-foreground italic leading-relaxed">{step.desc}</p>
+                           <p className="text-base text-muted-foreground italic leading-relaxed">{step.desc}</p>
                         </div>
                      </div>
                    ))}
@@ -122,33 +123,25 @@ export default function TerminalGuidePage() {
 
         {/* 🛑 WARNING BOX */}
         <section>
-          <Card className="rounded-[3rem] bg-rose-500/10 border-2 border-rose-500/40 p-8 space-y-6">
+          <Card className="rounded-[3rem] bg-rose-500/10 border-2 border-rose-500/40 p-10 space-y-6">
              <div className="flex items-center gap-4 text-rose-500">
-                <XCircle className="w-12 h-12" />
-                <h3 className="text-3xl font-bold font-headline uppercase tracking-tighter">Ye Terminal NAHI hai:</h3>
+                <XCircle className="w-14 h-14" />
+                <h3 className="text-4xl font-bold font-headline uppercase tracking-tighter">Nodejs.org par MAT JAIYE</h3>
              </div>
-             <div className="grid md:grid-cols-2 gap-8 items-center">
-                <div className="space-y-4">
-                  <div className="p-4 bg-white/5 rounded-2xl border border-white/10 text-muted-foreground font-mono text-[10px] w-full text-center">
-                    nodejs.org/en/download
-                  </div>
-                  <p className="text-xs text-rose-400 font-bold uppercase text-center">❌ IS WEBSITE PAR MAT JAIYE</p>
-                </div>
-                <p className="text-muted-foreground italic leading-relaxed text-sm">
-                   Bhaai, Node.js download karne ki koi zaroorat nahi hai. Sab kuch aapke isi tab mein chupa hai. Bas Top-Left menu kholein aur "Terminal" select karein.
-                </p>
-             </div>
+             <p className="text-xl text-muted-foreground italic leading-relaxed">
+                Bhaai, Node.js download karne ke liye kisi doosri website par jaane ki zaroorat nahi hai. Sab kuch aapke isi browser tab mein pehle se hai. Bas **Top-Left Menu** kholein aur **Terminal** chalu karein.
+             </p>
           </Card>
         </section>
 
-        <section className="space-y-6">
+        <section className="space-y-6 pt-10">
            <div className="text-center">
-              <span className="text-[10px] font-black text-primary uppercase tracking-[0.4em]">Copy this command</span>
+              <span className="text-[12px] font-black text-primary uppercase tracking-[0.6em] animate-pulse">Copy this Magic command</span>
            </div>
-           <div className="p-8 bg-black rounded-[3rem] border-2 border-primary/30 font-mono text-primary text-2xl md:text-4xl font-bold text-center shadow-2xl flex flex-col items-center gap-8 group">
-             <span>npm run mobile:push</span>
-             <Button onClick={copyCommand} className="rounded-full h-20 px-16 font-bold gap-4 text-xl shadow-2xl shadow-primary/30 hover:scale-105 active:scale-95 transition-all">
-                <Copy className="w-8 h-8" /> Copy & Close Guide
+           <div className="p-10 bg-black rounded-[4rem] border-2 border-primary/50 font-mono text-primary text-3xl md:text-5xl font-black text-center shadow-[0_0_80px_rgba(59,130,246,0.3)] flex flex-col items-center gap-10 group">
+             <span className="tracking-tighter">npm run mobile:push</span>
+             <Button onClick={copyCommand} className="rounded-full h-24 px-20 font-black gap-6 text-2xl shadow-2xl shadow-primary/40 hover:scale-105 active:scale-95 transition-all bg-primary">
+                <Copy className="w-10 h-10" /> COPY & CLOSE GUIDE
              </Button>
            </div>
         </section>

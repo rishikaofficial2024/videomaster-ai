@@ -46,68 +46,68 @@ export default function BuildStatusPage() {
         </header>
 
         <section className="grid gap-8">
-          <Card className="rounded-[3.5rem] bg-[#0a0d14]/80 backdrop-blur-3xl border-2 border-primary/30 p-10 space-y-10 blue-glow relative overflow-hidden">
+          <Card className="rounded-[4rem] bg-[#0a0d14]/90 backdrop-blur-3xl border-2 border-primary/30 p-12 space-y-12 shadow-[0_0_100px_rgba(59,130,246,0.15)] relative overflow-hidden">
              <div className="absolute top-0 right-0 p-10 opacity-5">
-                <Tornado className="w-40 h-40 animate-spin-slow" />
+                <Tornado className="w-60 h-60 animate-spin-slow" />
              </div>
              
-             <div className="space-y-8 relative z-10">
+             <div className="space-y-10 relative z-10">
                 {steps.map((s, i) => (
-                  <div key={i} className="flex items-center gap-6">
+                  <div key={i} className="flex items-center gap-8 group">
                      <div className={cn(
-                       "w-14 h-14 rounded-2xl flex items-center justify-center border-2 transition-all duration-500",
-                       s.status === 'completed' ? "bg-emerald-500/20 border-emerald-500 text-emerald-500" : 
-                       s.status === 'active' ? "bg-primary/20 border-primary text-primary animate-pulse" : 
+                       "w-16 h-16 rounded-[1.5rem] flex items-center justify-center border-2 transition-all duration-700",
+                       s.status === 'completed' ? "bg-emerald-500/20 border-emerald-500 text-emerald-500 shadow-[0_0_30px_rgba(16,185,129,0.3)]" : 
+                       s.status === 'active' ? "bg-primary/20 border-primary text-primary animate-pulse shadow-[0_0_30px_rgba(59,130,246,0.3)]" : 
                        "bg-white/5 border-white/10 text-muted-foreground opacity-20"
                      )}>
-                        <s.icon className="w-6 h-6" />
+                        <s.icon className="w-8 h-8" />
                      </div>
                      <div className="flex-1 space-y-1">
                         <h4 className={cn(
-                          "font-bold uppercase tracking-widest text-sm",
+                          "font-black uppercase tracking-[0.2em] text-lg",
                           s.status === 'completed' ? "text-white" : "text-muted-foreground"
                         )}>{s.label}</h4>
-                        <p className="text-[10px] text-muted-foreground italic">
+                        <p className="text-xs text-muted-foreground italic font-medium">
                            {s.status === 'completed' ? "Protocol Verified ✅" : s.status === 'active' ? "Processing Node..." : "Waiting for Sequence..."}
                         </p>
                      </div>
-                     {s.status === 'completed' && <CheckCircle2 className="w-5 h-5 text-emerald-500" />}
+                     {s.status === 'completed' && <CheckCircle2 className="w-6 h-6 text-emerald-500" />}
                   </div>
                 ))}
              </div>
 
-             <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-8">
+             <div className="pt-12 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-10">
                 <div className="text-center md:text-left">
-                   <h3 className="text-2xl font-bold text-white font-headline">FACTORY LINK READY</h3>
-                   <p className="text-xs text-muted-foreground italic">Click below to see build logs and download the APK.</p>
+                   <h3 className="text-3xl font-bold text-white font-headline tracking-tight uppercase">FACTORY LINK READY</h3>
+                   <p className="text-sm text-muted-foreground italic opacity-60">Click below to see build logs and download the APK artifact.</p>
                 </div>
-                <Button className="h-16 px-12 rounded-2xl bg-emerald-600 hover:bg-emerald-700 font-black text-lg gap-3 shadow-2xl shadow-emerald-600/40 group hover:scale-105 transition-all" asChild>
+                <Button className="h-20 px-16 rounded-[2rem] bg-emerald-600 hover:bg-emerald-700 font-black text-xl gap-4 shadow-[0_20px_50px_rgba(5,150,105,0.4)] group hover:scale-105 transition-all" asChild>
                    <a href={githubLink} target="_blank">
-                      <Download className="w-6 h-6 group-hover:bounce" /> GO TO DOWNLOAD PAGE
+                      <Download className="w-8 h-8 group-hover:bounce" /> GO TO DOWNLOAD PAGE
                    </a>
                 </Button>
              </div>
           </Card>
 
-          <Card className="rounded-[3rem] bg-primary/10 border-primary/20 p-10 flex flex-col md:flex-row items-center justify-between gap-10">
-             <div className="flex items-center gap-6">
-                <div className="w-16 h-16 bg-primary/20 rounded-2xl flex items-center justify-center border border-primary/30">
-                   <Wand2 className="w-8 h-8 text-primary" />
+          <Card className="rounded-[3rem] bg-primary/10 border-primary/20 p-12 flex flex-col md:flex-row items-center justify-between gap-10">
+             <div className="flex items-center gap-8">
+                <div className="w-20 h-20 bg-primary/20 rounded-[2rem] flex items-center justify-center border-2 border-primary/30 shadow-2xl">
+                   <Wand2 className="w-10 h-10 text-primary" />
                 </div>
-                <div className="space-y-1 text-center md:text-left">
-                   <h4 className="text-xl font-bold font-headline text-white uppercase">How it works (Jaadu)</h4>
-                   <p className="text-sm text-muted-foreground italic">Jab aap terminal mein command chalate hain, GitHub ek naya APK bana kar wahan rakh deta hai.</p>
+                <div className="space-y-2 text-center md:text-left">
+                   <h4 className="text-2xl font-bold font-headline text-white uppercase tracking-tight">How it works (Jaadu)</h4>
+                   <p className="text-lg text-muted-foreground italic leading-relaxed">Jab aap terminal mein command chalate hain, GitHub ek naya APK bana kar wahan rakh deta hai.</p>
                 </div>
              </div>
-             <Button variant="outline" className="h-14 px-8 rounded-2xl border-white/10 text-white font-bold" asChild>
-                <Link href="/APK_GUIDE.md">Step-by-Step Guide</Link>
+             <Button variant="outline" className="h-16 px-10 rounded-2xl border-white/10 text-white font-bold text-lg" asChild>
+                <Link href="/APK_GUIDE.md">Read Steps</Link>
              </Button>
           </Card>
         </section>
 
-        <div className="text-center pt-8">
-           <Link href="/dashboard" className="text-[10px] font-bold text-muted-foreground hover:text-primary uppercase tracking-[0.5em]">
-              <ArrowLeft className="inline w-3 h-3 mr-2" /> Wapas Dashboard Par Chalo
+        <div className="text-center pt-10">
+           <Link href="/dashboard" className="text-[12px] font-black text-muted-foreground hover:text-primary uppercase tracking-[0.6em] transition-all">
+              <ArrowLeft className="inline w-4 h-4 mr-3" /> Wapas Dashboard Par Chalo
            </Link>
         </div>
       </main>

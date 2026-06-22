@@ -53,6 +53,7 @@ export default function Dashboard() {
         return prev - 1;
       });
     }, 1000);
+    
     setTimeout(() => {
       const updateData = { credits: increment(20) };
       updateDoc(userProfileRef, updateData).catch(async (e) => {
@@ -87,27 +88,27 @@ export default function Dashboard() {
       <main className="max-w-7xl mx-auto p-6 space-y-12">
         
         {/* 🪄 MAGIC BUILD ENGINE (ULTIMATE UI) */}
-        <div className="relative group overflow-hidden rounded-[3.5rem]">
+        <div className="relative group overflow-hidden rounded-[3.5rem] shadow-2xl">
            <div className="absolute inset-0 bg-gradient-to-r from-primary/40 via-purple-500/40 to-primary/40 animate-pulse" />
-           <div className="relative bg-[#0a0d14]/80 p-10 flex flex-col lg:flex-row items-center justify-between gap-10 shadow-2xl border-2 border-primary/50 backdrop-blur-3xl">
+           <div className="relative bg-[#0a0d14]/90 p-10 flex flex-col lg:flex-row items-center justify-between gap-10 border-2 border-primary/50 backdrop-blur-3xl">
               <div className="flex items-center gap-8 text-white">
-                 <div className="p-5 bg-primary rounded-full animate-bounce shadow-[0_0_50px_rgba(59,130,246,0.8)]">
-                    <Wand2 className="w-12 h-12" />
+                 <div className="p-6 bg-primary rounded-full animate-float shadow-[0_0_60px_rgba(59,130,246,1)]">
+                    <Wand2 className="w-14 h-14" />
                  </div>
                  <div className="space-y-2">
-                    <h2 className="text-4xl font-black font-headline uppercase tracking-tight leading-none">MAGIC APK FACTORY</h2>
-                    <p className="text-lg font-bold text-primary-foreground/80 italic">Mobile Phone = Remote Control. APK will be built in the cloud.</p>
+                    <h2 className="text-4xl font-black font-headline uppercase tracking-tighter leading-none">MAGIC APK ENGINE</h2>
+                    <p className="text-lg font-bold text-primary-foreground/80 italic">Mobile = Remote Control. APK builds in the Cloud.</p>
                  </div>
               </div>
               
               <div className="flex flex-col sm:flex-row gap-6 w-full lg:w-auto">
-                 <div className="bg-black/60 rounded-[2rem] p-4 border border-white/10 flex items-center justify-between gap-6 px-8">
-                    <code className="text-primary font-bold text-lg">npm run mobile:push</code>
-                    <Button variant="ghost" size="icon" onClick={copyCommand} className="hover:bg-primary/20 text-primary">
-                       <Copy className="w-6 h-6" />
+                 <div className="bg-black/60 rounded-[2.5rem] p-5 border border-white/10 flex items-center justify-between gap-8 px-10">
+                    <code className="text-primary font-bold text-xl">npm run mobile:push</code>
+                    <Button variant="ghost" size="icon" onClick={copyCommand} className="hover:bg-primary/20 text-primary transition-all">
+                       <Copy className="w-7 h-7" />
                     </Button>
                  </div>
-                 <Button size="lg" className="bg-white text-primary hover:bg-white/90 font-black rounded-[2rem] h-20 px-12 text-2xl shadow-2xl group-hover:scale-105 transition-all" asChild>
+                 <Button size="lg" className="bg-white text-primary hover:bg-white/90 font-black rounded-[2.5rem] h-20 px-14 text-2xl shadow-[0_0_40px_rgba(255,255,255,0.3)] group-hover:scale-105 transition-all" asChild>
                     <Link href="/terminal-guide">FIND TERMINAL NOW <ArrowRight className="ml-3 w-8 h-8" /></Link>
                  </Button>
               </div>
@@ -168,7 +169,31 @@ export default function Dashboard() {
               </Button>
            </Card>
         </section>
+
+        <section className="pt-10">
+           <AdBanner provider="Elite Network Hub" />
+        </section>
       </main>
+
+      {showAdOverlay && (
+        <div className="fixed inset-0 z-[200] bg-black flex items-center justify-center animate-in fade-in duration-500">
+           <div className="text-center space-y-10 px-10">
+              <div className="relative">
+                 <div className="absolute inset-0 bg-primary/30 blur-[100px] rounded-full" />
+                 <div className="w-24 h-24 bg-white/5 rounded-full flex items-center justify-center mx-auto border-4 border-primary relative z-10">
+                    <span className="text-4xl font-black text-white">{adTimer}</span>
+                 </div>
+              </div>
+              <div className="space-y-4">
+                 <h2 className="text-3xl font-headline font-bold text-white tracking-tight uppercase">High-Value Reward Ad</h2>
+                 <p className="text-muted-foreground italic font-medium">Do not close. Neural Credits syncing in {adTimer}s...</p>
+                 <div className="w-64 h-1.5 bg-white/10 rounded-full mx-auto overflow-hidden">
+                    <div className="h-full bg-primary transition-all duration-1000" style={{ width: `${(15 - adTimer) / 15 * 100}%` }} />
+                 </div>
+              </div>
+           </div>
+        </div>
+      )}
     </div>
   );
 }

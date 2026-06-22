@@ -1,8 +1,7 @@
-
 "use client";
 
 import { useEffect } from "react";
-import { SquarePlay, Info, Sparkles, TrendingUp } from "lucide-react";
+import { Play, Info, Sparkles, TrendingUp } from "lucide-react";
 
 interface AdBannerProps {
   provider?: string;
@@ -12,7 +11,7 @@ interface AdBannerProps {
 
 /**
  * Professional AdSense & AdMob Banner Component.
- * Optimized for high-CTR placements in VideoMaster AI.
+ * Fixed: Replaced missing icon reference with standard Play icon.
  */
 export function AdBanner({ provider = "AdSense Premium Network", adSlot = "default", variant = 'banner' }: AdBannerProps) {
   useEffect(() => {
