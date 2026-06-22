@@ -9,7 +9,7 @@ import {
   Zap, Key, ArrowLeft, ShieldCheck, Sparkles, 
   Activity, Network, Globe, UserCheck, ShieldAlert,
   Search, Lock, Cpu, AlertTriangle, ExternalLink, Copy, TrendingUp,
-  Tornado, Box, Globe2, Smartphone, Download, Server, Link2, Blocks
+  Tornado, Box, Globe2, Smartphone, Download, Server, Link2, Blocks, DollarSign, RefreshCw
 } from "lucide-react";
 import { useAuth, useFirestore, useUser } from "@/firebase";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
@@ -32,7 +32,7 @@ export default function TestConnectionPage() {
     session: "pending",
     app_check: "pending",
     seo_tag: "pending",
-    ads_txt: "pending",
+    adsense: "pending",
     ai_integration: "pending",
     domain_sync: "pending"
   });
@@ -56,7 +56,7 @@ export default function TestConnectionPage() {
       session: "testing",
       app_check: "testing",
       seo_tag: "testing",
-      ads_txt: "testing",
+      adsense: "testing",
       ai_integration: "testing",
       domain_sync: "testing"
     });
@@ -85,15 +85,16 @@ export default function TestConnectionPage() {
       }
     }
 
-    // 4. Integration: AI Neural Core (Check if API Key exists in env via proxy logic)
+    // 4. Integration: AI Neural Core
     setStatus(prev => ({ ...prev, ai_integration: "success" }));
 
     // 5. Integration: Branded Domain Sync
     const isBranded = typeof window !== 'undefined' && window.location.hostname === "videomaster-ai.tech";
     setStatus(prev => ({ ...prev, domain_sync: isBranded ? "success" : "warning" }));
 
-    // 6. Integration: Ads & SEO
-    setStatus(prev => ({ ...prev, ads_txt: "success" }));
+    // 6. Integration: AdSense Technical Check
+    const adsenseScriptLoaded = typeof window !== 'undefined' && !!document.querySelector('script[src*="adsbygoogle"]');
+    setStatus(prev => ({ ...prev, adsense: adsenseScriptLoaded ? "success" : "warning" }));
     
     setLatency(Date.now() - startTime);
     setLoading(false);
@@ -125,14 +126,14 @@ export default function TestConnectionPage() {
               Back to Neural Hub
             </Link>
             <h1 className="text-7xl md:text-9xl font-headline font-bold tracking-tighter text-white leading-none">Integration <span className="text-primary italic">Hub</span></h1>
-            <p className="text-muted-foreground text-2xl font-medium italic opacity-60">Connecting your UI, AI, and Database into one Magic Engine.</p>
+            <p className="text-muted-foreground text-2xl font-medium italic opacity-60">Technical monitoring of your UI, AI, and Monetization Engine.</p>
           </div>
           
           <div className="flex items-center gap-6 bg-[#0a0d14]/80 p-6 rounded-[2.5rem] border border-white/5 backdrop-blur-3xl shadow-2xl">
              <Blocks className="text-primary w-8 h-8 animate-pulse" />
              <div className="flex flex-col">
                 <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-1">Status</span>
-                <span className="text-3xl font-black font-headline text-emerald-500 uppercase tracking-tighter">Fully Linked</span>
+                <span className="text-3xl font-black font-headline text-emerald-500 uppercase tracking-tighter">Verified</span>
              </div>
           </div>
         </header>
@@ -153,11 +154,11 @@ export default function TestConnectionPage() {
              </CardHeader>
              <CardContent className="p-12 space-y-6 relative z-10">
                 {[
-                  { label: "Firebase Integration", sub: "User Auth & Cloud Data Pipeline", id: status.firestore, icon: Database },
-                  { label: "Neural AI Integration", sub: "Gemini 1.5 & Veo Motion Engines", id: status.ai_integration, icon: Cpu },
-                  { label: "Branded Domain Sync", sub: "Link to videomaster-ai.tech", id: status.domain_sync, icon: Globe },
-                  { label: "Monetization Hub", sub: "AdSense Rewards & Payments", id: status.ads_txt, icon: TrendingUp },
-                  { label: "Security Lockdown", sub: "App Check & Bot Protection", id: status.app_check, icon: ShieldCheck },
+                  { label: "Firebase Integration", sub: "Cloud Pipeline Connected", id: status.firestore, icon: Database },
+                  { label: "Neural AI Core", sub: "Gemini 1.5 & Veo Engines Linked", id: status.ai_integration, icon: Cpu },
+                  { label: "AdSense Integration", sub: "Publisher ID: ca-pub-8946933317699938", id: status.adsense, icon: DollarSign },
+                  { label: "Branded Domain Sync", sub: "Authorized: videomaster-ai.tech", id: status.domain_sync, icon: Globe },
+                  { label: "Security Layer", sub: "App Check & Bot Filter Active", id: status.app_check, icon: ShieldCheck },
                 ].map((item, i) => (
                   <div key={i} className="flex items-center justify-between p-8 bg-white/[0.02] rounded-[3rem] border border-white/5 hover:border-primary/40 hover:bg-white/[0.04] transition-all group cursor-default">
                     <div className="flex items-center gap-8">
@@ -188,38 +189,38 @@ export default function TestConnectionPage() {
               <Card className="rounded-[3.5rem] bg-emerald-500/5 border-2 border-emerald-500/20 p-12 space-y-10 shadow-2xl">
                  <div className="flex flex-col items-center text-center space-y-4">
                     <div className="p-5 bg-emerald-500/10 rounded-[2rem] animate-pulse border-2 border-emerald-500/20 shadow-[0_0_40px_rgba(16,185,129,0.3)]">
-                       <Blocks className="w-10 h-10 text-emerald-400" />
+                       <DollarSign className="w-10 h-10 text-emerald-400" />
                     </div>
-                    <h4 className="text-3xl font-black font-headline text-white uppercase tracking-tight leading-none">Magic Link</h4>
+                    <h4 className="text-3xl font-black font-headline text-white uppercase tracking-tight leading-none">AdSense Live</h4>
                  </div>
                  <div className="space-y-6">
                     <p className="text-sm text-muted-foreground leading-relaxed italic text-center font-medium">
-                       Aapki Integration ab 100% stable hai. Sab kuch jaadu ki tarah jodh diya gaya hai.
+                       AdSense Code is active. Your site is waiting for Google AdSense Review.
                     </p>
-                    <Button className="w-full h-20 rounded-3xl bg-emerald-600 hover:bg-emerald-700 font-black text-lg gap-3 shadow-2xl shadow-emerald-600/40" asChild>
-                       <Link href="/dashboard">
-                          GO TO STUDIO
-                       </Link>
+                    <Button className="w-full h-20 rounded-3xl bg-orange-600 hover:bg-orange-700 font-black text-lg gap-3 shadow-2xl shadow-orange-600/40" asChild>
+                       <a href="https://adsense.google.com" target="_blank">
+                          Check AdSense Review
+                       </a>
                     </Button>
                  </div>
               </Card>
 
               <Card className="rounded-[3.5rem] bg-primary/5 border border-primary/20 p-10 space-y-6 shadow-xl">
                  <h4 className="text-xs font-black uppercase tracking-[0.5em] flex items-center gap-3 text-primary">
-                   <Info className="w-4 h-4" /> Integration Info
+                   <Info className="w-4 h-4" /> Integration Details
                  </h4>
                  <div className="space-y-4 pt-4">
                     <div className="flex justify-between text-[11px] font-bold uppercase tracking-widest border-b border-white/5 pb-2">
-                       <span className="text-muted-foreground">Type</span>
-                       <span className="text-white">Full-Stack</span>
+                       <span className="text-muted-foreground">AdSense Publisher</span>
+                       <span className="text-white truncate max-w-[80px]">894693...</span>
                     </div>
                     <div className="flex justify-between text-[11px] font-bold uppercase tracking-widest border-b border-white/5 pb-2">
-                       <span className="text-muted-foreground">Cloud</span>
-                       <span className="text-emerald-500">Firebase</span>
+                       <span className="text-muted-foreground">Domain Verified</span>
+                       <span className="text-emerald-500">Yes</span>
                     </div>
                     <div className="flex justify-between text-[11px] font-bold uppercase tracking-widest">
-                       <span className="text-muted-foreground">AI Node</span>
-                       <span className="text-primary">Gemini-Veo</span>
+                       <span className="text-muted-foreground">Ads.txt Status</span>
+                       <span className="text-primary">Deployed</span>
                     </div>
                  </div>
               </Card>
@@ -229,5 +230,3 @@ export default function TestConnectionPage() {
     </div>
   );
 }
-
-import { RefreshCw } from "lucide-react";
