@@ -145,6 +145,15 @@ export default function LoginPage() {
           </CardHeader>
 
           <CardContent className="space-y-6 px-10">
+            {authError === 'auth/unauthorized-domain' && (
+              <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-2xl space-y-2 animate-in slide-in-from-top-2">
+                 <div className="flex items-center gap-2 text-red-500 font-bold text-[10px] uppercase">
+                    <AlertTriangle className="w-4 h-4" /> Domain Authorization Required
+                 </div>
+                 <p className="text-[11px] text-muted-foreground italic">Your current domain is not yet whitelisted in Firebase Console.</p>
+              </div>
+            )}
+
             <Tabs defaultValue="email" className="w-full">
               <TabsList className="grid w-full grid-cols-2 bg-white/5 rounded-2xl p-1 mb-6">
                 <TabsTrigger value="email" className="rounded-xl font-bold text-[10px] uppercase py-2.5">Credentials</TabsTrigger>
