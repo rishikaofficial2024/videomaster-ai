@@ -32,7 +32,7 @@
     --border: 217 91% 60% / 0.1;
     --input: 217 91% 60% / 0.1;
     --ring: 217 91% 60%;
-    --radius: 2rem;
+    --radius: 2.5rem;
   }
 }
 
@@ -49,31 +49,40 @@
 }
 
 .hero-gradient {
-  background: radial-gradient(circle at top right, hsla(217, 91%, 60%, 0.12), transparent 50%),
-              radial-gradient(circle at bottom left, hsla(217, 91%, 60%, 0.08), transparent 50%),
+  background: radial-gradient(circle at top right, hsla(217, 91%, 60%, 0.15), transparent 50%),
+              radial-gradient(circle at bottom left, hsla(217, 91%, 60%, 0.1), transparent 50%),
               #05070a;
 }
 
 .blue-glow {
-  box-shadow: 0 0 80px -20px hsla(217, 91%, 60%, 0.2);
+  box-shadow: 0 0 100px -20px hsla(217, 91%, 60%, 0.25);
 }
 
 .shadow-glow {
-  box-shadow: 0 0 20px hsla(217, 91%, 60%, 0.4);
+  box-shadow: 0 0 30px hsla(217, 91%, 60%, 0.4);
 }
 
 .glass-panel {
-  @apply bg-[#0a0d14]/60 backdrop-blur-2xl border border-white/5;
+  @apply bg-[#0a0d14]/60 backdrop-blur-3xl border border-white/5;
 }
 
 .premium-card {
   @apply glass-panel rounded-[3rem] shadow-2xl transition-all duration-500 hover:border-primary/30;
 }
 
+.neural-pulse {
+  animation: neural-pulse 4s infinite ease-in-out;
+}
+
+@keyframes neural-pulse {
+  0%, 100% { opacity: 0.5; filter: blur(40px); transform: scale(1); }
+  50% { opacity: 0.8; filter: blur(60px); transform: scale(1.1); }
+}
+
 /* Elite Studio Scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 }
 ::-webkit-scrollbar-track {
   @apply bg-transparent;
@@ -89,7 +98,7 @@
 
 @keyframes float {
   0% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
+  50% { transform: translateY(-12px); }
   100% { transform: translateY(0px); }
 }
 
@@ -100,14 +109,25 @@
 }
 
 .animate-progress {
-  animation: progress 10s linear infinite;
+  animation: progress 15s linear infinite;
 }
 
 .animate-spin-slow {
-  animation: spin 12s linear infinite;
+  animation: spin 20s linear infinite;
 }
 
 @keyframes spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
+}
+
+.shimmer {
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
 }

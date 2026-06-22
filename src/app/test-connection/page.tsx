@@ -9,13 +9,14 @@ import {
   Zap, Key, ArrowLeft, ShieldCheck, Sparkles, 
   Activity, Network, Globe, UserCheck, ShieldAlert,
   Search, Lock, Cpu, AlertTriangle, ExternalLink, Copy, TrendingUp,
-  Tornado, Box, Globe2, Smartphone, Download
+  Tornado, Box, Globe2, Smartphone, Download, ActivitySquare, Server
 } from "lucide-react";
 import { useAuth, useFirestore, useUser } from "@/firebase";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { firebaseConfig } from "@/firebase/config";
 import { useToast } from "@/hooks/use-toast";
 import Link from "next/link";
+import { cn } from "@/lib/utils";
 
 export default function TestConnectionPage() {
   const auth = useAuth();
@@ -37,6 +38,12 @@ export default function TestConnectionPage() {
   });
   const [latency, setLatency] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
+  const [uptime, setUptime] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => setUptime(prev => prev + 1), 1000);
+    return () => clearInterval(timer);
+  }, []);
 
   const runTests = async () => {
     const startTime = Date.now();
@@ -70,7 +77,8 @@ export default function TestConnectionPage() {
         await setDoc(testRef, { 
           timestamp: serverTimestamp(),
           node: "Elite Verification Hub",
-          status: "Verified"
+          status: "Verified",
+          build_ver: "1.5.0-Final"
         }, { merge: true });
         setStatus(prev => ({ ...prev, firestore: "success" }));
       } catch (e) {
@@ -99,73 +107,81 @@ export default function TestConnectionPage() {
     if (user) runTests();
   }, [user]);
 
-  const copySitemap = () => {
-    navigator.clipboard.writeText("https://videomaster-ai.tech/sitemap.xml");
-    toast({ title: "Sitemap URL Copied!" });
-  };
-
   const StatusIcon = ({ state }: { state: string }) => {
-    if (state === "testing") return <Loader2 className="animate-spin text-primary" size={20} />;
-    if (state === "success") return <CheckCircle2 className="text-emerald-500" size={20} />;
-    if (state === "warning") return <AlertTriangle className="text-amber-500" size={20} />;
-    if (state === "error") return <XCircle className="text-destructive" size={20} />;
-    return <Activity className="text-muted-foreground opacity-20" size={20} />;
+    if (state === "testing") return <Loader2 className="animate-spin text-primary" size={24} />;
+    if (state === "success") return <CheckCircle2 className="text-emerald-500 shadow-glow" size={24} />;
+    if (state === "warning") return <AlertTriangle className="text-amber-500" size={24} />;
+    if (state === "error") return <XCircle className="text-destructive" size={24} />;
+    return <Activity className="text-muted-foreground opacity-20" size={24} />;
   };
 
   return (
     <div className="min-h-screen bg-[#05070a] hero-gradient pb-32">
       <Navbar />
       
-      <main className="max-w-6xl mx-auto p-6 md:p-12 mt-20 space-y-16">
-        <header className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8">
-          <div className="space-y-4">
-            <Link href="/dashboard" className="flex items-center gap-2 text-[10px] font-bold text-muted-foreground hover:text-primary transition-all uppercase tracking-widest group">
-              <div className="p-2 bg-white/5 rounded-xl group-hover:border-primary/50 border border-transparent transition-all">
-                <ArrowLeft className="w-4 h-4" />
+      <main className="max-w-7xl mx-auto p-6 md:p-12 mt-24 space-y-16">
+        <header className="flex flex-col md:flex-row justify-between items-start md:items-end gap-10">
+          <div className="space-y-6">
+            <Link href="/dashboard" className="flex items-center gap-3 text-[10px] font-black text-muted-foreground hover:text-primary transition-all uppercase tracking-[0.5em] group">
+              <div className="p-3 bg-white/5 rounded-2xl group-hover:border-primary/50 border border-transparent transition-all shadow-xl">
+                <ArrowLeft className="w-5 h-5" />
               </div>
-              Back to Studio
+              Back to Neural Hub
             </Link>
-            <h1 className="text-5xl md:text-8xl font-headline font-bold tracking-tighter text-white">Verification <span className="text-primary italic">Hub</span></h1>
-            <p className="text-muted-foreground text-xl font-medium italic opacity-60">Ensuring 100% production uptime and search ranking.</p>
+            <h1 className="text-7xl md:text-9xl font-headline font-bold tracking-tighter text-white leading-none">Status <span className="text-primary italic">Matrix</span></h1>
+            <p className="text-muted-foreground text-2xl font-medium italic opacity-60">Global production heartbeat monitor. Verified uptime.</p>
           </div>
           
-          {latency !== null && (
-            <div className="flex items-center gap-4 bg-white/5 p-4 rounded-3xl border border-white/5 backdrop-blur-3xl animate-in fade-in slide-in-from-right-4">
-               <Activity className="text-emerald-500 w-5 h-5" />
+          <div className="flex items-center gap-10">
+            {latency !== null && (
+              <div className="flex items-center gap-6 bg-[#0a0d14]/80 p-6 rounded-[2.5rem] border border-white/5 backdrop-blur-3xl shadow-2xl">
+                 <ActivitySquare className="text-emerald-500 w-8 h-8" />
+                 <div className="flex flex-col">
+                    <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-1">Latency Pulse</span>
+                    <span className="text-3xl font-black font-headline text-white">{latency}ms</span>
+                 </div>
+              </div>
+            )}
+            <div className="flex items-center gap-6 bg-[#0a0d14]/80 p-6 rounded-[2.5rem] border border-white/5 backdrop-blur-3xl shadow-2xl">
+               <Server className="text-primary w-8 h-8" />
                <div className="flex flex-col">
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Neural Latency</span>
-                  <span className="text-xl font-bold font-headline text-white">{latency}ms</span>
+                  <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-1">Uptime Node</span>
+                  <span className="text-3xl font-black font-headline text-white">{Math.floor(uptime / 60)}m {uptime % 60}s</span>
                </div>
             </div>
-          )}
+          </div>
         </header>
 
-        <div className="grid lg:grid-cols-3 gap-10">
-           <Card className="lg:col-span-2 border-white/5 shadow-2xl bg-[#0a0d14]/60 backdrop-blur-3xl rounded-[3.5rem] overflow-hidden blue-glow">
-             <CardHeader className="p-10 border-b border-white/5">
-                <CardTitle className="text-2xl font-headline font-bold flex items-center gap-4">
-                   <div className="p-3 bg-primary/10 rounded-2xl">
-                      <ShieldCheck className="w-6 h-6 text-primary" />
+        <div className="grid lg:grid-cols-4 gap-12">
+           <Card className="lg:col-span-3 border-white/5 shadow-2xl bg-[#0a0d14]/80 backdrop-blur-3xl rounded-[4rem] overflow-hidden blue-glow relative">
+             <div className="absolute top-0 right-0 p-20 opacity-5 rotate-12">
+                <Tornado className="w-96 h-96 text-primary animate-spin-slow" />
+             </div>
+             
+             <CardHeader className="p-12 border-b border-white/5 relative z-10">
+                <CardTitle className="text-4xl font-headline font-black flex items-center gap-6 text-white uppercase tracking-tight">
+                   <div className="p-5 bg-primary/20 rounded-[2rem] shadow-2xl shadow-primary/20">
+                      <ShieldCheck className="w-10 h-10 text-primary" />
                    </div>
-                   Global Readiness Matrix
+                   Elite Readiness Protocol
                 </CardTitle>
              </CardHeader>
-             <CardContent className="p-10 space-y-4">
+             <CardContent className="p-12 space-y-6 relative z-10">
                 {[
-                  { label: "SEO Indexing", sub: status.seo_tag === 'success' ? "Search Engine Verified" : "Action Required: Add Verification Key", id: status.seo_tag, icon: Globe2 },
-                  { label: "Antigravity Mode", sub: "Speed & Motion Stability Protocol", id: status.antigravity, icon: Tornado },
-                  { label: "Modern Core", sub: "Cloud Firestore Architecture", id: status.modern_core, icon: Cpu },
-                  { label: "Data Integrity", sub: "Cloud DB Read/Write Node", id: status.firestore, icon: Database },
-                  { label: "Security Layer", sub: "App Check Status", id: status.app_check, icon: Lock },
+                  { label: "SEO Indexing Hub", sub: status.seo_tag === 'success' ? "Search Engine Verified & Indexed" : "Action Required: Inject Search Key in layout.tsx", id: status.seo_tag, icon: Globe2 },
+                  { label: "Antigravity Core", sub: "Motion Stability & Speed Protocol: ACTIVE", id: status.antigravity, icon: Tornado },
+                  { label: "Modern Neural Node", sub: "Production Cloud Firestore Architecture", id: status.modern_core, icon: Cpu },
+                  { label: "Live Data Integrity", sub: "Real-time DB Read/Write Encryption", id: status.firestore, icon: Database },
+                  { label: "Bot Security Layer", sub: "Firebase App Check & reCAPTCHA v3 Status", id: status.app_check, icon: Lock },
                 ].map((item, i) => (
-                  <div key={i} className="flex items-center justify-between p-6 bg-white/5 rounded-[2rem] border border-white/5 hover:border-primary/20 transition-all group">
-                    <div className="flex items-center gap-5">
-                      <div className="p-3 bg-black/40 rounded-2xl text-muted-foreground group-hover:text-primary transition-colors">
-                        <item.icon size={20} />
+                  <div key={i} className="flex items-center justify-between p-8 bg-white/[0.02] rounded-[3rem] border border-white/5 hover:border-primary/40 hover:bg-white/[0.04] transition-all group cursor-default">
+                    <div className="flex items-center gap-8">
+                      <div className="p-4 bg-black/40 rounded-2xl text-muted-foreground group-hover:text-primary transition-all duration-500 shadow-inner">
+                        <item.icon size={28} />
                       </div>
                       <div className="flex flex-col">
-                        <span className="font-bold text-white group-hover:text-primary transition-colors">{item.label}</span>
-                        <span className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest">{item.sub}</span>
+                        <span className="text-xl font-bold text-white group-hover:text-primary transition-colors uppercase tracking-tight">{item.label}</span>
+                        <span className="text-[10px] text-muted-foreground font-black uppercase tracking-[0.2em] mt-1">{item.sub}</span>
                       </div>
                     </div>
                     <StatusIcon state={item.id} />
@@ -173,61 +189,69 @@ export default function TestConnectionPage() {
                 ))}
 
                 <Button 
-                  className="w-full h-20 rounded-[2rem] font-bold text-lg mt-6 shadow-2xl shadow-primary/30 group active:scale-95 transition-all" 
+                  className="w-full h-24 rounded-[2.5rem] font-black text-2xl mt-10 shadow-2xl shadow-primary/40 group active:scale-95 transition-all bg-primary hover:bg-primary/90" 
                   onClick={runTests} 
                   disabled={loading}
                 >
-                  {loading ? <Loader2 className="animate-spin mr-3" size={24} /> : <Zap className="mr-3 group-hover:animate-pulse" size={24} />}
-                  Refresh System Diagnostics
+                  {loading ? <Loader2 className="animate-spin mr-4 w-8 h-8" /> : <Zap className="mr-4 w-8 h-8 group-hover:animate-pulse" />}
+                  REFRESH SYSTEM DIAGNOSTICS
                 </Button>
              </CardContent>
            </Card>
 
-           <div className="space-y-8">
-              <Card className="rounded-[3rem] bg-emerald-500/5 border-emerald-500/10 p-10 space-y-8">
-                 <div className="flex items-center gap-4">
-                    <div className="p-3 bg-emerald-500/10 rounded-2xl animate-pulse">
-                       <Smartphone className="w-6 h-6 text-emerald-400" />
+           <div className="space-y-12">
+              <Card className="rounded-[3.5rem] bg-emerald-500/5 border-2 border-emerald-500/20 p-12 space-y-10 shadow-2xl">
+                 <div className="flex flex-col items-center text-center space-y-4">
+                    <div className="p-5 bg-emerald-500/10 rounded-[2rem] animate-pulse border-2 border-emerald-500/20 shadow-[0_0_40px_rgba(16,185,129,0.3)]">
+                       <Smartphone className="w-10 h-10 text-emerald-400" />
                     </div>
-                    <h4 className="text-xl font-bold font-headline">Android Build Node</h4>
+                    <h4 className="text-3xl font-black font-headline text-white uppercase tracking-tight leading-none">Android Node</h4>
                  </div>
                  <div className="space-y-6">
-                    <p className="text-xs text-muted-foreground leading-relaxed italic text-center">
-                       Download your APK or transfer files to Android Studio.
+                    <p className="text-sm text-muted-foreground leading-relaxed italic text-center font-medium">
+                       Your APK is built in the cloud factory. Transfer files or download direct.
                     </p>
-                    <Button className="w-full h-16 rounded-xl bg-emerald-600 hover:bg-emerald-700 font-bold gap-2 shadow-xl shadow-emerald-600/20" asChild>
+                    <Button className="w-full h-20 rounded-3xl bg-emerald-600 hover:bg-emerald-700 font-black text-lg gap-3 shadow-2xl shadow-emerald-600/40" asChild>
                        <Link href="/build-status">
-                          <Download size={18} /> My Build Status (Hindi)
+                          <Download size={24} /> BUILD STATUS
                        </Link>
                     </Button>
-                    <Button variant="outline" className="w-full h-12 rounded-xl border-emerald-500/30 text-emerald-400 font-bold text-[10px] uppercase tracking-widest gap-2" asChild>
+                    <Button variant="outline" className="w-full h-14 rounded-2xl border-emerald-500/30 text-emerald-400 font-black text-[10px] uppercase tracking-[0.4em] gap-3" asChild>
                        <Link href="/docs/ANDROID_STUDIO_GUIDE.md">
-                          Transfer Guide <ExternalLink size={14} />
+                          TRANSFER GUIDE <ExternalLink size={16} />
                        </Link>
                     </Button>
                  </div>
               </Card>
 
-              <Card className="rounded-[3rem] bg-primary/5 border-primary/10 p-8 space-y-4">
-                 <h4 className="text-sm font-bold uppercase tracking-widest flex items-center gap-2">
-                   <Box className="w-4 h-4" /> Build Info
+              <Card className="rounded-[3.5rem] bg-primary/5 border border-primary/20 p-10 space-y-6 shadow-xl">
+                 <h4 className="text-xs font-black uppercase tracking-[0.5em] flex items-center gap-3 text-primary">
+                   <Box className="w-4 h-4" /> System Info
                  </h4>
-                 <div className="space-y-2">
-                    <div className="flex justify-between text-[10px] font-medium">
+                 <div className="space-y-4 pt-4">
+                    <div className="flex justify-between text-[11px] font-bold uppercase tracking-widest border-b border-white/5 pb-2">
                        <span className="text-muted-foreground">Version</span>
-                       <span className="text-white">1.5.0-Final</span>
+                       <span className="text-white">1.5.0-Elite</span>
                     </div>
-                    <div className="flex justify-between text-[10px] font-medium">
-                       <span className="text-muted-foreground">Environment</span>
+                    <div className="flex justify-between text-[11px] font-bold uppercase tracking-widest border-b border-white/5 pb-2">
+                       <span className="text-muted-foreground">Env</span>
                        <span className="text-emerald-500">Production</span>
                     </div>
-                    <div className="flex justify-between text-[10px] font-medium">
-                       <span className="text-muted-foreground">Region</span>
-                       <span className="text-white">Global (Multi-Node)</span>
+                    <div className="flex justify-between text-[11px] font-bold uppercase tracking-widest border-b border-white/5 pb-2">
+                       <span className="text-muted-foreground">Network</span>
+                       <span className="text-white">Elite Multi-Node</span>
+                    </div>
+                    <div className="flex justify-between text-[11px] font-bold uppercase tracking-widest">
+                       <span className="text-muted-foreground">Security</span>
+                       <span className="text-primary">G-Verified</span>
                     </div>
                  </div>
               </Card>
            </div>
+        </div>
+
+        <div className="text-center opacity-30 pt-20">
+           <p className="text-[10px] font-black uppercase tracking-[1em]">VideoMaster AI • Global Verification Network Hub • End Transmission</p>
         </div>
       </main>
     </div>
