@@ -6,7 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { 
   Plus, Sparkles, Loader2, Coins, 
   Video, Gift, Play, Star, ArrowRight, CheckCircle2, X, Crown, Terminal as TerminalIcon, Copy, ShieldCheck, Zap, Calendar, BrainCircuit,
-  Tornado, Share2, MessageCircle, Instagram, Twitter, Smartphone, AlertTriangle, Download, FileText, Wand2, History, LayoutTemplate, Activity
+  Tornado, Share2, MessageCircle, Instagram, Twitter, Smartphone, AlertTriangle, Download, FileText, Wand2, History, LayoutTemplate, Activity, Blocks
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -109,7 +109,7 @@ export default function Dashboard() {
       <Navbar />
       <main className="max-w-7xl mx-auto p-6 space-y-12">
         
-        {/* 🪄 MAGIC BUILD ENGINE (ELITE V3) */}
+        {/* 🪄 MAGIC BUILD ENGINE & INTEGRATION PULSE */}
         <div className="relative group overflow-hidden rounded-[4rem] shadow-2xl">
            <div className="absolute inset-0 bg-gradient-to-r from-primary/30 via-indigo-600/30 to-primary/30 animate-pulse" />
            <div className="relative bg-[#0a0d14]/95 p-10 flex flex-col lg:flex-row items-center justify-between gap-10 border-2 border-primary/40 backdrop-blur-3xl">
@@ -117,15 +117,15 @@ export default function Dashboard() {
                  <div className="relative">
                     <div className="absolute inset-0 bg-primary/20 blur-3xl rounded-full" />
                     <div className="p-8 bg-primary rounded-full animate-float shadow-[0_0_80px_rgba(59,130,246,0.8)] relative z-10">
-                       <Wand2 className="w-16 h-14" />
+                       <Blocks className="w-16 h-14" />
                     </div>
                  </div>
                  <div className="space-y-2">
                     <div className="inline-flex items-center gap-2 px-3 py-1 bg-emerald-500/10 rounded-full border border-emerald-500/20 text-emerald-400 text-[10px] font-bold uppercase tracking-widest mb-2">
-                       <Activity className="w-3 h-3 text-emerald-400 animate-pulse" /> Elite Status: Optimized
+                       <ShieldCheck className="w-3 h-3 text-emerald-400" /> Integration Verified: Active
                     </div>
-                    <h2 className="text-5xl font-black font-headline uppercase tracking-tighter leading-none">MAGIC APK ENGINE</h2>
-                    <p className="text-xl font-bold text-muted-foreground italic">Mobile = Remote Control. APK builds in the Cloud.</p>
+                    <h2 className="text-5xl font-black font-headline uppercase tracking-tighter leading-none">NEURAL INTEGRATION</h2>
+                    <p className="text-xl font-bold text-muted-foreground italic">AI + Database + Domain = All Systems Linked.</p>
                  </div>
               </div>
               
@@ -135,7 +135,7 @@ export default function Dashboard() {
                     <Copy className="w-8 h-8 text-primary/40 group-hover:text-primary transition-all" />
                  </div>
                  <Button size="lg" className="bg-white text-primary hover:bg-white/90 font-black rounded-[2.5rem] h-24 px-16 text-2xl shadow-[0_0_60px_rgba(255,255,255,0.4)] group-hover:scale-105 transition-all" asChild>
-                    <Link href="/terminal-guide">FIND TERMINAL NOW <ArrowRight className="ml-4 w-8 h-8" /></Link>
+                    <Link href="/test-connection">CHECK INTEGRATION <ArrowRight className="ml-4 w-8 h-8" /></Link>
                  </Button>
               </div>
            </div>
