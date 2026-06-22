@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Video, Chrome, ArrowLeft, Loader2, Eye, EyeOff, ShieldCheck } from "lucide-react";
+import { Video, Chrome, ArrowLeft, Loader2, Eye, EyeOff, ShieldCheck, AlertCircle } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { 
@@ -31,15 +31,35 @@ function LoginForm() {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!email || !password) return;
+    
     setLoading(true);
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      await signInWithEmailAndPassword(auth, email.trim(), password);
+      toast({
+        title: "Access Granted",
+        description: "Welcome back to the Studio.",
+      });
       router.push(returnUrl);
     } catch (error: any) {
+      console.error("Login Error Code:", error.code);
+      
+      let errorMessage = "Invalid email or password. Please try again.";
+      
+      if (error.code === 'auth/user-not-found') {
+        errorMessage = "No account found with this email. Please Sign Up first.";
+      } else if (error.code === 'auth/wrong-password') {
+        errorMessage = "Incorrect password. Please check and try again.";
+      } else if (error.code === 'auth/too-many-requests') {
+        errorMessage = "Too many failed attempts. Please try again later or reset password.";
+      } else if (error.code === 'auth/invalid-credential') {
+        errorMessage = "Authentication failed. Please check your credentials or Sign Up.";
+      }
+
       toast({
         variant: "destructive",
-        title: "Login Failed",
-        description: "Please check your email and password.",
+        title: "Login Security Alert",
+        description: errorMessage,
       });
     } finally {
       setLoading(false);
@@ -50,13 +70,14 @@ function LoginForm() {
     try {
       setLoading(true);
       const provider = new GoogleAuthProvider();
+      // Ensure the popup works by using a stable auth domain
       await signInWithPopup(auth, provider);
       router.push(returnUrl);
     } catch (error: any) {
       toast({
         variant: "destructive",
         title: "Google Login Error",
-        description: "Could not connect to Google. Please try again.",
+        description: "Connection interrupted. Please try again.",
       });
     } finally {
       setLoading(false);
@@ -79,7 +100,7 @@ function LoginForm() {
                 type="email" 
                 placeholder="name@example.com" 
                 required 
-                className="h-12 bg-black/40 border-white/10 rounded-xl focus:border-primary/50" 
+                className="h-12 bg-black/40 border-white/10 rounded-xl focus:border-primary/50 text-white" 
                 value={email} 
                 onChange={(e) => setEmail(e.target.value)} 
               />
@@ -91,7 +112,7 @@ function LoginForm() {
                   type={showPassword ? "text" : "password"} 
                   placeholder="••••••••" 
                   required 
-                  className="h-12 bg-black/40 border-white/10 pr-12 rounded-xl focus:border-primary/50" 
+                  className="h-12 bg-black/40 border-white/10 pr-12 rounded-xl focus:border-primary/50 text-white" 
                   value={password} 
                   onChange={(e) => setPassword(e.target.value)} 
                 />
@@ -122,7 +143,7 @@ function LoginForm() {
         <div className="relative flex justify-center text-[10px] uppercase font-black text-muted-foreground tracking-[0.3em]"><span className="bg-[#0a0d14] px-4">Social Access</span></div>
       </div>
 
-      <Button variant="outline" className="w-full h-14 gap-3 border-white/10 bg-black/20 font-bold rounded-xl hover:bg-white/5 transition-all" onClick={handleSocialLogin} disabled={loading}>
+      <Button variant="outline" className="w-full h-14 gap-3 border-white/10 bg-black/20 font-bold rounded-xl hover:bg-white/5 transition-all text-white" onClick={handleSocialLogin} disabled={loading}>
         <Chrome className="w-4 h-4 text-red-500" /> Continue with Google
       </Button>
     </CardContent>
@@ -149,8 +170,8 @@ export default function LoginPage() {
                 <Video className="w-8 h-8 text-primary" />
               </div>
             </div>
-            <CardTitle className="text-2xl font-bold font-headline">Studio Login</CardTitle>
-            <CardDescription className="italic">Access your professional AI tools</CardDescription>
+            <CardTitle className="text-2xl font-bold font-headline text-white">Studio Login</CardTitle>
+            <CardDescription className="italic text-muted-foreground">Access your professional AI tools</CardDescription>
           </CardHeader>
 
           <Suspense fallback={<div className="p-10 text-center animate-pulse text-primary font-bold uppercase tracking-widest">Initialising Handshake...</div>}>
@@ -166,6 +187,14 @@ export default function LoginPage() {
             </div>
           </CardFooter>
         </Card>
+        
+        {/* Help Tip */}
+        <div className="bg-white/5 border border-white/5 p-4 rounded-2xl flex items-start gap-4 animate-in slide-in-from-bottom-2 duration-700">
+           <AlertCircle className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+           <p className="text-xs text-muted-foreground italic leading-relaxed">
+             <b>Tip:</b> Agar aapne abhi tak Signup nahi kiya hai, toh pehle upar "Create Account" link par click karein. Signup ke bina Login fail hoga.
+           </p>
+        </div>
       </div>
     </div>
   );
