@@ -9,7 +9,7 @@ import {
   Zap, Key, ArrowLeft, ShieldCheck, Sparkles, 
   Activity, Network, Globe, UserCheck, ShieldAlert,
   Search, Lock, Cpu, AlertTriangle, ExternalLink, Copy, TrendingUp,
-  Tornado, Box, Globe2, Smartphone, Download, ActivitySquare, Server
+  Tornado, Box, Globe2, Smartphone, Download, Server
 } from "lucide-react";
 import { useAuth, useFirestore, useUser } from "@/firebase";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
@@ -135,7 +135,7 @@ export default function TestConnectionPage() {
           <div className="flex items-center gap-10">
             {latency !== null && (
               <div className="flex items-center gap-6 bg-[#0a0d14]/80 p-6 rounded-[2.5rem] border border-white/5 backdrop-blur-3xl shadow-2xl">
-                 <ActivitySquare className="text-emerald-500 w-8 h-8" />
+                 <Activity className="text-emerald-500 w-8 h-8" />
                  <div className="flex flex-col">
                     <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-1">Latency Pulse</span>
                     <span className="text-3xl font-black font-headline text-white">{latency}ms</span>

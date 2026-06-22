@@ -6,7 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { 
   Plus, Sparkles, Loader2, Coins, 
   Video, Gift, Play, Star, ArrowRight, CheckCircle2, X, Crown, Terminal as TerminalIcon, Copy, ShieldCheck, Zap, Calendar, BrainCircuit,
-  Tornado, Share2, MessageCircle, Instagram, Twitter, Smartphone, AlertTriangle, Download, FileText, Wand2, History, LayoutTemplate
+  Tornado, Share2, MessageCircle, Instagram, Twitter, Smartphone, AlertTriangle, Download, FileText, Wand2, History, LayoutTemplate, Activity
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -122,7 +122,7 @@ export default function Dashboard() {
                  </div>
                  <div className="space-y-2">
                     <div className="inline-flex items-center gap-2 px-3 py-1 bg-emerald-500/10 rounded-full border border-emerald-500/20 text-emerald-400 text-[10px] font-bold uppercase tracking-widest mb-2">
-                       <ShieldCheck className="w-3 h-3" /> Android Factory Ready
+                       <Activity className="w-3 h-3 text-emerald-400 animate-pulse" /> Elite Status: Optimized
                     </div>
                     <h2 className="text-5xl font-black font-headline uppercase tracking-tighter leading-none">MAGIC APK ENGINE</h2>
                     <p className="text-xl font-bold text-muted-foreground italic">Mobile = Remote Control. APK builds in the Cloud.</p>
