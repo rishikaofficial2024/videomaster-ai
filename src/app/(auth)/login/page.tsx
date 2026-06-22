@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Video, Chrome, Facebook, ArrowLeft, Loader2, Eye, EyeOff, ShieldCheck, Github } from "lucide-react";
+import { Video, Chrome, ArrowLeft, Loader2, Eye, EyeOff, ShieldCheck } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { 
@@ -15,7 +15,6 @@ import {
   signInWithPopup, 
   GoogleAuthProvider, 
   FacebookAuthProvider,
-  GithubAuthProvider,
   RecaptchaVerifier,
   signInWithPhoneNumber
 } from "firebase/auth";
@@ -53,13 +52,12 @@ export default function LoginPage() {
     }
   };
 
-  const handleSocialLogin = async (providerName: 'google' | 'facebook' | 'github') => {
+  const handleSocialLogin = async (providerName: 'google' | 'facebook') => {
     try {
       setLoading(true);
       let provider;
       if (providerName === 'google') provider = new GoogleAuthProvider();
-      else if (providerName === 'facebook') provider = new FacebookAuthProvider();
-      else provider = new GithubAuthProvider();
+      else provider = new FacebookAuthProvider();
 
       await signInWithPopup(auth, provider);
       router.push(returnUrl);
@@ -211,14 +209,9 @@ export default function LoginPage() {
               <div className="relative flex justify-center text-[10px] uppercase font-bold text-muted-foreground"><span className="bg-[#0a0d14] px-4">Social Login</span></div>
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
-              <Button variant="outline" className="h-11 gap-2 border-white/10 bg-black/20" onClick={() => handleSocialLogin('google')} disabled={loading}>
-                <Chrome className="w-4 h-4 text-red-500" /> Google
-              </Button>
-              <Button variant="outline" className="h-11 gap-2 border-white/10 bg-black/20" onClick={() => handleSocialLogin('github')} disabled={loading}>
-                <Github className="w-4 h-4" /> GitHub
-              </Button>
-            </div>
+            <Button variant="outline" className="w-full h-12 gap-2 border-white/10 bg-black/20" onClick={() => handleSocialLogin('google')} disabled={loading}>
+              <Chrome className="w-4 h-4 text-red-500" /> Sign in with Google
+            </Button>
           </CardContent>
           <CardFooter className="flex flex-col space-y-4 pb-8 pt-2">
             <div className="text-sm text-center text-muted-foreground">
