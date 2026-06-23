@@ -3,7 +3,7 @@
 Bhaai, APK download karna ab bahut aasaan hai. Bas ye 5 steps follow karein:
 
 ### Step 1: Terminal Command Chalayein
-Studio ke terminal mein ye command likh kar Enter dabayein:
+Studio ke terminal mein ye command likh kar Enter dabayein (Ise copy kar lein):
 ```bash
 npm run mobile:push
 ```
@@ -14,11 +14,12 @@ Is link par click karein:
 
 ### Step 3: Latest Build Select karein
 Sabse upar jo **"Generate Production APK"** dikh raha hai (jiske saath Green Tick ✅ ho), us par click karein.
+*Note: Agar Yellow 🟡 ya Red ❌ dikhe, toh 2 minute wait karke refresh karein.*
 
 ### Step 4: Artifacts Section mein jayein
 Naye page par sabse neeche scroll karein. Wahan **"Artifacts"** naam ka ek section hoga.
 
 ### Step 5: Download Karein
-Wahan **"VideoMasterAI-Final-APK"** par click karein. Ek `.zip` file download hogi, usey open karke andar se `.apk` install kar lijiye.
+Wahan **"VideoMasterAI-Final-APK"** par click karein. Ek `.zip` file download hogi, usey mobile mein open karke andar se `.apk` install kar lijiye.
 
-**Note**: Agar link "Not Found" dikhaye, toh iska matlab abhi build chal rahi hai. 2-3 minute wait karke refresh karein. 🚀📱💎
+**Ab aapka app poori duniya ke liye taiyaar hai!** 🚀📱💎

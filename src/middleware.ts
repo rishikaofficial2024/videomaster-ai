@@ -1,5 +1,8 @@
 
-// Middleware is disabled for compatibility with 'output: export' (Static HTML Export)
+/**
+ * 🛠️ NEUTRALIZED: Middleware is disabled for Next.js 15 Static Export compatibility.
+ * This file must remain empty to prevent build errors during APK generation.
+ */
 export default function middleware() {}
 
 export const config = {
