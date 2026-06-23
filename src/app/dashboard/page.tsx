@@ -1,3 +1,4 @@
+
 "use client";
 
 import { Navbar } from "@/components/navbar";
@@ -14,7 +15,7 @@ import { doc, updateDoc, increment, collection, query, limit, orderBy } from "fi
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { errorEmitter } from '@/firebase/error-emitter';
-import { FirestorePermissionError } from '@/firebase/errors';
+import { FirestorePermissionError, type SecurityRuleContext } from '@/firebase/errors';
 import { useRouter } from "next/navigation";
 
 export default function Dashboard() {
@@ -67,12 +68,12 @@ export default function Dashboard() {
     
     setTimeout(() => {
       const updateData = { credits: increment(20) };
-      updateDoc(userProfileRef, updateData).catch(async () => {
+      updateDoc(userProfileRef, updateData).catch(async (err) => {
           errorEmitter.emit('permission-error', new FirestorePermissionError({
             path: userProfileRef.path,
             operation: 'update',
             requestResourceData: updateData,
-          }));
+          } satisfies SecurityRuleContext));
         });
       setAdLoading(false);
       setShowAdOverlay(false);
@@ -126,7 +127,7 @@ export default function Dashboard() {
                 <span className="text-[10px] font-black uppercase tracking-widest text-primary mb-3 opacity-60">Neural Balance</span>
                 <div className="flex items-center gap-4">
                   <Coins className="w-8 h-8 text-primary" />
-                  <span className="text-6xl font-bold font-headline text-white">{profile?.credits ?? 0}</span>
+                  <span className="text-6xl font-bold font-headline text-white">{profile?.credits?.toFixed(0) ?? 0}</span>
                 </div>
              </div>
              <Button className="rounded-[2.5rem] h-24 font-black px-16 shadow-[0_20px_50px_rgba(59,130,246,0.3)] text-xl gap-5 hover:scale-105 active:scale-95 transition-all bg-primary relative z-10" asChild>

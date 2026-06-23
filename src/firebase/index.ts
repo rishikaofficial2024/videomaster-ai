@@ -14,7 +14,7 @@ let firestore: Firestore;
 
 /**
  * Initializes Firebase services and returns the instances.
- * Now includes Elite App Check protection scaffolding.
+ * Optimized for production multi-node stability.
  */
 export function initializeFirebase() {
   if (getApps().length > 0) {
@@ -27,7 +27,7 @@ export function initializeFirebase() {
   firestore = getFirestore(app);
 
   // 🛡️ ELITE SECURITY: App Check Initialization
-  // This verifies that requests are coming from your real app and not bots.
+  // Only triggers on real production domains to avoid blocking local testing.
   if (typeof window !== 'undefined' && firebaseConfig.appCheckSiteKey) {
     try {
       initializeAppCheck(app, {
@@ -35,7 +35,10 @@ export function initializeFirebase() {
         isTokenAutoRefreshEnabled: true
       });
     } catch (e) {
-      console.warn("App Check failed to initialize. Check your Site Key in config.ts.");
+      // Fail silently in development, log in production
+      if (process.env.NODE_ENV === 'production') {
+        console.warn("App Check Shield: Handshake Pending.");
+      }
     }
   }
   

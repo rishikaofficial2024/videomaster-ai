@@ -35,6 +35,11 @@ service cloud.firestore {
       match /projects/{projectId} {
         allow read, write: if isOwner(userId) || isAdmin();
       }
+
+      // 🧪 Diagnostics - For Test Connection page
+      match /diagnostics/{docId} {
+        allow read, write: if isOwner(userId) || isAdmin();
+      }
     }
 
     match /connection_tests/{docId} {

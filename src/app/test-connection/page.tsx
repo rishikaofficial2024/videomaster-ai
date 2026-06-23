@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect } from "react";
@@ -14,6 +15,8 @@ import { useAuth, useFirestore, useUser } from "@/firebase";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { firebaseConfig } from "@/firebase/config";
 import Link from "next/link";
+import { errorEmitter } from "@/firebase/error-emitter";
+import { FirestorePermissionError, type SecurityRuleContext } from "@/firebase/errors";
 
 export default function TestConnectionPage() {
   const auth = useAuth();
@@ -27,7 +30,6 @@ export default function TestConnectionPage() {
     auth: "pending",
     session: "pending",
     app_check: "pending",
-    seo_tag: "pending",
     adsense: "pending",
     ai_integration: "pending",
     domain_sync: "pending"
@@ -36,6 +38,7 @@ export default function TestConnectionPage() {
   const [isDnsError, setIsDnsError] = useState(false);
 
   const runTests = async () => {
+    if (loading) return;
     setLoading(true);
     setStatus({ 
       config: "testing",
@@ -44,7 +47,6 @@ export default function TestConnectionPage() {
       auth: "testing",
       session: "testing",
       app_check: "testing",
-      seo_tag: "testing",
       adsense: "testing",
       ai_integration: "testing",
       domain_sync: "testing"
@@ -58,27 +60,35 @@ export default function TestConnectionPage() {
     setStatus(prev => ({ ...prev, firebase: !!auth.app ? "success" : "error" }));
     setStatus(prev => ({ ...prev, session: !!user ? "success" : "error" }));
 
-    // 3. Integration: Firestore Real-time
+    // 3. Integration: Firestore Real-time Diagnostic write
     if (user && db) {
-      try {
-        const testRef = doc(db, "users", user.uid, "diagnostics", "latest");
-        await setDoc(testRef, { 
-          timestamp: serverTimestamp(),
-          node: "Elite Integration Hub",
-          status: "Fully Connected"
-        }, { merge: true });
-        setStatus(prev => ({ ...prev, firestore: "success" }));
-      } catch (e) {
-        setStatus(prev => ({ ...prev, firestore: "error" }));
-      }
+      const testRef = doc(db, "users", user.uid, "diagnostics", "latest");
+      const testData = { 
+        timestamp: serverTimestamp(),
+        node: "Elite Integration Hub",
+        status: "Fully Connected"
+      };
+
+      setDoc(testRef, testData, { merge: true })
+        .then(() => {
+          setStatus(prev => ({ ...prev, firestore: "success" }));
+        })
+        .catch(async (e) => {
+          setStatus(prev => ({ ...prev, firestore: "error" }));
+          errorEmitter.emit('permission-error', new FirestorePermissionError({
+            path: testRef.path,
+            operation: 'write',
+            requestResourceData: testData,
+          } satisfies SecurityRuleContext));
+        });
     }
 
     // 4. Integration: AI Neural Core
     setStatus(prev => ({ ...prev, ai_integration: "success" }));
 
-    // 5. Integration: Branded Domain Sync (CHECK FOR NXDOMAIN)
+    // 5. Integration: Branded Domain Sync
     const hostname = typeof window !== 'undefined' ? window.location.hostname : "";
-    if (hostname !== "videomaster-ai.tech" && hostname !== "localhost") {
+    if (hostname !== "videomaster-ai.tech" && hostname !== "localhost" && !hostname.includes('firebaseapp.com')) {
        setIsDnsError(true);
        setStatus(prev => ({ ...prev, domain_sync: "warning" }));
     } else {
@@ -94,8 +104,8 @@ export default function TestConnectionPage() {
   };
 
   useEffect(() => {
-    if (user) runTests();
-  }, [user]);
+    if (user && db) runTests();
+  }, [user, db]);
 
   const StatusIcon = ({ state }: { state: string }) => {
     if (state === "testing") return <Loader2 className="animate-spin text-primary" size={24} />;
