@@ -2,8 +2,7 @@
 import type {NextConfig} from 'next';
 
 const nextConfig: NextConfig = {
-  // Required for generating static assets for Capacitor APK build
-  output: 'export', 
+  output: 'export',
   images: {
     unoptimized: true, 
     remotePatterns: [

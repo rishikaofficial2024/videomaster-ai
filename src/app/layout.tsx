@@ -7,11 +7,10 @@ export const metadata: Metadata = {
   title: 'VideoMaster AI - Professional AI Video Studio',
   description: 'Produce viral AI content 10x faster. Stable, professional design studio for global creators. Claim 100 FREE AI credits.',
   keywords: ['AI Video Maker', 'Viral Script Writer', 'Cinematic AI', 'VideoMaster AI Tech'],
-  manifest: '/manifest.json',
   metadataBase: new URL('https://studio-9489287013-59986.web.app'),
   alternates: { canonical: '/' },
   verification: {
-    google: '', // Add your Google Site Verification code here from Search Console
+    google: '', 
   },
   openGraph: {
     title: 'VideoMaster AI - The Ultimate Production Studio',
@@ -41,7 +40,6 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
         <meta name="theme-color" content="#05070a" />
-        <link rel="manifest" href="/manifest.json" />
         {/* Google AdSense Hub Integration */}
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8946933317699938" crossOrigin="anonymous"></script>
       </head>

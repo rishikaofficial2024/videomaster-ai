@@ -1,4 +1,10 @@
+
 import { MetadataRoute } from 'next'
+
+/**
+ * 🛠️ FIXED: Static export requirement for Next.js 15
+ */
+export const dynamic = 'force-static'
  
 export default function robots(): MetadataRoute.Robots {
   return {
