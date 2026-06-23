@@ -8,7 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "mobile:push": "(git remote add origin https://github.com/rishikaofficial2024/videomaster-ai.git || git remote set-url origin https://github.com/rishikaofficial2024/videomaster-ai.git) && git add . && (git commit -m '🚀 Elite Production Launch Build' || true) && git push origin main --force",
+    "mobile:push": "git remote remove origin || true && git remote add origin https://github.com/rishikaofficial2024/videomaster-ai.git && git add . && (git commit -m '🚀 Elite Production Launch Build' || true) && git push origin main --force",
     "web:deploy": "next build && firebase deploy --only hosting"
   },
   "dependencies": {
