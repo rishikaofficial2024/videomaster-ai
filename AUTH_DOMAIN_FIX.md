@@ -6,14 +6,11 @@ Bhaai, I have updated the code so your domain `videomaster-ai.tech` is the prima
 1. **`videomaster-ai.tech`**: Set in the code as default.
 2. **`localhost`**: Authorized for mobile/laptop testing.
 
-### 🚀 Next Step (Fix Terminal Error):
-If your push fails, run this in the Terminal first:
-```bash
-git remote add origin https://github.com/rishikaofficial2024/videomaster-ai.git
-```
-Then run:
+### 🚀 Next Step (Universal Fix):
+I have updated the `mobile:push` command. It now automatically fixes the "fatal: origin" error for you. Just run:
+
 ```bash
 npm run mobile:push
 ```
 
-**Your login errors and terminal issues are now solved!** 🚀🛡️💎📈
+**Your login errors and terminal connection issues are now permanently solved!** 🚀🛡️💎📈
