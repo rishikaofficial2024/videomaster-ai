@@ -4,12 +4,13 @@ export const dynamic = 'force-static'
 
 export default function robots(): MetadataRoute.Robots {
   return {
-    rules: {
-      userAgent: '*',
-      allow: '/',
-      disallow: ['/dashboard/', '/editor/', '/profile/', '/admin/', '/test-connection/'],
-    },
+    rules: [
+      {
+        userAgent: '*',
+        allow: '/',
+        disallow: ['/dashboard', '/editor', '/profile', '/admin', '/test-connection'],
+      },
+    ],
     sitemap: 'https://studio-9489287013-59986.web.app/sitemap.xml',
-    host: 'https://studio-9489287013-59986.web.app'
   }
 }

@@ -1,10 +1,9 @@
-
 import { MetadataRoute } from 'next'
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'VideoMaster AI: Professional Studio',
-    short_name: 'VideoMaster AI',
+    name: 'VideoMaster AI Studio',
+    short_name: 'VideoMaster',
     description: 'Elite AI Video Creation & Viral Script Engineering Hub',
     start_url: '/',
     display: 'standalone',
