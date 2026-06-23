@@ -1,8 +1,8 @@
 /**
- * Middleware is disabled for this project because it is not compatible 
- * with Next.js 'output: export' which is required for Capacitor mobile builds.
- * 
- * Route protection is handled client-side via the <AuthGuard /> component 
- * in sensitive route layouts (e.g., /dashboard, /editor).
+ * NOTE: Middleware is not supported with 'output: export' in Next.js.
+ * To prevent build errors, this file has been neutralized.
+ * Authentication is handled via client-side AuthGuard in src/components/auth-guard.tsx.
  */
-export {};
+export const config = {
+  matcher: [],
+};

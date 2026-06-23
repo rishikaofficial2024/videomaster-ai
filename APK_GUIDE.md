@@ -1,23 +1,24 @@
+# 🪄 GitHub se APK Download karne ka Tareeka (Step-by-Step)
 
-# 🪄 Production APK Download Guide (Mobile Protocol)
+Bhaai, APK download karna ab bahut aasaan hai. Bas ye 5 steps follow karein:
 
-I have automated everything. Downloading the production APK is now a simple 3-step protocol:
-
-### Step 1: Execute Remote Control Command
-Open the integrated **Terminal** (Black Box) within the studio and type:
+### Step 1: Terminal Command Chalayein
+Studio ke terminal mein ye command likh kar Enter dabayein:
 ```bash
 npm run mobile:push
 ```
-Then hit **Enter** to synchronize the neural code with the cloud factory.
 
-### Step 2: Access Build Factory
-Once the command completes, visit your Dashboard and click **"Build Pulse"**, or use this direct link:
-👉 **[CLICK HERE: MONITOR BUILD STATUS](https://github.com/rishikaofficial2024/videomaster-ai/actions)**
+### Step 2: GitHub Actions kholiye
+Is link par click karein:
+👉 **[BUILD STATUS CHECK KAREIN](https://github.com/rishikaofficial2024/videomaster-ai/actions)**
 
-### Step 3: Retrieve APK Artifact
-1. On the build page, select the latest **"Generate Production APK"** workflow (indicated by a Green ✅).
-2. Scroll to the bottom of the page.
-3. In the **Artifacts** section, click on `VideoMasterAI-Final-APK`.
-4. The download will start automatically.
+### Step 3: Latest Build Select karein
+Sabse upar jo **"Generate Production APK"** dikh raha hai (jiske saath Green Tick ✅ ho), us par click karein.
 
-**Your mobile device is now a professional software production hub!** 🚀📱💎📈💸
+### Step 4: Artifacts Section mein jayein
+Naye page par sabse neeche scroll karein. Wahan **"Artifacts"** naam ka ek section hoga.
+
+### Step 5: Download Karein
+Wahan **"VideoMasterAI-Final-APK"** par click karein. Ek `.zip` file download hogi, usey open karke andar se `.apk` install kar lijiye.
+
+**Note**: Agar link "Not Found" dikhaye, toh iska matlab abhi build chal rahi hai. 2-3 minute wait karke refresh karein. 🚀📱💎
