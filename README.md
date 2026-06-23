@@ -1,4 +1,3 @@
-3
 # 🚀 VideoMaster AI: Elite Production Hub
 
 Welcome to your professional AI Video Studio. This application is powered by **App Prototyper** in Firebase Studio, optimized for high-speed viral content creation using the world's most advanced AI engines.
@@ -9,6 +8,14 @@ Your studio is directly integrated with **Google's Elite AI Research Lab** via G
 - **Visual Engine**: `Imagen 3.0` - Generates high-contrast, professional video thumbnails.
 - **Motion Engine**: `Veo 2.0` - Powers the cinematic Text-to-Video generation suite.
 - **Audio Engine**: `Gemini 2.5 TTS` - Creates natural, high-fidelity voiceovers for your timeline.
+
+### 🛠️ Technical Architecture (The Stack)
+- **Framework**: Next.js 15 (React) - Server-side optimized for speed.
+- **Language**: TypeScript - Industrial grade type safety.
+- **Styling**: Tailwind CSS & Shadcn UI - Modern Obsidian design system.
+- **Database**: Cloud Firestore - Real-time synchronization.
+- **Auth**: Firebase Auth - Secure multi-provider sign-in.
+- **Mobile**: Capacitor - Native Android APK integration.
 
 ### 🛠️ Active AI Suite (Working Features)
 1. **Viral Script Writer**: Precision-engineered scripts for YouTube Shorts, Reels, and TikTok.
