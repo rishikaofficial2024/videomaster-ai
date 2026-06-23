@@ -1,9 +1,8 @@
-
 /**
  * Firebase configuration object for VideoMaster AI.
  * 
- * ✅ STATUS: Optimized for Production.
- * Using stable authDomain to ensure users can always sign in.
+ * ✅ STATUS: Optimized for FREE DOMAIN.
+ * Using stable authDomain to ensure users can always sign in without a custom domain.
  */
 export const firebaseConfig = {
   apiKey: "AIzaSyCz-pMZtY7_OVr9IyyHiIqwPWnpP3Lb21w",

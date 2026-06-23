@@ -1,4 +1,3 @@
-
 import type {Metadata} from 'next';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
@@ -9,7 +8,7 @@ export const metadata: Metadata = {
   description: 'Produce viral AI content 10x faster. Stable, professional design studio for global creators. Claim 100 FREE AI credits.',
   keywords: ['AI Video Maker', 'Viral Script Writer', 'Cinematic AI', 'VideoMaster AI Tech'],
   manifest: '/manifest.json',
-  metadataBase: new URL('https://videomaster-ai.tech'),
+  metadataBase: new URL('https://studio-9489287013-59986.web.app'),
   alternates: { canonical: '/' },
   verification: {
     google: '', // Add your Google Site Verification code here from Search Console
@@ -17,7 +16,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'VideoMaster AI - The Ultimate Production Studio',
     description: 'Transform cinematic ideas into professional video assets with Elite AI.',
-    url: 'https://videomaster-ai.tech',
+    url: 'https://studio-9489287013-59986.web.app',
     siteName: 'VideoMaster AI',
     locale: 'en_US',
     type: 'website',

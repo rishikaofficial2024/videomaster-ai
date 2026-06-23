@@ -9,7 +9,7 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: ['/dashboard/', '/editor/', '/profile/', '/admin/', '/test-connection/'],
     },
-    sitemap: 'https://videomaster-ai.tech/sitemap.xml',
-    host: 'https://videomaster-ai.tech'
+    sitemap: 'https://studio-9489287013-59986.web.app/sitemap.xml',
+    host: 'https://studio-9489287013-59986.web.app'
   }
 }

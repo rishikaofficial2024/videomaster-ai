@@ -1,13 +1,12 @@
-
-# 🚀 VideoMaster AI: Elite Link Hub
+# 🚀 VideoMaster AI: Free Link Hub
 
 Use these links to manage and deploy your professional studio.
 
-### 🌐 Live Production Links
-*   **Studio Link (Web)**: [https://studio-9489287013-59986.web.app](https://studio-9489287013-59986.web.app)
-*   **Branded Domain**: `https://videomaster-ai.tech` (DNS Sync Pending)
+### 🌐 Live Production Links (100% FREE)
+*   **Main Studio Link**: [https://studio-9489287013-59986.web.app](https://studio-9489287013-59986.web.app)
+*   **Secondary Link**: [https://studio-9489287013-59986.firebaseapp.com](https://studio-9489287013-59986.firebaseapp.com)
 
-### 🛠️ Primary Action: Fix "Site Not Found" Error
+### 🛠️ Primary Action: Activate Your Site
 To activate your live link and upload `app-ads.txt` for Google AdSense, run this in the **Terminal**:
 ```bash
 npm run web:deploy
@@ -19,7 +18,7 @@ npm run web:deploy
 
 ### 🔥 Firebase Infrastructure
 *   **Auth Control**: [Enable Sign-in Providers](https://console.firebase.google.com/project/studio-9489287013-59986/authentication/providers)
-*   **Authorized Domains**: [Add videomaster-ai.tech here](https://console.firebase.google.com/project/studio-9489287013-59986/authentication/settings)
+*   **Authorized Domains**: Already set to work with free links.
 *   **Monetization Review**: [Check AdSense Status](https://adsense.google.com)
 
-**Important**: Always run `npm run web:deploy` after making changes to ensure the live link is updated. 🚀💰💎
+**Note**: You don't need to pay for a domain. These Google links are high-speed, SSL-secured, and permanent. 🚀💰💎
