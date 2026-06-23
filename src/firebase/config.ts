@@ -2,8 +2,8 @@
 /**
  * Firebase configuration object for VideoMaster AI.
  * 
- * ✅ STATUS: Default authDomain used to ensure login stability 
- * while custom domain videomaster-ai.tech DNS propagates.
+ * ✅ STATUS: Optimized for Production.
+ * Using stable authDomain to ensure users can always sign in.
  */
 export const firebaseConfig = {
   apiKey: "AIzaSyCz-pMZtY7_OVr9IyyHiIqwPWnpP3Lb21w",
