@@ -3,7 +3,7 @@
 import { Navbar } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Terminal, ArrowLeft, Smartphone, XCircle, Menu, ChevronDown, AlertTriangle, Info, Globe, Copy, MousePointer2 } from "lucide-react";
+import { Terminal, ArrowLeft, Smartphone, CloudUpload, XCircle, Menu, ChevronDown, AlertTriangle, Info, Globe, Copy, MousePointer2 } from "lucide-react";
 import Link from "next/link";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
@@ -11,9 +11,9 @@ import { cn } from "@/lib/utils";
 export default function TerminalGuidePage() {
   const { toast } = useToast();
 
-  const copyCommand = () => {
+  const copyCommand = (cmd: string) => {
     if (typeof navigator !== 'undefined') {
-      navigator.clipboard.writeText("npm run mobile:push");
+      navigator.clipboard.writeText(cmd);
       toast({
         title: "Command Copied!",
         description: "Now paste this into the BLACK Terminal box.",
@@ -32,8 +32,8 @@ export default function TerminalGuidePage() {
           <h1 className="text-5xl md:text-8xl font-headline font-bold text-white tracking-tighter">
             Terminal <span className="text-primary italic">Navigator</span>
           </h1>
-          <p className="text-muted-foreground text-xl font-medium italic text-red-500 animate-pulse">
-            ⚠️ DO NOT NAVIGATE AWAY. The Terminal is integrated within this interface!
+          <p className="text-muted-foreground text-xl font-medium italic text-amber-500 animate-pulse">
+            ⚠️ Fix "Site Not Found" by running the Web Deploy command below.
           </p>
         </header>
 
@@ -42,8 +42,8 @@ export default function TerminalGuidePage() {
           <div className="absolute -inset-4 bg-primary/20 blur-3xl rounded-full opacity-50" />
           <Card className="rounded-[4rem] bg-[#0a0d14] border-2 border-primary/50 p-10 space-y-12 relative overflow-hidden shadow-[0_0_100px_rgba(59,130,246,0.2)]">
              <div className="text-center space-y-2">
-                <h3 className="text-3xl font-bold font-headline text-white uppercase tracking-tight">MOBILE SIMULATOR</h3>
-                <p className="text-muted-foreground italic">Follow the visual cues to locate the integrated Terminal:</p>
+                <h3 className="text-3xl font-bold font-headline text-white uppercase tracking-tight">MOBILE TERMINAL SIMULATOR</h3>
+                <p className="text-muted-foreground italic">Locate the integrated Terminal to run commands:</p>
              </div>
 
              <div className="grid md:grid-cols-2 gap-16 items-center">
@@ -78,7 +78,7 @@ export default function TerminalGuidePage() {
                       <div className="absolute bottom-0 inset-x-0 h-40 bg-[#05070a] border-t-2 border-primary/50 p-4 space-y-3">
                          <div className="flex items-center gap-3">
                             <span className="text-emerald-500 font-bold text-sm">$</span>
-                            <span className="text-white/60 text-xs font-mono">npm run mobile:push</span>
+                            <span className="text-white/60 text-xs font-mono line-clamp-1">npm run web:deploy</span>
                          </div>
                          <div className="w-1.5 h-4 bg-primary animate-pulse" />
                       </div>
@@ -101,8 +101,8 @@ export default function TerminalGuidePage() {
                      },
                      { 
                        num: "3", 
-                       title: "PASTE COMMAND", 
-                       desc: "A black box will appear at the bottom. Long-press to paste and hit 'Go'.",
+                       title: "PASTE & EXECUTE", 
+                       desc: "A black box will appear at the bottom. Long-press to paste the command and hit 'Go'.",
                        icon: Smartphone
                      }
                    ].map((step, i) => (
@@ -123,6 +123,41 @@ export default function TerminalGuidePage() {
           </Card>
         </section>
 
+        {/* 🛰️ MASTER COMMAND HUB */}
+        <section className="grid md:grid-cols-2 gap-8">
+           <Card className="rounded-[4rem] bg-emerald-500/5 border-2 border-emerald-500/30 p-10 space-y-8 shadow-2xl relative overflow-hidden group">
+              <div className="space-y-4">
+                 <div className="flex items-center gap-4 text-emerald-400">
+                    <CloudUpload className="w-8 h-8" />
+                    <h3 className="text-2xl font-bold font-headline uppercase tracking-tighter">FIX "SITE NOT FOUND"</h3>
+                 </div>
+                 <p className="text-muted-foreground text-sm italic">Run this command to deploy your code to the live web link.</p>
+              </div>
+              <div className="p-6 bg-black rounded-3xl border border-emerald-500/20 font-mono text-emerald-500 text-xl font-bold text-center">
+                 npm run web:deploy
+              </div>
+              <Button onClick={() => copyCommand("npm run web:deploy")} className="w-full h-16 rounded-2xl font-black gap-4 bg-emerald-600 hover:bg-emerald-700 shadow-xl shadow-emerald-600/20">
+                 <Copy className="w-5 h-5" /> COPY WEB DEPLOY
+              </Button>
+           </Card>
+
+           <Card className="rounded-[4rem] bg-primary/5 border-2 border-primary/30 p-10 space-y-8 shadow-2xl relative overflow-hidden group">
+              <div className="space-y-4">
+                 <div className="flex items-center gap-4 text-primary">
+                    <Smartphone className="w-8 h-8" />
+                    <h3 className="text-2xl font-bold font-headline uppercase tracking-tighter">PUSH TO MOBILE APK</h3>
+                 </div>
+                 <p className="text-muted-foreground text-sm italic">Run this command to update your Android APK artifact.</p>
+              </div>
+              <div className="p-6 bg-black rounded-3xl border border-primary/20 font-mono text-primary text-xl font-bold text-center">
+                 npm run mobile:push
+              </div>
+              <Button onClick={() => copyCommand("npm run mobile:push")} className="w-full h-16 rounded-2xl font-black gap-4 bg-primary hover:bg-primary/90 shadow-xl shadow-primary/20">
+                 <Copy className="w-5 h-5" /> COPY MOBILE PUSH
+              </Button>
+           </Card>
+        </section>
+
         {/* 🛑 WARNING BOX */}
         <section>
           <Card className="rounded-[3rem] bg-rose-500/10 border-2 border-rose-500/40 p-10 space-y-6">
@@ -134,18 +169,6 @@ export default function TerminalGuidePage() {
                 You do not need to download Node.js from external sites. The entire production environment is pre-configured within this browser tab. Simply use the <b>Top-Left Menu</b> to launch the <b>Terminal</b>.
              </p>
           </Card>
-        </section>
-
-        <section className="space-y-6 pt-10">
-           <div className="text-center">
-              <span className="text-[12px] font-black text-primary uppercase tracking-[0.6em] animate-pulse">Copy Master Command</span>
-           </div>
-           <div className="p-10 bg-black rounded-[4rem] border-2 border-primary/50 font-mono text-primary text-3xl md:text-5xl font-black text-center shadow-[0_0_80px_rgba(59,130,246,0.3)] flex flex-col items-center gap-10 group">
-             <span className="tracking-tighter">npm run mobile:push</span>
-             <Button onClick={copyCommand} className="rounded-full h-24 px-20 font-black gap-6 text-2xl shadow-2xl shadow-primary/40 hover:scale-105 active:scale-95 transition-all bg-primary">
-                <Copy className="w-10 h-10" /> COPY & CLOSE
-             </Button>
-           </div>
         </section>
       </main>
     </div>

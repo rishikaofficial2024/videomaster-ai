@@ -1,25 +1,24 @@
+# 🚀 VideoMaster AI: Elite Link Hub
 
-# 🚀 VideoMaster AI: Quick Launch Hub
+Use these links to manage and deploy your professional studio.
 
-Your application is technically 100% complete. Use these links to finalize your professional configuration.
+### 🛠️ Primary Action: Fix "Site Not Found" Error
+To activate your live link, run this command in the **Terminal**:
+```bash
+npm run web:deploy
+```
 
-### 1. Branding & Name
-*   **Public Name**: `VideoMaster AI`
-*   **Support Email**: `rishikaofficial2024@gmail.com`
-*   👉 **[Project Settings](https://console.firebase.google.com/project/studio-9489287013-59986/settings/general)**
+### 🌐 Live Production Links
+*   **Studio Link (Web)**: [https://studio-9489287013-59986.web.app](https://studio-9489287013-59986.web.app)
+*   **Branded Domain**: `https://videomaster-ai.tech` (Requires DNS Setup)
 
-### 2. Firebase Auth (Direct Links)
-*   👉 **[Enable Sign-in Providers](https://console.firebase.google.com/project/studio-9489287013-59986/authentication/providers)** -> Enable Google, Phone, and GitHub.
-*   👉 **[Add Authorized Domain](https://console.firebase.google.com/project/studio-9489287013-59986/authentication/settings)** -> Add `videomaster-ai.tech` here.
+### 📱 Mobile Factory
+*   **Build Pulse**: [Check APK Artifact Status](https://github.com/rishikaofficial2024/videomaster-ai/actions)
+*   **Download Artifact**: Click the latest Green ✅ build, scroll to bottom.
 
-### 3. Elite Security (App Check)
-*   **App Side Key**: `src/firebase/config.ts` -> `appCheckSiteKey`
-*   👉 **[Create reCAPTCHA V3 Keys](https://www.google.com/recaptcha/admin/create)**
-*   👉 **[Register in Firebase Console](https://console.firebase.google.com/project/studio-9489287013-59986/appcheck/apps)**
+### 🔥 Firebase Infrastructure
+*   **Auth Control**: [Enable Sign-in Providers](https://console.firebase.google.com/project/studio-9489287013-59986/authentication/providers)
+*   **Authorized Domains**: [Add videomaster-ai.tech here](https://console.firebase.google.com/project/studio-9489287013-59986/authentication/settings)
+*   **Security Logic**: [Manage Firestore Rules](https://console.firebase.google.com/project/studio-9489287013-59986/firestore/rules)
 
-### 4. Deployment & Live Link
-*   **Action**: Run `npm run mobile:push` in the Terminal.
-*   **Live Web Preview**: [https://studio-9489287013-59986.web.app](https://studio-9489287013-59986.web.app)
-*   **Build Status**: [Check APK Status here](https://github.com/rishikaofficial2024/videomaster-ai/actions).
-
-**Your Business is now globally ready and optimized for revenue!** 🚀💰💎
+**Important**: Run `npm run web:deploy` whenever you want your website updates to be visible to global users. 🚀💰💎

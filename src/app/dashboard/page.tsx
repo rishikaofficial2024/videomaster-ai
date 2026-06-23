@@ -7,7 +7,7 @@ import {
   Plus, Sparkles, Loader2, Coins, 
   Play, History, LayoutTemplate, Zap,
   Tornado, Share2, Instagram, MessageCircle, Twitter, ArrowRight,
-  Globe, Smartphone, Terminal, ExternalLink
+  Globe, Smartphone, Terminal, ExternalLink, AlertCircle, CloudUpload
 } from "lucide-react";
 import Link from "next/link";
 import { useUser, useFirestore, useDoc, useMemoFirebase, useCollection } from "@/firebase";
@@ -82,7 +82,7 @@ export default function Dashboard() {
   };
 
   const handleShare = () => {
-    const text = "🚀 Create viral AI videos with VideoMaster AI! Get 100 FREE credits here: https://videomaster-ai.tech";
+    const text = "🚀 Create viral AI videos with VideoMaster AI! Get 100 FREE credits here: https://studio-9489287013-59986.web.app";
     if (typeof navigator !== 'undefined') {
       navigator.clipboard.writeText(text);
       toast({ title: "Invite Copied", description: "Share your unique node link with creators." });
@@ -106,10 +106,28 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen pb-40 md:pt-24 bg-[#020408] hero-gradient">
       <Navbar />
-      <main className="max-w-7xl mx-auto p-6 lg:p-12 space-y-24">
+      <main className="max-w-7xl mx-auto p-6 lg:p-12 space-y-16">
         
-        {/* 🚀 LAUNCH HUB: QUICK ACCESS TO PREVIEW & DEPLOY */}
-        <section className="grid grid-cols-1 md:grid-cols-3 gap-8 animate-in fade-in slide-in-from-top-4 duration-1000">
+        {/* ⚠️ CRITICAL DEPLOY ALERT */}
+        <section className="animate-in fade-in slide-in-from-top-2 duration-700">
+           <Card className="p-6 bg-amber-500/10 border-amber-500/20 rounded-[2.5rem] flex flex-col md:flex-row items-center justify-between gap-6 shadow-2xl">
+              <div className="flex items-center gap-6">
+                 <div className="p-4 bg-amber-500/20 rounded-2xl">
+                    <AlertCircle className="w-8 h-8 text-amber-500" />
+                 </div>
+                 <div className="space-y-1">
+                    <h4 className="text-lg font-bold text-white uppercase tracking-tight">Fix "Site Not Found" Error</h4>
+                    <p className="text-sm text-muted-foreground italic leading-relaxed">If your live link isn't opening, you must run <b>npm run web:deploy</b> in the Terminal.</p>
+                 </div>
+              </div>
+              <Button className="h-14 px-10 rounded-2xl bg-amber-600 hover:bg-amber-700 font-black text-xs gap-3" onClick={() => router.push('/terminal-guide')}>
+                 <Terminal className="w-4 h-4" /> VIEW DEPLOY STEPS
+              </Button>
+           </Card>
+        </section>
+
+        {/* 🚀 LAUNCH HUB */}
+        <section className="grid grid-cols-1 md:grid-cols-3 gap-8">
            <Card className="p-8 bg-emerald-500/10 border-emerald-500/20 rounded-[3rem] space-y-4 group hover:bg-emerald-500/20 transition-all cursor-pointer" onClick={() => window.open('https://studio-9489287013-59986.web.app', '_blank')}>
               <div className="flex items-center justify-between">
                  <div className="p-4 bg-emerald-500/20 rounded-2xl">
@@ -139,13 +157,13 @@ export default function Dashboard() {
            <Card className="p-8 bg-indigo-500/10 border-indigo-500/20 rounded-[3rem] space-y-4 group hover:bg-indigo-500/20 transition-all cursor-pointer" onClick={() => router.push('/terminal-guide')}>
               <div className="flex items-center justify-between">
                  <div className="p-4 bg-indigo-500/20 rounded-2xl">
-                    <Terminal className="w-6 h-6 text-indigo-400" />
+                    <CloudUpload className="w-6 h-6 text-indigo-400" />
                  </div>
-                 <span className="bg-red-500 text-white text-[8px] font-black px-2 py-0.5 rounded-full">ACTION REQUIRED</span>
+                 <span className="bg-red-500 text-white text-[8px] font-black px-2 py-0.5 rounded-full">FIX LINK ERROR</span>
               </div>
               <div className="space-y-1">
-                 <h4 className="font-bold text-white uppercase tracking-tight">Terminal Navigator</h4>
-                 <p className="text-xs text-muted-foreground italic">Learn how to push updates using the black box.</p>
+                 <h4 className="font-bold text-white uppercase tracking-tight">Web Deploy Protocol</h4>
+                 <p className="text-xs text-muted-foreground italic">Execute command to fix "Site Not Found" error.</p>
               </div>
            </Card>
         </section>
@@ -257,31 +275,6 @@ export default function Dashboard() {
                  WATCH & EARN
               </Button>
            </Card>
-        </section>
-
-        {/* 🌍 EXPANSION NODE */}
-        <section className="bg-white/[0.01] border border-white/5 rounded-[6rem] p-20 md:p-32 relative overflow-hidden group shadow-2xl">
-           <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-24">
-              <div className="space-y-12 text-center lg:text-left">
-                 <div className="inline-flex items-center gap-6 px-6 py-2.5 bg-indigo-600/10 rounded-full border border-indigo-600/20 text-indigo-400 text-[11px] font-black uppercase tracking-[0.5em]">
-                    <Tornado className="w-5 h-5 animate-spin-slow" /> Expansion Protocol Live
-                 </div>
-                 <h2 className="text-7xl md:text-[9rem] font-bold font-headline tracking-tighter text-white text-gradient leading-[0.75]">Viral <span className="text-indigo-500 italic">Growth</span></h2>
-                 <p className="text-2xl text-muted-foreground max-w-3xl italic leading-relaxed font-medium opacity-60">
-                    Propagate your Studio signature across the network to expand the global creative node and earn rewards.
-                 </p>
-              </div>
-              <div className="flex flex-col gap-10 w-full lg:w-auto">
-                 <Button onClick={handleShare} className="h-28 px-24 rounded-[3.5rem] bg-white text-black font-black text-3xl gap-6 hover:bg-white/90 shadow-2xl hover:scale-105 transition-all">
-                    <Share2 className="w-10 h-10" /> INVITE OTHERS
-                 </Button>
-                 <div className="flex justify-center gap-16 opacity-20">
-                    <Instagram className="w-12 h-12 hover:text-primary transition-colors cursor-pointer" />
-                    <MessageCircle className="w-12 h-12 hover:text-primary transition-colors cursor-pointer" />
-                    <Twitter className="w-12 h-12 hover:text-primary transition-colors cursor-pointer" />
-                 </div>
-              </div>
-           </div>
         </section>
 
       </main>
