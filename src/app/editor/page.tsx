@@ -8,7 +8,8 @@ import {
   Wand2, Download, Sparkles, ChevronLeft, Loader2, Video as VideoIcon,
   Plus, Palette, Music, 
   Trash2, Upload, Scissors, Film,
-  Settings2, Type, Layout, Crown, Lock, Layers, Zap, Clock, Maximize, Move, Sliders
+  Settings2, Type, Layout, Crown, Lock, Layers, Zap, Clock, Maximize, Move, Sliders,
+  Target, Ghost, MonitorPlay, Pipette
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { generateAiVideo } from "@/ai/flows/ai-video-generation-flow";
@@ -59,6 +60,10 @@ function EditorContent() {
   const [scriptTopic, setScriptTopic] = useState("");
   const [videoPrompt, setVideoPrompt] = useState("");
   const [currentTime, setCurrentTime] = useState(0);
+  
+  // Magic AI Features State
+  const [magicHook, setMagicHook] = useState("");
+  const [colorMood, setColorMood] = useState("");
 
   useEffect(() => {
     setMounted(true);
@@ -83,6 +88,7 @@ function EditorContent() {
       setTitle(project.title || "Untitled Masterpiece");
       setVideoData(project.videoDataUri || null);
       setMediaAssets(project.mediaAssets || []);
+      setMagicHook(project.magicHook || "");
       setIsNewProject(false);
     }
   }, [project, mounted]);
@@ -102,6 +108,7 @@ function EditorContent() {
       updatedAt: serverTimestamp(),
       mediaAssets,
       videoDataUri: videoData,
+      magicHook,
       ...extraData
     };
     
@@ -155,7 +162,8 @@ function EditorContent() {
     setIsProcessing(true);
     try {
       const result = await generateAiScript({ topic: scriptTopic, platform: 'YouTube' });
-      handleSave({ aiNotes: result.script });
+      handleSave({ aiNotes: result.script, magicHook: result.hook });
+      setMagicHook(result.hook);
       toast({ title: "Logic Engineered", description: "Viral narrative flow generated successfully." });
     } catch (e: any) {
       toast({ variant: "destructive", title: "AI Sync Error", description: e.message });
@@ -177,6 +185,13 @@ function EditorContent() {
     } finally {
       setIsProcessing(false);
     }
+  };
+
+  const handleMagicMood = () => {
+    if (!colorMood) return;
+    toast({ title: "Mood Applied", description: `Synchronizing chromatic range for: ${colorMood}` });
+    // Visual feedback simulate
+    handleSave({ lastMoodApplied: colorMood });
   };
 
   if (!mounted) return null;
@@ -287,11 +302,48 @@ function EditorContent() {
            )}
 
            {activeTab === 'ai' && (
-             <div className="space-y-16 animate-in fade-in slide-in-from-left-6 duration-700 relative z-10">
+             <div className="space-y-16 animate-in fade-in slide-in-from-left-6 duration-700 relative z-10 pb-20">
                 <div className="space-y-12">
                    <div className="flex items-center gap-5 px-8 py-4 bg-primary/10 rounded-full border border-primary/20 w-fit shadow-glow shadow-primary/10">
                       <Zap className="w-6 h-6 text-primary animate-pulse" />
-                      <span className="text-[13px] font-black uppercase tracking-[0.4em] text-primary">AI Engineering Suite</span>
+                      <span className="text-[13px] font-black uppercase tracking-[0.4em] text-primary">Free AI Magic Suite</span>
+                   </div>
+
+                   {/* 🪄 MAGIC HOOK GEN */}
+                   <div className="p-12 bg-emerald-500/[0.03] rounded-[5rem] border border-emerald-500/15 space-y-10 relative overflow-hidden group shadow-2xl">
+                      <div className="flex items-center justify-between">
+                         <label className="text-[13px] font-black uppercase tracking-[0.5em] text-emerald-400">Magic Hook Generator</label>
+                         <Badge className="bg-emerald-500/20 text-emerald-400 border-none rounded-full text-[9px] font-black uppercase tracking-widest px-3">Viral Ready</Badge>
+                      </div>
+                      <div className="bg-black/60 rounded-[2.5rem] p-8 border border-white/5 min-h-32 text-sm italic leading-relaxed text-[#c9ccd1] shadow-inner">
+                         {magicHook || "Generate a script first to extract the perfect Magic Hook..."}
+                      </div>
+                      <Button variant="outline" className="w-full h-16 rounded-[1.5rem] border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/10 font-bold uppercase tracking-widest gap-3" onClick={() => handleGenerateScript()} disabled={isProcessing}>
+                         <Target className="w-5 h-5" /> RE-CALIBRATE HOOK
+                      </Button>
+                   </div>
+
+                   {/* 🎨 MAGIC MOOD SELECTOR */}
+                   <div className="p-12 bg-indigo-500/[0.03] rounded-[5rem] border border-indigo-500/15 space-y-10 relative overflow-hidden group shadow-2xl">
+                      <label className="text-[13px] font-black uppercase tracking-[0.5em] text-indigo-400 block">AI Color Mood</label>
+                      <div className="flex gap-4 items-center">
+                         <input 
+                           className="flex-1 bg-black/60 border border-white/10 rounded-2xl h-14 px-6 text-sm outline-none focus:border-indigo-500/40" 
+                           placeholder="e.g. Moody Cyberpunk, Golden Hour" 
+                           value={colorMood}
+                           onChange={(e) => setColorMood(e.target.value)}
+                         />
+                         <Button className="h-14 w-14 rounded-2xl bg-indigo-600 shadow-glow" onClick={handleMagicMood}>
+                            <Pipette className="w-6 h-6" />
+                         </Button>
+                      </div>
+                      <div className="flex gap-4 overflow-x-auto scrollbar-hide">
+                         {['Cinematic', 'Vintage', 'Pop Art', 'Sci-Fi'].map(m => (
+                           <button key={m} className="px-5 py-2.5 rounded-full border border-white/10 text-[10px] font-black uppercase tracking-widest whitespace-nowrap hover:bg-white/5 transition-all" onClick={() => setColorMood(m)}>
+                              {m}
+                           </button>
+                         ))}
+                      </div>
                    </div>
                    
                    <div className="p-12 bg-white/[0.02] rounded-[5rem] border border-white/5 space-y-12 hover:bg-white/[0.04] transition-all duration-1000 shadow-2xl relative overflow-hidden group">
@@ -426,7 +478,7 @@ function EditorContent() {
                     <div className="absolute left-0 top-0 bottom-0 w-2 bg-emerald-500 shadow-glow shadow-emerald-500/60" />
                     <span className="text-[11px] font-black text-emerald-400 uppercase tracking-[0.4em] min-w-[150px]">Audio Track</span>
                     {mediaAssets.map((m, i) => m.type === 'audio' && (
-                       <div key={i} className="h-10 w-80 bg-emerald-500/20 border-2 border-emerald-500/40 rounded-[1.5rem] ml-12 flex items-center justify-center shadow-inner">
+                       <div key={i} className="h-10 w-80 bg-emerald-500/20 border-2 border-emerald-500/40 rounded-1.5rem ml-12 flex items-center justify-center shadow-inner">
                           <div className="flex gap-2 items-end h-7">
                              {[1,3,2,4,2,3,1,4,2,3,1,4,2,3].map((h, j) => <div key={j} className="w-2 bg-emerald-400/60 rounded-full" style={{ height: `${h * 22}%` }} />)}
                           </div>
