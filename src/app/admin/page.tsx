@@ -1,3 +1,4 @@
+
 "use client";
 
 import { Navbar } from "@/components/navbar";
@@ -5,7 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { 
   Users, Coins, ShieldCheck, Lock, Loader2, Banknote, TrendingUp,
-  Activity, CheckCircle2, Star, ShieldAlert, MoreVertical, Landmark, PieChart, DollarSign, Globe, Info, ExternalLink, CreditCard
+  Activity, CheckCircle2, Star, ShieldAlert, MoreVertical, Landmark, PieChart, DollarSign, Globe, Info, ExternalLink, CreditCard,
+  Terminal, Shield
 } from "lucide-react";
 import { useFirestore, useCollection, useMemoFirebase } from "@/firebase";
 import { collection, query, limit, orderBy, getCountFromServer, doc, updateDoc, increment, getDocs } from "firebase/firestore";
@@ -65,8 +67,9 @@ export default function AdminDashboard() {
       usersSnap.forEach((doc) => {
         const data = doc.data();
         revenue += (data.totalSpent || 0);
-        if (data.isPremium && data.subscriptionPlan === 'pro') revenue += 99;
-        if (data.isPremium && data.subscriptionPlan === 'business') revenue += 499;
+        // Simple logic for estimated plan values if totalSpent isn't updated
+        if (data.isPremium && data.subscriptionPlan === 'pro' && !data.totalSpent) revenue += 99;
+        if (data.isPremium && data.subscriptionPlan === 'business' && !data.totalSpent) revenue += 499;
       });
       
       setTotalRevenue(revenue);
@@ -89,7 +92,7 @@ export default function AdminDashboard() {
     
     updateDoc(userRef, data)
       .then(() => {
-        toast({ title: "Updated!", description: "User settings updated successfully." });
+        toast({ title: "Protocol Executed", description: "Creator node settings updated successfully." });
         calculateTotalRevenue(); 
       })
       .catch(async (serverError) => {
@@ -120,12 +123,12 @@ export default function AdminDashboard() {
             <h1 className="text-5xl md:text-7xl font-headline font-bold tracking-tighter text-white">
               Revenue <span className="text-primary">Hub</span>
             </h1>
-            <p className="text-muted-foreground font-medium italic text-lg opacity-60">Track lifetime earnings, ad metrics, and user growth.</p>
+            <p className="text-muted-foreground font-medium italic text-lg opacity-60">Track lifetime earnings, ad metrics, and user growth across the global node.</p>
           </div>
           
           <div className="flex items-center gap-8 bg-white/5 p-6 rounded-[2.5rem] border border-white/5 backdrop-blur-3xl shadow-2xl">
              <div className="flex flex-col px-6 border-r border-white/10 text-right">
-                <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-1">Global Users</span>
+                <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-1">Global Creators</span>
                 <span className="text-4xl font-bold font-headline text-emerald-500">{totalUsersCount ?? "..."}</span>
              </div>
              <ShieldCheck className="w-10 h-10 text-primary animate-pulse" />
@@ -173,6 +176,30 @@ export default function AdminDashboard() {
                <Button className="rounded-full bg-indigo-600 hover:bg-indigo-700 font-black text-[10px] uppercase tracking-[0.3em] h-12 px-8 shadow-xl" asChild>
                  <Link href="/BANK_TRANSFER_GUIDE.md">Payout Portal</Link>
                </Button>
+             </div>
+          </Card>
+        </section>
+
+        {/* 📚 MASTER OPERATIONS GUIDE */}
+        <section>
+          <Card className="rounded-[3.5rem] bg-primary/5 border border-primary/20 p-12 overflow-hidden relative">
+             <div className="absolute top-0 left-0 p-10 opacity-5 -rotate-12">
+                <Terminal className="w-40 h-40 text-primary" />
+             </div>
+             <div className="relative z-10 flex flex-col md:flex-row items-center gap-12">
+                <div className="w-24 h-24 bg-primary/20 rounded-[2rem] flex items-center justify-center border border-primary/30 shadow-2xl">
+                   <Shield className="w-10 h-10 text-primary" />
+                </div>
+                <div className="flex-1 space-y-4 text-center md:text-left">
+                   <h3 className="text-3xl font-headline font-bold text-white uppercase tracking-tight">Node Operations Guide</h3>
+                   <div className="grid md:grid-cols-2 gap-6 text-sm text-muted-foreground italic leading-relaxed">
+                      <p>• Use the <b>Protocols</b> menu in the user table to inject credits or upgrade accounts to Pro status instantly.</p>
+                      <p>• Revenue is calculated in real-time from the <code>totalSpent</code> field and active subscription flags in Firestore.</p>
+                   </div>
+                </div>
+                <Button variant="outline" className="h-16 px-10 rounded-2xl border-white/10 text-white font-bold" asChild>
+                   <Link href="/docs/ADMIN_MANUAL.md">View Documentation</Link>
+                </Button>
              </div>
           </Card>
         </section>
