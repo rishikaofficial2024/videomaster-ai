@@ -1,7 +1,4 @@
-/**
- * Neutralized for 'output: export' compatibility.
- * Middleware is not supported in static exports.
- */
+// Middleware is disabled for compatibility with 'output: export' (Static HTML Export)
 export default function middleware() {}
 
 export const config = {
