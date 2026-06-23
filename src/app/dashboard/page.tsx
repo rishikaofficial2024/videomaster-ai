@@ -6,7 +6,8 @@ import { Card } from "@/components/ui/card";
 import { 
   Plus, Sparkles, Loader2, Coins, 
   Play, History, LayoutTemplate, Zap,
-  Tornado, Share2, Instagram, MessageCircle, Twitter, ArrowRight
+  Tornado, Share2, Instagram, MessageCircle, Twitter, ArrowRight,
+  Globe, Smartphone, Terminal, ExternalLink
 } from "lucide-react";
 import Link from "next/link";
 import { useUser, useFirestore, useDoc, useMemoFirebase, useCollection } from "@/firebase";
@@ -107,6 +108,48 @@ export default function Dashboard() {
       <Navbar />
       <main className="max-w-7xl mx-auto p-6 lg:p-12 space-y-24">
         
+        {/* 🚀 LAUNCH HUB: QUICK ACCESS TO PREVIEW & DEPLOY */}
+        <section className="grid grid-cols-1 md:grid-cols-3 gap-8 animate-in fade-in slide-in-from-top-4 duration-1000">
+           <Card className="p-8 bg-emerald-500/10 border-emerald-500/20 rounded-[3rem] space-y-4 group hover:bg-emerald-500/20 transition-all cursor-pointer" onClick={() => window.open('https://studio-9489287013-59986.web.app', '_blank')}>
+              <div className="flex items-center justify-between">
+                 <div className="p-4 bg-emerald-500/20 rounded-2xl">
+                    <Globe className="w-6 h-6 text-emerald-400" />
+                 </div>
+                 <ExternalLink className="w-4 h-4 text-emerald-500 opacity-40" />
+              </div>
+              <div className="space-y-1">
+                 <h4 className="font-bold text-white uppercase tracking-tight">Live Web Preview</h4>
+                 <p className="text-xs text-muted-foreground italic">Check your studio live on the global network.</p>
+              </div>
+           </Card>
+
+           <Card className="p-8 bg-primary/10 border-primary/20 rounded-[3rem] space-y-4 group hover:bg-primary/20 transition-all cursor-pointer" onClick={() => router.push('/build-status')}>
+              <div className="flex items-center justify-between">
+                 <div className="p-4 bg-primary/20 rounded-2xl">
+                    <Smartphone className="w-6 h-6 text-primary" />
+                 </div>
+                 <ArrowRight className="w-4 h-4 text-primary opacity-40" />
+              </div>
+              <div className="space-y-1">
+                 <h4 className="font-bold text-white uppercase tracking-tight">Android APK Build</h4>
+                 <p className="text-xs text-muted-foreground italic">Generate and download your mobile application.</p>
+              </div>
+           </Card>
+
+           <Card className="p-8 bg-indigo-500/10 border-indigo-500/20 rounded-[3rem] space-y-4 group hover:bg-indigo-500/20 transition-all cursor-pointer" onClick={() => router.push('/terminal-guide')}>
+              <div className="flex items-center justify-between">
+                 <div className="p-4 bg-indigo-500/20 rounded-2xl">
+                    <Terminal className="w-6 h-6 text-indigo-400" />
+                 </div>
+                 <span className="bg-red-500 text-white text-[8px] font-black px-2 py-0.5 rounded-full">ACTION REQUIRED</span>
+              </div>
+              <div className="space-y-1">
+                 <h4 className="font-bold text-white uppercase tracking-tight">Terminal Navigator</h4>
+                 <p className="text-xs text-muted-foreground italic">Learn how to push updates using the black box.</p>
+              </div>
+           </Card>
+        </section>
+
         <header className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-12 pt-10">
           <div className="space-y-6">
             <div className="inline-flex items-center gap-3 px-5 py-2 bg-primary/10 rounded-full border border-primary/20 text-primary text-[10px] font-black uppercase tracking-[0.4em]">

@@ -12,11 +12,13 @@ export default function TerminalGuidePage() {
   const { toast } = useToast();
 
   const copyCommand = () => {
-    navigator.clipboard.writeText("npm run mobile:push");
-    toast({
-      title: "Command Copied!",
-      description: "Now paste this into the BLACK Terminal box.",
-    });
+    if (typeof navigator !== 'undefined') {
+      navigator.clipboard.writeText("npm run mobile:push");
+      toast({
+        title: "Command Copied!",
+        description: "Now paste this into the BLACK Terminal box.",
+      });
+    }
   };
 
   return (
