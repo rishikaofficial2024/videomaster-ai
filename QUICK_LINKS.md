@@ -5,7 +5,7 @@ Use these links to manage and deploy your professional studio.
 
 ### 🌐 Live Production Links
 *   **Studio Link (Web)**: [https://studio-9489287013-59986.web.app](https://studio-9489287013-59986.web.app)
-*   **Branded Domain**: `https://videomaster-ai.tech`
+*   **Branded Domain**: `https://videomaster-ai.tech` (DNS Sync Pending)
 
 ### 🛠️ Primary Action: Fix "Site Not Found" Error
 To activate your live link and upload `app-ads.txt` for Google AdSense, run this in the **Terminal**:
