@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Video, Chrome, Loader2, Eye, EyeOff, ArrowLeft } from "lucide-react";
+import { Video, Chrome, Loader2, Eye, EyeOff, ArrowLeft, AlertCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { 
   createUserWithEmailAndPassword, 
@@ -36,6 +36,8 @@ export default function SignupPage() {
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!email || !password || !firstName) return;
+    
     setLoading(true);
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email.trim(), password);
@@ -56,31 +58,23 @@ export default function SignupPage() {
         usageStats: { totalVideos: 0, aiGenerations: 0 }
       };
 
-      setDoc(userRef, userData).catch(async (serverError) => {
-        const permissionError = new FirestorePermissionError({
-          path: userRef.path,
-          operation: 'create',
-          requestResourceData: userData,
-        } satisfies SecurityRuleContext);
-        errorEmitter.emit('permission-error', permissionError);
-      });
-
+      await setDoc(userRef, userData, { merge: true });
+      toast({ title: "Account Created", description: "Welcome to your AI Studio!" });
       router.push("/dashboard");
     } catch (error: any) {
-      let errorMessage = error.message;
+      let errorMessage = "Registration failed. Please try again.";
       
-      // Catch specific Firebase Auth error for already existing users
       if (error.code === 'auth/email-already-in-use') {
-        errorMessage = "This email is already registered. Please Sign In to access your studio.";
+        errorMessage = "This email is already registered. Please Sign In instead.";
       } else if (error.code === 'auth/weak-password') {
         errorMessage = "Password is too weak. Please use at least 6 characters.";
       } else if (error.code === 'auth/invalid-email') {
-        errorMessage = "The email address is malformed. Please check your entry.";
+        errorMessage = "Invalid email format. Please check your entry.";
       }
 
       toast({ 
         variant: "destructive", 
-        title: "Registration Failed", 
+        title: "Registration Alert", 
         description: errorMessage 
       });
     } finally {
@@ -107,18 +101,10 @@ export default function SignupPage() {
         usageStats: { totalVideos: 0, aiGenerations: 0 }
       };
 
-      setDoc(userRef, userData, { merge: true }).catch(async (serverError) => {
-        const permissionError = new FirestorePermissionError({
-          path: userRef.path,
-          operation: 'write',
-          requestResourceData: userData,
-        } satisfies SecurityRuleContext);
-        errorEmitter.emit('permission-error', permissionError);
-      });
-
+      await setDoc(userRef, userData, { merge: true });
       router.push("/dashboard");
     } catch (error: any) {
-      toast({ variant: "destructive", title: "Google Error", description: error.message });
+      toast({ variant: "destructive", title: "Google Login Failed", description: "Please try again." });
     } finally {
       setLoading(false);
     }
@@ -133,38 +119,39 @@ export default function SignupPage() {
       </div>
 
       <div className="w-full max-w-md animate-in fade-in duration-500">
-        <Card className="border-white/5 bg-[#0a0d14] rounded-[2rem] shadow-2xl overflow-hidden">
-          <div className="h-1.5 bg-primary w-full" />
+        <Card className="border-white/5 bg-[#0a0d14] rounded-[2rem] shadow-2xl overflow-hidden border-t-2 border-primary/20">
           <CardHeader className="text-center pt-8">
             <div className="flex justify-center mb-2">
-              <Video className="w-10 h-10 text-primary" />
+              <div className="p-3 bg-primary/10 rounded-2xl">
+                <Video className="w-10 h-10 text-primary" />
+              </div>
             </div>
-            <CardTitle className="text-2xl font-bold">Join Studio</CardTitle>
-            <CardDescription>Get 100 FREE AI Credits instantly</CardDescription>
+            <CardTitle className="text-2xl font-bold font-headline">Join Studio</CardTitle>
+            <CardDescription className="italic">Get 100 FREE AI Credits instantly</CardDescription>
           </CardHeader>
 
           <CardContent className="space-y-6">
             <form onSubmit={handleSignup} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <Label className="text-[10px] uppercase text-primary ml-1">First Name</Label>
+                  <Label className="text-[10px] uppercase text-primary ml-1 font-bold">First Name</Label>
                   <Input placeholder="John" required className="h-12 bg-black/40 border-white/10" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
                 </div>
                 <div className="space-y-1">
-                  <Label className="text-[10px] uppercase text-primary ml-1">Last Name</Label>
-                  <Input placeholder="Doe" required className="h-12 bg-black/40 border-white/10" value={lastName} onChange={(e) => setLastName(e.target.value)} />
+                  <Label className="text-[10px] uppercase text-primary ml-1 font-bold">Last Name</Label>
+                  <Input placeholder="Doe" className="h-12 bg-black/40 border-white/10" value={lastName} onChange={(e) => setLastName(e.target.value)} />
                 </div>
               </div>
               <div className="space-y-1">
-                <Label className="text-[10px] uppercase text-primary ml-1">Email</Label>
+                <Label className="text-[10px] uppercase text-primary ml-1 font-bold">Email</Label>
                 <Input type="email" placeholder="john@example.com" required className="h-12 bg-black/40 border-white/10" value={email} onChange={(e) => setEmail(e.target.value)} />
               </div>
               <div className="space-y-1">
-                <Label className="text-[10px] uppercase text-primary ml-1">Password</Label>
+                <Label className="text-[10px] uppercase text-primary ml-1 font-bold">Password</Label>
                 <div className="relative">
                   <Input 
                     type={showPassword ? "text" : "password"} 
-                    placeholder="Min. 8 characters" 
+                    placeholder="Min. 6 characters" 
                     required 
                     className="h-12 bg-black/40 border-white/10 pr-12" 
                     value={password} 
@@ -179,17 +166,17 @@ export default function SignupPage() {
                   </button>
                 </div>
               </div>
-              <Button type="submit" className="w-full h-12 font-bold" disabled={loading}>
-                {loading ? <Loader2 className="animate-spin" /> : "Start Free Journey"}
+              <Button type="submit" className="w-full h-14 font-black uppercase tracking-widest rounded-xl" disabled={loading}>
+                {loading ? <Loader2 className="animate-spin" /> : "Initialize Node"}
               </Button>
             </form>
             
             <div className="relative">
               <div className="absolute inset-0 flex items-center"><span className="w-full border-t border-white/5"></span></div>
-              <div className="relative flex justify-center text-[10px] uppercase font-bold text-muted-foreground"><span className="bg-[#0a0d14] px-4">Or sign up with</span></div>
+              <div className="relative flex justify-center text-[10px] uppercase font-bold text-muted-foreground"><span className="bg-[#0a0d14] px-4">Social Access</span></div>
             </div>
 
-            <Button variant="outline" className="w-full h-12 gap-2 border-white/10 bg-black/20" onClick={handleSocialSignup} disabled={loading}>
+            <Button variant="outline" className="w-full h-12 gap-2 border-white/10 bg-black/20 font-bold" onClick={handleSocialSignup} disabled={loading}>
               <Chrome className="w-4 h-4 text-red-500" /> Sign up with Google
             </Button>
           </CardContent>

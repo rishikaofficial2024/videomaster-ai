@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, Suspense } from "react";
@@ -44,14 +45,12 @@ function LoginForm() {
     } catch (error: any) {
       let errorMessage = "Invalid email or password. Please try again.";
       
-      if (error.code === 'auth/user-not-found') {
-        errorMessage = "No account found with this email. Please Sign Up first.";
+      if (error.code === 'auth/user-not-found' || error.code === 'auth/invalid-credential') {
+        errorMessage = "Login failed. Check your password or click 'Create Account' to join.";
       } else if (error.code === 'auth/wrong-password') {
-        errorMessage = "Incorrect password. Please check and try again.";
+        errorMessage = "Incorrect password. Please try again.";
       } else if (error.code === 'auth/too-many-requests') {
-        errorMessage = "Too many failed attempts. Please try again later.";
-      } else if (error.code === 'auth/invalid-credential') {
-        errorMessage = "Login failed. Check your password or click 'Create Account' if you haven't joined yet.";
+        errorMessage = "Too many failed attempts. Account temporarily locked for security.";
       }
 
       toast({
@@ -190,14 +189,6 @@ export default function LoginPage() {
             </div>
           </CardFooter>
         </Card>
-        
-        {/* Help Tip */}
-        <div className="bg-white/5 border border-white/5 p-4 rounded-2xl flex items-start gap-4 animate-in slide-in-from-bottom-2 duration-700">
-           <AlertCircle className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-           <p className="text-xs text-muted-foreground italic leading-relaxed">
-             <b>Security Tip:</b> If your login fails consistently, please ensure you have registered via <b>"Create Account"</b> first. Unauthorized access is blocked by default.
-           </p>
-        </div>
       </div>
     </div>
   );
