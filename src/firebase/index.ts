@@ -1,5 +1,4 @@
-
-'use client';
+"use client";
 
 import { initializeApp, getApps, getApp, FirebaseApp } from 'firebase/app';
 import { getAuth, Auth } from 'firebase/auth';
@@ -27,8 +26,8 @@ export function initializeFirebase() {
   firestore = getFirestore(app);
 
   // 🛡️ ELITE SECURITY: App Check Initialization
-  // Only triggers on real production domains to avoid blocking local testing.
-  if (typeof window !== 'undefined' && firebaseConfig.appCheckSiteKey) {
+  // Only triggers on real production domains with site keys to avoid blocking local testing.
+  if (typeof window !== 'undefined' && firebaseConfig.appCheckSiteKey && !window.location.hostname.includes('localhost')) {
     try {
       initializeAppCheck(app, {
         provider: new ReCaptchaV3Provider(firebaseConfig.appCheckSiteKey),
@@ -47,7 +46,7 @@ export function initializeFirebase() {
 
 /**
  * useMemoFirebase stabilizes Firestore references or queries.
- * Essential to prevent infinite re-render loops in useDoc/useCollection.
+ * Essential to prevent infinite re-render loops in useDoc/useCollection hooks.
  */
 export function useMemoFirebase<T>(factory: () => T, deps: DependencyList): T {
   // eslint-disable-next-line react-hooks/exhaustive-deps

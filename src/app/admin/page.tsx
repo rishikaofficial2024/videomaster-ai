@@ -111,7 +111,7 @@ export default function AdminDashboard() {
     <div className="min-h-screen pb-32 md:pt-24 bg-[#05070a] hero-gradient">
       <Navbar />
       <main className="max-w-7xl mx-auto p-6 space-y-12">
-        <header className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8">
+        <header className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8 pt-10">
           <div className="space-y-4">
             <div className="inline-flex items-center gap-2 px-3 py-1 bg-red-500/10 rounded-full border border-red-500/20">
               <Lock className="w-3 h-3 text-red-500" />
@@ -120,189 +120,132 @@ export default function AdminDashboard() {
             <h1 className="text-5xl md:text-7xl font-headline font-bold tracking-tighter text-white">
               Revenue <span className="text-primary">Hub</span>
             </h1>
-            <p className="text-muted-foreground font-medium italic text-lg">Track your real-world earnings and payout gateways.</p>
+            <p className="text-muted-foreground font-medium italic text-lg opacity-60">Track lifetime earnings, ad metrics, and user growth.</p>
           </div>
           
-          <div className="flex items-center gap-4 bg-white/5 p-4 rounded-3xl border border-white/5 backdrop-blur-3xl">
-             <div className="flex flex-col px-4 border-r border-white/10">
-                <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-1">Network Capacity</span>
-                <span className="text-2xl font-bold font-headline text-emerald-500">{totalUsersCount ?? "..."} Users</span>
+          <div className="flex items-center gap-8 bg-white/5 p-6 rounded-[2.5rem] border border-white/5 backdrop-blur-3xl shadow-2xl">
+             <div className="flex flex-col px-6 border-r border-white/10 text-right">
+                <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-1">Global Users</span>
+                <span className="text-4xl font-bold font-headline text-emerald-500">{totalUsersCount ?? "..."}</span>
              </div>
-             <ShieldCheck className="w-8 h-8 text-primary opacity-20" />
+             <ShieldCheck className="w-10 h-10 text-primary animate-pulse" />
           </div>
         </header>
 
-        <section className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          <Card className="rounded-[3rem] bg-[#0a0d14] border-emerald-500/30 p-8 blue-glow relative overflow-hidden group">
-            <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:scale-110 transition-transform">
+        <section className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <Card className="rounded-[3.5rem] bg-[#0a0d14]/80 border-emerald-500/30 p-10 blue-glow relative overflow-hidden group">
+            <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:scale-110 transition-transform">
               <Landmark className="w-24 h-24" />
             </div>
             <div className="space-y-4 relative z-10">
-              <p className="text-[10px] font-bold text-emerald-500 uppercase tracking-widest">Subscription Revenue</p>
-              <h3 className="text-4xl font-bold font-headline text-white">₹{totalRevenue.toLocaleString()}</h3>
-              <div className="flex items-center gap-2 text-[10px] text-muted-foreground font-bold">
+              <p className="text-[11px] font-black text-emerald-500 uppercase tracking-[0.3em]">Total Revenue</p>
+              <h3 className="text-6xl font-bold font-headline text-white">₹{totalRevenue.toLocaleString()}</h3>
+              <div className="flex items-center gap-2 text-[10px] text-muted-foreground font-black uppercase tracking-widest opacity-40">
                 <TrendingUp className="w-3 h-3 text-emerald-400" /> 
-                LIFETIME EARNINGS
+                SECURE WITHDRAWAL READY
               </div>
             </div>
           </Card>
 
-          <Card className="rounded-[3rem] bg-[#0a0d14] border-primary/30 p-8 blue-glow relative overflow-hidden group">
-            <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:scale-110 transition-transform">
-              <DollarSign className="w-24 h-24" />
+          <Card className="rounded-[3.5rem] bg-[#0a0d14]/80 border-primary/30 p-10 blue-glow relative overflow-hidden group">
+            <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:scale-110 transition-transform">
+              <PieChart className="w-24 h-24" />
             </div>
             <div className="space-y-4 relative z-10">
-              <p className="text-[10px] font-bold text-primary uppercase tracking-widest">Est. Ad Revenue</p>
-              <h3 className="text-4xl font-bold font-headline text-white">₹{adRevenueEstimate.toFixed(2)}</h3>
-              <div className="flex items-center gap-2 text-[10px] text-muted-foreground font-bold">
+              <p className="text-[11px] font-black text-primary uppercase tracking-[0.3em]">Est. Ad Revenue</p>
+              <h3 className="text-6xl font-bold font-headline text-white">₹{adRevenueEstimate.toFixed(0)}</h3>
+              <div className="flex items-center gap-2 text-[10px] text-muted-foreground font-black uppercase tracking-widest opacity-40">
                 <Activity className="w-3 h-3 text-primary" /> 
-                PROJECTED PAYOUT
+                GOOGLE ADSENSE SYNCED
               </div>
             </div>
           </Card>
 
-          <Card className="rounded-[3rem] bg-[#0a0d14] border-indigo-500/30 p-8 blue-glow relative overflow-hidden group">
-            <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:scale-110 transition-transform">
-              <Globe className="w-24 h-24" />
-            </div>
-            <div className="space-y-4 relative z-10">
-              <p className="text-[10px] font-bold text-indigo-400 uppercase tracking-widest">Domain Center</p>
-              <h3 className="text-2xl font-bold font-headline text-white">Elite .tech</h3>
-              <Button variant="link" className="p-0 h-auto text-[10px] font-bold text-indigo-400 uppercase tracking-widest" asChild>
-                <Link href="/README.md">Check Domain Setup</Link>
-              </Button>
-            </div>
-          </Card>
-
-          <Card className="rounded-[3rem] bg-[#0a0d14] border-white/10 p-8 blue-glow relative overflow-hidden group flex flex-col items-center justify-center">
-             <div className="space-y-4 text-center">
-               <h4 className="text-sm font-bold text-white uppercase tracking-widest">Withdrawal</h4>
-               <Button className="rounded-full bg-emerald-600 hover:bg-emerald-700 text-[10px] font-bold uppercase tracking-widest h-10 px-6" asChild>
-                 <a href="/BANK_TRANSFER_GUIDE.md">Payout Instructions</a>
+          <Card className="rounded-[3.5rem] bg-indigo-500/5 border-indigo-500/20 p-10 blue-glow relative overflow-hidden group flex flex-col justify-center text-center">
+             <div className="space-y-6 relative z-10">
+               <div className="w-16 h-16 bg-indigo-500/10 rounded-2xl mx-auto flex items-center justify-center border border-indigo-500/20 shadow-xl">
+                  <CreditCard className="w-8 h-8 text-indigo-400" />
+               </div>
+               <div className="space-y-1">
+                 <h4 className="text-lg font-bold text-white uppercase tracking-tight">Withdrawal Hub</h4>
+                 <p className="text-xs text-muted-foreground italic">Transfer funds to your bank node.</p>
+               </div>
+               <Button className="rounded-full bg-indigo-600 hover:bg-indigo-700 font-black text-[10px] uppercase tracking-[0.3em] h-12 px-8 shadow-xl" asChild>
+                 <Link href="/BANK_TRANSFER_GUIDE.md">Payout Portal</Link>
                </Button>
              </div>
           </Card>
         </section>
 
-        {/* 💳 EXTERNAL PAYOUT DASHBOARDS */}
-        <section className="grid md:grid-cols-2 gap-8">
-           <Card className="rounded-[3rem] bg-orange-500/5 border-orange-500/20 p-10 flex flex-col md:flex-row items-center justify-between gap-8 group">
-              <div className="flex items-center gap-8">
-                <div className="w-20 h-20 bg-orange-500/10 rounded-[2rem] flex items-center justify-center border border-orange-500/20">
-                   <PieChart className="w-10 h-10 text-orange-400" />
-                </div>
-                <div className="space-y-2">
-                   <h3 className="text-2xl font-bold font-headline text-white">Google AdSense</h3>
-                   <p className="text-muted-foreground text-sm max-w-sm italic">Check actual Ad earnings and verify your site for payouts.</p>
-                </div>
-              </div>
-              <Button variant="outline" className="h-14 px-8 rounded-2xl border-orange-500/30 text-orange-400 font-bold" asChild>
-                 <a href="https://adsense.google.com" target="_blank">Login to AdSense <ExternalLink className="ml-2 w-4 h-4" /></a>
-              </Button>
-           </Card>
-
-           <Card className="rounded-[3rem] bg-blue-500/5 border-blue-500/20 p-10 flex flex-col md:flex-row items-center justify-between gap-8 group">
-              <div className="flex items-center gap-8">
-                <div className="w-20 h-20 bg-blue-500/10 rounded-[2rem] flex items-center justify-center border border-blue-500/20">
-                   <CreditCard className="w-10 h-10 text-blue-400" />
-                </div>
-                <div className="space-y-2">
-                   <h3 className="text-2xl font-bold font-headline text-white">Razorpay Dashboard</h3>
-                   <p className="text-muted-foreground text-sm max-w-sm italic">Track your Pro Plan sales and initiate bank withdrawals.</p>
-                </div>
-              </div>
-              <Button variant="outline" className="h-14 px-8 rounded-2xl border-blue-500/30 text-blue-400 font-bold" asChild>
-                 <a href="https://dashboard.razorpay.com" target="_blank">Login to Razorpay <ExternalLink className="ml-2 w-4 h-4" /></a>
-              </Button>
-           </Card>
-        </section>
-
-        <section>
-          <Card className="rounded-[3rem] bg-indigo-500/5 border-indigo-500/20 p-10 flex flex-col md:flex-row items-center justify-between gap-8 group">
-            <div className="flex items-center gap-8 text-center md:text-left">
-              <div className="w-20 h-20 bg-indigo-500/20 rounded-[2rem] flex items-center justify-center border border-indigo-500/20">
-                <ShieldAlert className="w-10 h-10 text-indigo-400" />
-              </div>
-              <div className="space-y-2">
-                <h3 className="text-2xl font-bold font-headline text-white">Legacy Warnings (Database Secrets)</h3>
-                <p className="text-muted-foreground text-sm max-w-2xl italic leading-relaxed">
-                  Ignore warnings about "Database secrets" or "Legacy tokens" in the console. Your app is 100% secure using the modern Firestore architecture.
-                </p>
-              </div>
-            </div>
-            <Button variant="outline" className="rounded-2xl border-indigo-500/30 text-indigo-400 font-bold h-14 px-8" asChild>
-              <Link href="/docs/ADMIN_SDK_GUIDE.md">View Security Guide <ExternalLink className="ml-2 w-4 h-4" /></Link>
-            </Button>
-          </Card>
-        </section>
-
         <div className="grid grid-cols-1 gap-8">
-           <Card className="rounded-[3rem] bg-[#0a0d14] border-white/5 overflow-hidden shadow-2xl">
-              <CardHeader className="p-8 border-b border-white/5 flex flex-row items-center justify-between">
-                <div>
-                  <CardTitle className="text-xl font-headline font-bold">User Management</CardTitle>
-                  <CardDescription>Modify roles, credits, and subscription status.</CardDescription>
+           <Card className="rounded-[3.5rem] bg-[#0a0d14]/80 backdrop-blur-3xl border-white/5 overflow-hidden shadow-2xl relative">
+              <div className="absolute inset-0 shimmer opacity-[0.02] pointer-events-none" />
+              <CardHeader className="p-10 border-b border-white/5 flex flex-row items-center justify-between relative z-10">
+                <div className="space-y-1">
+                  <CardTitle className="text-3xl font-headline font-black uppercase tracking-tight">Node Management</CardTitle>
+                  <CardDescription className="italic text-muted-foreground">Modify roles, credits, and subscription status of creator nodes.</CardDescription>
                 </div>
-                <Users className="w-6 h-6 text-muted-foreground opacity-20" />
+                <Users className="w-8 h-8 text-muted-foreground opacity-20" />
               </CardHeader>
-              <CardContent className="p-0">
+              <CardContent className="p-0 relative z-10">
                  <Table>
-                    <TableHeader className="bg-white/5">
+                    <TableHeader className="bg-white/[0.02]">
                        <TableRow className="hover:bg-transparent border-white/5">
-                          <TableHead className="text-[10px] font-bold uppercase tracking-widest px-8">User</TableHead>
-                          <TableHead className="text-[10px] font-bold uppercase tracking-widest">Credits & Plan</TableHead>
-                          <TableHead className="text-[10px] font-bold uppercase tracking-widest">Role</TableHead>
-                          <TableHead className="text-[10px] font-bold uppercase tracking-widest text-right px-8">Actions</TableHead>
+                          <TableHead className="text-[11px] font-black uppercase tracking-[0.3em] px-10 py-6">Creator Node</TableHead>
+                          <TableHead className="text-[11px] font-black uppercase tracking-[0.3em]">Neural Power</TableHead>
+                          <TableHead className="text-[11px] font-black uppercase tracking-[0.3em]">Clearance</TableHead>
+                          <TableHead className="text-[11px] font-black uppercase tracking-[0.3em] text-right px-10">Protocols</TableHead>
                        </TableRow>
                     </TableHeader>
                     <TableBody>
                        {usersLoading ? (
-                         <TableRow><TableCell colSpan={4} className="text-center py-20 opacity-40 italic">Syncing database...</TableCell></TableRow>
+                         <TableRow><TableCell colSpan={4} className="text-center py-40 opacity-40 italic font-medium text-lg">Synchronizing Database Stream...</TableCell></TableRow>
                        ) : users?.map((u: any) => (
-                         <TableRow key={u.id} className="border-white/5 hover:bg-white/5 transition-colors">
-                            <TableCell className="px-8 py-6">
-                               <div className="flex flex-col">
-                                  <span className="font-bold text-white">{u.displayName || 'Unknown Creator'}</span>
-                                  <span className="text-[10px] text-muted-foreground">{u.email}</span>
+                         <TableRow key={u.id} className="border-white/5 hover:bg-white/[0.03] transition-all group">
+                            <TableCell className="px-10 py-8">
+                               <div className="flex flex-col gap-1">
+                                  <span className="font-bold text-white text-lg group-hover:text-primary transition-colors">{u.displayName || 'Anonymous Creator'}</span>
+                                  <span className="text-[10px] text-muted-foreground font-mono opacity-50 uppercase tracking-widest">{u.email}</span>
                                </div>
                             </TableCell>
                             <TableCell>
-                               <div className="flex items-center gap-3">
-                                   <Badge variant={u.isPremium ? 'default' : 'secondary'} className="rounded-full text-[9px] uppercase tracking-widest px-3">
+                               <div className="flex items-center gap-4">
+                                   <Badge variant={u.isPremium ? 'default' : 'secondary'} className="rounded-full text-[10px] font-black uppercase tracking-[0.2em] px-4 py-1.5 shadow-xl">
                                       {u.subscriptionPlan?.toUpperCase() || 'FREE'}
                                     </Badge>
-                                    <div className="flex items-center gap-1 text-[10px] font-bold text-primary">
-                                      <Coins className="w-3 h-3" /> {u.credits?.toFixed(0) || 0}
+                                    <div className="flex items-center gap-2 text-sm font-bold text-primary">
+                                      <Coins className="w-4 h-4" /> {u.credits?.toFixed(0) || 0}
                                     </div>
                                </div>
                             </TableCell>
                             <TableCell>
                                {u.isAdmin ? (
-                                 <Badge className="bg-red-500/20 text-red-500 border-red-500/30 rounded-full text-[9px] uppercase tracking-widest">Admin</Badge>
+                                 <Badge className="bg-red-500/20 text-red-500 border-red-500/30 rounded-full text-[10px] font-black uppercase tracking-[0.3em] px-4 py-1.5">Master Admin</Badge>
                                ) : (
-                                 <Badge variant="outline" className="text-[9px] uppercase tracking-widest opacity-50">User</Badge>
+                                 <Badge variant="outline" className="text-[10px] font-black uppercase tracking-[0.3em] px-4 py-1.5 opacity-30">Standard Node</Badge>
                                )}
                             </TableCell>
-                            <TableCell className="text-right px-8">
-                               <div className="flex items-center justify-end gap-2">
+                            <TableCell className="text-right px-10">
+                               <div className="flex items-center justify-end gap-4">
                                   {updatingUser === u.id ? (
-                                    <Loader2 className="w-4 h-4 animate-spin text-primary" />
+                                    <Loader2 className="w-5 h-5 animate-spin text-primary" />
                                   ) : (
                                     <DropdownMenu>
                                       <DropdownMenuTrigger asChild>
-                                        <Button variant="ghost" size="icon" className="rounded-full h-10 w-10">
-                                          <MoreVertical className="w-4 h-4" />
+                                        <Button variant="ghost" size="icon" className="rounded-2xl h-12 w-12 bg-white/5 hover:bg-primary/20 transition-all border border-transparent hover:border-primary/30">
+                                          <MoreVertical className="w-5 h-5" />
                                         </Button>
                                       </DropdownMenuTrigger>
-                                      <DropdownMenuContent align="end" className="bg-[#0a0d14] border-white/10 rounded-2xl w-56 p-2">
-                                        <DropdownMenuItem className="rounded-xl font-bold text-xs p-3 cursor-pointer" onClick={() => handleUpdateUser(u.id, { credits: increment(500) })}>
-                                          Grant +500 Credits
+                                      <DropdownMenuContent align="end" className="bg-[#0a0d14] border-white/10 rounded-[2rem] w-64 p-3 shadow-2xl">
+                                        <DropdownMenuItem className="rounded-xl font-bold text-[11px] uppercase tracking-widest p-4 cursor-pointer hover:bg-primary/10 transition-colors" onClick={() => handleUpdateUser(u.id, { credits: increment(1000) })}>
+                                          Inject +1000 Credits
                                         </DropdownMenuItem>
-                                        <DropdownMenuItem className="rounded-xl font-bold text-xs p-3 cursor-pointer" onClick={() => handleUpdateUser(u.id, { isPremium: !u.isPremium, subscriptionPlan: u.isPremium ? 'free' : 'pro', totalSpent: increment(99) })}>
-                                          {u.isPremium ? 'Downgrade to Free' : 'Promote to Pro (₹99)'}
+                                        <DropdownMenuItem className="rounded-xl font-bold text-[11px] uppercase tracking-widest p-4 cursor-pointer hover:bg-emerald-500/10 transition-colors" onClick={() => handleUpdateUser(u.id, { isPremium: true, subscriptionPlan: 'pro', totalSpent: increment(99) })}>
+                                          Authorize Pro Status
                                         </DropdownMenuItem>
-                                        <DropdownMenuItem className="rounded-xl font-bold text-xs p-3 cursor-pointer text-red-500" onClick={() => handleUpdateUser(u.id, { isAdmin: !u.isAdmin })}>
-                                          {u.isAdmin ? 'Revoke Admin Role' : 'Grant Admin Role'}
+                                        <div className="h-px bg-white/5 my-2" />
+                                        <DropdownMenuItem className="rounded-xl font-bold text-[11px] uppercase tracking-widest p-4 cursor-pointer text-red-500 hover:bg-red-500/10 transition-colors" onClick={() => handleUpdateUser(u.id, { isAdmin: !u.isAdmin })}>
+                                          {u.isAdmin ? 'Revoke Admin Node' : 'Grant Admin Node'}
                                         </DropdownMenuItem>
                                       </DropdownMenuContent>
                                     </DropdownMenu>
