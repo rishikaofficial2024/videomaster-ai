@@ -8,7 +8,7 @@
     --background: 224 71% 2%;
     --foreground: 210 40% 98%;
     
-    --card: 224 71% 4%; 
+    --card: 224 71% 3.5%; 
     --card-foreground: 210 40% 98%;
     
     --popover: 224 71% 3%;
@@ -29,10 +29,10 @@
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
     
-    --border: 217 91% 60% / 0.08;
+    --border: 217 91% 60% / 0.12;
     --input: 217 91% 60% / 0.08;
     --ring: 217 91% 60%;
-    --radius: 2rem;
+    --radius: 2.5rem;
   }
 }
 
@@ -50,13 +50,13 @@
 }
 
 .hero-gradient {
-  background: radial-gradient(circle at 0% 0%, hsla(217, 91%, 60%, 0.12), transparent 40%),
-              radial-gradient(circle at 100% 100%, hsla(217, 91%, 60%, 0.08), transparent 40%),
+  background: radial-gradient(circle at 0% 0%, hsla(217, 91%, 60%, 0.15), transparent 50%),
+              radial-gradient(circle at 100% 100%, hsla(217, 91%, 60%, 0.1), transparent 50%),
               #020408;
 }
 
 .blue-glow {
-  box-shadow: 0 0 80px -20px hsla(217, 91%, 60%, 0.15);
+  box-shadow: 0 0 100px -20px hsla(217, 91%, 60%, 0.2);
 }
 
 .shadow-glow {
@@ -64,11 +64,11 @@
 }
 
 .glass-panel {
-  @apply bg-white/[0.03] backdrop-blur-3xl border border-white/5;
+  @apply bg-white/[0.02] backdrop-blur-3xl border border-white/5;
 }
 
 .premium-card {
-  @apply glass-panel rounded-[2.5rem] shadow-2xl transition-all duration-500 hover:border-primary/20 hover:bg-white/[0.05];
+  @apply glass-panel rounded-[2.5rem] shadow-2xl transition-all duration-500 hover:border-primary/20 hover:bg-white/[0.04];
 }
 
 .neural-pulse {
@@ -96,7 +96,7 @@
   @apply bg-transparent;
 }
 ::-webkit-scrollbar-thumb {
-  @apply bg-white/5 rounded-full hover:bg-white/10 transition-colors;
+  @apply bg-white/10 rounded-full hover:bg-white/20 transition-colors;
 }
 
 .animate-float {
@@ -109,7 +109,7 @@
 }
 
 .shimmer {
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.03), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
   background-size: 200% 100%;
   animation: shimmer 3s infinite;
 }
@@ -120,5 +120,9 @@
 }
 
 .text-gradient {
-  @apply bg-clip-text text-transparent bg-gradient-to-br from-white via-white to-primary/50;
+  @apply bg-clip-text text-transparent bg-gradient-to-br from-white via-white to-primary/60;
+}
+
+.vn-track {
+  @apply h-20 bg-white/[0.02] border border-white/5 rounded-3xl transition-all hover:bg-white/[0.04] relative flex items-center px-6 overflow-hidden;
 }

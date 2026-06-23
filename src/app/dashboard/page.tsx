@@ -88,102 +88,103 @@ export default function Dashboard() {
     }
   };
 
-  if (userLoading || !mounted) {
+  if (!mounted || userLoading) {
     return (
       <div className="h-screen flex items-center justify-center bg-[#020408]">
-        <div className="text-center space-y-6">
+        <div className="text-center space-y-8">
            <div className="relative">
-              <div className="absolute inset-0 bg-primary/20 blur-[60px] rounded-full animate-pulse" />
-              <Loader2 className="w-10 h-10 animate-spin text-primary mx-auto relative z-10" />
+              <div className="absolute inset-0 bg-primary/20 blur-[80px] rounded-full animate-pulse" />
+              <Loader2 className="w-12 h-12 animate-spin text-primary mx-auto relative z-10" />
            </div>
-           <p className="text-[10px] font-black uppercase tracking-[0.5em] text-muted-foreground">Authenticating Studio Node</p>
+           <p className="text-[10px] font-black uppercase tracking-[0.5em] text-muted-foreground animate-pulse">Initializing Studio Neural Node</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen pb-32 md:pt-24 bg-[#020408] hero-gradient">
+    <div className="min-h-screen pb-40 md:pt-24 bg-[#020408] hero-gradient">
       <Navbar />
-      <main className="max-w-7xl mx-auto p-6 lg:p-12 space-y-20">
+      <main className="max-w-7xl mx-auto p-6 lg:p-12 space-y-24">
         
         <header className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-12 pt-10">
           <div className="space-y-6">
-            <div className="inline-flex items-center gap-2.5 px-4 py-1.5 bg-primary/10 rounded-full border border-primary/20 text-primary text-[9px] font-black uppercase tracking-[0.2em]">
-              <Sparkles className="w-3.5 h-3.5" /> High Performance Mode
+            <div className="inline-flex items-center gap-3 px-5 py-2 bg-primary/10 rounded-full border border-primary/20 text-primary text-[10px] font-black uppercase tracking-[0.3em]">
+              <Sparkles className="w-4 h-4 animate-pulse" /> Performance Tier: Elite
             </div>
-            <h1 className="text-6xl md:text-8xl font-headline font-bold tracking-tighter text-white leading-[0.9] text-gradient">
+            <h1 className="text-6xl md:text-[7rem] font-headline font-bold tracking-tighter text-white leading-[0.85] text-gradient">
               Studio <span className="text-primary italic">Command</span>
             </h1>
-            <p className="text-muted-foreground text-lg md:text-xl font-medium max-w-xl italic leading-relaxed opacity-70">
-              Your central hub for high-conversion AI scripts and cinematic visual production.
+            <p className="text-muted-foreground text-xl md:text-2xl font-medium max-w-xl italic leading-relaxed opacity-60">
+              Master the art of viral production with high-fidelity AI tools.
             </p>
           </div>
           
-          <div className="flex items-center gap-10 bg-white/[0.02] backdrop-blur-3xl p-8 rounded-[3rem] border border-white/5 shadow-2xl blue-glow">
-             <div className="flex flex-col px-8 border-r border-white/10">
-                <span className="text-[10px] font-black uppercase tracking-widest text-primary mb-2 opacity-60">Balance</span>
-                <div className="flex items-center gap-3">
-                  <Coins className="w-6 h-6 text-primary" />
-                  <span className="text-5xl font-bold font-headline text-white">{profile?.credits ?? 0}</span>
+          <div className="flex items-center gap-12 bg-white/[0.01] backdrop-blur-3xl p-10 rounded-[4rem] border border-white/5 shadow-2xl blue-glow relative overflow-hidden group">
+             <div className="absolute inset-0 shimmer opacity-10" />
+             <div className="flex flex-col px-10 border-r border-white/10 relative z-10">
+                <span className="text-[10px] font-black uppercase tracking-widest text-primary mb-3 opacity-60">Neural Balance</span>
+                <div className="flex items-center gap-4">
+                  <Coins className="w-8 h-8 text-primary" />
+                  <span className="text-6xl font-bold font-headline text-white">{profile?.credits ?? 0}</span>
                 </div>
              </div>
-             <Button className="rounded-[2rem] h-20 font-black px-12 shadow-2xl shadow-primary/20 text-lg gap-4 hover:scale-105 active:scale-95 transition-all bg-primary" asChild>
-                <Link href="/editor"><Plus className="w-6 h-6" /> NEW PROJECT</Link>
+             <Button className="rounded-[2.5rem] h-24 font-black px-16 shadow-[0_20px_50px_rgba(59,130,246,0.3)] text-xl gap-5 hover:scale-105 active:scale-95 transition-all bg-primary relative z-10" asChild>
+                <Link href="/editor"><Plus className="w-8 h-8" /> NEW PROJECT</Link>
              </Button>
           </div>
         </header>
 
         {/* 🎬 MASTERPIECE REEL */}
-        <section className="space-y-10">
+        <section className="space-y-12">
            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                 <div className="p-3 bg-white/5 rounded-2xl border border-white/5">
-                    <History className="w-5 h-5 text-muted-foreground" />
+              <div className="flex items-center gap-5">
+                 <div className="p-4 bg-white/5 rounded-2xl border border-white/5 shadow-inner">
+                    <History className="w-6 h-6 text-muted-foreground" />
                  </div>
-                 <h3 className="text-2xl font-bold font-headline text-white uppercase tracking-tight">Recent Productions</h3>
+                 <h3 className="text-3xl font-bold font-headline text-white uppercase tracking-tight">Project Registry</h3>
               </div>
-              <Link href="/projects" className="text-[10px] font-black text-primary hover:tracking-[0.2em] transition-all uppercase tracking-widest">Library View</Link>
+              <Link href="/projects" className="text-[10px] font-black text-primary hover:tracking-[0.2em] transition-all uppercase tracking-[0.4em]">View Archive</Link>
            </div>
 
-           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
               {projectsLoading ? (
-                [1,2,3,4].map(i => <div key={i} className="aspect-video bg-white/5 animate-pulse rounded-[2rem]" />)
+                [1,2,3,4].map(i => <div key={i} className="aspect-video bg-white/[0.03] animate-pulse rounded-[3rem]" />)
               ) : projects && projects.length > 0 ? (
                 projects.map((p: any) => (
-                  <Card key={p.id} className="group overflow-hidden rounded-[2.5rem] border-white/5 bg-white/[0.02] hover:bg-white/[0.05] hover:border-primary/30 transition-all cursor-pointer shadow-xl" onClick={() => router.push(`/editor?id=${p.id}`)}>
+                  <Card key={p.id} className="group overflow-hidden rounded-[3rem] border-white/5 bg-white/[0.01] hover:bg-white/[0.04] hover:border-primary/40 transition-all cursor-pointer shadow-2xl" onClick={() => router.push(`/editor?id=${p.id}`)}>
                      <div className="aspect-video relative overflow-hidden">
                         <img 
                            src={p.thumbnailUrl || `https://picsum.photos/seed/${p.id}/600/400`} 
                            alt={p.title} 
-                           className="w-full h-full object-cover transition-transform group-hover:scale-110 duration-1000 opacity-50"
+                           className="w-full h-full object-cover transition-transform group-hover:scale-110 duration-1000 opacity-40"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
-                        <div className="absolute bottom-6 left-6 right-6">
-                           <h4 className="text-white font-bold truncate text-base uppercase tracking-tight">{p.title || 'Untitled'}</h4>
-                           <div className="flex items-center gap-2 mt-1.5">
-                              <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full shadow-[0_0_8px_rgba(16,185,129,0.8)]" />
-                              <span className="text-[8px] text-muted-foreground font-black uppercase tracking-widest">Sync Active</span>
+                        <div className="absolute bottom-8 left-8 right-8">
+                           <h4 className="text-white font-bold truncate text-lg uppercase tracking-tight">{p.title || 'Untitled Node'}</h4>
+                           <div className="flex items-center gap-2 mt-2">
+                              <div className="w-2 h-2 bg-emerald-500 rounded-full shadow-[0_0_12px_rgba(16,185,129,1)] animate-pulse" />
+                              <span className="text-[9px] text-muted-foreground font-black uppercase tracking-[0.2em]">State: Verified</span>
                            </div>
                         </div>
-                        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 backdrop-blur-[2px]">
-                           <div className="p-5 bg-primary/20 rounded-full border border-primary/40">
-                              <Play className="w-8 h-8 text-white fill-current" />
+                        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-700 backdrop-blur-[4px]">
+                           <div className="p-6 bg-primary/25 rounded-full border border-primary/40 shadow-glow">
+                              <Play className="w-10 h-10 text-white fill-current" />
                            </div>
                         </div>
                      </div>
                   </Card>
                 ))
               ) : (
-                <div className="col-span-full py-28 bg-white/[0.01] rounded-[4rem] border-2 border-dashed border-white/5 text-center space-y-8">
-                   <div className="w-24 h-24 bg-white/5 rounded-full flex items-center justify-center mx-auto opacity-10">
-                      <LayoutTemplate className="w-12 h-12" />
+                <div className="col-span-full py-32 bg-white/[0.005] rounded-[4rem] border-2 border-dashed border-white/5 text-center space-y-10">
+                   <div className="w-28 h-28 bg-white/5 rounded-full flex items-center justify-center mx-auto opacity-10">
+                      <LayoutTemplate className="w-14 h-14" />
                    </div>
-                   <div className="space-y-3">
-                      <h4 className="text-2xl font-bold text-white uppercase tracking-widest opacity-40 text-gradient">The Studio is Quiet</h4>
-                      <p className="text-muted-foreground italic font-medium">Your high-value productions will be indexed here.</p>
+                   <div className="space-y-4">
+                      <h4 className="text-3xl font-bold text-white uppercase tracking-widest opacity-20 text-gradient">No Neural Records Found</h4>
+                      <p className="text-muted-foreground italic font-medium text-lg">Initialize your first creative sequence in the Editor.</p>
                    </div>
-                   <Button variant="outline" className="rounded-2xl border-white/10 h-12 px-10 font-black text-[10px] uppercase tracking-widest hover:bg-white/5" asChild>
+                   <Button variant="outline" className="rounded-[2rem] h-16 px-14 font-black text-[11px] uppercase tracking-[0.4em] hover:bg-white/5 border-white/10" asChild>
                       <Link href="/editor">Launch Neural Engine</Link>
                    </Button>
                 </div>
@@ -193,46 +194,46 @@ export default function Dashboard() {
 
         {/* ⚡ REWARD PROTOCOL */}
         <section>
-           <Card className="rounded-[4rem] bg-primary/[0.03] border-primary/20 p-12 md:p-16 flex flex-col md:flex-row items-center justify-between gap-12 group overflow-hidden relative hover:bg-primary/[0.05] transition-all duration-700">
+           <Card className="rounded-[4.5rem] bg-primary/[0.02] border-primary/10 p-12 md:p-20 flex flex-col lg:flex-row items-center justify-between gap-16 group overflow-hidden relative hover:bg-primary/[0.04] transition-all duration-1000 shadow-2xl">
               <div className="absolute top-0 right-0 p-10 opacity-5 -rotate-12 group-hover:rotate-0 transition-transform duration-1000">
-                 <Zap className="w-64 h-64 text-primary" />
+                 <Zap className="w-80 h-84 text-primary" />
               </div>
-              <div className="flex items-center gap-10 text-center md:text-left relative z-10">
-                 <div className="w-24 h-24 bg-primary/20 rounded-[2.5rem] flex items-center justify-center border border-primary/30 shadow-2xl shadow-primary/20">
-                    <Zap className="w-10 h-10 text-primary animate-pulse" />
+              <div className="flex items-center gap-12 text-center lg:text-left relative z-10">
+                 <div className="w-28 h-28 bg-primary/20 rounded-[3rem] flex items-center justify-center border border-primary/30 shadow-2xl shadow-primary/20">
+                    <Zap className="w-12 h-12 text-primary animate-pulse" />
                  </div>
-                 <div className="space-y-2">
-                    <h3 className="text-4xl font-bold font-headline text-white uppercase tracking-tight">Fuel Reserve</h3>
-                    <p className="text-muted-foreground text-lg font-medium italic opacity-60">Watch a 15s sequence to replenish +20 AI credits instantly.</p>
+                 <div className="space-y-4">
+                    <h3 className="text-5xl font-bold font-headline text-white uppercase tracking-tight">Fuel Reserve</h3>
+                    <p className="text-muted-foreground text-xl font-medium italic opacity-50">Sync attention for 15s to replenish +20 AI credits instantly.</p>
                  </div>
               </div>
-              <Button onClick={handleWatchAd} disabled={adLoading} className="h-20 px-12 rounded-[2rem] bg-primary font-black text-xl uppercase tracking-widest shadow-2xl shadow-primary/30 hover:scale-105 active:scale-95 transition-all">
-                 {adLoading ? <Loader2 className="animate-spin mr-3 w-6 h-6" /> : <Play className="w-6 h-6 mr-3 fill-current" />}
+              <Button onClick={handleWatchAd} disabled={adLoading} className="h-24 px-16 rounded-[2.5rem] bg-primary font-black text-2xl uppercase tracking-[0.2em] shadow-[0_25px_60px_rgba(59,130,246,0.4)] hover:scale-105 active:scale-95 transition-all relative z-10">
+                 {adLoading ? <Loader2 className="animate-spin mr-4 w-8 h-8" /> : <Play className="w-8 h-8 mr-4 fill-current" />}
                  WATCH & EARN
               </Button>
            </Card>
         </section>
 
         {/* 🌍 NETWORK EXPANSION */}
-        <section className="bg-white/[0.02] border border-white/5 rounded-[4rem] p-16 relative overflow-hidden group">
-           <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-16">
-              <div className="space-y-8 text-center lg:text-left">
-                 <div className="inline-flex items-center gap-3 px-4 py-1.5 bg-indigo-600/10 rounded-full border border-indigo-600/20 text-indigo-400 text-[9px] font-black uppercase tracking-[0.3em]">
-                    <Tornado className="w-3.5 h-3.5 animate-spin-slow" /> Viral Node Active
+        <section className="bg-white/[0.01] border border-white/5 rounded-[5rem] p-16 md:p-24 relative overflow-hidden group shadow-2xl">
+           <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-20">
+              <div className="space-y-10 text-center lg:text-left">
+                 <div className="inline-flex items-center gap-4 px-5 py-2 bg-indigo-600/10 rounded-full border border-indigo-600/20 text-indigo-400 text-[10px] font-black uppercase tracking-[0.4em]">
+                    <Tornado className="w-4 h-4 animate-spin-slow" /> Expansion Protocol Active
                  </div>
-                 <h2 className="text-5xl md:text-7xl font-bold font-headline tracking-tighter text-white text-gradient">Viral <span className="text-indigo-500 italic">Growth</span></h2>
-                 <p className="text-lg text-muted-foreground max-w-2xl italic leading-relaxed font-medium opacity-60">
-                    Share your studio link with fellow creators to expand the neural network.
+                 <h2 className="text-6xl md:text-[6rem] font-bold font-headline tracking-tighter text-white text-gradient leading-none">Viral <span className="text-indigo-500 italic">Growth</span></h2>
+                 <p className="text-xl text-muted-foreground max-w-2xl italic leading-relaxed font-medium opacity-50">
+                    Propagate your Studio link across the creator network to expand the global node.
                  </p>
               </div>
-              <div className="flex flex-col gap-6 w-full lg:w-auto">
-                 <Button onClick={handleShare} className="h-20 px-14 rounded-[2rem] bg-white text-black font-black text-xl gap-4 hover:bg-white/90 shadow-2xl">
-                    <Share2 className="w-6 h-6" /> INVITE CREATORS
+              <div className="flex flex-col gap-8 w-full lg:w-auto">
+                 <Button onClick={handleShare} className="h-24 px-20 rounded-[3rem] bg-white text-black font-black text-2xl gap-5 hover:bg-white/90 shadow-2xl hover:scale-105 transition-all">
+                    <Share2 className="w-8 h-8" /> INVITE CREATORS
                  </Button>
-                 <div className="flex justify-center gap-10 opacity-30">
-                    <Instagram className="w-7 h-7 hover:text-primary transition-colors cursor-pointer" />
-                    <MessageCircle className="w-7 h-7 hover:text-primary transition-colors cursor-pointer" />
-                    <Twitter className="w-7 h-7 hover:text-primary transition-colors cursor-pointer" />
+                 <div className="flex justify-center gap-14 opacity-20">
+                    <Instagram className="w-10 h-10 hover:text-primary transition-colors cursor-pointer" />
+                    <MessageCircle className="w-10 h-10 hover:text-primary transition-colors cursor-pointer" />
+                    <Twitter className="w-10 h-10 hover:text-primary transition-colors cursor-pointer" />
                  </div>
               </div>
            </div>
@@ -241,20 +242,20 @@ export default function Dashboard() {
       </main>
 
       {showAdOverlay && (
-        <div className="fixed inset-0 z-[200] bg-black/98 backdrop-blur-3xl flex items-center justify-center animate-in fade-in duration-700">
-           <div className="text-center space-y-16 px-12 max-w-2xl">
+        <div className="fixed inset-0 z-[200] bg-black/98 backdrop-blur-[100px] flex items-center justify-center animate-in fade-in duration-1000">
+           <div className="text-center space-y-20 px-12 max-w-3xl">
               <div className="relative">
-                 <div className="absolute inset-0 bg-primary/30 blur-[120px] rounded-full neural-pulse" />
-                 <div className="w-36 h-32 flex flex-col items-center justify-center mx-auto relative z-10">
-                    <span className="text-8xl font-black text-white font-headline tracking-tighter">{adTimer}</span>
-                    <span className="text-[10px] font-black text-primary uppercase tracking-[0.4em] mt-2">Encoding</span>
+                 <div className="absolute inset-0 bg-primary/40 blur-[150px] rounded-full neural-pulse" />
+                 <div className="w-48 h-40 flex flex-col items-center justify-center mx-auto relative z-10">
+                    <span className="text-[10rem] font-black text-white font-headline tracking-tighter leading-none">{adTimer}</span>
+                    <span className="text-[12px] font-black text-primary uppercase tracking-[0.6em] mt-4">Neural Sync In Progress</span>
                  </div>
               </div>
-              <div className="space-y-6">
-                 <h2 className="text-4xl font-headline font-bold text-white tracking-tighter uppercase leading-none">NEURAL SYNC IN PROGRESS</h2>
-                 <p className="text-xl text-muted-foreground italic font-medium opacity-60">Rewarding your node for verified attention impressions.</p>
-                 <div className="w-64 h-1 bg-white/5 rounded-full mx-auto overflow-hidden">
-                    <div className="h-full bg-primary transition-all duration-1000 shadow-[0_0_15px_rgba(59,130,246,1)]" style={{ width: `${(15 - adTimer) / 15 * 100}%` }} />
+              <div className="space-y-8">
+                 <h2 className="text-5xl font-headline font-bold text-white tracking-tighter uppercase leading-none">VERIFYING ATTENTION NODES</h2>
+                 <p className="text-2xl text-muted-foreground italic font-medium opacity-50">Rewarding your unique node for verified sensory impressions.</p>
+                 <div className="w-80 h-1.5 bg-white/5 rounded-full mx-auto overflow-hidden shadow-inner">
+                    <div className="h-full bg-primary transition-all duration-1000 shadow-[0_0_25px_rgba(59,130,246,1)]" style={{ width: `${(15 - adTimer) / 15 * 100}%` }} />
                  </div>
               </div>
            </div>
