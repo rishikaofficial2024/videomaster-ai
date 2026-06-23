@@ -1,28 +1,33 @@
 
 # 🚀 Final Launch: Your Manual Action Items
 
-The code is 100% complete and professional. However, for security and ownership reasons, the following steps must be performed by you manually in your external accounts.
+You have already enabled the Login Providers—Great job! Now, complete these final 3 specific steps to go fully global and secure.
 
-### 1. Terminal Execution (CRITICAL)
-You must run these commands in the **Terminal** (Top-Left ≡ Menu > Terminal > New Terminal):
-- **To fix "Site Not Found"**: `npm run web:deploy`
-- **To build your Android App**: `npm run mobile:push`
+### 1. Authorize Your Brand Domain 🔑
+In your Firebase Console (Authentication section), click the **"Settings"** tab (it's next to the 'Usage' tab you saw in your screenshot).
+- Scroll to **Authorized domains**.
+- Click **Add domain** and enter: `videomaster-ai.tech`.
+- *Why?* This allows your professional domain to handle logins securely.
 
-### 2. Firebase Console Tasks 🛡️
-Go to the [Firebase Console](https://console.firebase.google.com/project/studio-9489287013-59986/) and complete these:
-- **Enable Auth**: Go to `Authentication > Sign-in method` and enable **Google** and **Email/Password**.
-- **Authorize Domain**: Go to `Authentication > Settings > Authorized domains` and add `videomaster-ai.tech`.
-- **App Check**: Generate a **reCAPTCHA v3 Site Key** [here](https://www.google.com/recaptcha/admin) and paste it into `src/firebase/config.ts`.
+### 2. Activate the Security Shield (App Check) 🛡️
+Your screenshot shows a banner for "Configure App Check". 
+- Click that banner or go to [Google reCAPTCHA Admin](https://www.google.com/recaptcha/admin).
+- Create a **reCAPTCHA v3** project for your domain.
+- Copy the **Site Key** and paste it into `src/firebase/config.ts` in this studio.
+- Copy the **Secret Key** and paste it into the Firebase Console banner link.
 
-### 3. Domain & DNS Setup 🌐
-To make your professional domain work:
-1. Open **Hosting** in Firebase Console.
-2. Click **Add Custom Domain** and enter `videomaster-ai.tech`.
-3. Copy the **A Records** (IP Addresses).
-4. Paste them into your domain registrar's (GoDaddy/Hostinger) DNS settings.
+### 3. Connect Your Domain to the World 🌐
+Go to your **Hosting** dashboard in Firebase.
+- It will give you two **A Records** (IP Addresses).
+- Log in to your domain registrar (GoDaddy/Hostinger/Namecheap).
+- In **DNS Management**, add these two A records.
+- *Wait 1-2 hours* for the internet to update.
 
-### 4. Monetization Handshake 💰
-- **AdSense**: Ensure your domain is "Ready" in the [AdSense Dashboard](https://adsense.google.com).
-- **Payments**: Create a payment page in **Razorpay** and update the link in `src/app/premium/page.tsx` when you are ready to accept real money.
+### 4. Final Terminal Execution 💻
+Once you've done the above, run these commands one last time in the **Terminal**:
+```bash
+npm run web:deploy
+npm run mobile:push
+```
 
-**Your AI Studio is technically stabilized. Complete these steps to go global!** 🚀💎📈💸
+**Your AI Studio is technically stabilized. Complete these 3 steps to go live!** 🚀💎📈💸
