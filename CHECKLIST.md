@@ -1,23 +1,22 @@
-
 # 🏁 VideoMaster AI: Final Launch Checklist
 
-Aapka app ab **100% ELITE READY** hai. Bas ye final steps follow karein:
+Your application is now **100% ELITE READY**. Follow these final steps to go live:
 
-### 1. Terminal Command (Sabse Zaroori) ✅
-- [ ] Terminal kholein aur ye command chalayein: `npm run mobile:push`
-- [ ] Jab command khatam ho jaye, toh GitHub Actions par jayein.
+### 1. Execute Master Terminal Command (Priority) ✅
+- [ ] Open the **Terminal** and run: `npm run mobile:push`
+- [ ] This synchronizes your code with the Android Factory.
 
-### 2. APK Download & Security ✅
-- [ ] GitHub Actions link: [Click Here](https://github.com/rishikaofficial2024/videomaster-ai/actions)
-- [ ] Build logs mein se **SHA-256 Fingerprint** copy karein.
-- [ ] Firebase Console mein jaakar "Add Fingerprint" mein paste karein.
+### 2. APK Download & Security Logic ✅
+- [ ] Monitor build status here: [GitHub Actions](https://github.com/rishikaofficial2024/videomaster-ai/actions)
+- [ ] Once the build is Green ✅, download the artifact from the bottom of the page.
+- [ ] Copy the **SHA-256 Fingerprint** from the logs and add it to your Firebase Console.
 
-### 3. Monetization (Paise Kamane Ke Liye) ✅
-- [ ] Maine `public/app-ads.txt` jodh di hai.
-- [ ] Google AdSense dashboard mein jaakar apni site approve hone ka wait karein.
+### 3. Monetization Setup ✅
+- [ ] `app-ads.txt` is already live. 
+- [ ] Wait for Google AdSense to approve your domain (`videomaster-ai.tech`).
 
-### 4. SMS India Region ✅
-- [ ] [Firebase Auth Settings](https://console.firebase.google.com/project/studio-9489287013-59986/authentication/settings) par jayein.
-- [ ] SMS Region Policy mein **India (IN)** ko 'Allow' karke Save karein.
+### 4. SMS & Authentication Policy ✅
+- [ ] Go to [Firebase Auth Settings](https://console.firebase.google.com/project/studio-9489287013-59986/authentication/settings).
+- [ ] In the SMS Region Policy, allow **India (IN)** and click Save.
 
-**Aapka Business ab LIVE hai!** 🚀💸🎬
+**Your AI Business is now LIVE!** 🚀💸🎬

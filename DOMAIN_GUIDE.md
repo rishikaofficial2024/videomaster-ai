@@ -1,21 +1,19 @@
-# 🌐 Professional Branding (.in Domain Guide)
+# 🌐 Professional Branding (Custom Domain Guide)
 
-Aapka app ab `.in` branding ke liye taiyar hai. Ek sasta domain (₹149-₹499) kharid kar aap apne app ko "Big Brand" bana sakte hain.
+Your studio is ready for professional branding. Adding a custom domain turns your app into a "Global Brand."
 
-### 1. Kahan se khareidein? (GoDaddy Suggestions)
-GoDaddy par niche diye gaye naam search karein:
-- **`videomaster-ai.in`** (Highly Recommended)
-- **`videomasterai.in`**
-- **`aimastervideo.in`**
-- **`viralreel-ai.in`**
+### 1. Recommended Domain Names
+Search for these on registrars like GoDaddy or Hostinger:
+- **`videomaster-ai.in`** (Highly Recommended for local trust)
+- **`aimastervideo.tech`**
+- **`viralreel-ai.com`**
 
-### 2. Setup Kaise Karein? (5 Minute Step)
-1. **Firebase Console** par jayein.
-2. **Hosting > Add Custom Domain** par click karein.
-3. Apna naya domain (e.g., `videomaster-ai.in`) dalein.
-4. Google aapko kuch **DNS values (A records/TXT)** dega. 
-5. GoDaddy ke **DNS Management** panel mein jaakar unhe paste kar dein.
+### 2. Setup Protocol (5 Minute Step)
+1.  **Firebase Console**: Go to the **Hosting** section.
+2.  **Add Domain**: Click "Add Custom Domain" and input your new name.
+3.  **DNS Config**: Google will provide **A Records (IP addresses)**.
+4.  **Registrar Update**: Paste those IP addresses into your domain provider's **DNS Management** panel.
 
-Maine code mein pehle se hi `.in` branding ke SEO tags daal diye hain, toh jaise hi aap domain jodeinge, woh turant rank karne lagega.
+SEO tags for professional branding are already embedded in the code. Once the domain is connected, your site will start ranking on Google.
 
-**Aapka Business ab Global Level par jane ke liye taiyar hai!** 🚀💰
+**Your business node is ready for global scaling!** 🚀💰
