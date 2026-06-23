@@ -1,21 +1,23 @@
-# 🪄 Magic APK Download Guide (Mobile Special)
 
-Bhaai, maine sab kuch automate kar diya hai. Ab APK download karna sirf 3 simple steps ka kaam hai:
+# 🪄 Production APK Download Guide (Mobile Protocol)
 
-### Step 1: Remote Control Command
-Sabse pehle Terminal (Black Box) mein ye command likhkar **Enter** dabayein:
+I have automated everything. Downloading the production APK is now a simple 3-step protocol:
+
+### Step 1: Execute Remote Control Command
+Open the integrated **Terminal** (Black Box) within the studio and type:
 ```bash
 npm run mobile:push
 ```
+Then hit **Enter** to synchronize the neural code with the cloud factory.
 
-### Step 2: Magic Factory Link
-Jaise hi command khatam ho jaye, apne app ke Dashboard par jayein aur **"APK Status Dekho"** par click karein, ya fir is link par jayein:
-👉 **[CLICK KAREIN: MY BUILD STATUS](https://github.com/rishikaofficial2024/videomaster-ai/actions)**
+### Step 2: Access Build Factory
+Once the command completes, visit your Dashboard and click **"Build Pulse"**, or use this direct link:
+👉 **[CLICK HERE: MONITOR BUILD STATUS](https://github.com/rishikaofficial2024/videomaster-ai/actions)**
 
-### Step 3: Magic Artifact
-1. Upar wale link par jaane ke baad, sabse upar wali **"Generate Production APK"** (Jo Green ✅ ho gayi ho) usey kholein.
-2. Page ko bilkul niche scroll karein.
-3. Wahan **Artifacts** section mein `VideoMasterAI-Final-APK` likha hoga.
-4. Uspar click karte hi aapka mobile app download ho jayega!
+### Step 3: Retrieve APK Artifact
+1. On the build page, select the latest **"Generate Production APK"** workflow (indicated by a Green ✅).
+2. Scroll to the bottom of the page.
+3. In the **Artifacts** section, click on `VideoMasterAI-Final-APK`.
+4. The download will start automatically.
 
-**Aapka mobile phone ab ek asli software factory ban chuka hai!** 🚀📱💎📈💸
+**Your mobile device is now a professional software production hub!** 🚀📱💎📈💸

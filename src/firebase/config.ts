@@ -13,6 +13,10 @@ export const firebaseConfig = {
   messagingSenderId: "522287974416",
   appId: "1:522287974416:web:096cfdb016260b3f74a295",
   
-  // 🛡️ SECURITY STEP: Paste your reCAPTCHA v3 "SITE KEY" here for App Check.
+  /**
+   * 🛡️ ELITE SECURITY STEP:
+   * To enable advanced Bot Protection, paste your reCAPTCHA v3 "SITE KEY" here.
+   * This will activate the Firebase App Check shield across the entire node.
+   */
   appCheckSiteKey: "" 
 };

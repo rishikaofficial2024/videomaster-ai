@@ -1,24 +1,26 @@
-# 🌐 DNS FIX: Solve "NXDOMAIN" Error in 2 Minutes
 
-Bhaai, agar aapko "This site can’t be reached" ya `NXDOMAIN` error dikh raha hai, toh iska matlab hai ki aapka domain abhi tak "Internet ke Map" par nahi aaya hai.
+# 🌐 DNS Sync Guide: Solve Propagation Errors
 
-### ✅ Step-by-Step Solution:
+If you encounter a "This site can’t be reached" or `NXDOMAIN` error, it means your branded domain (`videomaster-ai.tech`) is not yet synchronized with the global internet map.
 
-1. **Firebase Console Kholiye**:
-   - [Firebase Hosting Console](https://console.firebase.google.com/project/studio-9489287013-59986/hosting/main) par jayein.
-   - Apne domain `videomaster-ai.tech` ke aage "Finish Setup" ya "View" par click karein.
+### ✅ Step-by-Step Resolution:
 
-2. **A Records Copy Kariye**:
-   - Google aapko do **Values (IP Addresses)** dikhayega. Wo kuch aisi dikhengi: `199.36.158.100` aur `151.101.1.195`.
-   - Inhe copy kar lijiye.
+1.  **Access Firebase Hosting Console**:
+    - Go to [Firebase Hosting Dashboard](https://console.firebase.google.com/project/studio-9489287013-59986/hosting/main).
+    - Locate the domain `videomaster-ai.tech` and click "View" or "Finish Setup".
 
-3. **Domain Provider (GoDaddy/Namecheap/Hostinger) par jaiye**:
-   - Apne domain ki **DNS Settings** kholiye.
-   - Wahan `Type: A`, `Name: @`, aur `Value: (Wo IP Address jo copy kiya tha)` daaliye.
-   - Dono IP addresses ke liye alag-alag 2 records banaiye.
+2.  **Retrieve A-Records**:
+    - Google will provide two **IP Addresses** (e.g., `199.36.158.100` and `151.101.1.195`).
+    - Copy these values.
 
-4. **Sabr Rakhein (Wait)**:
-   - DNS update hone mein **1 se 2 ghante** lagte hain. 
-   - Jaise hi setup "Connected" dikhayega, aapka app `videomaster-ai.tech` par jaadu ki tarah chalne lagega!
+3.  **Configure Domain Provider (GoDaddy/Hostinger/Namecheap)**:
+    - Log in to your domain registrar's **DNS Management** panel.
+    - Create two records:
+      - **Type**: `A` | **Name**: `@` | **Value**: (First IP Address)
+      - **Type**: `A` | **Name**: `@` | **Value**: (Second IP Address)
 
-**Aapka code 100% taiyar hai, bas ye connection jodhna baaki hai!** 🚀🛡️💎
+4.  **Propagation Interval**:
+    - DNS changes typically take **1 to 2 hours** to propagate globally.
+    - Once the status shows "Connected" in Firebase, your app will be live on your custom domain.
+
+**The code is 100% ready; this final handshake connects your brand to the world!** 🚀🛡️💎
