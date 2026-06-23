@@ -81,14 +81,6 @@ export default function Dashboard() {
     }, 15000);
   };
 
-  const handleShare = () => {
-    const text = "🚀 Create viral AI videos with VideoMaster AI! Get 100 FREE credits here: https://studio-9489287013-59986.web.app";
-    if (typeof navigator !== 'undefined') {
-      navigator.clipboard.writeText(text);
-      toast({ title: "Invite Copied", description: "Share your unique node link with creators." });
-    }
-  };
-
   if (!mounted || userLoading) {
     return (
       <div className="h-screen flex items-center justify-center bg-[#020408]">
