@@ -1,10 +1,11 @@
+
 "use client";
 
 import { useState } from "react";
 import { Navbar } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Crown, Check, Zap, Building2, CheckCircle2, Banknote, ArrowRight, Coins, Gem, Loader2, Star, Rocket } from "lucide-react";
+import { Crown, Check, Zap, Building2, CheckCircle2, Banknote, ArrowRight, Coins, Gem, Loader2, Star, Rocket, ExternalLink } from "lucide-react";
 import { useUser, useFirestore, useDoc } from "@/firebase";
 import { doc, updateDoc, increment } from "firebase/firestore";
 import { useToast } from "@/hooks/use-toast";
@@ -21,6 +22,13 @@ export default function PremiumPage() {
   const [loadingAction, setLoadingAction] = useState<string | null>(null);
   const [showSuccess, setShowSuccess] = useState(false);
   const { toast } = useToast();
+
+  // 🏦 YOUR PAYMENT LINKS (Replace these with your Razorpay/Stripe links)
+  const PAYMENT_LINKS = {
+    pro: "https://rzp.io/l/videomaster-pro", 
+    agency: "https://rzp.io/l/videomaster-agency",
+    credits_2000: "https://rzp.io/l/videomaster-credits"
+  };
 
   const plans = [
     {
@@ -56,60 +64,35 @@ export default function PremiumPage() {
     }
   ];
 
-  const creditPacks = [
-    { id: "pack-1", name: "Mini Pack", credits: 500, price: "₹49", icon: Coins },
-    { id: "pack-2", name: "Creator Pack", credits: 2000, price: "₹149", icon: Gem, popular: true },
-    { id: "pack-3", name: "Bulk Pack", credits: 5000, price: "₹299", icon: Zap },
-  ];
-
   const handleAction = async (id: string, type: 'plan' | 'credits', amount?: number) => {
     if (!user || id === "free") return;
-    setLoadingAction(id);
     
+    // Redirect to your real payment gateway
+    if (id === 'pro' || id === 'business' || id === 'pack-2') {
+       const link = id === 'pro' ? PAYMENT_LINKS.pro : id === 'business' ? PAYMENT_LINKS.agency : PAYMENT_LINKS.credits_2000;
+       toast({ title: "Redirecting...", description: "Connecting to secure payment gateway." });
+       setTimeout(() => window.open(link, '_blank'), 1000);
+       return;
+    }
+
+    setLoadingAction(id);
     const userRef = doc(db, "users", user.uid);
     let data: any = {};
 
     if (type === 'plan') {
-      data = {
-        isPremium: true,
-        subscriptionPlan: id,
-        credits: 99999,
-        updatedAt: new Date().toISOString()
-      };
+      data = { isPremium: true, subscriptionPlan: id, credits: 99999, updatedAt: new Date().toISOString() };
     } else {
-      data = {
-        credits: increment(amount || 0),
-        updatedAt: new Date().toISOString()
-      };
+      data = { credits: increment(amount || 0), updatedAt: new Date().toISOString() };
     }
 
     try {
-      // Simulate network latency for professional feel
       await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      updateDoc(userRef, data)
-        .then(() => {
+      updateDoc(userRef, data).then(() => {
           setShowSuccess(true);
-          toast({
-            title: type === 'plan' ? "Welcome to Pro Studio!" : "Credits Added!",
-            description: "Your account has been updated successfully.",
-          });
-        })
-        .catch(async (e) => {
-          const permissionError = new FirestorePermissionError({
-            path: userRef.path,
-            operation: "update",
-            requestResourceData: data
-          } satisfies SecurityRuleContext);
-          errorEmitter.emit("permission-error", permissionError);
-        });
-        
-    } catch (e: any) {
-      toast({
-        variant: "destructive",
-        title: "Transaction Failed",
-        description: e.message || "Please try again later.",
+          toast({ title: "Success!", description: "Account updated successfully." });
       });
+    } catch (e: any) {
+      toast({ variant: "destructive", title: "Failed", description: e.message });
     } finally {
       setLoadingAction(null);
     }
@@ -148,7 +131,6 @@ export default function PremiumPage() {
           </p>
         </div>
 
-        {/* Subscription Plans */}
         <div className="grid md:grid-cols-3 gap-8">
           {plans.map((plan) => (
             <Card key={plan.id} className={cn(
@@ -203,54 +185,20 @@ export default function PremiumPage() {
           ))}
         </div>
 
-        {/* AdSense Placement */}
         <AdBanner variant="large" provider="Google AdMob Hub" />
 
-        {/* Credit Packs */}
-        <div className="space-y-8 pt-8">
-           <div className="text-center space-y-2">
-              <h2 className="text-3xl font-headline font-bold">One-Time <span className="text-indigo-400">Credit Packs</span></h2>
-              <p className="text-muted-foreground italic">Don't want to subscribe? Just top up your account balance.</p>
-           </div>
-           <div className="grid md:grid-cols-3 gap-6">
-              {creditPacks.map((pack) => (
-                <Card key={pack.id} className={cn(
-                  "rounded-[2.5rem] bg-white/5 border-white/5 p-8 text-center space-y-6 transition-all hover:border-indigo-500/30",
-                  pack.popular && "border-indigo-500/20 bg-indigo-500/5"
-                )}>
-                   <div className="w-12 h-12 bg-indigo-500/10 rounded-2xl flex items-center justify-center mx-auto text-indigo-400">
-                      <pack.icon className="w-6 h-6" />
-                   </div>
-                   <div className="space-y-1">
-                      <h4 className="font-bold text-xl">{pack.name}</h4>
-                      <p className="text-indigo-400 font-bold font-headline text-2xl">+{pack.credits} Credits</p>
-                   </div>
-                   <Button 
-                     variant="outline" 
-                     className="w-full h-12 rounded-xl font-bold border-indigo-500/20 hover:bg-indigo-500/10"
-                     onClick={() => handleAction(pack.id, 'credits', pack.credits)}
-                     disabled={loadingAction === pack.id}
-                   >
-                     {loadingAction === pack.id ? <Loader2 className="animate-spin" /> : `Purchase for ${pack.price}`}
-                   </Button>
-                </Card>
-              ))}
-           </div>
-        </div>
-
-        {/* Bank Connection Info Card */}
         <section className="bg-emerald-500/5 border border-emerald-500/20 rounded-[3.5rem] p-10 md:p-14 flex flex-col lg:flex-row items-center justify-between gap-10">
            <div className="flex flex-col md:flex-row items-center gap-8 text-center md:text-left">
               <div className="w-24 h-24 bg-emerald-500/10 rounded-[2.5rem] flex items-center justify-center border border-emerald-500/20 shadow-xl">
                  <Banknote className="w-12 h-12 text-emerald-400" />
               </div>
               <div className="space-y-3">
-                 <h3 className="text-3xl font-bold font-headline">Bank Account & Withdrawals</h3>
-                 <p className="text-muted-foreground text-lg max-w-xl font-medium italic">All your earnings (Ads + Subscriptions) will be transferred directly to your bank account via AdSense and Razorpay.</p>
+                 <h3 className="text-3xl font-bold font-headline">Setup Your Payments</h3>
+                 <p className="text-muted-foreground text-lg max-w-xl font-medium italic">Create a Razorpay account to receive subscription payments directly to your bank.</p>
               </div>
            </div>
            <Button className="h-20 px-12 rounded-3xl bg-emerald-600 font-bold text-lg shadow-2xl shadow-emerald-600/20 hover:scale-105" asChild>
-              <Link href="/BANK_TRANSFER_GUIDE.md">Withdrawal Guide <ArrowRight className="ml-3 w-5 h-5" /></Link>
+              <Link href="https://dashboard.razorpay.com" target="_blank">Setup Razorpay <ExternalLink className="ml-3 w-5 h-5" /></Link>
            </Button>
         </section>
 

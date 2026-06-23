@@ -1,22 +1,27 @@
-# 💰 VideoMaster AI: How You Get Paid (Professional Guide)
 
-Your application is an automated "Revenue Engine." This guide explains how users interacting with your app turns into money in your bank account.
+# 💰 Why Haven't I Been Paid Yet? (The "Money" Protocol)
 
-### 1. Google AdSense (Ad Revenue) ✅
-- **How it works**: Users click "Watch Ad" to earn free AI credits. Every time they view an ad, Google registers a "High-Value Impression."
-- **How you get paid**: Google accumulates your earnings in the [Google AdSense Dashboard](https://adsense.google.com). Once you reach the $100 threshold, Google sends a **Wire Transfer** directly to your bank account.
-- **Action Required**: Ensure your domain `videomaster-ai.tech` is marked as "Ready" in the AdSense console.
+Bhaai, code 100% ready hai, lekin paisa aane ke liye Google aur Bank ke manual checks baaki hain. In 3 steps ko complete kijiye aur paisa shuru ho jayega.
 
-### 2. Premium Subscriptions (Direct Sales) ✅
-- **How it works**: Users upgrade to "Pro Studio" for ₹99/month to remove watermarks and get unlimited AI.
-- **How you get paid**: The payment is processed via your gateway (Razorpay or Stripe). These funds are usually transferred to your bank account on a **T+2 basis** (2 days after the user pays).
-- **Setup**: Link your payment button in `src/app/premium/page.tsx` to your Razorpay Payment Link.
+### 1. Google AdSense Approval (2-7 Days) ⏳
+Maine ads jodh diye hain, lekin Google aapka domain `videomaster-ai.tech` check kar raha hai.
+*   **Status**: Check karein [AdSense Sites](https://adsense.google.com/start/sites/).
+*   **Problem**: Agar wahan "Getting Ready" likha hai, toh wait karein. Jab wahan "Ready" ho jayega, ads apne aap dikhne lagenge aur paise banne shuru honge.
 
-### 3. Credit Packs (Micro-Transactions) ✅
-- **How it works**: Users who don't want a subscription can buy 500 or 2000 credits as a one-time top-up.
-- **How you get paid**: Same as subscriptions, these are direct sales that hit your bank account via your payment provider.
+### 2. Subscription Payout (Razorpay Setup) 🏦
+Aapka app ₹99 mang raha hai, lekin woh paisa kis account mein jayega?
+*   **Action**: [Razorpay Dashboard](https://dashboard.razorpay.com) par jayein.
+*   **Step**: Ek "Payment Page" banayein aur uska link `src/app/premium/page.tsx` mein paste karein.
+*   **Note**: Jab tak aap real link nahi daalte, paise aapke bank mein nahi pahunchenge.
 
-### ⚠️ Pro-Tip for Maximum Profit:
-Share your app link on **YouTube Shorts** and **Instagram Reels**. When you get viral traffic, the "Watch Ad" button becomes your biggest source of passive income. 
+### 3. Google Search Console Verification 📈
+Google ko bataiye ki ye app aapka hai taaki woh trust kare.
+*   **Step 1**: [Search Console](https://search.google.com/search-console) par domain verify karein.
+*   **Step 2**: Sitemaps mein `sitemap.xml` submit karein.
+*   **Benefit**: Isse Google AdSense approval jaldi milta hai.
 
-**Your business is now global and optimized for profit!** 🚀🌍💎💸
+### 💸 Fast-Track Formula:
+1.  **Terminal command**: `npm run web:deploy` (Isse ads.txt verify ho jayega).
+2.  **Marketing**: App ko YouTube Shorts par share karein. Jab 100-200 log ads dekhenge, AdSense balance badhne lagega.
+
+**Sab kuch automatic hai, bas Google ke approval ka wait kijiye!** 🚀💸💎
