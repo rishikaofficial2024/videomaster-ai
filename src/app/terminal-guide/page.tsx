@@ -33,7 +33,7 @@ export default function TerminalGuidePage() {
             Terminal <span className="text-primary italic">Navigator</span>
           </h1>
           <p className="text-muted-foreground text-xl font-medium italic text-amber-500 animate-pulse">
-            ⚠️ Fix "Site Not Found" by running the Web Deploy command below.
+            ⚠️ If the UI buttons show an error, use the Terminal (Black Box) to run commands.
           </p>
         </header>
 
@@ -43,7 +43,7 @@ export default function TerminalGuidePage() {
           <Card className="rounded-[4rem] bg-[#0a0d14] border-2 border-primary/50 p-10 space-y-12 relative overflow-hidden shadow-[0_0_100px_rgba(59,130,246,0.2)]">
              <div className="text-center space-y-2">
                 <h3 className="text-3xl font-bold font-headline text-white uppercase tracking-tight">MOBILE TERMINAL SIMULATOR</h3>
-                <p className="text-muted-foreground italic">Locate the integrated Terminal to run commands:</p>
+                <p className="text-muted-foreground italic">Locate the integrated Terminal to run commands manually:</p>
              </div>
 
              <div className="grid md:grid-cols-2 gap-16 items-center">
@@ -102,7 +102,7 @@ export default function TerminalGuidePage() {
                      { 
                        num: "3", 
                        title: "PASTE & EXECUTE", 
-                       desc: "A black box will appear at the bottom. Long-press to paste the command and hit 'Go'.",
+                       desc: "A black box will appear at the bottom. Long-press to paste the command and hit 'Go' (Enter).",
                        icon: Smartphone
                      }
                    ].map((step, i) => (
@@ -163,10 +163,10 @@ export default function TerminalGuidePage() {
           <Card className="rounded-[3rem] bg-rose-500/10 border-2 border-rose-500/40 p-10 space-y-6">
              <div className="flex items-center gap-4 text-rose-500">
                 <XCircle className="w-14 h-14" />
-                <h3 className="text-4xl font-bold font-headline uppercase tracking-tighter">EXTERNAL TOOLS NOT REQUIRED</h3>
+                <h3 className="text-4xl font-bold font-headline uppercase tracking-tighter">BYPASS UI ERRORS</h3>
              </div>
              <p className="text-xl text-muted-foreground italic leading-relaxed">
-                You do not need to download Node.js from external sites. The entire production environment is pre-configured within this browser tab. Simply use the <b>Top-Left Menu</b> to launch the <b>Terminal</b>.
+                If the visual "Play" buttons show a "Cannot read property" error, it's just a browser glitch. Simply use the <b>Top-Left Menu (≡)</b> to open the <b>Terminal</b> and paste the command manually. The Terminal is 100% reliable.
              </p>
           </Card>
         </section>

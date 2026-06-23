@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "mobile:push": "git add . && (git commit -m '🚀 Elite Production Launch Build' || true) && git push origin main --force",
-    "web:deploy": "npm run build && npx firebase-tools deploy --only hosting"
+    "web:deploy": "next build && firebase deploy --only hosting"
   },
   "dependencies": {
     "@capacitor/android": "^7.0.0",
