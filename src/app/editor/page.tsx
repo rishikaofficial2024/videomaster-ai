@@ -9,7 +9,7 @@ import {
   Plus, Palette, Music, 
   Trash2, Upload, Scissors, Film,
   Settings2, Type, Layout, Crown, Lock, Layers, Zap, Clock, Maximize, Move, Sliders,
-  Target, Ghost, MonitorPlay, Pipette
+  Target, Ghost, MonitorPlay, Pipette, HelpCircle, ArrowRight, Save
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { generateAiVideo } from "@/ai/flows/ai-video-generation-flow";
@@ -48,12 +48,12 @@ function EditorContent() {
   const [isNewProject, setIsNewProject] = useState(!projectIdFromUrl);
   const [mounted, setMounted] = useState(false);
   
-  const [title, setTitle] = useState("Untitled Masterpiece");
+  const [title, setTitle] = useState("Meri Nayi Video");
   const [isPlaying, setIsPlaying] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
-  const [activeTab, setActiveTab] = useState("media");
-  const [editorMode, setEditorMode] = useState<'normal' | 'advanced'>('normal');
+  const [activeTab, setActiveTab] = useState("ai");
+  const [editorMode, setEditorMode] = useState<'easy' | 'pro'>('easy');
   
   const [mediaAssets, setMediaAssets] = useState<MediaAsset[]>([]);
   const [videoData, setVideoData] = useState<string | null>(null);
@@ -61,7 +61,6 @@ function EditorContent() {
   const [videoPrompt, setVideoPrompt] = useState("");
   const [currentTime, setCurrentTime] = useState(0);
   
-  // Magic AI Features State
   const [magicHook, setMagicHook] = useState("");
   const [colorMood, setColorMood] = useState("");
 
@@ -85,7 +84,7 @@ function EditorContent() {
 
   useEffect(() => {
     if (project && mounted) {
-      setTitle(project.title || "Untitled Masterpiece");
+      setTitle(project.title || "Meri Nayi Video");
       setVideoData(project.videoDataUri || null);
       setMediaAssets(project.mediaAssets || []);
       setMagicHook(project.magicHook || "");
@@ -154,7 +153,7 @@ function EditorContent() {
     setMediaAssets(updatedAssets);
     if (newAsset.type !== 'audio') setVideoData(url);
     handleSave({ mediaAssets: updatedAssets });
-    toast({ title: "Import Successful", description: `${file.name} added to neural archive.` });
+    toast({ title: "Video Aa Gayi!", description: `${file.name} ko editor mein jodh diya gaya hai.` });
   };
 
   const handleGenerateScript = async () => {
@@ -164,9 +163,9 @@ function EditorContent() {
       const result = await generateAiScript({ topic: scriptTopic, platform: 'YouTube' });
       handleSave({ aiNotes: result.script, magicHook: result.hook });
       setMagicHook(result.hook);
-      toast({ title: "Logic Engineered", description: "Viral narrative flow generated successfully." });
+      toast({ title: "Kahani Taiyar!", description: "AI ne aapke liye ek badhiya script likh di hai." });
     } catch (e: any) {
-      toast({ variant: "destructive", title: "AI Sync Error", description: e.message });
+      toast({ variant: "destructive", title: "Rukawat!", description: "AI abhi busy hai, thodi der baad try karein." });
     } finally {
       setIsProcessing(false);
     }
@@ -179,19 +178,12 @@ function EditorContent() {
       const result = await generateAiVideo({ prompt: videoPrompt });
       setVideoData(result.videoDataUri);
       handleSave({ videoDataUri: result.videoDataUri });
-      toast({ title: "Motion Rendered", description: "Visual sequence synchronized to timeline." });
+      toast({ title: "Video Ban Gayi!", description: "Aapki AI video ab timeline par hai." });
     } catch (e: any) {
-      toast({ variant: "destructive", title: "Render Error", description: e.message });
+      toast({ variant: "destructive", title: "Error", description: e.message });
     } finally {
       setIsProcessing(false);
     }
-  };
-
-  const handleMagicMood = () => {
-    if (!colorMood) return;
-    toast({ title: "Mood Applied", description: `Synchronizing chromatic range for: ${colorMood}` });
-    // Visual feedback simulate
-    handleSave({ lastMoodApplied: colorMood });
   };
 
   if (!mounted) return null;
@@ -200,210 +192,166 @@ function EditorContent() {
     <div className="h-screen bg-[#020408] flex flex-col overflow-hidden text-[#e1e4e8] font-body selection:bg-primary/40">
       <Navbar />
       
-      {/* 🚀 MASTER TOOLBAR */}
-      <div className="h-28 border-b bg-[#05070a]/90 backdrop-blur-[80px] px-12 flex items-center justify-between z-40 border-white/5 shadow-2xl relative">
-        <div className="absolute inset-0 shimmer opacity-[0.03] pointer-events-none" />
-        <div className="flex items-center gap-12 relative z-10">
-          <Link href="/dashboard" className="p-5 hover:bg-white/5 rounded-3xl transition-all border border-transparent hover:border-white/10 group shadow-inner">
-            <ChevronLeft className="w-8 h-8 text-muted-foreground group-hover:text-primary transition-colors" />
+      {/* 🚀 MAIN TOOLBAR */}
+      <div className="h-24 border-b bg-[#05070a]/90 backdrop-blur-[80px] px-8 flex items-center justify-between z-40 border-white/5 shadow-2xl">
+        <div className="flex items-center gap-8">
+          <Link href="/dashboard" className="p-3 hover:bg-white/5 rounded-2xl transition-all group">
+            <ChevronLeft className="w-6 h-6 text-muted-foreground group-hover:text-primary" />
           </Link>
-          <div className="flex flex-col gap-1">
+          <div className="flex flex-col">
             <input 
               value={title} 
               onChange={(e) => setTitle(e.target.value)}
-              className="bg-transparent font-black text-3xl focus:outline-none w-[500px] truncate text-white border-b-2 border-transparent focus:border-primary/40 transition-all font-headline tracking-tighter"
+              className="bg-transparent font-bold text-xl focus:outline-none w-[300px] truncate text-white border-b border-transparent focus:border-primary/40"
+              placeholder="Apni Video ka Naam Likhein"
             />
-            <div className="flex items-center gap-3">
-              <span className="text-[11px] font-black text-emerald-500 uppercase tracking-[0.4em] flex items-center gap-3">
-                 <div className="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-pulse shadow-[0_0_15px_rgba(16,185,129,1)]" />
-                 {isSaving ? "SYNCHRONIZING NODE..." : "NODE SECURE"}
+            <div className="flex items-center gap-2 mt-1">
+              <div className={cn("w-2 h-2 rounded-full", isSaving ? "bg-amber-500 animate-pulse" : "bg-emerald-500")} />
+              <span className="text-[10px] font-bold uppercase tracking-widest opacity-40">
+                {isSaving ? "Saving..." : "Safe & Saved"}
               </span>
             </div>
           </div>
         </div>
 
-        <div className="flex items-center gap-8 bg-white/[0.02] p-2 rounded-[2rem] border border-white/5 relative z-10 shadow-inner">
+        <div className="hidden md:flex items-center gap-4 bg-white/5 p-1 rounded-2xl border border-white/10">
            <button 
-             onClick={() => setEditorMode('normal')}
-             className={cn("px-10 py-4 rounded-[1.5rem] text-[12px] font-black uppercase tracking-[0.4em] transition-all", editorMode === 'normal' ? "bg-primary text-white shadow-glow" : "text-muted-foreground hover:text-white")}
+             onClick={() => setEditorMode('easy')}
+             className={cn("px-6 py-2.5 rounded-xl text-[11px] font-black uppercase tracking-widest transition-all", editorMode === 'easy' ? "bg-primary text-white shadow-lg shadow-primary/20" : "text-muted-foreground hover:text-white")}
            >
-             Standard
+             Aasaan Mode
            </button>
            <button 
-             onClick={() => setEditorMode('advanced')}
-             className={cn("px-10 py-4 rounded-[1.5rem] text-[12px] font-black uppercase tracking-[0.4em] transition-all flex items-center gap-3", editorMode === 'advanced' ? "bg-indigo-600 text-white shadow-glow" : "text-muted-foreground hover:text-white")}
+             onClick={() => setEditorMode('pro')}
+             className={cn("px-6 py-2.5 rounded-xl text-[11px] font-black uppercase tracking-widest transition-all flex items-center gap-2", editorMode === 'pro' ? "bg-indigo-600 text-white shadow-lg" : "text-muted-foreground hover:text-white")}
            >
-             {editorMode !== 'advanced' && <Crown className="w-4 h-4" />}
-             Advanced
+             <Crown className="w-3.5 h-3.5" /> Pro Mode
            </button>
         </div>
 
-        <div className="flex items-center gap-8 relative z-10">
-          <Button variant="ghost" className="rounded-[1.5rem] font-black text-[12px] uppercase tracking-[0.5em] text-muted-foreground hover:text-white h-16 px-10 border border-transparent hover:border-white/10" onClick={() => handleSave()}>
-            Store Node
+        <div className="flex items-center gap-4">
+          <Button variant="ghost" className="rounded-xl font-bold text-xs uppercase tracking-widest h-12 px-6" onClick={() => handleSave()}>
+            <Save className="w-4 h-4 mr-2" /> Bachayein
           </Button>
-          <Button className="h-18 px-16 rounded-[2.5rem] font-black uppercase tracking-[0.4em] bg-primary shadow-glow shadow-primary/30 hover:scale-105 active:scale-95 transition-all text-[13px] gap-4">
-            {profile?.isPremium ? <Download className="w-6 h-6" /> : <Lock className="w-6 h-6" />}
-            {profile?.isPremium ? "MASTER EXPORT" : "UNLOCK 4K"}
+          <Button className="h-12 px-8 rounded-xl font-black uppercase tracking-widest bg-primary shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-all text-xs gap-2">
+            {profile?.isPremium ? <Download className="w-4 h-4" /> : <Lock className="w-4 h-4" />}
+            Download
           </Button>
         </div>
       </div>
 
       <div className="flex-1 flex overflow-hidden">
-        {/* 🛠️ VN VERTICAL NAV */}
-        <div className="w-36 bg-[#05070a] border-r border-white/5 flex flex-col items-center py-20 gap-20 relative">
-           <div className="absolute inset-y-0 right-0 w-[1px] bg-gradient-to-b from-transparent via-white/5 to-transparent" />
+        {/* 🛠️ EASY SIDE NAV */}
+        <div className="w-24 bg-[#05070a] border-r border-white/5 flex flex-col items-center py-10 gap-12">
            {[
+             { icon: Wand2, id: 'ai', label: 'AI Magic' },
              { icon: Film, id: 'media', label: 'Media' },
-             { icon: Wand2, id: 'ai', label: 'AI Suite' },
-             { icon: Music, id: 'audio', label: 'Tracks' },
-             { icon: Type, id: 'text', label: 'Text' },
-             { icon: Palette, id: 'style', label: 'Visuals' },
-             { icon: Sliders, id: 'filters', label: 'Inspect' }
+             { icon: Music, id: 'audio', label: 'Awaaz' },
+             { icon: Type, id: 'text', label: 'Likhai' },
+             { icon: Settings2, id: 'settings', label: 'Setting' }
            ].map((item) => (
              <button 
                key={item.id} 
-               className={cn("flex flex-col items-center gap-5 transition-all group", activeTab === item.id ? "text-primary" : "text-muted-foreground hover:text-white")} 
+               className={cn("flex flex-col items-center gap-3 transition-all", activeTab === item.id ? "text-primary" : "text-muted-foreground hover:text-white")} 
                onClick={() => setActiveTab(item.id)}
              >
-               <div className={cn("p-6 rounded-[2.5rem] border-2 transition-all group-hover:scale-110 shadow-2xl", activeTab === item.id ? "bg-primary/15 border-primary/40 shadow-glow shadow-primary/20" : "bg-white/[0.01] border-transparent")}>
-                 <item.icon className="w-8 h-8" />
+               <div className={cn("p-4 rounded-2xl border-2 transition-all", activeTab === item.id ? "bg-primary/10 border-primary/30" : "bg-transparent border-transparent")}>
+                 <item.icon className="w-6 h-6" />
                </div>
-               <span className="text-[10px] font-black uppercase tracking-[0.5em]">{item.label}</span>
+               <span className="text-[9px] font-bold uppercase tracking-widest">{item.label}</span>
              </button>
            ))}
         </div>
 
-        {/* 📚 ASSET DRAWER */}
-        <div className="w-[520px] bg-[#05070a]/70 backdrop-blur-[100px] border-r border-white/5 flex flex-col p-14 space-y-16 overflow-y-auto scrollbar-hide shadow-2xl relative">
-           <div className="absolute inset-0 shimmer opacity-[0.01] pointer-events-none" />
-           {activeTab === 'media' && (
-             <div className="space-y-14 animate-in fade-in slide-in-from-left-6 duration-700 relative z-10">
-                <div className="flex items-center justify-between">
-                   <h3 className="text-[14px] font-black uppercase tracking-[0.6em] text-white">Neural Assets</h3>
-                   <Badge variant="outline" className="text-[11px] px-5 py-1.5 rounded-full uppercase tracking-[0.3em] font-black opacity-30 border-white/20">{mediaAssets.length} Units</Badge>
+        {/* 📚 DRAWER */}
+        <div className="w-[400px] bg-[#0a0d14] border-r border-white/5 flex flex-col p-8 space-y-10 overflow-y-auto scrollbar-hide">
+           {activeTab === 'ai' && (
+             <div className="space-y-8 animate-in fade-in slide-in-from-left-4 duration-500">
+                <div className="p-4 bg-primary/10 rounded-2xl border border-primary/20 flex items-center gap-3">
+                   <Sparkles className="w-5 h-5 text-primary" />
+                   <p className="text-xs font-bold text-primary uppercase tracking-widest">AI Se Video Banayein</p>
                 </div>
+
+                {/* STEP 1: SCRIPT */}
+                <div className="space-y-4">
+                   <div className="flex items-center gap-3">
+                      <div className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center text-[10px] font-black">1</div>
+                      <h3 className="text-sm font-bold uppercase tracking-widest">Pehle Kahani Likhein</h3>
+                   </div>
+                   <div className="bg-white/5 rounded-2xl p-6 border border-white/10 space-y-4">
+                      <textarea 
+                        className="w-full bg-black/40 border border-white/5 rounded-xl p-4 text-sm h-32 outline-none focus:border-primary/40 resize-none" 
+                        placeholder="Video kis baare mein hai? (e.g. 5 Paise kamane ke tarike)" 
+                        value={scriptTopic} 
+                        onChange={(e) => setScriptTopic(e.target.value)} 
+                      />
+                      <Button className="w-full h-12 rounded-xl font-bold bg-primary/20 text-primary hover:bg-primary hover:text-white" onClick={handleGenerateScript} disabled={isProcessing}>
+                         {isProcessing ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <Wand2 className="w-4 h-4 mr-2" />}
+                         Kahani Likhein
+                      </Button>
+                   </div>
+                </div>
+
+                {/* STEP 2: VIDEO */}
+                <div className="space-y-4">
+                   <div className="flex items-center gap-3">
+                      <div className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center text-[10px] font-black">2</div>
+                      <h3 className="text-sm font-bold uppercase tracking-widest">AI Video Banayein</h3>
+                   </div>
+                   <div className="bg-white/5 rounded-2xl p-6 border border-white/10 space-y-4">
+                      <textarea 
+                        className="w-full bg-black/40 border border-white/5 rounded-xl p-4 text-sm h-32 outline-none focus:border-primary/40 resize-none" 
+                        placeholder="Video mein kya dikhna chahiye? (e.g. Ek sundar pahad ka drishya)" 
+                        value={videoPrompt} 
+                        onChange={(e) => setVideoPrompt(e.target.value)} 
+                      />
+                      <Button className="w-full h-12 rounded-xl font-bold bg-indigo-600 shadow-lg shadow-indigo-600/20" onClick={handleGenerateVideo} disabled={isProcessing}>
+                         {isProcessing ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <VideoIcon className="w-4 h-4 mr-2" />}
+                         Video Render Karein
+                      </Button>
+                   </div>
+                </div>
+
+                {/* MAGIC HOOK */}
+                {magicHook && (
+                  <div className="p-6 bg-emerald-500/5 rounded-2xl border border-emerald-500/20 space-y-4">
+                     <p className="text-[10px] font-black text-emerald-400 uppercase tracking-widest">Aapka Viral Hook ✨</p>
+                     <p className="text-sm italic text-white/80 leading-relaxed">"{magicHook}"</p>
+                  </div>
+                )}
+             </div>
+           )}
+
+           {activeTab === 'media' && (
+             <div className="space-y-8 animate-in fade-in slide-in-from-left-4 duration-500">
+                <h3 className="text-sm font-bold uppercase tracking-widest">Apni Files Dalein</h3>
                 <input type="file" ref={fileInputRef} className="hidden" accept="video/*,image/*,audio/*" onChange={handleFileUpload} />
-                <Button className="w-full h-80 border-2 border-dashed border-white/10 rounded-[5rem] bg-white/[0.01] flex flex-col gap-8 group hover:bg-primary/5 hover:border-primary/40 transition-all duration-1000 shadow-inner" onClick={() => fileInputRef.current?.click()}>
-                   <div className="p-8 bg-primary/10 rounded-[2.5rem] text-primary group-hover:scale-110 transition-all shadow-2xl shadow-primary/10 border border-primary/20"><Upload className="w-12 h-12" /></div>
-                   <span className="text-[13px] font-black text-muted-foreground uppercase tracking-[0.6em] group-hover:text-primary transition-colors">Inject Data Node</span>
+                <Button className="w-full h-40 border-2 border-dashed border-white/10 rounded-2xl bg-white/[0.02] flex flex-col gap-4 hover:bg-primary/5 transition-all" onClick={() => fileInputRef.current?.click()}>
+                   <Upload className="w-8 h-8 text-muted-foreground" />
+                   <span className="text-xs font-bold text-muted-foreground uppercase">Upload Karein</span>
                 </Button>
-                <div className="grid grid-cols-2 gap-8">
+                <div className="grid grid-cols-2 gap-4">
                    {mediaAssets.map((asset) => (
-                     <div key={asset.id} className="aspect-video rounded-[3rem] bg-black border-2 border-white/5 overflow-hidden relative group cursor-pointer hover:border-primary/40 transition-all shadow-xl">
-                        {asset.type === 'video' ? <video src={asset.url} className="w-full h-full object-cover opacity-40 group-hover:opacity-70 transition-all" /> : asset.type === 'audio' ? <div className="w-full h-full flex items-center justify-center bg-indigo-500/10"><Music className="w-12 h-12 text-indigo-400" /></div> : <img src={asset.url} className="w-full h-full object-cover opacity-40 group-hover:opacity-60 transition-all" />}
-                        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all bg-black/60 backdrop-blur-[3px]">
-                           <Plus className="w-12 h-12 text-white" />
+                     <div key={asset.id} className="aspect-video rounded-xl bg-black border border-white/10 overflow-hidden relative group cursor-pointer">
+                        {asset.type === 'video' ? <video src={asset.url} className="w-full h-full object-cover opacity-60" /> : <img src={asset.url} className="w-full h-full object-cover opacity-60" />}
+                        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all bg-black/60">
+                           <Plus className="w-6 h-6 text-white" />
                         </div>
                      </div>
                    ))}
                 </div>
              </div>
            )}
-
-           {activeTab === 'ai' && (
-             <div className="space-y-16 animate-in fade-in slide-in-from-left-6 duration-700 relative z-10 pb-20">
-                <div className="space-y-12">
-                   <div className="flex items-center gap-5 px-8 py-4 bg-primary/10 rounded-full border border-primary/20 w-fit shadow-glow shadow-primary/10">
-                      <Zap className="w-6 h-6 text-primary animate-pulse" />
-                      <span className="text-[13px] font-black uppercase tracking-[0.4em] text-primary">Free AI Magic Suite</span>
-                   </div>
-
-                   {/* 🪄 MAGIC HOOK GEN */}
-                   <div className="p-12 bg-emerald-500/[0.03] rounded-[5rem] border border-emerald-500/15 space-y-10 relative overflow-hidden group shadow-2xl">
-                      <div className="flex items-center justify-between">
-                         <label className="text-[13px] font-black uppercase tracking-[0.5em] text-emerald-400">Magic Hook Generator</label>
-                         <Badge className="bg-emerald-500/20 text-emerald-400 border-none rounded-full text-[9px] font-black uppercase tracking-widest px-3">Viral Ready</Badge>
-                      </div>
-                      <div className="bg-black/60 rounded-[2.5rem] p-8 border border-white/5 min-h-32 text-sm italic leading-relaxed text-[#c9ccd1] shadow-inner">
-                         {magicHook || "Generate a script first to extract the perfect Magic Hook..."}
-                      </div>
-                      <Button variant="outline" className="w-full h-16 rounded-[1.5rem] border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/10 font-bold uppercase tracking-widest gap-3" onClick={() => handleGenerateScript()} disabled={isProcessing}>
-                         <Target className="w-5 h-5" /> RE-CALIBRATE HOOK
-                      </Button>
-                   </div>
-
-                   {/* 🎨 MAGIC MOOD SELECTOR */}
-                   <div className="p-12 bg-indigo-500/[0.03] rounded-[5rem] border border-indigo-500/15 space-y-10 relative overflow-hidden group shadow-2xl">
-                      <label className="text-[13px] font-black uppercase tracking-[0.5em] text-indigo-400 block">AI Color Mood</label>
-                      <div className="flex gap-4 items-center">
-                         <input 
-                           className="flex-1 bg-black/60 border border-white/10 rounded-2xl h-14 px-6 text-sm outline-none focus:border-indigo-500/40" 
-                           placeholder="e.g. Moody Cyberpunk, Golden Hour" 
-                           value={colorMood}
-                           onChange={(e) => setColorMood(e.target.value)}
-                         />
-                         <Button className="h-14 w-14 rounded-2xl bg-indigo-600 shadow-glow" onClick={handleMagicMood}>
-                            <Pipette className="w-6 h-6" />
-                         </Button>
-                      </div>
-                      <div className="flex gap-4 overflow-x-auto scrollbar-hide">
-                         {['Cinematic', 'Vintage', 'Pop Art', 'Sci-Fi'].map(m => (
-                           <button key={m} className="px-5 py-2.5 rounded-full border border-white/10 text-[10px] font-black uppercase tracking-widest whitespace-nowrap hover:bg-white/5 transition-all" onClick={() => setColorMood(m)}>
-                              {m}
-                           </button>
-                         ))}
-                      </div>
-                   </div>
-                   
-                   <div className="p-12 bg-white/[0.02] rounded-[5rem] border border-white/5 space-y-12 hover:bg-white/[0.04] transition-all duration-1000 shadow-2xl relative overflow-hidden group">
-                      <div className="absolute inset-0 shimmer opacity-[0.02] pointer-events-none" />
-                      <div className="flex flex-col gap-4 relative z-10">
-                        <label className="text-[13px] font-black uppercase tracking-[0.5em] text-primary">Retention Logic Engine</label>
-                        <span className="text-[11px] text-muted-foreground font-bold italic opacity-40">Generate viral scripts with behavioral triggers.</span>
-                      </div>
-                      <textarea 
-                        className="w-full bg-black/60 border border-white/10 rounded-[2.5rem] p-10 text-base h-60 outline-none focus:border-primary/40 transition-all placeholder:opacity-20 leading-relaxed shadow-inner relative z-10" 
-                        placeholder="Define narrative sequence... (e.g. 3 high-leverage habits)" 
-                        value={scriptTopic} 
-                        onChange={(e) => setScriptTopic(e.target.value)} 
-                      />
-                      <Button className="w-full h-24 rounded-[2rem] font-black uppercase tracking-[0.4em] bg-primary/20 text-primary hover:bg-primary hover:text-white transition-all shadow-[0_20px_50px_rgba(59,130,246,0.3)] relative z-10" onClick={handleGenerateScript} disabled={isProcessing}>
-                        {isProcessing ? <Loader2 className="w-8 h-8 animate-spin mr-5" /> : <Wand2 className="w-8 h-8 mr-5" />}
-                        INITIALIZE LOGIC
-                      </Button>
-                   </div>
-
-                   <div className="p-12 bg-indigo-500/[0.03] rounded-[5rem] border border-indigo-500/15 space-y-12 hover:bg-indigo-500/[0.06] transition-all duration-1000 relative overflow-hidden group shadow-2xl">
-                      <div className="absolute -top-20 -right-20 opacity-[0.04] group-hover:rotate-12 transition-transform duration-1000 pointer-events-none"><Film className="w-96 h-96" /></div>
-                      <div className="flex flex-col gap-4 relative z-10">
-                        <label className="text-[13px] font-black uppercase tracking-[0.5em] text-indigo-400">Cinematic Renderer</label>
-                        <span className="text-[11px] text-muted-foreground font-bold italic opacity-40">Translate prompts into ultra-high-fidelity motion.</span>
-                      </div>
-                      <textarea 
-                        className="w-full bg-black/60 border border-white/10 rounded-[2.5rem] p-10 text-base h-60 outline-none focus:border-indigo-500/40 transition-all placeholder:opacity-20 leading-relaxed relative z-10 shadow-inner" 
-                        placeholder="Describe visual dimension... (e.g. Hyper-realistic Tokyo 2099)" 
-                        value={videoPrompt} 
-                        onChange={(e) => setVideoPrompt(e.target.value)} 
-                      />
-                      <Button className="w-full h-24 rounded-[2rem] font-black uppercase tracking-[0.4em] bg-indigo-600 shadow-[0_30px_70px_rgba(99,102,241,0.5)] hover:scale-[1.02] active:scale-95 transition-all relative z-10" onClick={handleGenerateVideo} disabled={isProcessing}>
-                         {isProcessing ? <Loader2 className="w-8 h-8 animate-spin mr-5" /> : <Maximize className="w-8 h-8 mr-5" />}
-                         RENDER SEQUENCE
-                      </Button>
-                   </div>
-                </div>
-             </div>
-           )}
         </div>
 
         {/* 🎬 MAIN MONITOR */}
-        <div className="flex-1 flex flex-col bg-[#020408] p-16 lg:p-24 space-y-16 relative overflow-hidden">
-           <div className="absolute inset-0 hero-gradient opacity-50 pointer-events-none" />
-           
-           <div className="flex-1 relative aspect-video mx-auto bg-black rounded-[6rem] border-[20px] border-[#05070a] overflow-hidden shadow-[0_0_150px_rgba(0,0,0,1)] group transition-all duration-1000 relative z-10">
-              <div className="absolute top-14 left-14 z-20 opacity-0 group-hover:opacity-100 transition-all duration-700 translate-x-[-30px] group-hover:translate-x-0">
-                 <Badge className="bg-black/80 backdrop-blur-[40px] border-white/10 px-10 py-4 rounded-full text-[12px] font-black uppercase tracking-[0.5em] shadow-2xl border-primary/30">
-                    {videoData ? "4K NEURAL FEED ACTIVE" : "NODE IDLE"}
-                 </Badge>
-              </div>
-
+        <div className="flex-1 flex flex-col bg-[#020408] p-8 lg:p-12 space-y-8 relative">
+           <div className="flex-1 relative aspect-video mx-auto bg-black rounded-[2.5rem] border-[12px] border-[#0a0d14] overflow-hidden shadow-2xl group">
               <div className="absolute inset-0 flex items-center justify-center">
                 {!videoData ? (
-                  <div className="text-center space-y-12 opacity-[0.06]">
-                     <div className="w-56 h-56 bg-white/5 rounded-[4.5rem] flex items-center justify-center mx-auto border-4 border-white/5 shadow-inner">
-                        <VideoIcon className="w-24 h-24" />
-                     </div>
-                     <p className="text-[24px] font-black uppercase tracking-[0.8em]">Awaiting Data Injection</p>
+                  <div className="text-center space-y-6 opacity-10">
+                     <VideoIcon className="w-20 h-20 mx-auto" />
+                     <p className="text-lg font-bold uppercase tracking-[0.4em]">Video Yahan Dikhegi</p>
                   </div>
                 ) : (
                   <video 
@@ -417,190 +365,118 @@ function EditorContent() {
                 )}
               </div>
 
-              <div className="absolute inset-x-0 bottom-20 flex justify-center opacity-0 group-hover:opacity-100 transition-all duration-700 translate-y-12 group-hover:translate-y-0">
-                 <div className="bg-black/90 backdrop-blur-[50px] px-20 py-8 rounded-[4rem] border border-white/15 flex items-center gap-20 shadow-2xl shadow-black/90">
-                    <button className="text-muted-foreground hover:text-white transition-all hover:scale-125 active:scale-75"><SkipBack className="w-10 h-10" /></button>
+              <div className="absolute inset-x-0 bottom-10 flex justify-center opacity-0 group-hover:opacity-100 transition-all">
+                 <div className="bg-black/80 backdrop-blur-xl px-10 py-4 rounded-full border border-white/10 flex items-center gap-12 shadow-2xl">
+                    <button className="text-muted-foreground hover:text-white transition-all"><SkipBack size={24} /></button>
                     <button 
                       onClick={() => videoRef.current && (isPlaying ? videoRef.current.pause() : videoRef.current.play())} 
-                      className="h-28 w-28 rounded-full bg-primary text-white flex items-center justify-center hover:scale-110 active:scale-90 transition-all shadow-[0_0_60px_rgba(59,130,246,0.7)]"
+                      className="h-16 w-16 rounded-full bg-primary text-white flex items-center justify-center hover:scale-110 active:scale-95 transition-all shadow-lg shadow-primary/20"
                     >
-                      {isPlaying ? <Pause className="w-12 h-12 fill-current" /> : <Play className="w-12 h-12 fill-current ml-2" />}
+                      {isPlaying ? <Pause size={28} fill="currentColor" /> : <Play size={28} fill="currentColor" className="ml-1" />}
                     </button>
-                    <button className="text-muted-foreground hover:text-white transition-all hover:scale-125 active:scale-75"><SkipForward className="w-10 h-10" /></button>
+                    <button className="text-muted-foreground hover:text-white transition-all"><SkipForward size={24} /></button>
                  </div>
               </div>
            </div>
 
-           {/* 🎞️ VN TIMELINE HUB */}
-           <div className="h-96 bg-[#05070a]/90 rounded-[6rem] border border-white/10 flex flex-col overflow-hidden shadow-[0_50px_100px_rgba(0,0,0,0.8)] relative transition-all duration-1000 z-10">
-              <div className="h-20 border-b border-white/10 px-16 flex items-center justify-between bg-white/[0.02]">
-                 <div className="flex items-center gap-16">
-                    <div className="flex items-center gap-6 text-primary">
-                       <Layers className="w-7 h-7 animate-pulse" />
-                       <span className="text-[13px] font-black uppercase tracking-[0.5em]">Timeline Node v4.0</span>
-                    </div>
-                    <div className="h-8 w-[2px] bg-white/10" />
-                    <div className="flex items-center gap-6 text-muted-foreground">
-                       <Clock className="w-6 h-6" />
-                       <span className="text-[15px] font-mono tracking-tight text-white/70">{currentTime.toFixed(3)}s / 30.000s</span>
-                    </div>
+           {/* 🎞️ SIMPLE TIMELINE */}
+           <div className="h-48 bg-[#0a0d14] rounded-[2.5rem] border border-white/5 flex flex-col overflow-hidden shadow-xl">
+              <div className="h-12 border-b border-white/5 px-8 flex items-center justify-between bg-white/[0.02]">
+                 <div className="flex items-center gap-6">
+                    <span className="text-[10px] font-black uppercase tracking-widest text-primary">Aapki Timeline</span>
+                    <div className="h-4 w-px bg-white/10" />
+                    <span className="text-[12px] font-mono text-white/50">{currentTime.toFixed(2)}s / 30.00s</span>
                  </div>
-                 <div className="flex gap-10">
-                    <button className="p-4 hover:bg-white/5 rounded-[1.5rem] text-muted-foreground hover:text-white transition-all hover:scale-125"><Scissors className="w-7 h-7" /></button>
-                    <button className="p-4 hover:bg-white/5 rounded-[1.5rem] text-rose-500/50 hover:text-rose-500 transition-all hover:scale-125"><Trash2 className="w-7 h-7" /></button>
+                 <div className="flex gap-4">
+                    <button className="p-2 hover:bg-white/5 rounded-lg text-rose-500/50 hover:text-rose-500"><Trash2 size={18} /></button>
                  </div>
               </div>
 
-              <div className="flex-1 overflow-x-auto p-12 space-y-8 scrollbar-hide">
-                 <div className="vn-track h-20 bg-indigo-500/[0.05] border-indigo-500/10">
-                    <div className="absolute left-0 top-0 bottom-0 w-2 bg-indigo-500 shadow-glow shadow-indigo-500/60" />
-                    <span className="text-[11px] font-black text-indigo-400 uppercase tracking-[0.4em] min-w-[150px]">Narrative</span>
-                    {videoData && <div className="h-10 w-[600px] bg-indigo-500/20 border-2 border-indigo-500/40 rounded-full ml-12 shadow-inner shimmer" />}
+              <div className="flex-1 overflow-x-auto p-6 space-y-4">
+                 <div className="h-12 bg-primary/10 border border-primary/20 rounded-xl relative flex items-center px-4 group">
+                    <div className="absolute left-0 top-0 bottom-0 w-1 bg-primary rounded-full" />
+                    <span className="text-[9px] font-bold uppercase tracking-widest text-primary mr-6">Visuals</span>
+                    {videoData && <div className="h-6 w-60 bg-primary/30 border border-primary/40 rounded-lg animate-pulse" />}
                  </div>
-
-                 <div className="vn-track h-32 bg-white/[0.04] border-white/15">
-                    <div className="absolute left-0 top-0 bottom-0 w-2 bg-primary shadow-glow shadow-primary/60" />
-                    <span className="text-[11px] font-black text-primary uppercase tracking-[0.4em] min-w-[150px]">Visuals</span>
-                    <div className="flex gap-6 ml-12">
-                       {videoData && (
-                         <div className="h-20 w-96 bg-primary/25 border-2 border-primary/50 rounded-[2rem] overflow-hidden relative shadow-2xl">
-                            <div className="absolute inset-0 shimmer opacity-30" />
-                            <div className="absolute inset-y-0 right-0 w-3 bg-white/30 cursor-ew-resize hover:bg-primary transition-all shadow-glow" />
-                         </div>
-                       )}
-                       {mediaAssets.map((m, i) => m.type !== 'audio' && (
-                         <div key={i} className="h-20 w-40 bg-white/10 border-2 border-white/10 rounded-[2rem] shadow-inner transition-all hover:bg-white/20" />
-                       ))}
-                    </div>
-                 </div>
-
-                 <div className="vn-track h-20 bg-emerald-500/[0.03] border-dashed border-emerald-500/10">
-                    <div className="absolute left-0 top-0 bottom-0 w-2 bg-emerald-500 shadow-glow shadow-emerald-500/60" />
-                    <span className="text-[11px] font-black text-emerald-400 uppercase tracking-[0.4em] min-w-[150px]">Audio Track</span>
-                    {mediaAssets.map((m, i) => m.type === 'audio' && (
-                       <div key={i} className="h-10 w-80 bg-emerald-500/20 border-2 border-emerald-500/40 rounded-1.5rem ml-12 flex items-center justify-center shadow-inner">
-                          <div className="flex gap-2 items-end h-7">
-                             {[1,3,2,4,2,3,1,4,2,3,1,4,2,3].map((h, j) => <div key={j} className="w-2 bg-emerald-400/60 rounded-full" style={{ height: `${h * 22}%` }} />)}
-                          </div>
-                       </div>
-                    ))}
+                 <div className="h-10 bg-indigo-500/5 border border-indigo-500/10 rounded-xl relative flex items-center px-4">
+                    <div className="absolute left-0 top-0 bottom-0 w-1 bg-indigo-500 rounded-full" />
+                    <span className="text-[9px] font-bold uppercase tracking-widest text-indigo-400 mr-6">Audio</span>
+                    {mediaAssets.some(m => m.type === 'audio') && <div className="h-4 w-40 bg-indigo-500/20 rounded-full" />}
                  </div>
               </div>
-
+              
               <div 
-                className="absolute top-20 bottom-0 w-[4px] bg-primary z-10 shadow-[0_0_30px_rgba(59,130,246,1)] pointer-events-none transition-all duration-100 ease-linear" 
+                className="absolute top-12 bottom-0 w-0.5 bg-primary z-10 shadow-glow" 
                 style={{ left: `${(currentTime / 30) * 100}%` }}
               />
            </div>
         </div>
 
-        {/* 🎚️ MASTER INSPECTOR */}
-        <div className="w-[520px] bg-[#05070a] border-l border-white/5 p-16 space-y-16 overflow-y-auto scrollbar-hide shadow-2xl relative">
-           <div className="absolute inset-0 shimmer opacity-[0.01] pointer-events-none" />
-           <div className="space-y-16 relative z-10">
-              <div className="flex items-center justify-between">
-                 <div className="flex items-center gap-6 text-emerald-400">
-                    <Settings2 className="w-10 h-10" />
-                    <h4 className="text-[14px] font-black uppercase tracking-[0.6em]">Master Node</h4>
-                 </div>
-                 {editorMode === 'advanced' && <Badge className="bg-indigo-600/20 text-indigo-400 border-indigo-400/40 text-[11px] font-black px-6 py-2 rounded-full uppercase tracking-widest shadow-glow shadow-indigo-600/20">Pro Mode Active</Badge>}
+        {/* 🎚️ SIMPLE INSPECTOR */}
+        <div className="w-[350px] bg-[#05070a] border-l border-white/5 p-8 space-y-10 overflow-y-auto scrollbar-hide">
+           <div className="space-y-8">
+              <div className="flex items-center gap-3 text-primary">
+                 <Settings2 size={20} />
+                 <h4 className="text-xs font-black uppercase tracking-widest">Adjust Karein</h4>
               </div>
 
-              <Tabs defaultValue="adjust" className="w-full">
-                 <TabsList className="grid w-full grid-cols-2 bg-white/[0.03] p-2.5 rounded-[2.5rem] mb-20 shadow-inner border border-white/10">
-                    <TabsTrigger value="adjust" className="rounded-[1.8rem] text-[13px] font-black uppercase tracking-[0.4em] py-5">Adjustment</TabsTrigger>
-                    <TabsTrigger value="transform" className="rounded-[1.8rem] text-[13px] font-black uppercase tracking-[0.4em] py-5">Geometry</TabsTrigger>
-                 </TabsList>
-                 
-                 <TabsContent value="adjust" className="space-y-14 animate-in fade-in duration-1000">
-                    <div className="space-y-12">
-                       <div className="space-y-6">
-                          <div className="flex justify-between text-[12px] uppercase font-black text-muted-foreground tracking-[0.5em]">
-                             <span className="flex items-center gap-5"><Maximize className="w-6 h-6 text-primary" /> Neural Upscale</span>
-                             <span className="text-primary font-bold">100%</span>
-                          </div>
-                          <Slider defaultValue={[100]} max={100} step={1} className="[&_[role=slider]]:bg-primary [&_[role=slider]]:w-8 [&_[role=slider]]:h-8 shadow-2xl" />
-                       </div>
-                       <div className="space-y-6">
-                          <div className="flex justify-between text-[12px] uppercase font-black text-muted-foreground tracking-[0.5em]">
-                             <span className="flex items-center gap-5"><Clock className="w-6 h-6 text-indigo-400" /> Temporal Scale</span>
-                             <span className="text-indigo-400 font-bold">1.0x</span>
-                          </div>
-                          <Slider defaultValue={[50]} max={100} step={1} className="[&_[role=slider]]:bg-indigo-600 [&_[role=slider]]:w-8 [&_[role=slider]]:h-8 shadow-2xl" />
-                       </div>
-                       <div className="space-y-6">
-                          <div className="flex justify-between text-[12px] uppercase font-black text-muted-foreground tracking-[0.5em]">
-                             <span className="flex items-center gap-5"><Sliders className="w-6 h-6 text-emerald-500" /> Chromatic Load</span>
-                             <span className="text-emerald-500 font-bold">90%</span>
-                          </div>
-                          <Slider defaultValue={[90]} max={100} step={1} className="[&_[role=slider]]:bg-emerald-500 [&_[role=slider]]:w-8 [&_[role=slider]]:h-8 shadow-2xl" />
-                       </div>
+              <div className="space-y-10">
+                 <div className="space-y-4">
+                    <div className="flex justify-between text-[10px] uppercase font-bold text-muted-foreground">
+                       <span>Safaai (Quality)</span>
+                       <span className="text-primary">High</span>
                     </div>
+                    <Slider defaultValue={[100]} max={100} step={1} className="[&_[role=slider]]:bg-primary" />
+                 </div>
 
-                    <div className="pt-16 border-t border-white/10 space-y-12">
-                       <div className="flex items-center gap-5 text-indigo-400">
-                          <Layout className="w-8 h-8" />
-                          <h4 className="text-[13px] font-black uppercase tracking-[0.5em]">Aspect Matrix</h4>
-                       </div>
-                       <div className="grid grid-cols-3 gap-8">
-                          {[
-                            { id: '9:16', label: 'Vertical', active: true },
-                            { id: '16:9', label: 'Cinema', active: false },
-                            { id: '1:1', label: 'Square', active: false }
-                          ].map((ratio) => (
-                            <button 
-                              key={ratio.id} 
-                              className={cn("h-28 flex flex-col items-center justify-center gap-4 rounded-[2.5rem] border-2 transition-all duration-700 shadow-xl", ratio.active ? "border-primary bg-primary/10 text-white shadow-glow shadow-primary/30" : "border-white/5 bg-white/[0.01] text-muted-foreground hover:border-white/20")}
-                            >
-                               <span className="text-[16px] font-black tracking-tight font-headline">{ratio.id}</span>
-                               <span className="text-[10px] font-black uppercase tracking-[0.4em] opacity-40">{ratio.label}</span>
-                            </button>
-                          ))}
-                       </div>
+                 <div className="space-y-4">
+                    <div className="flex justify-between text-[10px] uppercase font-bold text-muted-foreground">
+                       <span>Speed</span>
+                       <span className="text-indigo-400">Normal</span>
                     </div>
-                 </TabsContent>
+                    <Slider defaultValue={[50]} max={100} step={1} className="[&_[role=slider]]:bg-indigo-600" />
+                 </div>
+              </div>
 
-                 <TabsContent value="transform" className="space-y-16 animate-in fade-in duration-1000">
-                    <div className="grid grid-cols-2 gap-8">
-                       <div className="p-12 bg-white/[0.01] rounded-[4rem] border border-white/10 text-center space-y-6 hover:bg-white/[0.05] transition-all duration-1000 cursor-pointer group shadow-inner">
-                          <Move className="w-12 h-12 text-primary mx-auto group-hover:scale-125 transition-all" />
-                          <p className="text-[11px] font-black uppercase tracking-[0.5em] opacity-40">Auto Center</p>
-                       </div>
-                       <div className="p-12 bg-white/[0.01] rounded-[4rem] border border-white/10 text-center space-y-6 hover:bg-white/[0.05] transition-all duration-1000 cursor-pointer group shadow-inner">
-                          <Maximize className="w-12 h-12 text-primary mx-auto group-hover:scale-125 transition-all" />
-                          <p className="text-[11px] font-black uppercase tracking-[0.5em] opacity-40">Fit Canvas</p>
-                       </div>
-                    </div>
-                 </TabsContent>
-              </Tabs>
+              <div className="pt-10 border-t border-white/10 space-y-6">
+                 <h4 className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Frame Ka Size</h4>
+                 <div className="grid grid-cols-2 gap-4">
+                    {['9:16', '16:9'].map((ratio) => (
+                      <button 
+                        key={ratio} 
+                        className={cn("h-16 flex items-center justify-center rounded-xl border transition-all text-xs font-bold", ratio === '9:16' ? "border-primary bg-primary/10 text-white" : "border-white/5 bg-white/[0.02] text-muted-foreground")}
+                      >
+                         {ratio === '9:16' ? "Mobile (Reels)" : "Cinema (YT)"}
+                      </button>
+                    ))}
+                 </div>
+              </div>
            </div>
 
-           {/* 🚀 ACTION CLUSTER */}
-           <div className="pt-16 border-t border-white/10 space-y-10 relative z-10">
-              <Button className="w-full h-32 rounded-[3.5rem] bg-indigo-600 hover:bg-indigo-700 font-black text-2xl uppercase tracking-[0.5em] gap-8 shadow-[0_40px_100px_rgba(99,102,241,0.6)] hover:scale-[1.04] active:scale-95 transition-all border-t border-indigo-400/30">
-                 <Maximize className="w-10 h-10 animate-pulse" /> MASTER EXPORT
-              </Button>
-              <p className="text-center text-[11px] font-black text-muted-foreground uppercase tracking-[1em] opacity-15">Titan-Node v4.5 Stable</p>
+           <div className="pt-10 space-y-4">
+              <div className="bg-amber-500/10 border border-amber-500/20 p-4 rounded-xl flex gap-3">
+                 <HelpCircle className="w-5 h-5 text-amber-500 shrink-0" />
+                 <p className="text-[10px] text-amber-200 leading-relaxed italic">
+                    <b>Tip:</b> Agar AI video pasand na aaye, toh prompt badal kar firse "Render" dabayein.
+                 </p>
+              </div>
            </div>
         </div>
       </div>
 
       {/* 🔮 AI LOADING OVERLAY */}
       {isProcessing && (
-        <div className="fixed inset-0 z-[100] bg-[#020408]/98 backdrop-blur-[140px] flex items-center justify-center animate-in fade-in duration-1000">
-           <div className="text-center space-y-24">
+        <div className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-xl flex items-center justify-center animate-in fade-in duration-500">
+           <div className="text-center space-y-12">
               <div className="relative">
-                 <div className="absolute inset-0 bg-primary/40 blur-[200px] rounded-full neural-pulse" />
-                 <div className="w-60 h-60 bg-white/5 rounded-[5rem] flex items-center justify-center mx-auto border-4 border-primary/30 relative z-10 shadow-[0_0_120px_rgba(59,130,246,0.4)]">
-                    <Loader2 className="w-24 h-24 animate-spin text-primary" />
+                 <div className="absolute inset-0 bg-primary/20 blur-[100px] rounded-full animate-pulse" />
+                 <div className="w-32 h-32 bg-white/5 rounded-3xl flex items-center justify-center mx-auto border border-white/10 relative z-10 shadow-2xl">
+                    <Loader2 className="w-12 h-12 animate-spin text-primary" />
                  </div>
               </div>
-              <div className="space-y-10">
-                 <h2 className="text-7xl font-headline font-bold text-white tracking-tighter uppercase leading-none text-gradient">Neural Load Active</h2>
-                 <p className="text-4xl text-muted-foreground italic font-medium opacity-60">Synchronizing creative logic across multi-dimensional nodes...</p>
-                 <div className="w-[600px] h-2 bg-white/5 rounded-full mx-auto overflow-hidden shadow-inner border border-white/5">
-                    <div className="h-full bg-primary animate-pulse shadow-[0_0_25px_rgba(59,130,246,1)]" style={{ width: '65%' }} />
-                 </div>
+              <div className="space-y-4">
+                 <h2 className="text-4xl font-headline font-bold text-white tracking-tighter uppercase leading-none">AI Jaadu Kar Raha Hai...</h2>
+                 <p className="text-lg text-muted-foreground italic font-medium opacity-60">Bas kuch hi seconds mein aapki video taiyar ho jayegi.</p>
               </div>
            </div>
         </div>
@@ -611,7 +487,7 @@ function EditorContent() {
 
 export default function EditorPage() {
   return (
-    <Suspense fallback={<div className="h-screen flex items-center justify-center bg-[#020408]"><Loader2 className="w-20 h-20 animate-spin text-primary" /></div>}>
+    <Suspense fallback={<div className="h-screen flex items-center justify-center bg-[#020408]"><Loader2 className="w-12 h-12 animate-spin text-primary" /></div>}>
       <EditorContent />
     </Suspense>
   );
