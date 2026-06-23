@@ -10,6 +10,9 @@ export const metadata: Metadata = {
   keywords: ['AI Video Maker', 'Viral Script Writer', 'Cinematic AI', 'VideoMaster AI Tech'],
   metadataBase: new URL('https://videomaster-ai.tech'),
   alternates: { canonical: '/' },
+  verification: {
+    google: '', // Add your Google Site Verification code here from Search Console
+  },
   openGraph: {
     title: 'VideoMaster AI - The Ultimate Production Studio',
     description: 'Transform cinematic ideas into professional video assets with Elite AI.',
