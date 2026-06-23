@@ -12,8 +12,8 @@ let auth: Auth;
 let firestore: Firestore;
 
 /**
- * Initializes Firebase services and returns the instances.
- * Optimized for production multi-node stability.
+ * Optimized Firebase Initialization for Next.js 15 Production.
+ * Ensures services are only initialized once and safely on the client.
  */
 export function initializeFirebase() {
   if (getApps().length > 0) {
@@ -26,7 +26,6 @@ export function initializeFirebase() {
   firestore = getFirestore(app);
 
   // 🛡️ ELITE SECURITY: App Check Initialization
-  // Only triggers on real production domains with site keys to avoid blocking local testing.
   if (typeof window !== 'undefined' && firebaseConfig.appCheckSiteKey && !window.location.hostname.includes('localhost')) {
     try {
       initializeAppCheck(app, {
@@ -34,10 +33,7 @@ export function initializeFirebase() {
         isTokenAutoRefreshEnabled: true
       });
     } catch (e) {
-      // Fail silently in development, log in production
-      if (process.env.NODE_ENV === 'production') {
-        console.warn("App Check Shield: Handshake Pending.");
-      }
+      console.warn("App Check Shield: Handshake Pending.");
     }
   }
   

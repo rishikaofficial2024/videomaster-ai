@@ -1,4 +1,3 @@
-
 "use client";
 
 import Link from "next/link";
@@ -28,6 +27,9 @@ export default function LandingPage() {
         <nav className="ml-auto hidden lg:flex items-center gap-10">
           <Link href="#features" className="text-xs font-black uppercase tracking-[0.3em] text-muted-foreground hover:text-primary transition-all">Features</Link>
           <Link href="#pricing" className="text-xs font-black uppercase tracking-[0.3em] text-muted-foreground hover:text-primary transition-all">Pricing</Link>
+          <Button asChild variant="outline" className="h-10 rounded-xl bg-white/5 border-white/10 hover:bg-primary/20 transition-all font-bold text-xs uppercase tracking-widest px-6">
+             <Link href="/login">Sign In</Link>
+          </Button>
         </nav>
       </header>
       
@@ -54,7 +56,7 @@ export default function LandingPage() {
               <div className="flex flex-col items-center gap-8 w-full max-w-2xl mx-auto">
                 <div className="flex flex-col sm:flex-row gap-6 w-full justify-center">
                   <Button asChild size="lg" className="h-20 px-12 rounded-[2rem] text-xl font-black uppercase tracking-tight shadow-2xl shadow-primary/40 hover:scale-105 transition-all active:scale-95 bg-primary">
-                    <Link href="/signup">Create New Account <ArrowRight className="ml-3 w-7 h-7" /></Link>
+                    <Link href="/signup">Claim My Free Credits <ArrowRight className="ml-3 w-7 h-7" /></Link>
                   </Button>
                   
                   <Button asChild variant="outline" size="lg" className="h-20 px-12 rounded-[2rem] text-xl font-black uppercase tracking-tight bg-white/5 border-white/10 hover:bg-primary/20 hover:border-primary/50 transition-all group">
