@@ -3,7 +3,6 @@
  * Firebase configuration object for VideoMaster AI.
  * 
  * ✅ STATUS: Production Ready & Stabilized.
- * ✅ AUTH: Centrally managed for multi-domain stability.
  */
 export const firebaseConfig = {
   apiKey: "AIzaSyCz-pMZtY7_OVr9IyyHiIqwPWnpP3Lb21w",
@@ -14,9 +13,9 @@ export const firebaseConfig = {
   appId: "1:522287974416:web:096cfdb016260b3f74a295",
   
   /**
-   * 🛡️ ELITE SECURITY STEP:
-   * To enable advanced Bot Protection, paste your reCAPTCHA v3 "SITE KEY" here.
-   * This will activate the Firebase App Check shield across the entire node.
+   * 🛡️ ACTION REQUIRED:
+   * Generate a reCAPTCHA v3 "SITE KEY" from https://www.google.com/recaptcha/admin
+   * and paste it below to enable App Check security.
    */
   appCheckSiteKey: "" 
 };
