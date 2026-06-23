@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -37,7 +38,7 @@ export default function SignupPage() {
     e.preventDefault();
     setLoading(true);
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const userCredential = await createUserWithEmailAndPassword(auth, email.trim(), password);
       const user = userCredential.user;
       const displayName = `${firstName} ${lastName}`;
 
@@ -66,10 +67,21 @@ export default function SignupPage() {
 
       router.push("/dashboard");
     } catch (error: any) {
+      let errorMessage = error.message;
+      
+      // Catch specific Firebase Auth error for already existing users
+      if (error.code === 'auth/email-already-in-use') {
+        errorMessage = "This email is already registered. Please Sign In to access your studio.";
+      } else if (error.code === 'auth/weak-password') {
+        errorMessage = "Password is too weak. Please use at least 6 characters.";
+      } else if (error.code === 'auth/invalid-email') {
+        errorMessage = "The email address is malformed. Please check your entry.";
+      }
+
       toast({ 
         variant: "destructive", 
         title: "Registration Failed", 
-        description: error.message 
+        description: errorMessage 
       });
     } finally {
       setLoading(false);
