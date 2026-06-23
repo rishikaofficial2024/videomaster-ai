@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -22,7 +23,7 @@ export default function LandingPage() {
           <div className="bg-primary p-2.5 rounded-2xl shadow-xl shadow-primary/30 group-hover:scale-110 transition-transform duration-500">
             <Video className="h-6 w-6 text-white" />
           </div>
-          <span className="font-headline font-bold text-2xl tracking-tighter">VideoMaster<span className="text-primary italic">AI.tech</span></span>
+          <span className="font-headline font-bold text-2xl tracking-tighter">VideoMaster<span className="text-primary italic">AI</span></span>
         </Link>
         <nav className="ml-auto hidden lg:flex items-center gap-10">
           <Link href="#features" className="text-xs font-black uppercase tracking-[0.3em] text-muted-foreground hover:text-primary transition-all">Features</Link>
@@ -171,7 +172,7 @@ export default function LandingPage() {
         <div className="container mx-auto flex flex-col items-center gap-8">
           <div className="flex items-center gap-4">
              <Video className="w-8 h-8 text-primary" />
-             <span className="text-3xl font-headline font-bold tracking-tighter">VideoMaster<span className="text-primary">AI.tech</span></span>
+             <span className="text-3xl font-headline font-bold tracking-tighter">VideoMaster<span className="text-primary">AI</span></span>
           </div>
           <div className="flex gap-10 opacity-40">
              <Link href="/privacy" className="text-[10px] font-bold uppercase tracking-widest hover:text-primary">Privacy</Link>

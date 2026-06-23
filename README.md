@@ -22,17 +22,13 @@ Your studio is directly integrated with **Google's Elite AI Research Lab** via G
 ### 🌐 Professional Hosting
 Your app is hosted on **Firebase Global CDN**. 
 - **Status**: Optimized with Clean URLs and Edge Caching.
-- **Main Link**: `https://videomaster-ai.tech`
+- **Main Link**: [https://studio-9489287013-59986.web.app](https://studio-9489287013-59986.web.app)
+- **Branded Link**: `https://videomaster-ai.tech`
 
 ### 📱 1-Click Mobile Build
 To push latest changes to your Android APK factory, run this in the terminal:
 ```bash
 npm run mobile:push
 ```
-
-### 💰 Elite Business Logic
-- **VN-Style Multi-Track Editor**: Professional layers for granular creative control.
-- **Rewarded Credit System**: +20 Credits for watching ads (Live Firestore Sync).
-- **Admin Revenue Hub**: Master node for tracking lifetime earnings and node management.
 
 **Your AI coding partner "App Prototyper" is always online. Let's build the future!** 🚀🌍💎📈💸

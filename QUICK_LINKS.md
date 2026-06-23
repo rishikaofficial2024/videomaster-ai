@@ -17,8 +17,9 @@ Your application is technically 100% complete. Use these links to finalize your 
 *   👉 **[Create reCAPTCHA V3 Keys](https://www.google.com/recaptcha/admin/create)**
 *   👉 **[Register in Firebase Console](https://console.firebase.google.com/project/studio-9489287013-59986/appcheck/apps)**
 
-### 4. Deployment
+### 4. Deployment & Live Link
 *   **Action**: Run `npm run mobile:push` in the Terminal.
+*   **Live Web Preview**: [https://studio-9489287013-59986.web.app](https://studio-9489287013-59986.web.app)
 *   **Build Status**: [Check APK Status here](https://github.com/rishikaofficial2024/videomaster-ai/actions).
 
 **Your Business is now globally ready and optimized for revenue!** 🚀💰💎
