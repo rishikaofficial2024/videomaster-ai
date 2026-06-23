@@ -1,3 +1,4 @@
+
 # 🚀 VideoMaster AI: Elite Production Hub
 
 Welcome to your professional AI Video Studio. This application is powered by **App Prototyper** in Firebase Studio, optimized for high-speed viral content creation using the world's most advanced AI engines.
@@ -17,6 +18,11 @@ Your studio is directly integrated with **Google's Elite AI Research Lab** via G
 5. **SEO Optimizer**: AI-generated viral hashtags, optimized titles, and high-rank descriptions.
 6. **Thumbnail Designer**: 4K resolution cinematic imagery tailored to your video topic.
 7. **Growth Assistant**: A real-time AI strategist to help expand your social media reach.
+
+### 🌐 Professional Hosting
+Your app is hosted on **Firebase Global CDN**. 
+- **Status**: Optimized with Clean URLs and Edge Caching.
+- **Main Link**: `https://videomaster-ai.tech`
 
 ### 📱 1-Click Mobile Build
 To push latest changes to your Android APK factory, run this in the terminal:
