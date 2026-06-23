@@ -1,7 +1,5 @@
 import { MetadataRoute } from 'next'
 
-export const dynamic = 'force-static'
-
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://studio-9489287013-59986.web.app'
   const currentDate = new Date()
