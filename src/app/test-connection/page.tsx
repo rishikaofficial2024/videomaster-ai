@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, useEffect } from "react";
@@ -145,13 +144,13 @@ export default function TestConnectionPage() {
           <Card className="rounded-[3rem] bg-rose-500/10 border-2 border-rose-500/30 p-10 animate-in fade-in slide-in-from-top-4 duration-500">
              <div className="flex items-center gap-6 text-rose-500 mb-6">
                 <Globe2 className="w-12 h-12" />
-                <h3 className="text-4xl font-bold font-headline uppercase tracking-tight">DNS ERROR DETECTED (NXDOMAIN)</h3>
+                <h3 className="text-4xl font-bold font-headline uppercase tracking-tight">DNS CONFIGURATION WARNING</h3>
              </div>
              <p className="text-xl text-muted-foreground italic leading-relaxed mb-8">
-               Aapka domain `videomaster-ai.tech` abhi tak Internet se juda nahi hai. Iska matlab hai ki aapne apne registrar (GoDaddy, etc.) mein Firebase ke **A Records** nahi dale hain.
+               Your domain `videomaster-ai.tech` is not yet propagating on the global network. This typically means the **A Records** in your registrar (GoDaddy/Hostinger) are not correctly pointing to Firebase Hosting IPs.
              </p>
              <Button className="h-16 px-10 rounded-2xl bg-rose-600 hover:bg-rose-700 font-bold text-lg shadow-xl" asChild>
-                <Link href="/DNS_FIX_GUIDE.md">Step-by-Step Fix Dekho</Link>
+                <Link href="/DNS_FIX_GUIDE.md">View Propagation Fix</Link>
              </Button>
           </Card>
         )}
@@ -209,15 +208,15 @@ export default function TestConnectionPage() {
                     <div className="p-5 bg-emerald-500/10 rounded-[2rem] animate-pulse border-2 border-emerald-500/20 shadow-[0_0_40px_rgba(16,185,129,0.3)]">
                        <DollarSign className="w-10 h-10 text-emerald-400" />
                     </div>
-                    <h4 className="text-3xl font-black font-headline text-white uppercase tracking-tight leading-none">AdSense Live</h4>
+                    <h4 className="text-3xl font-black font-headline text-white uppercase tracking-tight leading-none">AdSense Hub</h4>
                  </div>
                  <div className="space-y-6">
                     <p className="text-sm text-muted-foreground leading-relaxed italic text-center font-medium">
-                       AdSense Code is active. Your site is waiting for Google AdSense Review.
+                       Google AdSense is active. Verification pending review from Google Networks.
                     </p>
                     <Button className="w-full h-20 rounded-3xl bg-orange-600 hover:bg-orange-700 font-black text-lg gap-3 shadow-2xl shadow-orange-600/40" asChild>
                        <a href="https://adsense.google.com" target="_blank">
-                          Check AdSense Review
+                          Check Review Status
                        </a>
                     </Button>
                  </div>
@@ -225,20 +224,20 @@ export default function TestConnectionPage() {
 
               <Card className="rounded-[3.5rem] bg-primary/5 border border-primary/20 p-10 space-y-6 shadow-xl">
                  <h4 className="text-xs font-black uppercase tracking-[0.5em] flex items-center gap-3 text-primary">
-                   <Info className="w-4 h-4" /> Integration Details
+                   <Info className="w-4 h-4" /> Technical Details
                  </h4>
                  <div className="space-y-4 pt-4">
                     <div className="flex justify-between text-[11px] font-bold uppercase tracking-widest border-b border-white/5 pb-2">
-                       <span className="text-muted-foreground">AdSense Publisher</span>
+                       <span className="text-muted-foreground">Publisher ID</span>
                        <span className="text-white truncate max-w-[80px]">894693...</span>
                     </div>
                     <div className="flex justify-between text-[11px] font-bold uppercase tracking-widest border-b border-white/5 pb-2">
-                       <span className="text-muted-foreground">Domain Verified</span>
-                       <span className="text-emerald-500">Yes</span>
+                       <span className="text-muted-foreground">Domain State</span>
+                       <span className="text-emerald-500">Authorized</span>
                     </div>
                     <div className="flex justify-between text-[11px] font-bold uppercase tracking-widest">
-                       <span className="text-muted-foreground">Ads.txt Status</span>
-                       <span className="text-primary">Deployed</span>
+                       <span className="text-muted-foreground">Ads.txt</span>
+                       <span className="text-primary">Operational</span>
                     </div>
                  </div>
               </Card>

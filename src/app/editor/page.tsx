@@ -48,7 +48,7 @@ function EditorContent() {
   const [isNewProject, setIsNewProject] = useState(!projectIdFromUrl);
   const [mounted, setMounted] = useState(false);
   
-  const [title, setTitle] = useState("Meri Nayi Video");
+  const [title, setTitle] = useState("My New Sequence");
   const [isPlaying, setIsPlaying] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -62,7 +62,6 @@ function EditorContent() {
   const [currentTime, setCurrentTime] = useState(0);
   
   const [magicHook, setMagicHook] = useState("");
-  const [colorMood, setColorMood] = useState("");
 
   useEffect(() => {
     setMounted(true);
@@ -84,7 +83,7 @@ function EditorContent() {
 
   useEffect(() => {
     if (project && mounted) {
-      setTitle(project.title || "Meri Nayi Video");
+      setTitle(project.title || "My New Sequence");
       setVideoData(project.videoDataUri || null);
       setMediaAssets(project.mediaAssets || []);
       setMagicHook(project.magicHook || "");
@@ -153,7 +152,7 @@ function EditorContent() {
     setMediaAssets(updatedAssets);
     if (newAsset.type !== 'audio') setVideoData(url);
     handleSave({ mediaAssets: updatedAssets });
-    toast({ title: "Video Aa Gayi!", description: `${file.name} ko editor mein jodh diya gaya hai.` });
+    toast({ title: "Media Uploaded", description: `${file.name} added to the sequence.` });
   };
 
   const handleGenerateScript = async () => {
@@ -163,9 +162,9 @@ function EditorContent() {
       const result = await generateAiScript({ topic: scriptTopic, platform: 'YouTube' });
       handleSave({ aiNotes: result.script, magicHook: result.hook });
       setMagicHook(result.hook);
-      toast({ title: "Kahani Taiyar!", description: "AI ne aapke liye ek badhiya script likh di hai." });
+      toast({ title: "Script Ready", description: "AI has successfully drafted your narrative." });
     } catch (e: any) {
-      toast({ variant: "destructive", title: "Rukawat!", description: "AI abhi busy hai, thodi der baad try karein." });
+      toast({ variant: "destructive", title: "AI Busy", description: "The neural core is currently overloaded. Please retry." });
     } finally {
       setIsProcessing(false);
     }
@@ -178,9 +177,9 @@ function EditorContent() {
       const result = await generateAiVideo({ prompt: videoPrompt });
       setVideoData(result.videoDataUri);
       handleSave({ videoDataUri: result.videoDataUri });
-      toast({ title: "Video Ban Gayi!", description: "Aapki AI video ab timeline par hai." });
+      toast({ title: "Video Rendered", description: "Your AI video clip is now on the timeline." });
     } catch (e: any) {
-      toast({ variant: "destructive", title: "Error", description: e.message });
+      toast({ variant: "destructive", title: "Render Failed", description: e.message });
     } finally {
       setIsProcessing(false);
     }
@@ -203,12 +202,12 @@ function EditorContent() {
               value={title} 
               onChange={(e) => setTitle(e.target.value)}
               className="bg-transparent font-bold text-xl focus:outline-none w-[300px] truncate text-white border-b border-transparent focus:border-primary/40"
-              placeholder="Apni Video ka Naam Likhein"
+              placeholder="Enter Sequence Name"
             />
             <div className="flex items-center gap-2 mt-1">
               <div className={cn("w-2 h-2 rounded-full", isSaving ? "bg-amber-500 animate-pulse" : "bg-emerald-500")} />
               <span className="text-[10px] font-bold uppercase tracking-widest opacity-40">
-                {isSaving ? "Saving..." : "Safe & Saved"}
+                {isSaving ? "Syncing..." : "Changes Saved"}
               </span>
             </div>
           </div>
@@ -219,23 +218,23 @@ function EditorContent() {
              onClick={() => setEditorMode('easy')}
              className={cn("px-6 py-2.5 rounded-xl text-[11px] font-black uppercase tracking-widest transition-all", editorMode === 'easy' ? "bg-primary text-white shadow-lg shadow-primary/20" : "text-muted-foreground hover:text-white")}
            >
-             Aasaan Mode
+             Easy Mode
            </button>
            <button 
              onClick={() => setEditorMode('pro')}
              className={cn("px-6 py-2.5 rounded-xl text-[11px] font-black uppercase tracking-widest transition-all flex items-center gap-2", editorMode === 'pro' ? "bg-indigo-600 text-white shadow-lg" : "text-muted-foreground hover:text-white")}
            >
-             <Crown className="w-3.5 h-3.5" /> Pro Mode
+             <Crown className="w-3.5 h-3.5" /> Pro Studio
            </button>
         </div>
 
         <div className="flex items-center gap-4">
           <Button variant="ghost" className="rounded-xl font-bold text-xs uppercase tracking-widest h-12 px-6" onClick={() => handleSave()}>
-            <Save className="w-4 h-4 mr-2" /> Bachayein
+            <Save className="w-4 h-4 mr-2" /> Sync Node
           </Button>
           <Button className="h-12 px-8 rounded-xl font-black uppercase tracking-widest bg-primary shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-all text-xs gap-2">
             {profile?.isPremium ? <Download className="w-4 h-4" /> : <Lock className="w-4 h-4" />}
-            Download
+            Export
           </Button>
         </div>
       </div>
@@ -246,9 +245,9 @@ function EditorContent() {
            {[
              { icon: Wand2, id: 'ai', label: 'AI Magic' },
              { icon: Film, id: 'media', label: 'Media' },
-             { icon: Music, id: 'audio', label: 'Awaaz' },
-             { icon: Type, id: 'text', label: 'Likhai' },
-             { icon: Settings2, id: 'settings', label: 'Setting' }
+             { icon: Music, id: 'audio', label: 'Audio' },
+             { icon: Type, id: 'text', label: 'Captions' },
+             { icon: Settings2, id: 'settings', label: 'Config' }
            ].map((item) => (
              <button 
                key={item.id} 
@@ -269,25 +268,25 @@ function EditorContent() {
              <div className="space-y-8 animate-in fade-in slide-in-from-left-4 duration-500">
                 <div className="p-4 bg-primary/10 rounded-2xl border border-primary/20 flex items-center gap-3">
                    <Sparkles className="w-5 h-5 text-primary" />
-                   <p className="text-xs font-bold text-primary uppercase tracking-widest">AI Se Video Banayein</p>
+                   <p className="text-xs font-bold text-primary uppercase tracking-widest">Generate with Elite AI</p>
                 </div>
 
                 {/* STEP 1: SCRIPT */}
                 <div className="space-y-4">
                    <div className="flex items-center gap-3">
                       <div className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center text-[10px] font-black">1</div>
-                      <h3 className="text-sm font-bold uppercase tracking-widest">Pehle Kahani Likhein</h3>
+                      <h3 className="text-sm font-bold uppercase tracking-widest">Draft Narrative</h3>
                    </div>
                    <div className="bg-white/5 rounded-2xl p-6 border border-white/10 space-y-4">
                       <textarea 
                         className="w-full bg-black/40 border border-white/5 rounded-xl p-4 text-sm h-32 outline-none focus:border-primary/40 resize-none" 
-                        placeholder="Video kis baare mein hai? (e.g. 5 Paise kamane ke tarike)" 
+                        placeholder="What is your video about? (e.g. 5 ways to earn online)" 
                         value={scriptTopic} 
                         onChange={(e) => setScriptTopic(e.target.value)} 
                       />
                       <Button className="w-full h-12 rounded-xl font-bold bg-primary/20 text-primary hover:bg-primary hover:text-white" onClick={handleGenerateScript} disabled={isProcessing}>
                          {isProcessing ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <Wand2 className="w-4 h-4 mr-2" />}
-                         Kahani Likhein
+                         Write Script
                       </Button>
                    </div>
                 </div>
@@ -296,18 +295,18 @@ function EditorContent() {
                 <div className="space-y-4">
                    <div className="flex items-center gap-3">
                       <div className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center text-[10px] font-black">2</div>
-                      <h3 className="text-sm font-bold uppercase tracking-widest">AI Video Banayein</h3>
+                      <h3 className="text-sm font-bold uppercase tracking-widest">Render Visuals</h3>
                    </div>
                    <div className="bg-white/5 rounded-2xl p-6 border border-white/10 space-y-4">
                       <textarea 
                         className="w-full bg-black/40 border border-white/5 rounded-xl p-4 text-sm h-32 outline-none focus:border-primary/40 resize-none" 
-                        placeholder="Video mein kya dikhna chahiye? (e.g. Ek sundar pahad ka drishya)" 
+                        placeholder="Describe the visuals (e.g. Cinematic mountain peaks)" 
                         value={videoPrompt} 
                         onChange={(e) => setVideoPrompt(e.target.value)} 
                       />
                       <Button className="w-full h-12 rounded-xl font-bold bg-indigo-600 shadow-lg shadow-indigo-600/20" onClick={handleGenerateVideo} disabled={isProcessing}>
                          {isProcessing ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <VideoIcon className="w-4 h-4 mr-2" />}
-                         Video Render Karein
+                         Render HD Clip
                       </Button>
                    </div>
                 </div>
@@ -315,7 +314,7 @@ function EditorContent() {
                 {/* MAGIC HOOK */}
                 {magicHook && (
                   <div className="p-6 bg-emerald-500/5 rounded-2xl border border-emerald-500/20 space-y-4">
-                     <p className="text-[10px] font-black text-emerald-400 uppercase tracking-widest">Aapka Viral Hook ✨</p>
+                     <p className="text-[10px] font-black text-emerald-400 uppercase tracking-widest">Viral Narrative Hook ✨</p>
                      <p className="text-sm italic text-white/80 leading-relaxed">"{magicHook}"</p>
                   </div>
                 )}
@@ -324,11 +323,11 @@ function EditorContent() {
 
            {activeTab === 'media' && (
              <div className="space-y-8 animate-in fade-in slide-in-from-left-4 duration-500">
-                <h3 className="text-sm font-bold uppercase tracking-widest">Apni Files Dalein</h3>
+                <h3 className="text-sm font-bold uppercase tracking-widest">Asset Library</h3>
                 <input type="file" ref={fileInputRef} className="hidden" accept="video/*,image/*,audio/*" onChange={handleFileUpload} />
                 <Button className="w-full h-40 border-2 border-dashed border-white/10 rounded-2xl bg-white/[0.02] flex flex-col gap-4 hover:bg-primary/5 transition-all" onClick={() => fileInputRef.current?.click()}>
                    <Upload className="w-8 h-8 text-muted-foreground" />
-                   <span className="text-xs font-bold text-muted-foreground uppercase">Upload Karein</span>
+                   <span className="text-xs font-bold text-muted-foreground uppercase">Upload Local Assets</span>
                 </Button>
                 <div className="grid grid-cols-2 gap-4">
                    {mediaAssets.map((asset) => (
@@ -351,7 +350,7 @@ function EditorContent() {
                 {!videoData ? (
                   <div className="text-center space-y-6 opacity-10">
                      <VideoIcon className="w-20 h-20 mx-auto" />
-                     <p className="text-lg font-bold uppercase tracking-[0.4em]">Video Yahan Dikhegi</p>
+                     <p className="text-lg font-bold uppercase tracking-[0.4em]">Sequence Preview</p>
                   </div>
                 ) : (
                   <video 
@@ -379,11 +378,11 @@ function EditorContent() {
               </div>
            </div>
 
-           {/* 🎞️ SIMPLE TIMELINE */}
+           {/* 🎞️ TIMELINE */}
            <div className="h-48 bg-[#0a0d14] rounded-[2.5rem] border border-white/5 flex flex-col overflow-hidden shadow-xl">
               <div className="h-12 border-b border-white/5 px-8 flex items-center justify-between bg-white/[0.02]">
                  <div className="flex items-center gap-6">
-                    <span className="text-[10px] font-black uppercase tracking-widest text-primary">Aapki Timeline</span>
+                    <span className="text-[10px] font-black uppercase tracking-widest text-primary">Master Timeline</span>
                     <div className="h-4 w-px bg-white/10" />
                     <span className="text-[12px] font-mono text-white/50">{currentTime.toFixed(2)}s / 30.00s</span>
                  </div>
@@ -412,41 +411,41 @@ function EditorContent() {
            </div>
         </div>
 
-        {/* 🎚️ SIMPLE INSPECTOR */}
+        {/* 🎚️ INSPECTOR */}
         <div className="w-[350px] bg-[#05070a] border-l border-white/5 p-8 space-y-10 overflow-y-auto scrollbar-hide">
            <div className="space-y-8">
               <div className="flex items-center gap-3 text-primary">
                  <Settings2 size={20} />
-                 <h4 className="text-xs font-black uppercase tracking-widest">Adjust Karein</h4>
+                 <h4 className="text-xs font-black uppercase tracking-widest">Adjust Configuration</h4>
               </div>
 
               <div className="space-y-10">
                  <div className="space-y-4">
                     <div className="flex justify-between text-[10px] uppercase font-bold text-muted-foreground">
-                       <span>Safaai (Quality)</span>
-                       <span className="text-primary">High</span>
+                       <span>Quality Density</span>
+                       <span className="text-primary">4K Ultra</span>
                     </div>
                     <Slider defaultValue={[100]} max={100} step={1} className="[&_[role=slider]]:bg-primary" />
                  </div>
 
                  <div className="space-y-4">
                     <div className="flex justify-between text-[10px] uppercase font-bold text-muted-foreground">
-                       <span>Speed</span>
-                       <span className="text-indigo-400">Normal</span>
+                       <span>Playback Velocity</span>
+                       <span className="text-indigo-400">Standard</span>
                     </div>
                     <Slider defaultValue={[50]} max={100} step={1} className="[&_[role=slider]]:bg-indigo-600" />
                  </div>
               </div>
 
               <div className="pt-10 border-t border-white/10 space-y-6">
-                 <h4 className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Frame Ka Size</h4>
+                 <h4 className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Canvas Aspect Ratio</h4>
                  <div className="grid grid-cols-2 gap-4">
                     {['9:16', '16:9'].map((ratio) => (
                       <button 
                         key={ratio} 
                         className={cn("h-16 flex items-center justify-center rounded-xl border transition-all text-xs font-bold", ratio === '9:16' ? "border-primary bg-primary/10 text-white" : "border-white/5 bg-white/[0.02] text-muted-foreground")}
                       >
-                         {ratio === '9:16' ? "Mobile (Reels)" : "Cinema (YT)"}
+                         {ratio === '9:16' ? "Mobile Reels" : "Cinematic 16:9"}
                       </button>
                     ))}
                  </div>
@@ -457,14 +456,14 @@ function EditorContent() {
               <div className="bg-amber-500/10 border border-amber-500/20 p-4 rounded-xl flex gap-3">
                  <HelpCircle className="w-5 h-5 text-amber-500 shrink-0" />
                  <p className="text-[10px] text-amber-200 leading-relaxed italic">
-                    <b>Tip:</b> Agar AI video pasand na aaye, toh prompt badal kar firse "Render" dabayein.
+                    <b>Tip:</b> If the AI visuals aren't matching your vision, refine the prompt and trigger a new render sequence.
                  </p>
               </div>
            </div>
         </div>
       </div>
 
-      {/* 🔮 AI LOADING OVERLAY */}
+      {/* 🔮 AI PROCESSING OVERLAY */}
       {isProcessing && (
         <div className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-xl flex items-center justify-center animate-in fade-in duration-500">
            <div className="text-center space-y-12">
@@ -475,8 +474,8 @@ function EditorContent() {
                  </div>
               </div>
               <div className="space-y-4">
-                 <h2 className="text-4xl font-headline font-bold text-white tracking-tighter uppercase leading-none">AI Jaadu Kar Raha Hai...</h2>
-                 <p className="text-lg text-muted-foreground italic font-medium opacity-60">Bas kuch hi seconds mein aapki video taiyar ho jayegi.</p>
+                 <h2 className="text-4xl font-headline font-bold text-white tracking-tighter uppercase leading-none">Neural Magic in Progress...</h2>
+                 <p className="text-lg text-muted-foreground italic font-medium opacity-60">Synchronizing AI engines for your cinematic sequence.</p>
               </div>
            </div>
         </div>

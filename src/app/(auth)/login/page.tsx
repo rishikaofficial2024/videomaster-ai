@@ -42,7 +42,6 @@ function LoginForm() {
       });
       router.push(returnUrl);
     } catch (error: any) {
-      // Logic for handling common Firebase Auth errors
       let errorMessage = "Invalid email or password. Please try again.";
       
       if (error.code === 'auth/user-not-found') {
@@ -196,7 +195,7 @@ export default function LoginPage() {
         <div className="bg-white/5 border border-white/5 p-4 rounded-2xl flex items-start gap-4 animate-in slide-in-from-bottom-2 duration-700">
            <AlertCircle className="w-5 h-5 text-primary shrink-0 mt-0.5" />
            <p className="text-xs text-muted-foreground italic leading-relaxed">
-             <b>Dhyan Dein:</b> Agar login fail ho raha hai, toh check karein ki aapne pehle upar <b>"Create Account"</b> se Signup kiya hai ya nahi. Signup ke bina entry nahi milegi.
+             <b>Security Tip:</b> If your login fails consistently, please ensure you have registered via <b>"Create Account"</b> first. Unauthorized access is blocked by default.
            </p>
         </div>
       </div>

@@ -24,7 +24,7 @@ export default function BuildStatusPage() {
   }, []);
 
   const steps = [
-    { id: 1, label: "Neural Code Sync", icon: Globe, status: "completed" },
+    { id: 1, label: "Neural Code Synchronization", icon: Globe, status: "completed" },
     { id: 2, label: "Cloud Factory Handshake", icon: Tornado, status: "completed" },
     { id: 3, label: "Android Resource Encoding", icon: Box, status: buildStep >= 3 ? "completed" : "active" },
     { id: 4, label: "APK Artifact Generation", icon: Smartphone, status: buildStep >= 4 ? "completed" : "pending" },
@@ -36,13 +36,13 @@ export default function BuildStatusPage() {
       
       <main className="max-w-4xl mx-auto p-6 mt-20 space-y-12">
         <header className="space-y-4 text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-1 bg-primary/10 rounded-full border border-primary/20 text-primary text-[10px] font-bold uppercase tracking-[0.3em] mb-4">
-             <Sparkles className="w-3 h-3" /> Magic APK Engine Active
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-primary/10 rounded-full border border-primary/20 text-primary text-[10px] font-bold uppercase tracking-[0.3em] mb-4">
+             <Sparkles className="w-3 h-3" /> Master Build Engine Active
           </div>
           <h1 className="text-5xl md:text-8xl font-headline font-bold text-white tracking-tighter leading-none">
             Build <span className="text-primary italic">Pulse</span>
           </h1>
-          <p className="text-muted-foreground text-xl font-medium italic">Checking your cloud factory for the latest APK.</p>
+          <p className="text-muted-foreground text-xl font-medium italic">Querying cloud factory for the latest APK artifact.</p>
         </header>
 
         <section className="grid gap-8">
@@ -68,7 +68,7 @@ export default function BuildStatusPage() {
                           s.status === 'completed' ? "text-white" : "text-muted-foreground"
                         )}>{s.label}</h4>
                         <p className="text-xs text-muted-foreground italic font-medium">
-                           {s.status === 'completed' ? "Protocol Verified ✅" : s.status === 'active' ? "Processing Node..." : "Waiting for Sequence..."}
+                           {s.status === 'completed' ? "Protocol Verified ✅" : s.status === 'active' ? "Processing Sequence..." : "Waiting for Authorization..."}
                         </p>
                      </div>
                      {s.status === 'completed' && <CheckCircle2 className="w-6 h-6 text-emerald-500" />}
@@ -78,12 +78,12 @@ export default function BuildStatusPage() {
 
              <div className="pt-12 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-10">
                 <div className="text-center md:text-left">
-                   <h3 className="text-3xl font-bold text-white font-headline tracking-tight uppercase">FACTORY LINK READY</h3>
-                   <p className="text-sm text-muted-foreground italic opacity-60">Click below to see build logs and download the APK artifact.</p>
+                   <h3 className="text-3xl font-bold text-white font-headline tracking-tight uppercase">ARTIFACT DOWNLOAD READY</h3>
+                   <p className="text-sm text-muted-foreground italic opacity-60">Redirect to the cloud repository to download your production APK.</p>
                 </div>
                 <Button className="h-20 px-16 rounded-[2rem] bg-emerald-600 hover:bg-emerald-700 font-black text-xl gap-4 shadow-[0_20px_50px_rgba(5,150,105,0.4)] group hover:scale-105 transition-all" asChild>
                    <a href={githubLink} target="_blank">
-                      <Download className="w-8 h-8 group-hover:bounce" /> GO TO DOWNLOAD PAGE
+                      <Download className="w-8 h-8 group-hover:bounce" /> ACCESS DOWNLOAD PORTAL
                    </a>
                 </Button>
              </div>
@@ -95,19 +95,19 @@ export default function BuildStatusPage() {
                    <Wand2 className="w-10 h-10 text-primary" />
                 </div>
                 <div className="space-y-2 text-center md:text-left">
-                   <h4 className="text-2xl font-bold font-headline text-white uppercase tracking-tight">How it works (Jaadu)</h4>
-                   <p className="text-lg text-muted-foreground italic leading-relaxed">Jab aap terminal mein command chalate hain, GitHub ek naya APK bana kar wahan rakh deta hai.</p>
+                   <h4 className="text-2xl font-bold font-headline text-white uppercase tracking-tight">Automation Protocol</h4>
+                   <p className="text-lg text-muted-foreground italic leading-relaxed">When the terminal command is executed, GitHub Actions compiles a fresh APK artifact automatically.</p>
                 </div>
              </div>
              <Button variant="outline" className="h-16 px-10 rounded-2xl border-white/10 text-white font-bold text-lg" asChild>
-                <Link href="/APK_GUIDE.md">Read Steps</Link>
+                <Link href="/APK_GUIDE.md">View Documentation</Link>
              </Button>
           </Card>
         </section>
 
         <div className="text-center pt-10">
            <Link href="/dashboard" className="text-[12px] font-black text-muted-foreground hover:text-primary uppercase tracking-[0.6em] transition-all">
-              <ArrowLeft className="inline w-4 h-4 mr-3" /> Wapas Dashboard Par Chalo
+              <ArrowLeft className="inline w-4 h-4 mr-3" /> Return to Creative Hub
            </Link>
         </div>
       </main>

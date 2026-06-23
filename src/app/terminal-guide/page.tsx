@@ -28,10 +28,10 @@ export default function TerminalGuidePage() {
             <ArrowLeft className="w-4 h-4" /> Back to Studio
           </Link>
           <h1 className="text-5xl md:text-8xl font-headline font-bold text-white tracking-tighter">
-            Terminal <span className="text-primary italic">Finder</span>
+            Terminal <span className="text-primary italic">Navigator</span>
           </h1>
           <p className="text-muted-foreground text-xl font-medium italic text-red-500 animate-pulse">
-            ⚠️ DO NOT LEAVE THIS TAB. The Terminal is already inside your screen!
+            ⚠️ DO NOT NAVIGATE AWAY. The Terminal is integrated within this interface!
           </p>
         </header>
 
@@ -40,8 +40,8 @@ export default function TerminalGuidePage() {
           <div className="absolute -inset-4 bg-primary/20 blur-3xl rounded-full opacity-50" />
           <Card className="rounded-[4rem] bg-[#0a0d14] border-2 border-primary/50 p-10 space-y-12 relative overflow-hidden shadow-[0_0_100px_rgba(59,130,246,0.2)]">
              <div className="text-center space-y-2">
-                <h3 className="text-3xl font-bold font-headline text-white uppercase tracking-tight">MOBILE SIMULATOR (Dhyan Se)</h3>
-                <p className="text-muted-foreground italic">Follow the arrows to find the "Black Box":</p>
+                <h3 className="text-3xl font-bold font-headline text-white uppercase tracking-tight">MOBILE SIMULATOR</h3>
+                <p className="text-muted-foreground italic">Follow the visual cues to locate the integrated Terminal:</p>
              </div>
 
              <div className="grid md:grid-cols-2 gap-16 items-center">
@@ -52,7 +52,7 @@ export default function TerminalGuidePage() {
                             <div className="p-1.5 bg-red-600 rounded-lg border border-white animate-bounce shadow-xl shadow-red-600/50">
                                <Menu className="w-5 h-5 text-white" />
                             </div>
-                            <div className="absolute -right-20 top-0 bg-red-600 text-white text-[10px] font-black px-2 py-1 rounded-full whitespace-nowrap shadow-2xl">CLICK ≡ FIRST</div>
+                            <div className="absolute -right-20 top-0 bg-red-600 text-white text-[10px] font-black px-2 py-1 rounded-full whitespace-nowrap shadow-2xl">TAP MENU FIRST</div>
                          </div>
                          <div className="text-[10px] font-bold text-white/40 uppercase tracking-widest">FIREBASE STUDIO</div>
                          <div className="w-5 h-5 rounded-full bg-white/5" />
@@ -88,19 +88,19 @@ export default function TerminalGuidePage() {
                      { 
                        num: "1", 
                        title: "TOP-LEFT MENU (≡)", 
-                       desc: "Browser ke sabse upar baayein kone mein 3 horizontal lines hain. Unhe click karein.",
+                       desc: "Tap the 3 horizontal lines at the very top-left corner of your browser screen.",
                        icon: Menu
                      },
                      { 
                        num: "2", 
-                       title: "TERMINAL > NEW", 
-                       desc: "Menu ke andar 'Terminal' par click karein, fir 'New Terminal' select karein.",
+                       title: "SELECT TERMINAL", 
+                       desc: "Within the menu, scroll to 'Terminal' and select 'New Terminal'.",
                        icon: Terminal
                      },
                      { 
                        num: "3", 
-                       title: "PASTE & GO", 
-                       desc: "Niche jo 'Black Box' khulega wahan command paste karke Enter/Go dabayein.",
+                       title: "PASTE COMMAND", 
+                       desc: "A black box will appear at the bottom. Long-press to paste and hit 'Go'.",
                        icon: Smartphone
                      }
                    ].map((step, i) => (
@@ -126,22 +126,22 @@ export default function TerminalGuidePage() {
           <Card className="rounded-[3rem] bg-rose-500/10 border-2 border-rose-500/40 p-10 space-y-6">
              <div className="flex items-center gap-4 text-rose-500">
                 <XCircle className="w-14 h-14" />
-                <h3 className="text-4xl font-bold font-headline uppercase tracking-tighter">Nodejs.org par MAT JAIYE</h3>
+                <h3 className="text-4xl font-bold font-headline uppercase tracking-tighter">EXTERNAL TOOLS NOT REQUIRED</h3>
              </div>
              <p className="text-xl text-muted-foreground italic leading-relaxed">
-                Bhaai, Node.js download karne ke liye kisi doosri website par jaane ki zaroorat nahi hai. Sab kuch aapke isi browser tab mein pehle se hai. Bas **Top-Left Menu** kholein aur **Terminal** chalu karein.
+                You do not need to download Node.js from external sites. The entire production environment is pre-configured within this browser tab. Simply use the <b>Top-Left Menu</b> to launch the <b>Terminal</b>.
              </p>
           </Card>
         </section>
 
         <section className="space-y-6 pt-10">
            <div className="text-center">
-              <span className="text-[12px] font-black text-primary uppercase tracking-[0.6em] animate-pulse">Copy this Magic command</span>
+              <span className="text-[12px] font-black text-primary uppercase tracking-[0.6em] animate-pulse">Copy Master Command</span>
            </div>
            <div className="p-10 bg-black rounded-[4rem] border-2 border-primary/50 font-mono text-primary text-3xl md:text-5xl font-black text-center shadow-[0_0_80px_rgba(59,130,246,0.3)] flex flex-col items-center gap-10 group">
              <span className="tracking-tighter">npm run mobile:push</span>
              <Button onClick={copyCommand} className="rounded-full h-24 px-20 font-black gap-6 text-2xl shadow-2xl shadow-primary/40 hover:scale-105 active:scale-95 transition-all bg-primary">
-                <Copy className="w-10 h-10" /> COPY & CLOSE GUIDE
+                <Copy className="w-10 h-10" /> COPY & CLOSE
              </Button>
            </div>
         </section>
