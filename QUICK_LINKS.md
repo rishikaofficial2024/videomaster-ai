@@ -1,10 +1,11 @@
+
 # 🚀 VideoMaster AI: Elite Link Hub
 
 Use these links to manage and deploy your professional studio.
 
 ### 🌐 Live Production Links
 *   **Studio Link (Web)**: [https://studio-9489287013-59986.web.app](https://studio-9489287013-59986.web.app)
-*   **Branded Domain**: `https://videomaster-ai.tech` (Requires DNS Setup)
+*   **Branded Domain**: `https://videomaster-ai.tech`
 
 ### 🛠️ Primary Action: Fix "Site Not Found" Error
 To activate your live link and upload `app-ads.txt` for Google AdSense, run this in the **Terminal**:
@@ -21,4 +22,4 @@ npm run web:deploy
 *   **Authorized Domains**: [Add videomaster-ai.tech here](https://console.firebase.google.com/project/studio-9489287013-59986/authentication/settings)
 *   **Monetization Review**: [Check AdSense Status](https://adsense.google.com)
 
-**Important**: Run `npm run web:deploy` whenever you want your website updates to be visible to global users. 🚀💰💎
+**Important**: Always run `npm run web:deploy` after making changes to ensure the live link is updated. 🚀💰💎
