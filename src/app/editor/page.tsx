@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect, useRef, Suspense } from "react";
@@ -418,7 +419,7 @@ function EditorContent() {
                       <Type className="w-8 h-8 text-primary" />
                    </div>
                    <div className="space-y-2">
-                      <h4 className="text-xs font-black uppercase tracking-widest text-white">Generate Subtitles</h4>
+                      h4 className="text-xs font-black uppercase tracking-widest text-white">Generate Subtitles</h4>
                       <p className="text-[10px] text-muted-foreground italic px-6">Click to analyze audio tracks and generate synced subtitles.</p>
                    </div>
                    <Button className="w-full h-12 rounded-xl bg-white/5 border border-white/10 font-bold text-[10px] uppercase tracking-widest hover:bg-primary transition-all" onClick={handleAutoCaption} disabled={isProcessing}>

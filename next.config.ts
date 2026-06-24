@@ -2,8 +2,8 @@
 import type {NextConfig} from 'next';
 
 const nextConfig: NextConfig = {
-  // Required for generating static assets for Capacitor APK build
-  output: 'export', 
+  // FIXED: Removed output: 'export' to resolve conflict with middleware.ts during dev server start.
+  // Add this back ONLY when generating static assets for Capacitor APK build.
   images: {
     unoptimized: true, 
     remotePatterns: [
