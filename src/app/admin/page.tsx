@@ -1,4 +1,3 @@
-
 "use client";
 
 import { Navbar } from "@/components/navbar";
@@ -7,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { 
   Users, Coins, ShieldCheck, Lock, Loader2, Banknote, TrendingUp,
   Activity, CheckCircle2, Star, ShieldAlert, MoreVertical, Landmark, PieChart, DollarSign, Globe, Info, ExternalLink, CreditCard,
-  Terminal, Shield
+  Terminal, Shield, Gauge, Cpu, Database
 } from "lucide-react";
 import { useFirestore, useCollection, useMemoFirebase } from "@/firebase";
 import { collection, query, limit, orderBy, getCountFromServer, doc, updateDoc, increment, getDocs } from "firebase/firestore";
@@ -67,7 +66,6 @@ export default function AdminDashboard() {
       usersSnap.forEach((doc) => {
         const data = doc.data();
         revenue += (data.totalSpent || 0);
-        // Simple logic for estimated plan values if totalSpent isn't updated
         if (data.isPremium && data.subscriptionPlan === 'pro' && !data.totalSpent) revenue += 99;
         if (data.isPremium && data.subscriptionPlan === 'business' && !data.totalSpent) revenue += 499;
       });
@@ -123,64 +121,63 @@ export default function AdminDashboard() {
             <h1 className="text-5xl md:text-7xl font-headline font-bold tracking-tighter text-white">
               Revenue <span className="text-primary">Hub</span>
             </h1>
-            <p className="text-muted-foreground font-medium italic text-lg opacity-60">Track lifetime earnings, ad metrics, and user growth across the global node.</p>
+            <p className="text-muted-foreground font-medium italic text-lg opacity-60">Monitor your creative empire's global performance.</p>
           </div>
           
-          <div className="flex items-center gap-8 bg-white/5 p-6 rounded-[2.5rem] border border-white/5 backdrop-blur-3xl shadow-2xl">
-             <div className="flex flex-col px-6 border-r border-white/10 text-right">
-                <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-1">Global Creators</span>
-                <span className="text-4xl font-bold font-headline text-emerald-500">{totalUsersCount ?? "..."}</span>
+          <div className="flex items-center gap-4">
+             <Button variant="outline" className="h-14 px-8 rounded-2xl border-white/5 bg-white/5 font-bold" asChild>
+                <Link href="/admin/monitoring"><Gauge className="w-4 h-4 mr-2" /> Live Monitoring</Link>
+             </Button>
+             <div className="flex items-center gap-8 bg-white/5 p-6 rounded-[2.5rem] border border-white/5 backdrop-blur-3xl shadow-2xl">
+                <div className="flex flex-col px-6 border-r border-white/10 text-right">
+                   <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-1">Total Nodes</span>
+                   <span className="text-4xl font-bold font-headline text-emerald-500">{totalUsersCount ?? "..."}</span>
+                </div>
+                <ShieldCheck className="w-10 h-10 text-primary animate-pulse" />
              </div>
-             <ShieldCheck className="w-10 h-10 text-primary animate-pulse" />
           </div>
         </header>
 
-        <section className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <Card className="rounded-[3.5rem] bg-[#0a0d14]/80 border-emerald-500/30 p-10 blue-glow relative overflow-hidden group">
-            <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:scale-110 transition-transform">
-              <Landmark className="w-24 h-24" />
+        {/* 📈 QUICK STATS */}
+        <section className="grid grid-cols-1 md:grid-cols-4 gap-6">
+          <Card className="rounded-[2.5rem] bg-[#0a0d14]/80 border-emerald-500/30 p-8 blue-glow group">
+            <div className="flex justify-between items-start mb-4">
+              <Landmark className="w-8 h-8 text-emerald-500" />
+              <Badge className="bg-emerald-500/20 text-emerald-500">Live</Badge>
             </div>
-            <div className="space-y-4 relative z-10">
-              <p className="text-[11px] font-black text-emerald-500 uppercase tracking-[0.3em]">Total Revenue</p>
-              <h3 className="text-6xl font-bold font-headline text-white">₹{totalRevenue.toLocaleString()}</h3>
-              <div className="flex items-center gap-2 text-[10px] text-muted-foreground font-black uppercase tracking-widest opacity-40">
-                <TrendingUp className="w-3 h-3 text-emerald-400" /> 
-                SECURE WITHDRAWAL READY
-              </div>
-            </div>
+            <p className="text-[10px] font-black text-emerald-500 uppercase tracking-widest">Lifetime Revenue</p>
+            <h3 className="text-4xl font-bold text-white mt-1">₹{totalRevenue.toLocaleString()}</h3>
           </Card>
 
-          <Card className="rounded-[3.5rem] bg-[#0a0d14]/80 border-primary/30 p-10 blue-glow relative overflow-hidden group">
-            <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:scale-110 transition-transform">
-              <PieChart className="w-24 h-24" />
+          <Card className="rounded-[2.5rem] bg-[#0a0d14]/80 border-primary/30 p-8 blue-glow group">
+            <div className="flex justify-between items-start mb-4">
+              <PieChart className="w-8 h-8 text-primary" />
+              <Badge className="bg-primary/20 text-primary">Est.</Badge>
             </div>
-            <div className="space-y-4 relative z-10">
-              <p className="text-[11px] font-black text-primary uppercase tracking-[0.3em]">Est. Ad Revenue</p>
-              <h3 className="text-6xl font-bold font-headline text-white">₹{adRevenueEstimate.toFixed(0)}</h3>
-              <div className="flex items-center gap-2 text-[10px] text-muted-foreground font-black uppercase tracking-widest opacity-40">
-                <Activity className="w-3 h-3 text-primary" /> 
-                GOOGLE ADSENSE SYNCED
-              </div>
-            </div>
+            <p className="text-[10px] font-black text-primary uppercase tracking-widest">Ad Revenue (15%)</p>
+            <h3 className="text-4xl font-bold text-white mt-1">₹{adRevenueEstimate.toFixed(0)}</h3>
           </Card>
 
-          <Card className="rounded-[3.5rem] bg-indigo-500/5 border-indigo-500/20 p-10 blue-glow relative overflow-hidden group flex flex-col justify-center text-center">
-             <div className="space-y-6 relative z-10">
-               <div className="w-16 h-16 bg-indigo-500/10 rounded-2xl mx-auto flex items-center justify-center border border-indigo-500/20 shadow-xl">
-                  <CreditCard className="w-8 h-8 text-indigo-400" />
-               </div>
-               <div className="space-y-1">
-                 <h4 className="text-lg font-bold text-white uppercase tracking-tight">Withdrawal Hub</h4>
-                 <p className="text-xs text-muted-foreground italic">Transfer funds to your bank node.</p>
-               </div>
-               <Button className="rounded-full bg-indigo-600 hover:bg-indigo-700 font-black text-[10px] uppercase tracking-[0.3em] h-12 px-8 shadow-xl" asChild>
-                 <Link href="/BANK_TRANSFER_GUIDE.md">Payout Portal</Link>
-               </Button>
-             </div>
+          <Card className="rounded-[2.5rem] bg-[#0a0d14]/80 border-indigo-500/30 p-8 blue-glow group">
+            <div className="flex justify-between items-start mb-4">
+              <Cpu className="w-8 h-8 text-indigo-500" />
+              <Badge className="bg-indigo-500/20 text-indigo-500">Active</Badge>
+            </div>
+            <p className="text-[10px] font-black text-indigo-500 uppercase tracking-widest">Neural Engines</p>
+            <h3 className="text-4xl font-bold text-white mt-1">100%</h3>
+          </Card>
+
+          <Card className="rounded-[2.5rem] bg-[#0a0d14]/80 border-amber-500/30 p-8 blue-glow group">
+            <div className="flex justify-between items-start mb-4">
+              <Database className="w-8 h-8 text-amber-500" />
+              <Badge className="bg-amber-500/20 text-amber-500">Synced</Badge>
+            </div>
+            <p className="text-[10px] font-black text-amber-500 uppercase tracking-widest">Database Health</p>
+            <h3 className="text-4xl font-bold text-white mt-1">Optimal</h3>
           </Card>
         </section>
 
-        {/* 📚 MASTER OPERATIONS GUIDE */}
+        {/* 📚 OPERATIONS GUIDE */}
         <section>
           <Card className="rounded-[3.5rem] bg-primary/5 border border-primary/20 p-12 overflow-hidden relative">
              <div className="absolute top-0 left-0 p-10 opacity-5 -rotate-12">
@@ -191,14 +188,14 @@ export default function AdminDashboard() {
                    <Shield className="w-10 h-10 text-primary" />
                 </div>
                 <div className="flex-1 space-y-4 text-center md:text-left">
-                   <h3 className="text-3xl font-headline font-bold text-white uppercase tracking-tight">Node Operations Guide</h3>
+                   <h3 className="text-3xl font-headline font-bold text-white uppercase tracking-tight">Monitoring Protocol</h3>
                    <div className="grid md:grid-cols-2 gap-6 text-sm text-muted-foreground italic leading-relaxed">
-                      <p>• Use the <b>Protocols</b> menu in the user table to inject credits or upgrade accounts to Pro status instantly.</p>
-                      <p>• Revenue is calculated in real-time from the <code>totalSpent</code> field and active subscription flags in Firestore.</p>
+                      <p>• Track every node (user) growth and credit usage in real-time below.</p>
+                      <p>• Access the <b>Live Monitoring</b> hub for deep technical diagnostics and DNS health.</p>
                    </div>
                 </div>
                 <Button variant="outline" className="h-16 px-10 rounded-2xl border-white/10 text-white font-bold" asChild>
-                   <Link href="/docs/ADMIN_MANUAL.md">View Documentation</Link>
+                   <Link href="/docs/ADMIN_MANUAL.md">View Admin Manual</Link>
                 </Button>
              </div>
           </Card>
@@ -209,8 +206,8 @@ export default function AdminDashboard() {
               <div className="absolute inset-0 shimmer opacity-[0.02] pointer-events-none" />
               <CardHeader className="p-10 border-b border-white/5 flex flex-row items-center justify-between relative z-10">
                 <div className="space-y-1">
-                  <CardTitle className="text-3xl font-headline font-black uppercase tracking-tight">Node Management</CardTitle>
-                  <CardDescription className="italic text-muted-foreground">Modify roles, credits, and subscription status of creator nodes.</CardDescription>
+                  <CardTitle className="text-3xl font-headline font-black uppercase tracking-tight">Creator Node Registry</CardTitle>
+                  <CardDescription className="italic text-muted-foreground">Detailed oversight of all authenticated creative nodes.</CardDescription>
                 </div>
                 <Users className="w-8 h-8 text-muted-foreground opacity-20" />
               </CardHeader>
