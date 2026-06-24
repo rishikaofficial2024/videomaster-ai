@@ -146,10 +146,12 @@ function EditorContent() {
     if (!file) return;
 
     const url = URL.createObjectURL(file);
+    const type = file.type.startsWith('video') ? 'video' : file.type.startsWith('audio') ? 'audio' : 'image';
+    
     const newAsset: MediaAsset = {
       id: Math.random().toString(36).substring(7),
       url: url,
-      type: file.type.startsWith('video') ? 'video' : file.type.startsWith('audio') ? 'audio' : 'image',
+      type: type,
       name: file.name,
       duration: 5,
     };
@@ -232,6 +234,9 @@ function EditorContent() {
     handleSave({ mediaAssets: updated });
     toast({ title: "Audio Sync", description: `${track.title} added to secondary track.` });
   };
+
+  // Helper to determine if current videoData is an image or video
+  const isImageData = videoData && (videoData.startsWith('data:image') || videoData.includes('picsum.photos') || videoData.includes('unsplash.com'));
 
   if (!mounted) return null;
 
@@ -476,6 +481,8 @@ function EditorContent() {
                      </div>
                      <p className="text-xl font-bold uppercase tracking-[0.5em]">Sequence Monitor</p>
                   </div>
+                ) : isImageData ? (
+                  <img src={videoData} className="w-full h-full object-contain" alt="Sequence frame" />
                 ) : (
                   <video 
                     ref={videoRef} 
@@ -492,18 +499,20 @@ function EditorContent() {
                    <span className="text-[9px] font-black text-white/80 uppercase tracking-widest">LIVE HUD FEED</span>
                 </div>
 
-                <div className="absolute inset-x-0 bottom-10 flex justify-center opacity-0 group-hover:opacity-100 transition-all duration-700">
-                   <div className="bg-[#05070a]/90 backdrop-blur-3xl px-12 py-5 rounded-[2.5rem] border border-white/10 flex items-center gap-16 shadow-[0_30px_60px_rgba(0,0,0,0.5)]">
-                      <button className="text-muted-foreground hover:text-primary transition-all active:scale-90" onClick={() => videoRef.current && (videoRef.current.currentTime -= 5)}><SkipBack size={28} /></button>
-                      <button 
-                        onClick={() => videoRef.current && (isPlaying ? videoRef.current.pause() : videoRef.current.play())} 
-                        className="h-20 w-20 rounded-full bg-primary text-white flex items-center justify-center hover:scale-110 active:scale-95 transition-all shadow-[0_0_30px_rgba(59,130,246,0.4)]"
-                      >
-                        {isPlaying ? <Pause size={32} fill="currentColor" /> : <Play size={32} fill="currentColor" className="ml-1.5" />}
-                      </button>
-                      <button className="text-muted-foreground hover:text-primary transition-all active:scale-90" onClick={() => videoRef.current && (videoRef.current.currentTime += 5)}><SkipForward size={28} /></button>
-                   </div>
-                </div>
+                {!isImageData && videoData && (
+                  <div className="absolute inset-x-0 bottom-10 flex justify-center opacity-0 group-hover:opacity-100 transition-all duration-700">
+                    <div className="bg-[#05070a]/90 backdrop-blur-3xl px-12 py-5 rounded-[2.5rem] border border-white/10 flex items-center gap-16 shadow-[0_30px_60px_rgba(0,0,0,0.5)]">
+                        <button className="text-muted-foreground hover:text-primary transition-all active:scale-90" onClick={() => videoRef.current && (videoRef.current.currentTime -= 5)}><SkipBack size={28} /></button>
+                        <button 
+                          onClick={() => videoRef.current && (isPlaying ? videoRef.current.pause() : videoRef.current.play())} 
+                          className="h-20 w-20 rounded-full bg-primary text-white flex items-center justify-center hover:scale-110 active:scale-95 transition-all shadow-[0_0_30px_rgba(59,130,246,0.4)]"
+                        >
+                          {isPlaying ? <Pause size={32} fill="currentColor" /> : <Play size={32} fill="currentColor" className="ml-1.5" />}
+                        </button>
+                        <button className="text-muted-foreground hover:text-primary transition-all active:scale-90" onClick={() => videoRef.current && (videoRef.current.currentTime += 5)}><SkipForward size={28} /></button>
+                    </div>
+                  </div>
+                )}
               </div>
            </div>
 

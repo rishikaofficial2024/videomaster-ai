@@ -6,7 +6,7 @@ import { Card } from "@/components/ui/card";
 import { 
   Plus, Sparkles, Loader2, Coins, 
   Play, History, LayoutTemplate, Zap,
-  ArrowRight, Activity, TrendingUp
+  ArrowRight
 } from "lucide-react";
 import Link from "next/link";
 import { useUser, useFirestore, useDoc, useMemoFirebase, useCollection } from "@/firebase";
