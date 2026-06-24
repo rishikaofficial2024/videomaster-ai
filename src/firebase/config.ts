@@ -1,4 +1,3 @@
-
 /**
  * Firebase configuration object for VideoMaster AI.
  * 
