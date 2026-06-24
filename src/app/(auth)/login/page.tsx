@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, Suspense } from "react";
@@ -7,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Video, Chrome, ArrowLeft, Loader2, Eye, EyeOff, ShieldCheck, UserCircle2, Zap } from "lucide-react";
+import { Video, Chrome, ArrowLeft, Loader2, Eye, EyeOff, ShieldCheck, UserCircle2, Zap, Crown } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { 
@@ -42,7 +41,7 @@ function LoginForm() {
       await signInWithEmailAndPassword(auth, email.trim(), password);
       toast({
         title: "Access Granted",
-        description: "Welcome back to the Studio.",
+        description: "Welcome back to the Free Pro Studio.",
       });
       router.push(returnUrl);
     } catch (error: any) {
@@ -60,7 +59,23 @@ function LoginForm() {
     try {
       setLoading(true);
       const provider = new GoogleAuthProvider();
-      await signInWithPopup(auth, provider);
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+      
+      const userRef = doc(db, "users", user.uid);
+      const docSnap = await getDoc(userRef);
+      if (!docSnap.exists()) {
+        await setDoc(userRef, {
+          email: user.email,
+          displayName: user.displayName,
+          isPremium: true,
+          isAdmin: false,
+          subscriptionPlan: "pro",
+          credits: 999999,
+          createdAt: new Date().toISOString()
+        }, { merge: true });
+      }
+
       router.push(returnUrl);
     } catch (error: any) {
       toast({ variant: "destructive", title: "Google Login Error", description: "Connection interrupted." });
@@ -81,16 +96,16 @@ function LoginForm() {
         await setDoc(userRef, {
           email: "guest-" + user.uid.slice(0, 5) + "@videomaster.ai",
           displayName: "Guest Creator",
-          isPremium: false,
+          isPremium: true,
           isAdmin: false,
-          subscriptionPlan: "free",
-          credits: 100,
+          subscriptionPlan: "pro",
+          credits: 999999,
           createdAt: new Date().toISOString(),
           isAnonymous: true
         }, { merge: true });
       }
 
-      toast({ title: "Guest Access Active", description: "100 FREE Credits assigned to guest node." });
+      toast({ title: "Guest Access Active", description: "Unlimited Free Pro Credits assigned." });
       router.push(returnUrl);
     } catch (error: any) {
       toast({ variant: "destructive", title: "Guest Access Failed", description: "Could not initialize anonymous node." });
@@ -103,12 +118,12 @@ function LoginForm() {
     <CardContent className="space-y-6">
       <Button 
         variant="default" 
-        className="w-full h-16 gap-3 bg-indigo-600 hover:bg-indigo-700 font-black rounded-2xl shadow-xl shadow-indigo-600/20 text-white uppercase tracking-widest text-xs" 
+        className="w-full h-16 gap-3 bg-primary hover:bg-primary/90 font-black rounded-2xl shadow-xl shadow-primary/20 text-white uppercase tracking-widest text-xs" 
         onClick={handleGuestEntry} 
         disabled={guestLoading || loading}
       >
-        {guestLoading ? <Loader2 className="animate-spin" /> : <Zap className="w-5 h-5 fill-current" />} 
-        Bina Password Entry (Guest)
+        {guestLoading ? <Loader2 className="animate-spin" /> : <Crown className="w-5 h-5 fill-current" />} 
+        Enter Free Pro Studio (Guest)
       </Button>
 
       <div className="relative">
@@ -194,8 +209,8 @@ export default function LoginPage() {
                 <Video className="w-8 h-8 text-primary" />
               </div>
             </div>
-            <CardTitle className="text-2xl font-bold font-headline text-white uppercase tracking-tight">Access Studio</CardTitle>
-            <CardDescription className="italic text-muted-foreground">Select your entry protocol</CardDescription>
+            <CardTitle className="text-2xl font-bold font-headline text-white uppercase tracking-tight">Access Free Studio</CardTitle>
+            <CardDescription className="italic text-muted-foreground">Select your free entry protocol</CardDescription>
           </CardHeader>
 
           <LoginWrapper />

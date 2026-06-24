@@ -7,7 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { 
   Settings, ChevronRight, Coins, LayoutTemplate, 
   Zap, LogOut, Loader2, Edit3, ShieldCheck, UserCircle,
-  HelpCircle, Star
+  HelpCircle, Star, Crown
 } from "lucide-react";
 import Link from "next/link";
 import { useUser, useFirestore, useDoc, useMemoFirebase } from "@/firebase";
@@ -78,9 +78,9 @@ export default function ProfilePage() {
 
   const menuItems = [
     { 
-      label: "Credit Center", 
-      icon: Coins, 
-      value: profile?.isPremium ? "∞" : (profile?.credits?.toFixed(0) || "0"), 
+      label: "Free Pro Studio", 
+      icon: Crown, 
+      value: "∞", 
       href: "/premium",
       color: "text-primary"
     },
@@ -117,9 +117,9 @@ export default function ProfilePage() {
       
       <div className="flex justify-between items-center p-8 pt-32">
         <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-white/5 rounded-full border border-white/10">
-           <ShieldCheck className={cn("w-3 h-3", profile?.isAdmin ? "text-red-500" : "text-primary")} />
+           <Crown className="w-3 h-3 text-primary" />
            <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
-             {profile?.isAdmin ? "Master Admin Node" : (profile?.isPremium ? "Premium Studio" : "Standard Node")}
+             UNLIMITED PRO CREATOR
            </span>
         </div>
         <Dialog open={isEditing} onOpenChange={setIsEditing}>
@@ -159,11 +159,9 @@ export default function ProfilePage() {
                   {profile?.displayName?.charAt(0) || "U"}
                 </AvatarFallback>
              </Avatar>
-             {profile?.isPremium && (
-               <div className="absolute bottom-2 right-2 bg-primary p-3 rounded-2xl shadow-xl shadow-primary/40 animate-float">
-                  <Star className="w-5 h-5 text-white fill-current" />
-               </div>
-             )}
+             <div className="absolute bottom-2 right-2 bg-primary p-3 rounded-2xl shadow-xl shadow-primary/40 animate-float">
+                <Crown className="w-5 h-5 text-white fill-current" />
+             </div>
           </div>
           <div className="text-center space-y-2">
             <h2 className="text-5xl font-headline font-bold text-white tracking-tighter">
@@ -208,7 +206,7 @@ export default function ProfilePage() {
         </Button>
 
         <div className="text-center pt-10">
-           <p className="text-[10px] text-muted-foreground uppercase tracking-[0.5em] font-bold opacity-20">VideoMaster AI • Build v1.5.0 Final</p>
+           <p className="text-[10px] text-muted-foreground uppercase tracking-[0.5em] font-bold opacity-20">VideoMaster AI • 100% Free Unlocked Build</p>
         </div>
       </main>
     </div>

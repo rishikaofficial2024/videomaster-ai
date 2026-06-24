@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState } from "react";
@@ -7,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Video, Chrome, Loader2, Eye, EyeOff, ArrowLeft, ShieldCheck, Zap } from "lucide-react";
+import { Video, Chrome, Loader2, Eye, EyeOff, ArrowLeft, ShieldCheck, Zap, Crown } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { 
   createUserWithEmailAndPassword, 
@@ -47,15 +46,15 @@ export default function SignupPage() {
       await setDoc(userRef, {
         email: user.email,
         displayName: fullName,
-        isPremium: false,
+        isPremium: true,
         isAdmin: false,
-        subscriptionPlan: "free",
-        credits: 100,
+        subscriptionPlan: "pro",
+        credits: 999999,
         createdAt: new Date().toISOString(),
         usageStats: { totalVideos: 0, aiGenerations: 0 }
       }, { merge: true });
       
-      toast({ title: "Welcome!", description: "100 FREE Credits added to your node." });
+      toast({ title: "Welcome!", description: "Unlimited Free Pro Credits unlocked." });
       router.push("/dashboard");
     } catch (error: any) {
       toast({ variant: "destructive", title: "Registration Alert", description: "Error during account creation." });
@@ -76,16 +75,16 @@ export default function SignupPage() {
         await setDoc(userRef, {
           email: "guest@videomaster.ai",
           displayName: "Guest Creator",
-          isPremium: false,
+          isPremium: true,
           isAdmin: false,
-          subscriptionPlan: "free",
-          credits: 100,
+          subscriptionPlan: "pro",
+          credits: 999999,
           createdAt: new Date().toISOString(),
           isAnonymous: true
         }, { merge: true });
       }
 
-      toast({ title: "Guest Protocol Active", description: "100 FREE Credits available." });
+      toast({ title: "Guest Protocol Active", description: "Unlimited Pro Credits available." });
       router.push("/dashboard");
     } catch (error: any) {
       toast({ variant: "destructive", title: "Guest Access Failed", description: "Connection interrupted." });
@@ -110,18 +109,18 @@ export default function SignupPage() {
                 <Video className="w-10 h-10 text-primary" />
               </div>
             </div>
-            <CardTitle className="text-2xl font-bold font-headline uppercase tracking-tight">Join Studio</CardTitle>
-            <CardDescription className="italic">Start creating with 100 FREE Credits</CardDescription>
+            <CardTitle className="text-2xl font-bold font-headline uppercase tracking-tight">Join Free Studio</CardTitle>
+            <CardDescription className="italic">Start creating with Unlimited Free Credits</CardDescription>
           </CardHeader>
 
           <CardContent className="space-y-6">
             <Button 
-              className="w-full h-16 gap-3 bg-indigo-600 hover:bg-indigo-700 font-black rounded-2xl shadow-xl shadow-indigo-600/20 text-xs uppercase tracking-[0.2em]" 
+              className="w-full h-16 gap-3 bg-primary hover:bg-primary/90 font-black rounded-2xl shadow-xl shadow-primary/20 text-xs uppercase tracking-[0.2em]" 
               onClick={handleGuestEntry} 
               disabled={guestLoading || loading}
             >
-              {guestLoading ? <Loader2 className="animate-spin" /> : <Zap className="w-5 h-5 fill-current" />} 
-              Quick Start (No Password)
+              {guestLoading ? <Loader2 className="animate-spin" /> : <Crown className="w-5 h-5 fill-current" />} 
+              Enter Free Pro Studio (Guest)
             </Button>
 
             <div className="relative">
@@ -148,7 +147,7 @@ export default function SignupPage() {
                 </div>
               </div>
               <Button type="submit" className="w-full h-14 font-black uppercase tracking-widest rounded-xl" disabled={loading || guestLoading}>
-                {loading ? <Loader2 className="animate-spin" /> : "Get Started"}
+                {loading ? <Loader2 className="animate-spin" /> : "Get Started Free"}
               </Button>
             </form>
           </CardContent>

@@ -37,16 +37,16 @@ export default function LandingPage() {
         await setDoc(userRef, {
           email: "guest@videomaster-ai.tech",
           displayName: "Guest Creator",
-          isPremium: false,
+          isPremium: true,
           isAdmin: false,
-          subscriptionPlan: "free",
-          credits: 100,
+          subscriptionPlan: "pro",
+          credits: 999999,
           createdAt: new Date().toISOString(),
           isAnonymous: true
         }, { merge: true });
       }
 
-      toast({ title: "Welcome Guest!", description: "100 FREE Credits assigned to your node." });
+      toast({ title: "Welcome Guest!", description: "100% Free Pro Access Active." });
       router.push("/dashboard");
     } catch (error: any) {
       toast({ variant: "destructive", title: "Entry Failed", description: "Could not initialize Gemini Fast AI link." });
@@ -79,23 +79,23 @@ export default function LandingPage() {
           
           <div className="container px-6 mx-auto">
             <div className="flex flex-col items-center text-center space-y-12 mb-28">
-              <div className="inline-flex items-center gap-3 px-6 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-bold uppercase tracking-[0.4em] animate-pulse">
-                <Gift className="w-4 h-4" /> 100 FREE CREDITS FOR GUESTS
+              <div className="inline-flex items-center gap-3 px-6 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-bold uppercase tracking-[0.4em]">
+                <Sparkles className="w-4 h-4" /> 100% FREE PRO ACCESS FOR EVERYONE
               </div>
               
               <h1 className="text-6xl md:text-[10rem] font-bold tracking-tighter font-headline max-w-7xl leading-[0.85] uppercase">
-                Gemini <span className="text-primary italic">Studio.</span>
+                Free <span className="text-primary italic">Studio.</span>
               </h1>
               
               <p className="max-w-3xl text-muted-foreground text-xl md:text-3xl font-medium leading-relaxed italic">
-                Experience high-speed video production. Enter as a guest and claim your <span className="text-white font-bold">100 FREE credits</span> instantly.
+                Experience high-speed video production without limits. Enter as a guest and claim <span className="text-white font-bold">Full Pro Access</span> for free.
               </p>
 
               <div className="flex flex-col items-center gap-8 w-full max-w-3xl mx-auto">
                 <div className="flex flex-col sm:flex-row gap-6 w-full justify-center">
                   <Button onClick={handleGuestEntry} disabled={loading} size="lg" className="h-24 px-16 rounded-[2.5rem] text-2xl font-black uppercase tracking-tight shadow-2xl shadow-indigo-600/40 hover:scale-105 transition-all active:scale-95 bg-indigo-600 border-b-4 border-indigo-900 group">
                     {loading ? <Sparkles className="animate-spin mr-3" /> : <Zap className="mr-4 w-8 h-8 fill-current group-hover:animate-pulse" />}
-                    Skip Login & Enter
+                    Enter Free Studio
                   </Button>
                   
                   <Button asChild variant="outline" size="lg" className="h-24 px-12 rounded-[2.5rem] text-xl font-black uppercase tracking-tight bg-white/5 border-white/10 hover:bg-primary/20 hover:border-primary/50 transition-all group">
@@ -107,7 +107,7 @@ export default function LandingPage() {
                 </div>
 
                 <div className="flex items-center gap-4 text-[10px] font-black uppercase tracking-[0.5em] text-muted-foreground opacity-40">
-                  <ShieldCheck className="w-3 h-3" /> Fast AI Node Access Protocol Active
+                  <ShieldCheck className="w-3 h-3" /> Zero Cost Production Protocol Active
                 </div>
               </div>
             </div>
@@ -140,18 +140,18 @@ export default function LandingPage() {
             <div className="grid lg:grid-cols-2 gap-20 items-center">
                <div className="space-y-8">
                   <div className="inline-flex items-center gap-3 px-5 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-[10px] font-bold uppercase tracking-[0.3em]">
-                    <Coins className="w-4 h-4" /> ZERO FRICTION STUDIO
+                    <Crown className="w-4 h-4" /> UNLOCKED CREATIVE HUB
                   </div>
-                  <h2 className="text-5xl md:text-7xl font-bold font-headline tracking-tighter text-white">Start Creating <span className="text-indigo-400 italic">Immediately.</span></h2>
+                  <h2 className="text-5xl md:text-7xl font-bold font-headline tracking-tighter text-white">100% Free <span className="text-indigo-400 italic">Forever.</span></h2>
                   <p className="text-muted-foreground text-xl leading-relaxed italic">
-                    Launch Gemini Fast AI tools instantly. Enter as a guest, earn more credits by watching ads, and scale your channel.
+                    Launch Gemini Fast AI tools without any paywalls. Enter as a guest, enjoy unlimited credits, and scale your channel for free.
                   </p>
                   <ul className="space-y-6">
                      {[
-                       "Instant Guest Access (No Password)",
-                       "100 FREE Gemini Credits on Start",
-                       "Rewarded Credits for Ad Impressions",
-                       "Full access to Script & Motion Engines"
+                       "Instant Guest Access (No Password Required)",
+                       "Unlimited Pro Credits for All Users",
+                       "Unlocked 4K Exports & Premium Models",
+                       "Full Access to Script & Motion Engines"
                      ].map((feat, i) => (
                        <li key={i} className="flex items-center gap-4 text-white font-bold italic">
                           <Check className="w-6 h-6 text-emerald-500" /> {feat}
@@ -159,16 +159,16 @@ export default function LandingPage() {
                      ))}
                   </ul>
                   <Button onClick={handleGuestEntry} disabled={loading} size="lg" className="h-16 px-10 rounded-2xl bg-indigo-600 hover:bg-indigo-700 shadow-xl">
-                     Launch Gemini Node
+                     Get Started Free
                   </Button>
                </div>
                <div className="relative">
                   <div className="premium-card p-2 aspect-video bg-black/40 overflow-hidden blue-glow flex items-center justify-center rounded-[3rem]">
                      <div className="text-center space-y-4">
                         <div className="w-20 h-20 bg-primary/20 rounded-full flex items-center justify-center mx-auto animate-pulse">
-                           <Zap className="w-10 h-10 text-primary" />
+                           <Crown className="w-10 h-10 text-primary" />
                         </div>
-                        <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.4em]">Initializing Gemini Fast AI...</p>
+                        <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.4em]">Activating Unlimited Pro Mode...</p>
                         <div className="w-48 h-1 bg-white/10 rounded-full overflow-hidden mx-auto">
                            <div className="h-full bg-primary animate-progress" />
                         </div>
@@ -183,14 +183,14 @@ export default function LandingPage() {
           <div className="container px-6 mx-auto max-w-4xl">
              <div className="text-center mb-20">
                 <h2 className="text-5xl font-headline font-bold mb-4 uppercase tracking-tighter">Gemini <span className="text-primary">FAQ</span></h2>
-                <p className="text-muted-foreground italic tracking-widest text-xs font-black uppercase opacity-40">Zero Friction Protocol</p>
+                <p className="text-muted-foreground italic tracking-widest text-xs font-black uppercase opacity-40">Unlimited Access Protocol</p>
              </div>
              
              <Accordion type="single" collapsible className="space-y-4">
                 {[
-                  { q: "Is Gemini Fast AI free?", a: "Yes. Every new guest receives 100 free credits to explore our script and video synthesis tools." },
-                  { q: "Will I lose projects as a guest?", a: "Projects are stored in your device session. Sign in with Google to save them permanently to the Gemini Cloud." },
-                  { q: "How fast is Gemini Flash?", a: "Gemini 1.5 Flash is optimized for sub-second text generation and high-speed asset processing." }
+                  { q: "Is everything really free?", a: "Yes. All features, including 4K exports and premium AI generation, are 100% free for everyone." },
+                  { q: "Do I need to enter credit card details?", a: "No. You don't even need to create a password if you enter as a guest." },
+                  { q: "What is Gemini Fast AI?", a: "It is the world's most advanced AI engine, optimized for rapid video and script production." }
                 ].map((item, i) => (
                   <AccordionItem key={i} value={`item-${i}`} className="border-white/5 bg-white/5 rounded-3xl px-8 py-2">
                     <AccordionTrigger className="text-lg font-bold hover:no-underline hover:text-primary transition-colors uppercase tracking-tight">{item.q}</AccordionTrigger>
@@ -214,7 +214,7 @@ export default function LandingPage() {
              <Link href="/privacy" className="text-[10px] font-bold uppercase tracking-widest hover:text-primary">Privacy</Link>
              <Link href="/terms" className="text-[10px] font-bold uppercase tracking-widest hover:text-primary">Terms</Link>
           </div>
-          <p className="text-[9px] text-muted-foreground/30 font-black uppercase tracking-[0.8em]">Production Build v2.0.0 Gemini Ready</p>
+          <p className="text-[9px] text-muted-foreground/30 font-black uppercase tracking-[0.8em]">Production Build v2.0.0 Free Unlocked</p>
         </div>
       </footer>
     </div>

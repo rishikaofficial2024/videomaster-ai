@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, useEffect, useRef, Suspense } from "react";
@@ -217,8 +216,8 @@ function EditorContent() {
         </div>
 
         <Button className="h-14 px-10 rounded-xl font-black uppercase tracking-[0.2em] bg-primary shadow-glow text-[11px] gap-3">
-          {profile?.isPremium ? <Download className="w-5 h-5" /> : <Lock className="w-5 h-5" />}
-          Export Project
+          <Download className="w-5 h-5" />
+          Export Project (PRO)
         </Button>
       </div>
 
@@ -368,7 +367,7 @@ function EditorContent() {
               <div className="space-y-6 pt-6 border-t border-white/5">
                  <p className="text-[9px] font-black uppercase tracking-widest text-muted-foreground">Export Resolution</p>
                  <button className="w-full p-5 rounded-2xl bg-primary/10 border border-primary/40 flex items-center justify-between">
-                    <span className="text-xs font-bold text-primary uppercase tracking-tight">Elite 4K</span>
+                    <span className="text-xs font-bold text-primary uppercase tracking-tight">Elite 4K (PRO)</span>
                     <Crown className="w-3 h-3 text-primary fill-current" />
                  </button>
               </div>
