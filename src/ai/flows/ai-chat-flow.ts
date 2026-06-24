@@ -1,8 +1,7 @@
-
 'use server';
 /**
  * @fileOverview A robust Genkit AI chat assistant for creative guidance.
- * 🚀 FALLBACK: Integrated simulation mode to prevent "Neural Sync Error" when API key is missing.
+ * 🚀 PRODUCTION: Updated to latest Gemini Flash aliases.
  */
 
 import { ai, geminiModel, z } from '@/ai/genkit';
@@ -42,18 +41,17 @@ const aiChatFlow = ai.defineFlow(
         prompt: input.message,
       });
 
-      if (!text) throw new Error("Empty response from AI");
+      if (!text) throw new Error("Empty response from AI core.");
       return { response: text };
 
     } catch (e: any) {
       console.warn("⚠️ AI Core Offline/Busy. Initiating Strategy Simulation Mode...");
       
-      // 🛠️ FALLBACK SYSTEM: Smart predefined responses to keep the user engaged
       const fallbacks = [
         "Your creative node is active! I suggest focusing on a high-energy hook for your next reel to maximize retention.",
         "Neural sync is fluctuating, but my growth data suggests that sharing your AI-generated clips as 'Shorts' is the fastest way to 10k followers.",
         "Optimization Protocol: Always use high-contrast thumbnails (available in the Designer) to increase your click-through rate.",
-        "Strategic Tip: Use our Neural Assistant to generate 5 variations of your script and A/B test them on TikTok."
+        "Strategic Tip: Use our Gemini Assistant to generate 5 variations of your script and A/B test them on TikTok."
       ];
       
       return { 
