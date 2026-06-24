@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next'
 
 /**
- * 🛠️ FIXED: Static export requirement for Next.js 15
+ * 🛠️ FIXED: Explicit static export requirement for Next.js 15
  */
 export const dynamic = 'force-static'
 
