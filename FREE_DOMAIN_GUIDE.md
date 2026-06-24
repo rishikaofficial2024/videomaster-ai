@@ -1,4 +1,3 @@
-
 # 🌐 How to Get a Domain for FREE
 
 Your VideoMaster AI app is already live on a free domain provided by Firebase, but if you want a custom name without spending money, follow these professional methods:
