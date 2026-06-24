@@ -67,7 +67,7 @@ export default function Dashboard() {
     }, 1000);
     
     setTimeout(() => {
-      const updateData = { credits: increment(20) };
+      const updateData = { credits: increment(20), updatedAt: new Date().toISOString() };
       // Initiate background write for credits
       updateDoc(userProfileRef, updateData)
         .catch(async (err) => {

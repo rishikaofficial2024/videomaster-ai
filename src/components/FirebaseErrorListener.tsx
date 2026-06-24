@@ -14,8 +14,7 @@ export function FirebaseErrorListener() {
 
   useEffect(() => {
     const handlePermissionError = (error: FirestorePermissionError) => {
-      // We do not use console.error here as it triggers the development error overlay.
-      // Errors are handled visually via the toast component.
+      // Visual notification instead of console crash
       toast({
         variant: 'destructive',
         title: 'Access Restricted',

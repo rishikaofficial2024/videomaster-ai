@@ -23,10 +23,10 @@ service cloud.firestore {
       // Allow creation for own node
       allow create: if isOwner(userId);
                     
-      // Only owner can update metadata. 
-      // Sensitive billing/role fields (isAdmin, subscriptionPlan, isPremium) require admin clearance.
-      allow update: if isOwner(userId) && 
-                    (!request.resource.data.diff(resource.data).affectedKeys().hasAny(['isAdmin', 'subscriptionPlan', 'isPremium']) || isAdmin()); 
+      // Owner can update non-sensitive fields. Admin can update everything.
+      allow update: if isOwner(userId) && (
+        !request.resource.data.diff(resource.data).affectedKeys().hasAny(['isAdmin', 'subscriptionPlan', 'isPremium'])
+      ) || isAdmin();
       
       allow delete: if isAdmin();
       
