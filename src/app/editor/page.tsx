@@ -10,7 +10,7 @@ import {
   Trash2, Upload, Scissors, Film,
   Settings2, Type, Layout, Crown, Lock, Layers, Zap, Clock, Maximize, Move, Sliders,
   Target, Ghost, MonitorPlay, Pipette, HelpCircle, ArrowRight, Save, Volume2, Search,
-  HardDrive, Monitor, RefreshCcw
+  HardDrive, Monitor, RefreshCcw, Smartphone
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { generateAiVideo } from "@/ai/flows/ai-video-generation-flow";
