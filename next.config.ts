@@ -1,9 +1,8 @@
-
 import type {NextConfig} from 'next';
 
 const nextConfig: NextConfig = {
   // FIXED: Removed output: 'export' to resolve conflict with middleware.ts during dev server start.
-  // Add this back ONLY when generating static assets for Capacitor APK build.
+  // This ensures the local preview starts immediately without ENOENT errors.
   images: {
     unoptimized: true, 
     remotePatterns: [

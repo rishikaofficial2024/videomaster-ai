@@ -414,7 +414,7 @@ function EditorContent() {
                 </header>
 
                 <div className="p-10 border-2 border-dashed border-white/10 rounded-3xl bg-white/[0.01] text-center space-y-6">
-                   <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto border border-primary/20">
+                   <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto border-primary/20">
                       <Type className="w-8 h-8 text-primary" />
                    </div>
                    <div className="space-y-2">
