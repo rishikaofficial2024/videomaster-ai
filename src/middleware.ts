@@ -1,11 +1,2 @@
-/**
- * 🛠️ NEUTRALIZED: Middleware is disabled for Next.js 15 Static Export compatibility.
- * Next.js does not support middleware when using 'output: export'.
- */
-export default function middleware() {
-  return;
-}
-
-export const config = {
-  matcher: [],
-};
+// This file is intentionally left empty to resolve the conflict between Next.js 15 Static Export and Middleware.
+// Next.js does not support middleware.ts when 'output: export' is active in next.config.ts.
