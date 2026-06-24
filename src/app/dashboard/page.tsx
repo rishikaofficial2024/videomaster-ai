@@ -68,16 +68,23 @@ export default function Dashboard() {
     
     setTimeout(() => {
       const updateData = { credits: increment(20) };
-      updateDoc(userProfileRef, updateData).catch(async (err) => {
+      // Initiate background write for credits
+      updateDoc(userProfileRef, updateData)
+        .catch(async (err) => {
+          // Centrally handle the permission error if it occurs
           errorEmitter.emit('permission-error', new FirestorePermissionError({
             path: userProfileRef.path,
             operation: 'update',
             requestResourceData: updateData,
           } satisfies SecurityRuleContext));
         });
+
       setAdLoading(false);
       setShowAdOverlay(false);
-      toast({ title: "Credits Earned", description: "+20 AI Credits added to your node." });
+      toast({ 
+        title: "Credits Replenished", 
+        description: "+20 AI Credits added to your creative node." 
+      });
     }, 15000);
   };
 
