@@ -2,7 +2,7 @@
 import type {NextConfig} from 'next';
 
 const nextConfig: NextConfig = {
-  // ✅ PRODUCTION OPTIMIZED: Re-enabled static export for Capacitor and Firebase Hosting.
+  // ✅ PRODUCTION OPTIMIZED: Static export for Capacitor and Firebase Hosting.
   output: 'export',
   images: {
     unoptimized: true, 

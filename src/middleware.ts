@@ -1,8 +1,6 @@
 
 /**
- * 🛠️ PRODUCTION STABILIZED: Middleware neutralized.
- * Next.js static export does not support middleware.ts.
- * This is required for Capacitor Android APK builds and Firebase Hosting static deploys.
+ * 🛠️ FIXED: Middleware removed to support "output: export".
+ * Next.js does not allow middleware.ts when using static HTML export.
  */
 export const dynamic = 'force-static';
-export default function middleware() {}
