@@ -2,8 +2,7 @@
 import type {NextConfig} from 'next';
 
 const nextConfig: NextConfig = {
-  // ✅ STABILIZED FOR APK & WEB: Re-enabled static export for Capacitor compatibility.
-  // Middleware.ts has been removed to prevent conflict with this setting.
+  // ✅ STABILIZED FOR APK & WEB: Re-enabled static export for Capacitor and Firebase Hosting compatibility.
   output: 'export',
   images: {
     unoptimized: true, 

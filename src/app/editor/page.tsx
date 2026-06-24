@@ -10,7 +10,7 @@ import {
   Plus, Music, 
   Trash2, Upload, Scissors, Film,
   Settings2, Type, Crown, Lock, Layers, Zap, Volume2, Search,
-  HardDrive, Monitor, RefreshCcw, Smartphone
+  HardDrive, Monitor, RefreshCw, Smartphone, Smartphone as SmartphoneIcon
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { generateAiVideo } from "@/ai/flows/ai-video-generation-flow";

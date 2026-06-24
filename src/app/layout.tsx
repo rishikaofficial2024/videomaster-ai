@@ -7,11 +7,11 @@ import { FirebaseClientProvider } from '@/firebase';
 export const metadata: Metadata = {
   title: 'VideoMaster AI - Professional AI Video Studio',
   description: 'Produce viral AI content 10x faster. Stable, professional design studio for global creators. Claim 100 FREE AI credits.',
-  keywords: ['AI Video Maker', 'Viral Script Writer', 'Cinematic AI', 'VideoMaster AI Tech'],
+  keywords: ['AI Video Maker', 'Viral Script Writer', 'Cinematic AI', 'VideoMaster AI Tech', 'AI Studio India'],
   metadataBase: new URL('https://videomaster-ai.tech'),
   alternates: { canonical: '/' },
   verification: {
-    google: '', 
+    google: 'G-PLACEHOLDER-FOR-SEARCH-CONSOLE', 
   },
   openGraph: {
     title: 'VideoMaster AI - The Ultimate Production Studio',
