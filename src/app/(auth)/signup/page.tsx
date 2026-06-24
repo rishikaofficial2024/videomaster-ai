@@ -7,20 +7,22 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Video, Chrome, Loader2, Eye, EyeOff, ArrowLeft, ShieldCheck } from "lucide-react";
+import { Video, Chrome, Loader2, Eye, EyeOff, ArrowLeft, ShieldCheck, Zap } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { 
   createUserWithEmailAndPassword, 
   updateProfile, 
   signInWithPopup, 
-  GoogleAuthProvider 
+  GoogleAuthProvider,
+  signInAnonymously
 } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, getDoc } from "firebase/firestore";
 import { useAuth, useFirestore } from "@/firebase";
 import { useToast } from "@/hooks/use-toast";
 
 export default function SignupPage() {
   const [loading, setLoading] = useState(false);
+  const [guestLoading, setGuestLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -39,11 +41,10 @@ export default function SignupPage() {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email.trim(), password);
       const user = userCredential.user;
-
       await updateProfile(user, { displayName: fullName });
 
       const userRef = doc(db, "users", user.uid);
-      const userData = {
+      await setDoc(userRef, {
         email: user.email,
         displayName: fullName,
         isPremium: false,
@@ -52,54 +53,44 @@ export default function SignupPage() {
         credits: 100,
         createdAt: new Date().toISOString(),
         usageStats: { totalVideos: 0, aiGenerations: 0 }
-      };
-
-      await setDoc(userRef, userData, { merge: true });
+      }, { merge: true });
+      
       toast({ title: "Welcome!", description: "100 FREE Credits added to your node." });
       router.push("/dashboard");
     } catch (error: any) {
-      let errorMessage = "Registration failed. Try again.";
-      if (error.code === 'auth/email-already-in-use') {
-        errorMessage = "Email already in use. Try logging in.";
-      } else if (error.code === 'auth/weak-password') {
-        errorMessage = "Password is too weak.";
-      }
-
-      toast({ 
-        variant: "destructive", 
-        title: "Registration Alert", 
-        description: errorMessage 
-      });
+      toast({ variant: "destructive", title: "Registration Alert", description: "Error during account creation." });
     } finally {
       setLoading(false);
     }
   };
 
-  const handleSocialSignup = async () => {
+  const handleGuestEntry = async () => {
+    setGuestLoading(true);
     try {
-      setLoading(true);
-      const provider = new GoogleAuthProvider();
-      const result = await signInWithPopup(auth, provider);
-      
+      const result = await signInAnonymously(auth);
       const user = result.user;
       const userRef = doc(db, "users", user.uid);
-      const userData = {
-        email: user.email,
-        displayName: user.displayName,
-        isPremium: false,
-        isAdmin: false,
-        subscriptionPlan: "free",
-        credits: 100,
-        createdAt: new Date().toISOString(),
-        usageStats: { totalVideos: 0, aiGenerations: 0 }
-      };
+      
+      const docSnap = await getDoc(userRef);
+      if (!docSnap.exists()) {
+        await setDoc(userRef, {
+          email: "guest@videomaster.ai",
+          displayName: "Guest Creator",
+          isPremium: false,
+          isAdmin: false,
+          subscriptionPlan: "free",
+          credits: 100,
+          createdAt: new Date().toISOString(),
+          isAnonymous: true
+        }, { merge: true });
+      }
 
-      await setDoc(userRef, userData, { merge: true });
+      toast({ title: "Guest Protocol Active", description: "100 FREE Credits available." });
       router.push("/dashboard");
     } catch (error: any) {
-      toast({ variant: "destructive", title: "Social Signup Failed", description: "Connection error." });
+      toast({ variant: "destructive", title: "Guest Access Failed", description: "Connection interrupted." });
     } finally {
-      setLoading(false);
+      setGuestLoading(false);
     }
   };
 
@@ -119,23 +110,23 @@ export default function SignupPage() {
                 <Video className="w-10 h-10 text-primary" />
               </div>
             </div>
-            <CardTitle className="text-2xl font-bold font-headline">Join VideoMaster AI</CardTitle>
-            <CardDescription className="italic">Claim 100 FREE Credits instantly</CardDescription>
+            <CardTitle className="text-2xl font-bold font-headline uppercase tracking-tight">Join Studio</CardTitle>
+            <CardDescription className="italic">Start creating with 100 FREE Credits</CardDescription>
           </CardHeader>
 
           <CardContent className="space-y-6">
             <Button 
-              variant="outline" 
-              className="w-full h-14 gap-3 border-white/10 bg-white/5 font-bold rounded-2xl hover:bg-primary/10 transition-all text-white" 
-              onClick={handleSocialSignup} 
-              disabled={loading}
+              className="w-full h-16 gap-3 bg-indigo-600 hover:bg-indigo-700 font-black rounded-2xl shadow-xl shadow-indigo-600/20 text-xs uppercase tracking-[0.2em]" 
+              onClick={handleGuestEntry} 
+              disabled={guestLoading || loading}
             >
-              <Chrome className="w-5 h-5 text-red-500" /> Sign up with Google
+              {guestLoading ? <Loader2 className="animate-spin" /> : <Zap className="w-5 h-5 fill-current" />} 
+              Quick Start (No Password)
             </Button>
 
             <div className="relative">
               <div className="absolute inset-0 flex items-center"><span className="w-full border-t border-white/5"></span></div>
-              <div className="relative flex justify-center text-[10px] uppercase font-bold text-muted-foreground"><span className="bg-[#0a0d14] px-4">OR EMAIL</span></div>
+              <div className="relative flex justify-center text-[10px] uppercase font-bold text-muted-foreground"><span className="bg-[#0a0d14] px-4">OR USE FORM</span></div>
             </div>
 
             <form onSubmit={handleSignup} className="space-y-4">
@@ -150,24 +141,13 @@ export default function SignupPage() {
               <div className="space-y-1">
                 <Label className="text-[10px] uppercase text-primary ml-1 font-bold">Password</Label>
                 <div className="relative">
-                  <Input 
-                    type={showPassword ? "text" : "password"} 
-                    placeholder="Min. 6 characters" 
-                    required 
-                    className="h-12 bg-black/40 border-white/10 pr-12" 
-                    value={password} 
-                    onChange={(e) => setPassword(e.target.value)} 
-                  />
-                  <button 
-                    type="button" 
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-white"
-                  >
+                  <Input type={showPassword ? "text" : "password"} placeholder="Min. 6 characters" required className="h-12 bg-black/40 border-white/10 pr-12" value={password} onChange={(e) => setPassword(e.target.value)} />
+                  <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-white">
                     {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                   </button>
                 </div>
               </div>
-              <Button type="submit" className="w-full h-14 font-black uppercase tracking-widest rounded-xl" disabled={loading}>
+              <Button type="submit" className="w-full h-14 font-black uppercase tracking-widest rounded-xl" disabled={loading || guestLoading}>
                 {loading ? <Loader2 className="animate-spin" /> : "Get Started"}
               </Button>
             </form>
