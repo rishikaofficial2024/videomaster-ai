@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, useEffect, useRef, Suspense } from "react";
@@ -7,10 +6,9 @@ import { Button } from "@/components/ui/button";
 import { 
   Pause, Play, SkipBack, SkipForward,
   Wand2, Download, Sparkles, ChevronLeft, Loader2, Video as VideoIcon,
-  Plus, Palette, Music, 
+  Plus, Music, 
   Trash2, Upload, Scissors, Film,
-  Settings2, Type, Layout, Crown, Lock, Layers, Zap, Clock, Maximize, Move, Sliders,
-  Target, Ghost, MonitorPlay, Pipette, HelpCircle, ArrowRight, Save, Volume2, Search,
+  Settings2, Type, Crown, Lock, Layers, Zap, Volume2, Search,
   HardDrive, Monitor, RefreshCcw, Smartphone
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
@@ -241,7 +239,6 @@ function EditorContent() {
     <div className="h-screen bg-[#020408] flex flex-col overflow-hidden text-[#e1e4e8] font-body selection:bg-primary/40">
       <Navbar />
       
-      {/* 🚀 ELITE TOOLBAR */}
       <div className="h-24 border-b bg-[#05070a]/90 backdrop-blur-[80px] px-8 flex items-center justify-between z-40 border-white/5 shadow-2xl">
         <div className="flex items-center gap-8">
           <Link href="/dashboard" className="p-3 hover:bg-white/5 rounded-2xl transition-all group">
@@ -293,7 +290,6 @@ function EditorContent() {
       </div>
 
       <div className="flex-1 flex overflow-hidden">
-        {/* 🛠️ NAVIGATION DRAWER */}
         <div className="w-24 bg-[#05070a] border-r border-white/5 flex flex-col items-center py-10 gap-10">
            {[
              { icon: Wand2, id: 'ai', label: 'AI CORE' },
@@ -315,7 +311,6 @@ function EditorContent() {
            ))}
         </div>
 
-        {/* 📚 CONTROL CENTER */}
         <div className="w-[420px] bg-[#0a0d14] border-r border-white/5 flex flex-col p-8 space-y-10 overflow-y-auto scrollbar-hide relative">
            <div className="absolute inset-0 shimmer opacity-[0.01] pointer-events-none" />
            
@@ -326,7 +321,6 @@ function EditorContent() {
                    <Badge variant="outline" className="border-primary/40 text-primary uppercase text-[8px] font-bold tracking-widest px-3">Elite Mode</Badge>
                 </header>
 
-                {/* SCRIPT MODULE */}
                 <div className="space-y-6">
                    <div className="flex items-center gap-4">
                       <div className="w-10 h-10 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-xs font-black">01</div>
@@ -346,7 +340,6 @@ function EditorContent() {
                    </div>
                 </div>
 
-                {/* MOTION MODULE */}
                 <div className="space-y-6">
                    <div className="flex items-center gap-4">
                       <div className="w-10 h-10 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-xs font-black">02</div>
@@ -469,7 +462,6 @@ function EditorContent() {
            )}
         </div>
 
-        {/* 🎬 PRIMARY MONITOR HUB */}
         <div className="flex-1 flex flex-col bg-[#020408] p-8 lg:p-12 space-y-8 relative overflow-hidden">
            <div className="absolute inset-0 pointer-events-none">
               <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
@@ -480,7 +472,7 @@ function EditorContent() {
                 {!videoData ? (
                   <div className="text-center space-y-6 opacity-10 flex flex-col items-center">
                      <div className="w-24 h-24 border-2 border-white rounded-full flex items-center justify-center">
-                        <MonitorPlay size={40} />
+                        <Monitor size={40} />
                      </div>
                      <p className="text-xl font-bold uppercase tracking-[0.5em]">Sequence Monitor</p>
                   </div>
@@ -495,7 +487,6 @@ function EditorContent() {
                   />
                 )}
                 
-                {/* HUD OVERLAY */}
                 <div className="absolute top-6 left-6 flex items-center gap-3 opacity-0 group-hover:opacity-100 transition-all duration-700 bg-black/40 px-4 py-2 rounded-xl backdrop-blur-xl border border-white/5">
                    <div className="w-2 h-2 bg-red-600 rounded-full animate-pulse shadow-[0_0_8px_rgba(220,38,38,1)]" />
                    <span className="text-[9px] font-black text-white/80 uppercase tracking-widest">LIVE HUD FEED</span>
@@ -516,7 +507,6 @@ function EditorContent() {
               </div>
            </div>
 
-           {/* 🎞️ MULTI-TRACK TIMELINE */}
            <div className="h-60 bg-[#0a0d14] rounded-[3rem] border border-white/5 flex flex-col overflow-hidden shadow-2xl relative">
               <div className="h-14 border-b border-white/5 px-10 flex items-center justify-between bg-white/[0.03]">
                  <div className="flex items-center gap-10">
@@ -539,7 +529,6 @@ function EditorContent() {
                 className="flex-1 overflow-x-auto p-8 space-y-5 relative cursor-crosshair select-none"
                 onClick={handleTimelineClick}
               >
-                 {/* VISUALS TRACK */}
                  <div className="h-14 bg-primary/10 border border-primary/20 rounded-2xl relative flex items-center px-6 group hover:bg-primary/20 transition-all overflow-hidden shadow-inner">
                     <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-primary rounded-full shadow-glow" />
                     <Film className="w-4 h-4 text-primary mr-8 opacity-40" />
@@ -551,7 +540,6 @@ function EditorContent() {
                     )}
                  </div>
 
-                 {/* AUDIO TRACK */}
                  <div className="h-12 bg-indigo-500/5 border border-indigo-500/10 rounded-2xl relative flex items-center px-6 hover:bg-indigo-500/10 transition-all overflow-hidden">
                     <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-indigo-500 rounded-full" />
                     <Volume2 className="w-4 h-4 text-indigo-400 mr-8 opacity-40" />
@@ -565,7 +553,6 @@ function EditorContent() {
                     )}
                  </div>
 
-                 {/* TEXT TRACK */}
                  <div className="h-10 bg-emerald-500/5 border border-emerald-500/10 rounded-2xl relative flex items-center px-6 hover:bg-emerald-500/10 transition-all overflow-hidden">
                     <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-emerald-500 rounded-full" />
                     <Type className="w-4 h-4 text-emerald-400 mr-8 opacity-40" />
@@ -573,7 +560,6 @@ function EditorContent() {
                     {subtitles && <div className="h-2 w-full bg-emerald-500/30 rounded-full shadow-[0_0_10px_rgba(16,185,129,0.2)]" />}
                  </div>
                  
-                 {/* PLAYHEAD */}
                  <div 
                    className="absolute top-0 bottom-0 w-0.5 bg-white z-20 shadow-[0_0_15px_rgba(255,255,255,0.8)] flex flex-col items-center" 
                    style={{ left: `${(currentTime / duration) * 100}%` }}
@@ -584,7 +570,6 @@ function EditorContent() {
            </div>
         </div>
 
-        {/* 🎚️ SYSTEM INSPECTOR */}
         <div className="w-[380px] bg-[#05070a] border-l border-white/5 p-8 space-y-12 overflow-y-auto scrollbar-hide relative">
            <div className="absolute inset-0 shimmer opacity-[0.01] pointer-events-none" />
            
@@ -631,32 +616,10 @@ function EditorContent() {
                     ))}
                  </div>
               </div>
-
-              <div className="pt-10 border-t border-white/10 space-y-6">
-                 <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground">Cinematic Luts</h4>
-                 <div className="grid grid-cols-3 gap-3">
-                    {['NONE', 'VIBE', 'NOIR', 'GOLD', 'COLD', 'BURN'].map((lut) => (
-                      <button key={lut} className="h-10 rounded-xl bg-white/5 border border-white/10 text-[8px] font-black uppercase tracking-widest hover:border-primary/40 hover:bg-primary/10 transition-all">{lut}</button>
-                    ))}
-                 </div>
-              </div>
-           </div>
-
-           <div className="pt-10 relative z-10">
-              <div className="bg-amber-500/10 border border-amber-500/20 p-6 rounded-3xl flex gap-5 shadow-2xl">
-                 <HelpCircle className="w-6 h-6 text-amber-500 shrink-0 mt-0.5" />
-                 <div className="space-y-2">
-                    <h5 className="text-[10px] font-black uppercase tracking-widest text-amber-500">Editor Protocol</h5>
-                    <p className="text-[10px] text-amber-200/80 leading-relaxed italic font-medium">
-                       Render visual artifacts via the AI Core first, then apply neural captions and audio tracks to synchronize your masterpiece.
-                    </p>
-                 </div>
-              </div>
            </div>
         </div>
       </div>
 
-      {/* 🔮 NEURAL PROCESSING HUB */}
       {isProcessing && (
         <div className="fixed inset-0 z-[100] bg-black/98 backdrop-blur-[100px] flex items-center justify-center animate-in fade-in duration-700">
            <div className="text-center space-y-16 max-w-2xl px-12">

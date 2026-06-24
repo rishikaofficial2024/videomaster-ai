@@ -6,8 +6,7 @@ import { Card } from "@/components/ui/card";
 import { 
   Plus, Sparkles, Loader2, Coins, 
   Play, History, LayoutTemplate, Zap,
-  Tornado, Share2, Instagram, MessageCircle, Twitter, ArrowRight,
-  Globe, Smartphone, Terminal, ExternalLink, AlertCircle, CloudUpload
+  ArrowRight, Activity, TrendingUp
 } from "lucide-react";
 import Link from "next/link";
 import { useUser, useFirestore, useDoc, useMemoFirebase, useCollection } from "@/firebase";
@@ -17,6 +16,7 @@ import { useToast } from "@/hooks/use-toast";
 import { errorEmitter } from '@/firebase/error-emitter';
 import { FirestorePermissionError, type SecurityRuleContext } from '@/firebase/errors';
 import { useRouter } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 export default function Dashboard() {
   const { user, loading: userLoading } = useUser();
@@ -68,10 +68,8 @@ export default function Dashboard() {
     
     setTimeout(() => {
       const updateData = { credits: increment(20), updatedAt: new Date().toISOString() };
-      // Initiate background write for credits
       updateDoc(userProfileRef, updateData)
         .catch(async (err) => {
-          // Centrally handle the permission error if it occurs
           errorEmitter.emit('permission-error', new FirestorePermissionError({
             path: userProfileRef.path,
             operation: 'update',
@@ -83,7 +81,7 @@ export default function Dashboard() {
       setShowAdOverlay(false);
       toast({ 
         title: "Credits Replenished", 
-        description: "+20 AI Credits added to your creative node." 
+        description: "+20 AI Credits added to your node." 
       });
     }, 15000);
   };
@@ -107,66 +105,7 @@ export default function Dashboard() {
       <Navbar />
       <main className="max-w-7xl mx-auto p-6 lg:p-12 space-y-16">
         
-        {/* ⚠️ CRITICAL DEPLOY ALERT */}
-        <section className="animate-in fade-in slide-in-from-top-2 duration-700">
-           <Card className="p-6 bg-amber-500/10 border-amber-500/20 rounded-[2.5rem] flex flex-col md:flex-row items-center justify-between gap-6 shadow-2xl">
-              <div className="flex items-center gap-6">
-                 <div className="p-4 bg-amber-500/20 rounded-2xl">
-                    <AlertCircle className="w-8 h-8 text-amber-500" />
-                 </div>
-                 <div className="space-y-1">
-                    <h4 className="text-lg font-bold text-white uppercase tracking-tight">Fix "Site Not Found" Error</h4>
-                    <p className="text-sm text-muted-foreground italic leading-relaxed">If your live link isn't opening, you must run <b>npm run web:deploy</b> in the Terminal.</p>
-                 </div>
-              </div>
-              <Button className="h-14 px-10 rounded-2xl bg-amber-600 hover:bg-amber-700 font-black text-xs gap-3" onClick={() => router.push('/terminal-guide')}>
-                 <Terminal className="w-4 h-4" /> VIEW DEPLOY STEPS
-              </Button>
-           </Card>
-        </section>
-
-        {/* 🚀 LAUNCH HUB */}
-        <section className="grid grid-cols-1 md:grid-cols-3 gap-8">
-           <Card className="p-8 bg-emerald-500/10 border-emerald-500/20 rounded-[3rem] space-y-4 group hover:bg-emerald-500/20 transition-all cursor-pointer" onClick={() => window.open('https://studio-9489287013-59986.web.app', '_blank')}>
-              <div className="flex items-center justify-between">
-                 <div className="p-4 bg-emerald-500/20 rounded-2xl">
-                    <Globe className="w-6 h-6 text-emerald-400" />
-                 </div>
-                 <ExternalLink className="w-4 h-4 text-emerald-500 opacity-40" />
-              </div>
-              <div className="space-y-1">
-                 <h4 className="font-bold text-white uppercase tracking-tight">Live Web Preview</h4>
-                 <p className="text-xs text-muted-foreground italic">Check your studio live on the global network.</p>
-              </div>
-           </Card>
-
-           <Card className="p-8 bg-primary/10 border-primary/20 rounded-[3rem] space-y-4 group hover:bg-primary/20 transition-all cursor-pointer" onClick={() => router.push('/build-status')}>
-              <div className="flex items-center justify-between">
-                 <div className="p-4 bg-primary/20 rounded-2xl">
-                    <Smartphone className="w-6 h-6 text-primary" />
-                 </div>
-                 <ArrowRight className="w-4 h-4 text-primary opacity-40" />
-              </div>
-              <div className="space-y-1">
-                 <h4 className="font-bold text-white uppercase tracking-tight">Android APK Build</h4>
-                 <p className="text-xs text-muted-foreground italic">Generate and download your mobile application.</p>
-              </div>
-           </Card>
-
-           <Card className="p-8 bg-indigo-500/10 border-indigo-500/20 rounded-[3rem] space-y-4 group hover:bg-indigo-500/20 transition-all cursor-pointer" onClick={() => router.push('/terminal-guide')}>
-              <div className="flex items-center justify-between">
-                 <div className="p-4 bg-indigo-500/20 rounded-2xl">
-                    <CloudUpload className="w-6 h-6 text-indigo-400" />
-                 </div>
-                 <span className="bg-red-500 text-white text-[8px] font-black px-2 py-0.5 rounded-full">FIX LINK ERROR</span>
-              </div>
-              <div className="space-y-1">
-                 <h4 className="font-bold text-white uppercase tracking-tight">Web Deploy Protocol</h4>
-                 <p className="text-xs text-muted-foreground italic">Execute command to fix "Site Not Found" error.</p>
-              </div>
-           </Card>
-        </section>
-
+        {/* ✨ CLEAN HEADER */}
         <header className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-12 pt-10">
           <div className="space-y-6">
             <div className="inline-flex items-center gap-3 px-5 py-2 bg-primary/10 rounded-full border border-primary/20 text-primary text-[10px] font-black uppercase tracking-[0.4em]">
@@ -176,7 +115,7 @@ export default function Dashboard() {
               Creative <span className="text-primary italic">Node</span>
             </h1>
             <p className="text-muted-foreground text-xl md:text-2xl font-medium max-w-xl italic leading-relaxed opacity-60">
-              Your professional sanctuary for viral AI production.
+              Welcome back, {profile?.displayName || 'Creator'}. Your professional sanctuary for viral AI production.
             </p>
           </div>
           
