@@ -1,4 +1,3 @@
-
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
@@ -11,7 +10,8 @@ const config: CapacitorConfig = {
   },
   android: {
     allowMixedContent: true,
-    captureInput: true
+    captureInput: true,
+    backgroundColor: '#05070a'
   }
 };
 

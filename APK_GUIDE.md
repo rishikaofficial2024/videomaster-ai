@@ -1,6 +1,8 @@
 # 🪄 GitHub se APK Download karne ka Tareeka (Step-by-Step)
 
-Bhaai, APK download karna ab bahut aasaan hai. Bas ye 5 steps follow karein:
+Bhaai, aapka app Next.js aur Capacitor Bridge par bana hai, jo technically Kotlin background use karta hai hardware handling ke liye. 
+
+APK download karna ab bahut aasaan hai. Bas ye 5 steps follow karein:
 
 ### Step 1: Terminal Command Chalayein
 Studio ke terminal mein ye command likh kar Enter dabayein (Ise copy kar lein):
@@ -22,4 +24,4 @@ Naye page par sabse neeche scroll karein. Wahan **"Artifacts"** naam ka ek secti
 ### Step 5: Download Karein
 Wahan **"VideoMasterAI-Final-APK"** par click karein. Ek `.zip` file download hogi, usey mobile mein open karke andar se `.apk` install kar lijiye.
 
-**Ab aapka app poori duniya ke liye taiyaar hai!** 🚀📱💎
+**Aapka VideoMaster AI app asli Android power ke saath taiyaar hai!** 🚀📱💎
