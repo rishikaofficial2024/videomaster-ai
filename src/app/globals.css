@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -125,4 +126,14 @@
 
 .vn-track {
   @apply h-20 bg-white/[0.02] border border-white/5 rounded-3xl transition-all hover:bg-white/[0.04] relative flex items-center px-6 overflow-hidden;
+}
+
+@keyframes progress {
+  0% { width: 0%; margin-left: 0%; }
+  50% { width: 50%; margin-left: 25%; }
+  100% { width: 100%; margin-left: 0%; }
+}
+
+.animate-progress {
+  animation: progress 2s infinite ease-in-out;
 }
