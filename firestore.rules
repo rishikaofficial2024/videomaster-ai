@@ -3,6 +3,8 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
     // 🛡️ SECURITY CORE: Elite Level Production Rules
+    // Prevents unauthorized access and protects owner data.
+    
     function isAuthenticated() {
       return request.auth != null;
     }
@@ -24,10 +26,11 @@ service cloud.firestore {
       // Allow creation for own node
       allow create: if isOwner(userId);
                     
-      // Owner can update credits and usageStats. Admin can update everything.
-      allow update: if isOwner(userId) && (
+      // SECURITY CRITICAL: Owner can update credits but NOT their own Admin/Premium status.
+      // Only an existing Admin can grant status or upgrade plans.
+      allow update: if (isOwner(userId) && (
         !request.resource.data.diff(resource.data).affectedKeys().hasAny(['isAdmin', 'subscriptionPlan', 'isPremium'])
-      ) || isAdmin();
+      )) || isAdmin();
       
       allow delete: if isAdmin();
       
@@ -42,7 +45,7 @@ service cloud.firestore {
       }
     }
 
-    // 🌐 Connection Tests - Public verified nodes
+    // 🌐 Connection Tests - Public verified nodes for diagnostics
     match /connection_tests/{docId} {
       allow read, write: if isAuthenticated();
     }

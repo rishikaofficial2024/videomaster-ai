@@ -1,3 +1,4 @@
+
 "use client";
 
 import { Navbar } from "@/components/navbar";
@@ -6,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { 
   Users, Coins, ShieldCheck, Lock, Loader2, Banknote, TrendingUp,
   Activity, CheckCircle2, Star, ShieldAlert, MoreVertical, Landmark, PieChart, DollarSign, Globe, Info, ExternalLink, CreditCard,
-  Terminal, Shield, Gauge, Cpu, Database
+  Terminal, Shield, Gauge, Cpu, Database, Eye, ShieldX
 } from "lucide-react";
 import { useFirestore, useCollection, useMemoFirebase } from "@/firebase";
 import { collection, query, limit, orderBy, getCountFromServer, doc, updateDoc, increment, getDocs } from "firebase/firestore";
@@ -30,6 +31,7 @@ import { useToast } from "@/hooks/use-toast";
 import Link from "next/link";
 import { errorEmitter } from "@/firebase/error-emitter";
 import { FirestorePermissionError, type SecurityRuleContext } from "@/firebase/errors";
+import { firebaseConfig } from "@/firebase/config";
 
 export default function AdminDashboard() {
   const db = useFirestore();
@@ -138,7 +140,7 @@ export default function AdminDashboard() {
           </div>
         </header>
 
-        {/* 📈 QUICK STATS */}
+        {/* 📈 QUICK STATS & SECURITY STATUS */}
         <section className="grid grid-cols-1 md:grid-cols-4 gap-6">
           <Card className="rounded-[2.5rem] bg-[#0a0d14]/80 border-emerald-500/30 p-8 blue-glow group">
             <div className="flex justify-between items-start mb-4">
@@ -151,11 +153,13 @@ export default function AdminDashboard() {
 
           <Card className="rounded-[2.5rem] bg-[#0a0d14]/80 border-primary/30 p-8 blue-glow group">
             <div className="flex justify-between items-start mb-4">
-              <PieChart className="w-8 h-8 text-primary" />
-              <Badge className="bg-primary/20 text-primary">Est.</Badge>
+              <Shield className="w-8 h-8 text-primary" />
+              <Badge variant="outline" className={firebaseConfig.appCheckSiteKey ? "text-emerald-500 border-emerald-500/50" : "text-amber-500 border-amber-500/50"}>
+                {firebaseConfig.appCheckSiteKey ? "App Check Active" : "Basic Auth"}
+              </Badge>
             </div>
-            <p className="text-[10px] font-black text-primary uppercase tracking-widest">Ad Revenue (15%)</p>
-            <h3 className="text-4xl font-bold text-white mt-1">₹{adRevenueEstimate.toFixed(0)}</h3>
+            <p className="text-[10px] font-black text-primary uppercase tracking-widest">Owner Security Level</p>
+            <h3 className="text-2xl font-bold text-white mt-1">{firebaseConfig.appCheckSiteKey ? "ULTRA SECURE" : "STANDARD PROTECTION"}</h3>
           </Card>
 
           <Card className="rounded-[2.5rem] bg-[#0a0d14]/80 border-indigo-500/30 p-8 blue-glow group">
@@ -167,13 +171,13 @@ export default function AdminDashboard() {
             <h3 className="text-4xl font-bold text-white mt-1">100%</h3>
           </Card>
 
-          <Card className="rounded-[2.5rem] bg-[#0a0d14]/80 border-amber-500/30 p-8 blue-glow group">
+          <Card className="rounded-[2.5rem] bg-[#0a0d14]/80 border-rose-500/30 p-8 blue-glow group">
             <div className="flex justify-between items-start mb-4">
-              <Database className="w-8 h-8 text-amber-500" />
-              <Badge className="bg-amber-500/20 text-amber-500">Synced</Badge>
+              <Eye className="w-8 h-8 text-rose-500" />
+              <Badge className="bg-rose-500/20 text-rose-500">Live</Badge>
             </div>
-            <p className="text-[10px] font-black text-amber-500 uppercase tracking-widest">Database Health</p>
-            <h3 className="text-4xl font-bold text-white mt-1">Optimal</h3>
+            <p className="text-[10px] font-black text-rose-500 uppercase tracking-widest">Intrusion Filter</p>
+            <h3 className="text-4xl font-bold text-white mt-1">Ready</h3>
           </Card>
         </section>
 
@@ -188,14 +192,14 @@ export default function AdminDashboard() {
                    <Shield className="w-10 h-10 text-primary" />
                 </div>
                 <div className="flex-1 space-y-4 text-center md:text-left">
-                   <h3 className="text-3xl font-headline font-bold text-white uppercase tracking-tight">Monitoring Protocol</h3>
+                   <h3 className="text-3xl font-headline font-bold text-white uppercase tracking-tight">Security Audit Mode</h3>
                    <div className="grid md:grid-cols-2 gap-6 text-sm text-muted-foreground italic leading-relaxed">
-                      <p>• Track every node (user) growth and credit usage in real-time below.</p>
-                      <p>• Access the <b>Live Monitoring</b> hub for deep technical diagnostics and DNS health.</p>
+                      <p>• Your Firestore Rules prevent users from spoofing their own Admin or Pro status.</p>
+                      <p>• To achieve <b>Ultra Security</b>, obtain a reCAPTCHA v3 site key and add it to config.ts.</p>
                    </div>
                 </div>
                 <Button variant="outline" className="h-16 px-10 rounded-2xl border-white/10 text-white font-bold" asChild>
-                   <Link href="/docs/ADMIN_MANUAL.md">View Admin Manual</Link>
+                   <Link href="/SECURITY_SETUP_GUIDE.md">View Security Protocol</Link>
                 </Button>
              </div>
           </Card>

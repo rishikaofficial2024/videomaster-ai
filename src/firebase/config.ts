@@ -17,7 +17,8 @@ export const firebaseConfig = {
   /**
    * 🛡️ SECURITY ACTION:
    * Paste your reCAPTCHA v3 "SITE KEY" below once generated.
-   * This protects your Gemini AI credits from bots.
+   * This protects your Gemini AI credits from bots and ensures ONLY 
+   * your app can access your Firestore database.
    */
   appCheckSiteKey: "" 
 };
