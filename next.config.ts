@@ -1,8 +1,10 @@
+
 import type {NextConfig} from 'next';
 
 const nextConfig: NextConfig = {
-  // FIXED: Removed output: 'export' to resolve conflict with middleware.ts during dev server start.
-  // This ensures the local preview starts immediately without ENOENT errors.
+  // ✅ STABILIZED FOR APK & WEB: Re-enabled static export for Capacitor compatibility.
+  // Middleware.ts has been removed to prevent conflict with this setting.
+  output: 'export',
   images: {
     unoptimized: true, 
     remotePatterns: [
