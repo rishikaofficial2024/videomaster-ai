@@ -24,8 +24,6 @@ import { errorEmitter } from "@/firebase/error-emitter";
 import { FirestorePermissionError, type SecurityRuleContext } from "@/firebase/errors";
 import { cn } from "@/lib/utils";
 import { Slider } from "@/components/ui/slider";
-import { Badge } from "@/components/ui/badge";
-import audioData from "@/app/lib/placeholder-audio.json";
 
 interface MediaAsset {
   id: string;
@@ -57,7 +55,6 @@ function EditorContent() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [activeTab, setActiveTab] = useState(toolFromUrl === 'audio' ? 'audio' : 'ai');
-  const [editorMode, setEditorMode] = useState<'easy' | 'pro'>('easy');
   
   const [mediaAssets, setMediaAssets] = useState<MediaAsset[]>([]);
   const [videoData, setVideoData] = useState<string | null>(null);
@@ -190,21 +187,6 @@ function EditorContent() {
       toast({ title: "Visual Rendered", description: "Motion clip added to visual track." });
     } catch (e: any) {
       toast({ variant: "destructive", title: "Render Error", description: "Neural core timeout." });
-    } finally {
-      setIsProcessing(false);
-    }
-  };
-
-  const handleAutoCaption = async () => {
-    if (!videoData) return;
-    setIsProcessing(true);
-    try {
-      const result = await generateAutoCaptionsAndSubtitles({ audioDataUri: "data:audio/wav;base64,UklGR" });
-      setSubtitles(result.subtitles);
-      handleSave({ subtitles: result.subtitles });
-      toast({ title: "Neural Transcription", description: "Subtitles generated." });
-    } catch (e) {
-      toast({ variant: "destructive", title: "Transcription Error", description: "Could not sync audio." });
     } finally {
       setIsProcessing(false);
     }
