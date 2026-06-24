@@ -1,17 +1,19 @@
+
 import { genkit } from 'genkit';
 import { googleAI } from '@genkit-ai/google-genai';
 
 /**
  * Genkit initialization for VideoMaster AI.
  * 
- * ✅ Professional English Initialization Logic.
+ * ✅ Professional API Key Sanitization Logic.
  */
 
+// Safely extract and clean the API Key from environment variables
 const rawKey = process.env.GEMINI_API_KEY || '';
 const apiKey = rawKey.trim().replace(/^["']|["']$/g, '').trim();
 
 if (!apiKey) {
-  console.warn("⚠️ AI CONFIG WARNING: GEMINI_API_KEY is not detected. AI generation features will remain in offline simulation mode.");
+  console.warn("⚠️ AI CONFIG WARNING: GEMINI_API_KEY is missing from environment. AI features will operate in simulation mode.");
 }
 
 export const ai = genkit({
