@@ -4,7 +4,7 @@ import { googleAI } from '@genkit-ai/google-genai';
 /**
  * Gemini Fast AI Initialization for VideoMaster.
  * 
- * ✅ Optimized for Gemini Flash Latest Aliases.
+ * ✅ Optimized for Gemini Flash Latest Aliases (v1.29+).
  */
 
 // Safely extract and clean the API Key from environment variables
@@ -19,9 +19,9 @@ export const ai = genkit({
   ],
 });
 
-// 🚀 GEMINI FAST MODELS: Using preferred aliases as per documentation
-export const geminiModel = googleAI.model('gemini-flash-latest');
-export const geminiProModel = googleAI.model('gemini-pro-latest');
+// 🚀 GEMINI FAST MODELS: Using preferred aliases for performance and cost
+export const geminiModel = googleAI.model('gemini-1.5-flash-latest');
+export const geminiProModel = googleAI.model('gemini-1.5-pro-latest');
 
 // 🎨 VISUAL ENGINES: Optimized for latest Genkit specs
 export const imagenModel = googleAI.model('googleai/imagen-4.0-fast-generate-001');

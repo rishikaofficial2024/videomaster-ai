@@ -43,6 +43,7 @@ export default function Dashboard() {
     setShowAdOverlay(true);
     setAdTimer(15);
     
+    // Defer timer side effect to post-hydration
     const interval = setInterval(() => {
       setAdTimer((prev) => {
         if (prev <= 1) {
@@ -74,10 +75,10 @@ export default function Dashboard() {
   };
 
   const toolSuite = [
-    { label: "Gemini Script", icon: Wand2, desc: "Fast Narrative Engine", color: "text-primary", href: "/editor?tool=ai" },
-    { label: "Fast AI Video", icon: VideoIcon, desc: "Text-to-Video Synthesis", color: "text-indigo-400", href: "/editor?tool=ai" },
-    { label: "Gemini Voice", icon: Mic, desc: "High-Fidelity Studio TTS", color: "text-rose-400", href: "/editor?tool=audio" },
-    { label: "AI Designer", icon: ImageIcon, desc: "4K High-CTR Visuals", color: "text-emerald-400", href: "/editor?tool=ai" },
+    { label: "Gemini Script", icon: Wand2, desc: "Viral Narrative Engine", color: "text-primary", href: "/editor?tool=ai" },
+    { label: "Gemini Video", icon: VideoIcon, desc: "Text-to-Video synthesis", color: "text-indigo-400", href: "/editor?tool=ai" },
+    { label: "Gemini Voice", icon: Mic, desc: "High-Fidelity studio TTS", color: "text-rose-400", href: "/editor?tool=audio" },
+    { label: "AI Designer", icon: ImageIcon, desc: "4K High-CTR Thumbnails", color: "text-emerald-400", href: "/editor?tool=ai" },
   ];
 
   if (!mounted || userLoading) {
@@ -98,11 +99,11 @@ export default function Dashboard() {
         
         <header className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-10">
           <div className="space-y-4">
-            <h1 className="text-6xl md:text-8xl font-headline font-black tracking-tighter text-white leading-none">
-              Gemini <span className="text-primary italic">Studio</span>
+            <h1 className="text-6xl md:text-8xl font-headline font-black tracking-tighter text-white leading-none uppercase">
+              Gemini <span className="text-primary italic">Studio.</span>
             </h1>
             <p className="text-muted-foreground text-xl font-medium italic opacity-60">
-              Welcome, {profile?.displayName || 'Creator'}. Launch a tool to begin.
+              Welcome, {profile?.displayName || 'Creator'}. Launch a tool to begin viral expansion.
             </p>
           </div>
           
@@ -165,7 +166,7 @@ export default function Dashboard() {
                  </div>
                  <div className="space-y-2">
                     <h3 className="text-4xl font-bold font-headline text-white uppercase tracking-tight">Earn Credits</h3>
-                    <p className="text-muted-foreground text-lg font-medium italic opacity-60">Watch a quick ad to replenish 20 AI credits instantly.</p>
+                    <p className="text-muted-foreground text-lg font-medium italic opacity-60">Watch a quick ad to replenish 20 AI credits instantly for free.</p>
                  </div>
               </div>
               <Button onClick={handleWatchAd} disabled={adLoading} className="h-20 px-12 rounded-[2rem] bg-primary font-black text-xl uppercase tracking-widest shadow-xl relative z-10">

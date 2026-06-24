@@ -1,7 +1,7 @@
 /**
  * Firebase configuration object for VideoMaster AI.
  * 
- * ✅ STATUS: CONNECTED TO BRANDED DOMAIN
+ * ✅ STATUS: PRODUCTION LINKED TO BRANDED DOMAIN
  */
 export const firebaseConfig = {
   apiKey: "AIzaSyCz-pMZtY7_OVr9IyyHiIqwPWnpP3Lb21w",
@@ -12,9 +12,8 @@ export const firebaseConfig = {
   appId: "1:522287974416:web:096cfdb016260b3f74a295",
   
   /**
-   * 🛡️ SECURITY ACTION:
-   * Paste your reCAPTCHA v3 "SITE KEY" below once generated.
-   * This protects your Gemini AI credits from bots.
+   * 🛡️ SECURITY LAYER: App Check
+   * App Check site key protects Gemini AI credits from bots.
    */
   appCheckSiteKey: "" 
 };

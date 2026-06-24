@@ -45,11 +45,12 @@ const generateAiVideoFlow = ai.defineFlow(
         throw new Error('Neural core failed to initiate motion operation.');
       }
 
-      // 2. Poll until operation is complete
-      while (!operation.done) {
-        // Wait for 5 seconds before checking again
+      // 2. Poll until operation is complete (Veo 2.0 requires polling)
+      let attempts = 0;
+      while (!operation.done && attempts < 24) { // Max 2 minutes polling
         await new Promise((resolve) => setTimeout(resolve, 5000));
         operation = await ai.checkOperation(operation);
+        attempts++;
       }
 
       if (operation.error) {
