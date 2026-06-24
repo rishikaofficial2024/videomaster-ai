@@ -317,6 +317,31 @@ function EditorContent() {
                 </div>
              </div>
            )}
+           
+           {activeTab === 'settings' && (
+             <div className="space-y-10 animate-in fade-in slide-in-from-left-4">
+                <h3 className="text-sm font-black uppercase tracking-[0.3em] text-white">Studio Config</h3>
+                <div className="space-y-8">
+                   <div className="space-y-4">
+                      <p className="text-[9px] font-black uppercase tracking-widest text-muted-foreground">Neural Density</p>
+                      <Slider defaultValue={[100]} max={100} step={1} className="[&_[role=slider]]:bg-primary" />
+                   </div>
+                   <div className="space-y-6 pt-6 border-t border-white/5">
+                      <p className="text-[9px] font-black uppercase tracking-widest text-muted-foreground">Canvas Architecture</p>
+                      <div className="grid grid-cols-2 gap-4">
+                         <button className="h-16 rounded-2xl border border-primary bg-primary/10 flex flex-col items-center justify-center gap-2">
+                            <Smartphone size={16} className="text-primary" />
+                            <span className="text-[8px] font-black uppercase tracking-widest">Mobile</span>
+                         </button>
+                         <button className="h-16 rounded-2xl border border-white/5 bg-white/5 flex flex-col items-center justify-center gap-2 text-muted-foreground">
+                            <Monitor size={16} />
+                            <span className="text-[8px] font-black uppercase tracking-widest">Desktop</span>
+                         </button>
+                      </div>
+                   </div>
+                </div>
+             </div>
+           )}
         </div>
 
         <div className="flex-1 flex flex-col bg-[#020408] p-8 lg:p-12 space-y-8 relative overflow-hidden">
@@ -394,28 +419,28 @@ function EditorContent() {
            <div className="space-y-10">
               <header className="flex items-center gap-4 text-primary">
                  <Settings2 size={20} />
-                 <h4 className="text-[10px] font-black uppercase tracking-[0.3em]">Studio Config</h4>
+                 <h4 className="text-[10px] font-black uppercase tracking-[0.3em]">Studio Analytics</h4>
               </header>
 
               <div className="space-y-10">
-                 <div className="space-y-4">
-                    <div className="flex justify-between text-[9px] uppercase font-black text-muted-foreground tracking-widest">
-                       <span>Neural Density</span>
-                       <span className="text-primary">4K</span>
+                 <div className="p-6 bg-white/[0.02] border border-white/5 rounded-3xl space-y-4">
+                    <p className="text-[9px] font-black uppercase tracking-widest text-muted-foreground">Neural Efficiency</p>
+                    <div className="flex items-center justify-between">
+                       <span className="text-2xl font-bold font-headline">99.9%</span>
+                       <Zap className="text-emerald-500 w-5 h-5 animate-pulse" />
                     </div>
-                    <Slider defaultValue={[100]} max={100} step={1} className="[&_[role=slider]]:bg-primary" />
                  </div>
-
-                 <div className="space-y-6 pt-10 border-t border-white/5">
-                    <p className="text-[9px] font-black uppercase tracking-widest text-muted-foreground">Architecture</p>
-                    <div className="grid grid-cols-2 gap-4">
-                       <button className="h-16 rounded-2xl border border-primary bg-primary/10 flex flex-col items-center justify-center gap-2">
-                          <Smartphone size={16} className="text-primary" />
-                          <span className="text-[8px] font-black uppercase tracking-widest">Mobile</span>
+                 
+                 <div className="space-y-6 pt-6 border-t border-white/5">
+                    <p className="text-[9px] font-black uppercase tracking-widest text-muted-foreground">Export Protocol</p>
+                    <div className="space-y-3">
+                       <button className="w-full p-5 rounded-2xl bg-white/5 border border-white/5 flex items-center justify-between hover:bg-white/10 transition-all">
+                          <span className="text-xs font-bold">Standard HD</span>
+                          <span className="text-[8px] font-black opacity-40">1080P</span>
                        </button>
-                       <button className="h-16 rounded-2xl border border-white/5 bg-white/5 flex flex-col items-center justify-center gap-2 text-muted-foreground">
-                          <Monitor size={16} />
-                          <span className="text-[8px] font-black uppercase tracking-widest">Desktop</span>
+                       <button className="w-full p-5 rounded-2xl bg-primary/10 border border-primary/40 flex items-center justify-between">
+                          <span className="text-xs font-bold text-primary">Neural 4K</span>
+                          <Crown className="w-3 h-3 text-primary fill-current" />
                        </button>
                     </div>
                  </div>
