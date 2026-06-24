@@ -7,7 +7,7 @@ import { Card } from "@/components/ui/card";
 import { 
   Plus, Sparkles, Loader2, Coins, 
   Play, Zap, ArrowRight, Wand2, Video as VideoIcon, Mic, Image as ImageIcon,
-  Cpu, TrendingUp
+  Cpu, TrendingUp, ShieldCheck
 } from "lucide-react";
 import Link from "next/link";
 import { useUser, useFirestore, useDoc, useMemoFirebase } from "@/firebase";
@@ -93,17 +93,17 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen pb-40 md:pt-24 bg-[#020408] hero-gradient">
+    <div className="min-h-screen pb-40 bg-[#020408] hero-gradient">
       <Navbar />
-      <main className="max-w-7xl mx-auto p-6 lg:p-12 space-y-20">
+      <main className="max-w-7xl mx-auto p-6 lg:p-12 space-y-20 pt-32">
         
-        <header className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-10 pt-10">
+        <header className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-10">
           <div className="space-y-4">
             <h1 className="text-6xl md:text-8xl font-headline font-black tracking-tighter text-white leading-none">
               Studio <span className="text-primary italic">Hub</span>
             </h1>
             <p className="text-muted-foreground text-xl font-medium italic opacity-60">
-              Welcome back, {profile?.displayName || 'Creator'}. Everything is ready for your next viral clip.
+              Welcome back, {profile?.displayName || 'Creator'}. Select your AI tool to begin.
             </p>
           </div>
           

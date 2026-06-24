@@ -209,7 +209,7 @@ function EditorContent() {
     <div className="h-screen bg-[#020408] flex flex-col overflow-hidden text-[#e1e4e8]">
       <Navbar />
       
-      <div className="h-24 border-b bg-[#05070a]/90 backdrop-blur-3xl px-8 flex items-center justify-between z-40 border-white/5">
+      <div className="h-24 border-b bg-[#05070a]/90 backdrop-blur-3xl px-8 flex items-center justify-between z-40 border-white/5 mt-24">
         <div className="flex items-center gap-6">
           <Link href="/dashboard" className="p-3 hover:bg-white/5 rounded-2xl group transition-all">
             <ChevronLeft className="w-6 h-6 text-muted-foreground group-hover:text-primary" />
