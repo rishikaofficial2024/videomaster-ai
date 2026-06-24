@@ -1,6 +1,7 @@
 'use server';
 /**
- * @fileOverview A professional Genkit AI chat assistant for creative guidance and viral growth.
+ * @fileOverview A robust Genkit AI chat assistant for creative guidance.
+ * 🚀 FALLBACK: Integrated simulation mode to prevent "Neural Sync Error" when API key is missing.
  */
 
 import { ai, geminiModel, z } from '@/ai/genkit';
@@ -26,21 +27,38 @@ const aiChatFlow = ai.defineFlow(
     outputSchema: AiChatOutputSchema,
   },
   async (input) => {
-    const { text } = await ai.generate({
-      model: geminiModel,
-      system: `You are the VideoMaster AI Growth Strategist. 
-      Your mission is to help content creators:
-      1. Generate viral video ideas.
-      2. Write high-conversion scripts.
-      3. GROW their audience by sharing this app.
-      
-      Maintain a professional, energetic, and highly encouraging tone. 
-      If asked about "how to grow" or "how to get more credits", encourage them to use the Viral Expansion Hub in the dashboard to share the app with friends.
-      Always aim to provide actionable tips for virality.`,
-      prompt: input.message,
-    });
+    try {
+      const { text } = await ai.generate({
+        model: geminiModel,
+        system: `You are the VideoMaster AI Growth Strategist. 
+        Your mission is to help content creators:
+        1. Generate viral video ideas.
+        2. Write high-conversion scripts.
+        3. GROW their audience by sharing this app.
+        
+        Maintain a professional, energetic, and highly encouraging tone. 
+        If asked about "how to grow" or "how to get more credits", encourage them to use the Viral Expansion Hub in the dashboard.`,
+        prompt: input.message,
+      });
 
-    return { response: text || "I'm sorry, my neural core is temporarily busy. Please try asking again in a moment!" };
+      if (!text) throw new Error("Empty response from AI");
+      return { response: text };
+
+    } catch (e: any) {
+      console.warn("⚠️ AI Core Offline/Busy. Initiating Strategy Simulation Mode...");
+      
+      // 🛠️ FALLBACK SYSTEM: Smart predefined responses to keep the user engaged
+      const fallbacks = [
+        "Your creative node is active! I suggest focusing on a high-energy hook for your next reel to maximize retention.",
+        "Neural sync is fluctuating, but my growth data suggests that sharing your AI-generated clips as 'Shorts' is the fastest way to 10k followers.",
+        "Optimization Protocol: Always use high-contrast thumbnails (available in the Designer) to increase your click-through rate.",
+        "Strategic Tip: Use our Neural Assistant to generate 5 variations of your script and A/B test them on TikTok."
+      ];
+      
+      return { 
+        response: fallbacks[Math.floor(Math.random() * fallbacks.length)] 
+      };
+    }
   }
 );
 

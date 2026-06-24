@@ -235,7 +235,6 @@ function EditorContent() {
     toast({ title: "Audio Sync", description: `${track.title} added to secondary track.` });
   };
 
-  // Helper to determine if current videoData is an image or video
   const isImageData = videoData && (videoData.startsWith('data:image') || videoData.includes('picsum.photos') || videoData.includes('unsplash.com'));
 
   if (!mounted) return null;
