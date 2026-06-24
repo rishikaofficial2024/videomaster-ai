@@ -123,7 +123,7 @@ function EditorContent() {
           path: projectRef.path,
           operation: 'update',
           requestResourceData: data,
-        }));
+        } satisfies SecurityRuleContext));
       });
     } else {
       setDoc(projectRef, {
@@ -135,7 +135,7 @@ function EditorContent() {
           path: projectRef.path,
           operation: 'create',
           requestResourceData: { ...data, status: 'draft' },
-        }));
+        } satisfies SecurityRuleContext));
       });
       setIsNewProject(false);
     }

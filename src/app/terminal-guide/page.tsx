@@ -3,7 +3,7 @@
 import { Navbar } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Terminal, ArrowLeft, Smartphone, CloudUpload, XCircle, Menu, ChevronDown, Copy, MousePointer2 } from "lucide-react";
+import { Terminal, ArrowLeft, Smartphone, CloudUpload, XCircle, Menu, ChevronDown, Copy, MousePointer2, Info } from "lucide-react";
 import Link from "next/link";
 import { useToast } from "@/hooks/use-toast";
 
@@ -31,8 +31,8 @@ export default function TerminalGuidePage() {
           <h1 className="text-5xl md:text-8xl font-headline font-bold text-white tracking-tighter">
             Terminal <span className="text-primary italic">Navigator</span>
           </h1>
-          <p className="text-muted-foreground text-xl font-medium italic text-amber-500 animate-pulse">
-            ⚠️ If visual buttons show an error, use the Terminal (Black Box) to run commands manually.
+          <p className="text-muted-foreground text-xl font-medium italic text-amber-500">
+            Official deployment protocol for production builds and mobile artifacts.
           </p>
         </header>
 
@@ -156,13 +156,13 @@ export default function TerminalGuidePage() {
         </section>
 
         <section>
-          <Card className="rounded-[3rem] bg-rose-500/10 border-2 border-rose-500/40 p-10 space-y-6">
-             <div className="flex items-center gap-4 text-rose-500">
-                <XCircle className="w-14 h-14" />
-                <h3 className="text-4xl font-bold font-headline uppercase tracking-tighter">UI BUTTON ERROR?</h3>
+          <Card className="rounded-[3rem] bg-primary/5 border-2 border-primary/20 p-10 space-y-6">
+             <div className="flex items-center gap-4 text-primary">
+                <Info className="w-14 h-14" />
+                <h3 className="text-4xl font-bold font-headline uppercase tracking-tighter">PROFESSIONAL TIP</h3>
              </div>
              <p className="text-xl text-muted-foreground italic leading-relaxed">
-                If the visual "Play" buttons show an error, it is a browser state glitch. Always use the <b>Terminal (Black Box)</b> to run commands manually. It is 100% reliable.
+                Visual IDE buttons can sometimes glitch due to shell state. Using the <b>Terminal (Black Box)</b> is the industrial standard for 100% reliable deployment.
              </p>
           </Card>
         </section>
