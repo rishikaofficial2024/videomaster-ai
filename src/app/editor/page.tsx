@@ -385,7 +385,7 @@ function EditorContent() {
            <div className="h-60 bg-[#0a0d14] rounded-[3rem] border border-white/5 flex flex-col overflow-hidden shadow-2xl relative">
               <div className="h-12 border-b border-white/5 px-8 flex items-center justify-between bg-white/[0.03]">
                  <div className="flex items-center gap-6">
-                    <span className="text-[10px] font-black uppercase tracking-[0.3em] text-primary">Neural Track</span>
+                    <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-primary">Neural Track</h4>
                     <span className="text-[12px] font-mono text-white/40">{currentTime.toFixed(2)}s / {duration.toFixed(2)}s</span>
                  </div>
               </div>

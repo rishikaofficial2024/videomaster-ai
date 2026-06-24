@@ -2,7 +2,7 @@
 import type {NextConfig} from 'next';
 
 const nextConfig: NextConfig = {
-  // ✅ STABILIZED FOR APK & WEB: Re-enabled static export for Capacitor and Firebase Hosting compatibility.
+  // ✅ PRODUCTION OPTIMIZED: Re-enabled static export for Capacitor and Firebase Hosting.
   output: 'export',
   images: {
     unoptimized: true, 
