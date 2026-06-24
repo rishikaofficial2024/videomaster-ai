@@ -1,37 +1,52 @@
-
 {
   "tracks": [
     {
       "id": "track-1",
-      "title": "Cinematic Epic",
-      "artist": "VideoMaster AI",
+      "title": "NEURAL AWAKENING",
+      "artist": "Cyber Pulse",
       "url": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
-      "genre": "Epic",
+      "genre": "CYBERPUNK",
       "duration": "4:12"
     },
     {
       "id": "track-2",
-      "title": "Vlog Vibes",
-      "artist": "Lofi Creator",
+      "title": "URBAN ECHOES",
+      "artist": "Metro Beats",
       "url": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
-      "genre": "Lofi",
+      "genre": "LOFI HIPHOP",
       "duration": "3:45"
     },
     {
       "id": "track-3",
-      "title": "Corporate Tech",
-      "artist": "Business Beats",
+      "title": "TITAN ASCENT",
+      "artist": "Epic Core",
       "url": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
-      "genre": "Business",
+      "genre": "CINEMATIC",
       "duration": "2:30"
     },
     {
       "id": "track-4",
-      "title": "Happy Summer",
-      "artist": "Pop Star",
+      "title": "SYNTHETIC SUNSET",
+      "artist": "Future Wave",
       "url": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3",
-      "genre": "Pop",
+      "genre": "RETROWAVE",
       "duration": "3:15"
+    },
+    {
+      "id": "track-5",
+      "title": "QUANTUM DRIFT",
+      "artist": "Void Walker",
+      "url": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3",
+      "genre": "AMBIENT",
+      "duration": "5:20"
+    },
+    {
+      "id": "track-6",
+      "title": "VIRAL VELOCITY",
+      "artist": "Trend Setter",
+      "url": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-13.mp3",
+      "genre": "UPBEAT POP",
+      "duration": "2:55"
     }
   ]
 }
