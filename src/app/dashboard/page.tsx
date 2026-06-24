@@ -3,11 +3,12 @@
 
 import { Navbar } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { 
   Plus, Sparkles, Loader2, Coins, 
   Play, History, LayoutTemplate, Zap,
-  ArrowRight
+  ArrowRight, Wand2, Video as VideoIcon, Type, Mic, Image as ImageIcon,
+  Smartphone, Monitor, Cpu, TrendingUp
 } from "lucide-react";
 import Link from "next/link";
 import { useUser, useFirestore, useDoc, useMemoFirebase, useCollection } from "@/firebase";
@@ -87,15 +88,19 @@ export default function Dashboard() {
     }, 15000);
   };
 
+  const toolSuite = [
+    { label: "Script Writer", icon: Wand2, desc: "AI viral narrative engine", color: "text-primary", href: "/editor?tool=script" },
+    { label: "Video Engine", icon: VideoIcon, desc: "Text-to-Video generation", color: "text-indigo-400", href: "/editor?tool=video" },
+    { label: "Neural Voice", icon: Mic, desc: "High-fidelity voiceovers", color: "text-rose-400", href: "/editor?tool=audio" },
+    { label: "Thumbnail Designer", icon: ImageIcon, desc: "4K cinematic thumbnails", color: "text-emerald-400", href: "/editor?tool=thumbnail" },
+  ];
+
   if (!mounted || userLoading) {
     return (
       <div className="h-screen flex items-center justify-center bg-[#020408]">
         <div className="text-center space-y-8">
-           <div className="relative">
-              <div className="absolute inset-0 bg-primary/20 blur-[80px] rounded-full animate-pulse" />
-              <Loader2 className="w-12 h-12 animate-spin text-primary mx-auto relative z-10" />
-           </div>
-           <p className="text-[10px] font-black uppercase tracking-[0.5em] text-muted-foreground animate-pulse">Initializing Creative Hub...</p>
+           <Loader2 className="w-12 h-12 animate-spin text-primary mx-auto" />
+           <p className="text-[10px] font-black uppercase tracking-[0.5em] text-muted-foreground">Synchronizing Creative Node...</p>
         </div>
       </div>
     );
@@ -104,113 +109,128 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen pb-40 md:pt-24 bg-[#020408] hero-gradient">
       <Navbar />
-      <main className="max-w-7xl mx-auto p-6 lg:p-12 space-y-16">
+      <main className="max-w-7xl mx-auto p-6 lg:p-12 space-y-20">
         
-        {/* ✨ CLEAN HEADER */}
-        <header className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-12 pt-10">
-          <div className="space-y-6">
-            <div className="inline-flex items-center gap-3 px-5 py-2 bg-primary/10 rounded-full border border-primary/20 text-primary text-[10px] font-black uppercase tracking-[0.4em]">
-              <Sparkles className="w-4 h-4 animate-pulse" /> Performance Level: Elite
-            </div>
-            <h1 className="text-7xl md:text-[8rem] font-headline font-black tracking-tighter text-white leading-[0.8] text-gradient">
-              Creative <span className="text-primary italic">Node</span>
+        {/* ✨ ELITE HEADER & BALANCE */}
+        <header className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-10 pt-10">
+          <div className="space-y-4">
+            <h1 className="text-6xl md:text-8xl font-headline font-black tracking-tighter text-white leading-none">
+              Studio <span className="text-primary italic">Hub</span>
             </h1>
-            <p className="text-muted-foreground text-xl md:text-2xl font-medium max-w-xl italic leading-relaxed opacity-60">
-              Welcome back, {profile?.displayName || 'Creator'}. Your professional sanctuary for viral AI production.
+            <p className="text-muted-foreground text-xl font-medium italic opacity-60">
+              Welcome, {profile?.displayName || 'Creator'}. Everything you need is right here.
             </p>
           </div>
           
-          <div className="flex items-center gap-12 bg-white/[0.01] backdrop-blur-[60px] p-12 rounded-[4rem] border border-white/5 shadow-2xl blue-glow relative overflow-hidden group">
-             <div className="absolute inset-0 shimmer opacity-10" />
-             <div className="flex flex-col px-12 border-r border-white/10 relative z-10">
-                <span className="text-[10px] font-black uppercase tracking-[0.4em] text-primary mb-4 opacity-50 text-center">Balance</span>
-                <div className="flex items-center gap-4">
-                  <Coins className="w-10 h-10 text-primary" />
-                  <span className="text-7xl font-bold font-headline text-white">{profile?.credits?.toFixed(0) ?? 0}</span>
+          <div className="flex items-center gap-8 bg-white/5 backdrop-blur-3xl p-8 rounded-[3rem] border border-white/10 shadow-2xl relative group">
+             <div className="flex flex-col px-8 border-r border-white/10">
+                <span className="text-[10px] font-black uppercase tracking-[0.4em] text-primary mb-2 opacity-50">Fuel Level</span>
+                <div className="flex items-center gap-3">
+                  <Coins className="w-8 h-8 text-primary" />
+                  <span className="text-5xl font-bold font-headline text-white">{profile?.credits?.toFixed(0) ?? 0}</span>
                 </div>
              </div>
-             <Button className="rounded-[2.5rem] h-24 font-black px-16 shadow-[0_20px_60px_rgba(59,130,246,0.3)] text-xl gap-6 hover:scale-105 active:scale-95 transition-all bg-primary relative z-10" asChild>
-                <Link href="/editor"><Plus className="w-10 h-10" /> NEW PROJECT</Link>
+             <Button className="rounded-2xl h-16 font-black px-10 shadow-glow text-lg gap-4 bg-primary group-hover:scale-105 transition-all" asChild>
+                <Link href="/editor"><Plus className="w-6 h-6" /> NEW SEQUENCE</Link>
              </Button>
           </div>
         </header>
 
+        {/* 🛠️ NEURAL TOOL SUITE (IMMEDIATE FEATURES) */}
+        <section className="space-y-10">
+           <div className="flex items-center gap-6">
+              <div className="p-4 bg-primary/10 rounded-2xl border border-primary/20">
+                 <Cpu className="w-6 h-6 text-primary" />
+              </div>
+              <h3 className="text-3xl font-bold font-headline text-white uppercase tracking-tight">Neural Tool Suite</h3>
+           </div>
+
+           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+              {toolSuite.map((tool, i) => (
+                <Link key={i} href={tool.href}>
+                  <Card className="group p-8 rounded-[2.5rem] bg-white/[0.02] border-white/5 hover:bg-white/[0.05] hover:border-primary/40 transition-all cursor-pointer relative overflow-hidden h-full">
+                     <div className="absolute top-0 right-0 p-8 opacity-5 -rotate-12 group-hover:rotate-0 transition-all duration-700">
+                        <tool.icon size={100} />
+                     </div>
+                     <div className="space-y-4 relative z-10">
+                        <div className={cn("p-4 bg-black/40 rounded-2xl inline-flex border border-white/5", tool.color)}>
+                           <tool.icon size={24} />
+                        </div>
+                        <div>
+                           <h4 className="text-xl font-bold text-white uppercase tracking-tight">{tool.label}</h4>
+                           <p className="text-[10px] text-muted-foreground font-black uppercase tracking-widest mt-1">{tool.desc}</p>
+                        </div>
+                        <div className="pt-4 flex items-center gap-2 text-primary opacity-0 group-hover:opacity-100 transition-all translate-x-[-10px] group-hover:translate-x-0">
+                           <span className="text-[10px] font-black uppercase tracking-widest">Launch Protocol</span>
+                           <ArrowRight size={14} />
+                        </div>
+                     </div>
+                  </Card>
+                </Link>
+              ))}
+           </div>
+        </section>
+
         {/* 🎬 PROJECT ARCHIVE */}
-        <section className="space-y-12">
+        <section className="space-y-10">
            <div className="flex items-center justify-between">
               <div className="flex items-center gap-6">
-                 <div className="p-5 bg-white/5 rounded-2xl border border-white/5 shadow-inner">
-                    <History className="w-8 h-8 text-muted-foreground" />
+                 <div className="p-4 bg-white/5 rounded-2xl border border-white/5">
+                    <History className="w-6 h-6 text-muted-foreground" />
                  </div>
-                 <h3 className="text-4xl font-bold font-headline text-white uppercase tracking-tight">Recent Sequences</h3>
+                 <h3 className="text-3xl font-bold font-headline text-white uppercase tracking-tight">Active Sequences</h3>
               </div>
-              <Link href="/projects" className="text-[10px] font-black text-primary hover:tracking-[0.3em] transition-all uppercase tracking-[0.5em] flex items-center gap-3">
-                 Explore All <ArrowRight className="w-3 h-3" />
+              <Link href="/projects" className="text-[10px] font-black text-primary hover:tracking-[0.2em] transition-all uppercase tracking-[0.4em] flex items-center gap-2">
+                 ALL PROJECTS <ArrowRight className="w-3 h-3" />
               </Link>
            </div>
 
-           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
+           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
               {projectsLoading ? (
-                [1,2,3,4].map(i => <div key={i} className="aspect-video bg-white/[0.03] animate-pulse rounded-[3.5rem]" />)
+                [1,2,3,4].map(i => <div key={i} className="aspect-video bg-white/[0.03] animate-pulse rounded-3xl" />)
               ) : projects && projects.length > 0 ? (
                 projects.map((p: any) => (
-                  <Card key={p.id} className="group overflow-hidden rounded-[3.5rem] border-white/5 bg-white/[0.01] hover:bg-white/[0.04] hover:border-primary/40 transition-all cursor-pointer shadow-2xl relative" onClick={() => router.push(`/editor?id=${p.id}`)}>
+                  <Card key={p.id} className="group overflow-hidden rounded-[2.5rem] border-white/5 bg-white/[0.01] hover:bg-white/[0.04] hover:border-primary/40 transition-all cursor-pointer shadow-xl relative" onClick={() => router.push(`/editor?id=${p.id}`)}>
                      <div className="aspect-video relative overflow-hidden">
                         <img 
                            src={p.thumbnailUrl || `https://picsum.photos/seed/${p.id}/600/400`} 
                            alt={p.title} 
-                           className="w-full h-full object-cover transition-transform group-hover:scale-110 duration-1000 opacity-40"
+                           className="w-full h-full object-cover opacity-40 group-hover:scale-110 transition-transform duration-1000"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
-                        <div className="absolute bottom-10 left-10 right-10">
-                           <h4 className="text-white font-bold truncate text-xl uppercase tracking-tight">{p.title || 'Untitled Sequence'}</h4>
-                           <div className="flex items-center gap-2 mt-3">
-                              <div className="w-2 h-2 bg-emerald-500 rounded-full shadow-[0_0_15px_rgba(16,185,129,1)] animate-pulse" />
-                              <span className="text-[10px] text-muted-foreground font-black uppercase tracking-[0.3em]">State: Fully Rendered</span>
-                           </div>
-                        </div>
-                        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-700 backdrop-blur-[6px]">
-                           <div className="p-8 bg-primary/30 rounded-full border border-primary/50 shadow-glow">
-                              <Play className="w-12 h-12 text-white fill-current" />
-                           </div>
+                        <div className="absolute bottom-6 left-6 right-6">
+                           <h4 className="text-white font-bold truncate text-lg uppercase tracking-tight">{p.title || 'Untitled'}</h4>
+                           <span className="text-[8px] text-muted-foreground font-black uppercase tracking-[0.3em]">Last Sync: {new Date(p.updatedAt?.seconds * 1000 || p.updatedAt).toLocaleDateString()}</span>
                         </div>
                      </div>
                   </Card>
                 ))
               ) : (
-                <div className="col-span-full py-40 bg-white/[0.005] rounded-[5rem] border-2 border-dashed border-white/10 text-center space-y-12">
-                   <div className="w-32 h-32 bg-white/5 rounded-full flex items-center justify-center mx-auto opacity-20 shadow-inner">
-                      <LayoutTemplate className="w-16 h-16" />
-                   </div>
-                   <div className="space-y-4">
-                      <h4 className="text-4xl font-bold text-white uppercase tracking-widest opacity-30">Archive Empty</h4>
-                      <p className="text-muted-foreground italic font-medium text-xl max-w-sm mx-auto opacity-50">Initialize your first creative sequence in the high-fidelity editor.</p>
-                   </div>
-                   <Button variant="outline" className="rounded-[2.5rem] h-20 px-16 font-black text-[12px] uppercase tracking-[0.5em] hover:bg-white/5 border-white/10 transition-all" asChild>
-                      <Link href="/editor">LAUNCH NEURAL ENGINE</Link>
-                   </Button>
-                </div>
+                <Card className="col-span-full py-20 bg-white/[0.005] rounded-[3rem] border-2 border-dashed border-white/10 text-center space-y-6">
+                   <LayoutTemplate className="w-12 h-12 text-muted-foreground mx-auto opacity-20" />
+                   <p className="text-muted-foreground italic font-medium opacity-40">No sequences detected in local storage.</p>
+                </Card>
               )}
            </div>
         </section>
 
-        {/* ⚡ FUEL PROTOCOL */}
+        {/* ⚡ REPLENISH PROTOCOL */}
         <section>
-           <Card className="rounded-[5rem] bg-primary/[0.02] border-primary/10 p-16 md:p-24 flex flex-col lg:flex-row items-center justify-between gap-20 group overflow-hidden relative hover:bg-primary/[0.04] transition-all duration-1000 shadow-2xl">
-              <div className="absolute top-0 right-0 p-12 opacity-5 -rotate-12 group-hover:rotate-0 transition-transform duration-1000">
-                 <Zap className="w-[400px] h-[400px] text-primary" />
+           <Card className="rounded-[4rem] bg-primary/[0.02] border-primary/10 p-12 flex flex-col lg:flex-row items-center justify-between gap-12 group overflow-hidden relative hover:bg-primary/[0.04] transition-all duration-1000 shadow-2xl">
+              <div className="absolute top-0 right-0 p-12 opacity-5 -rotate-12 group-hover:rotate-0 transition-all">
+                 <Zap className="w-64 h-64 text-primary" />
               </div>
-              <div className="flex items-center gap-16 text-center lg:text-left relative z-10">
-                 <div className="w-32 h-32 bg-primary/20 rounded-[3.5rem] flex items-center justify-center border border-primary/30 shadow-2xl shadow-primary/20">
-                    <Zap className="w-14 h-14 text-primary animate-pulse" />
+              <div className="flex items-center gap-10 relative z-10">
+                 <div className="w-20 h-20 bg-primary/20 rounded-[2rem] flex items-center justify-center border border-primary/30 shadow-xl">
+                    <Zap className="w-8 h-8 text-primary animate-pulse" />
                  </div>
-                 <div className="space-y-6">
-                    <h3 className="text-6xl font-bold font-headline text-white uppercase tracking-tight">Fuel Reserve</h3>
-                    <p className="text-muted-foreground text-2xl font-medium italic opacity-60 max-w-lg">Sync attention for 15s to replenish +20 AI credits to your node instantly.</p>
+                 <div className="space-y-2">
+                    <h3 className="text-4xl font-bold font-headline text-white uppercase tracking-tight">Fuel Reserve</h3>
+                    <p className="text-muted-foreground text-lg font-medium italic opacity-60">Replenish +20 credits via attention sync.</p>
                  </div>
               </div>
-              <Button onClick={handleWatchAd} disabled={adLoading} className="h-28 px-20 rounded-[3rem] bg-primary font-black text-3xl uppercase tracking-[0.2em] shadow-[0_30px_70px_rgba(59,130,246,0.4)] hover:scale-105 active:scale-95 transition-all relative z-10">
-                 {adLoading ? <Loader2 className="animate-spin mr-6 w-10 h-10" /> : <Play className="w-10 h-10 mr-6 fill-current" />}
+              <Button onClick={handleWatchAd} disabled={adLoading} className="h-20 px-12 rounded-[2rem] bg-primary font-black text-xl uppercase tracking-widest shadow-xl relative z-10">
+                 {adLoading ? <Loader2 className="animate-spin mr-4 w-8 h-8" /> : <Play className="w-6 h-6 mr-4 fill-current" />}
                  WATCH & EARN
               </Button>
            </Card>
@@ -220,19 +240,18 @@ export default function Dashboard() {
 
       {showAdOverlay && (
         <div className="fixed inset-0 z-[200] bg-black/98 backdrop-blur-[120px] flex items-center justify-center animate-in fade-in duration-1000">
-           <div className="text-center space-y-24 px-12 max-w-4xl">
+           <div className="text-center space-y-16 max-w-2xl">
               <div className="relative">
                  <div className="absolute inset-0 bg-primary/40 blur-[180px] rounded-full neural-pulse" />
-                 <div className="w-64 h-56 flex flex-col items-center justify-center mx-auto relative z-10">
-                    <span className="text-[12rem] font-black text-white font-headline tracking-tighter leading-none">{adTimer}</span>
-                    <span className="text-[14px] font-black text-primary uppercase tracking-[0.8em] mt-6">Attention Sync Active</span>
+                 <div className="relative z-10">
+                    <span className="text-[10rem] font-black text-white font-headline tracking-tighter leading-none">{adTimer}</span>
                  </div>
               </div>
-              <div className="space-y-10">
-                 <h2 className="text-6xl font-headline font-bold text-white tracking-tighter uppercase leading-none">VERIFYING NEURAL LOAD</h2>
-                 <p className="text-3xl text-muted-foreground italic font-medium opacity-60">Validating sensory impressions to replenish your unique creative node.</p>
-                 <div className="w-[500px] h-2 bg-white/5 rounded-full mx-auto overflow-hidden shadow-inner border border-white/5">
-                    <div className="h-full bg-primary transition-all duration-1000 shadow-[0_0_35px_rgba(59,130,246,1)]" style={{ width: `${(15 - adTimer) / 15 * 100}%` }} />
+              <div className="space-y-6">
+                 <h2 className="text-4xl font-headline font-bold text-white tracking-tighter uppercase">VERIFYING NEURAL LOAD</h2>
+                 <p className="text-xl text-muted-foreground italic font-medium opacity-60">Synchronizing attention metrics for credit injection.</p>
+                 <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden border border-white/5">
+                    <div className="h-full bg-primary transition-all duration-1000" style={{ width: `${(15 - adTimer) / 15 * 100}%` }} />
                  </div>
               </div>
            </div>
