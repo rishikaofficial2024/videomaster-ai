@@ -7,7 +7,7 @@ import { Card } from "@/components/ui/card";
 import { 
   Plus, Sparkles, Loader2, Coins, 
   Play, Zap, ArrowRight, Wand2, Video as VideoIcon, Mic, Image as ImageIcon,
-  Cpu, TrendingUp, ShieldCheck
+  Cpu, TrendingUp, ShieldCheck, Rocket
 } from "lucide-react";
 import Link from "next/link";
 import { useUser, useFirestore, useDoc, useMemoFirebase } from "@/firebase";
@@ -75,10 +75,10 @@ export default function Dashboard() {
   };
 
   const toolSuite = [
-    { label: "Viral Script", icon: Wand2, desc: "Neural Narrative Engine", color: "text-primary", href: "/editor?tool=ai" },
-    { label: "AI Video", icon: VideoIcon, desc: "Text-to-Video Synthesis", color: "text-indigo-400", href: "/editor?tool=ai" },
-    { label: "Neural Voice", icon: Mic, desc: "High-Fidelity Studio TTS", color: "text-rose-400", href: "/editor?tool=audio" },
-    { label: "Thumbnail AI", icon: ImageIcon, desc: "4K High-CTR Visuals", color: "text-emerald-400", href: "/editor?tool=ai" },
+    { label: "Gemini Script", icon: Wand2, desc: "Fast Narrative Engine", color: "text-primary", href: "/editor?tool=ai" },
+    { label: "Fast AI Video", icon: VideoIcon, desc: "Text-to-Video Synthesis", color: "text-indigo-400", href: "/editor?tool=ai" },
+    { label: "Gemini Voice", icon: Mic, desc: "High-Fidelity Studio TTS", color: "text-rose-400", href: "/editor?tool=audio" },
+    { label: "AI Designer", icon: ImageIcon, desc: "4K High-CTR Visuals", color: "text-emerald-400", href: "/editor?tool=ai" },
   ];
 
   if (!mounted || userLoading) {
@@ -86,7 +86,7 @@ export default function Dashboard() {
       <div className="h-screen flex items-center justify-center bg-[#020408]">
         <div className="text-center space-y-8">
            <Loader2 className="w-12 h-12 animate-spin text-primary mx-auto" />
-           <p className="text-[10px] font-black uppercase tracking-[0.5em] text-muted-foreground">Synchronizing Creative Node...</p>
+           <p className="text-[10px] font-black uppercase tracking-[0.5em] text-muted-foreground">Synchronizing Gemini Core...</p>
         </div>
       </div>
     );
@@ -100,10 +100,10 @@ export default function Dashboard() {
         <header className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-10">
           <div className="space-y-4">
             <h1 className="text-6xl md:text-8xl font-headline font-black tracking-tighter text-white leading-none">
-              Studio <span className="text-primary italic">Hub</span>
+              Gemini <span className="text-primary italic">Studio</span>
             </h1>
             <p className="text-muted-foreground text-xl font-medium italic opacity-60">
-              Welcome back, {profile?.displayName || 'Creator'}. Select your AI tool to begin.
+              Welcome, {profile?.displayName || 'Creator'}. Launch a tool to begin.
             </p>
           </div>
           
@@ -124,9 +124,9 @@ export default function Dashboard() {
         <section className="space-y-10">
            <div className="flex items-center gap-6">
               <div className="p-4 bg-primary/10 rounded-2xl border border-primary/20">
-                 <Cpu className="w-6 h-6 text-primary" />
+                 <Rocket className="w-6 h-6 text-primary" />
               </div>
-              <h3 className="text-3xl font-bold font-headline text-white uppercase tracking-tight">AI Suite (Front Page Access)</h3>
+              <h3 className="text-3xl font-bold font-headline text-white uppercase tracking-tight">Gemini Fast AI Suite</h3>
            </div>
 
            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -165,13 +165,13 @@ export default function Dashboard() {
                     <Zap className="w-8 h-8 text-primary animate-pulse" />
                  </div>
                  <div className="space-y-2">
-                    <h3 className="text-4xl font-bold font-headline text-white uppercase tracking-tight">Replenish Node</h3>
-                    <p className="text-muted-foreground text-lg font-medium italic opacity-60">Sync with sponsored content to earn +20 credits instantly.</p>
+                    <h3 className="text-4xl font-bold font-headline text-white uppercase tracking-tight">Earn Credits</h3>
+                    <p className="text-muted-foreground text-lg font-medium italic opacity-60">Watch a quick ad to replenish 20 AI credits instantly.</p>
                  </div>
               </div>
               <Button onClick={handleWatchAd} disabled={adLoading} className="h-20 px-12 rounded-[2rem] bg-primary font-black text-xl uppercase tracking-widest shadow-xl relative z-10">
                  {adLoading ? <Loader2 className="animate-spin mr-4 w-8 h-8" /> : <Play className="w-6 h-6 mr-4 fill-current" />}
-                 START SYNC
+                 WATCH & EARN
               </Button>
            </Card>
         </section>
@@ -188,8 +188,8 @@ export default function Dashboard() {
                  </div>
               </div>
               <div className="space-y-6">
-                 <h2 className="text-4xl font-headline font-bold text-white tracking-tighter uppercase">NEURAL VERIFICATION</h2>
-                 <p className="text-xl text-muted-foreground italic font-medium opacity-60">Validating attention metrics for credit replenishment.</p>
+                 <h2 className="text-4xl font-headline font-bold text-white tracking-tighter uppercase">VERIFYING ATTENTION</h2>
+                 <p className="text-xl text-muted-foreground italic font-medium opacity-60">Replenishing Gemini Fast AI Credits...</p>
                  <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden border border-white/5">
                     <div className="h-full bg-primary transition-all duration-1000" style={{ width: `${(15 - adTimer) / 15 * 100}%` }} />
                  </div>

@@ -1,15 +1,17 @@
+
 "use client";
 
 import { useState, useEffect, useRef, Suspense } from "react";
 import { Navbar } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
+import { Slider } from "@/components/ui/slider";
 import { 
   Pause, Play, SkipBack, SkipForward,
   Wand2, Download, ChevronLeft, Loader2, Video as VideoIcon,
   Plus, Music, 
   Upload, Film,
   Settings2, Type, Crown, Lock, Zap, Volume2,
-  Monitor, Smartphone, RefreshCw
+  Monitor, Smartphone, RefreshCw, Cpu
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { generateAiVideo } from "@/ai/flows/ai-video-generation-flow";
@@ -21,7 +23,6 @@ import { doc, setDoc, updateDoc, serverTimestamp } from "firebase/firestore";
 import { errorEmitter } from "@/firebase/error-emitter";
 import { FirestorePermissionError, type SecurityRuleContext } from "@/firebase/errors";
 import { cn } from "@/lib/utils";
-import { Slider } from "@/components/ui/slider";
 
 interface MediaAsset {
   id: string;
@@ -48,7 +49,7 @@ function EditorContent() {
   const [isNewProject, setIsNewProject] = useState(!projectIdFromUrl);
   const [mounted, setMounted] = useState(false);
   
-  const [title, setTitle] = useState("My New Sequence");
+  const [title, setTitle] = useState("My New Project");
   const [isPlaying, setIsPlaying] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -84,7 +85,7 @@ function EditorContent() {
 
   useEffect(() => {
     if (project && mounted) {
-      setTitle(project.title || "My New Sequence");
+      setTitle(project.title || "My New Project");
       setVideoData(project.videoDataUri || null);
       setMediaAssets(project.mediaAssets || []);
       setMagicHook(project.magicHook || "");
@@ -157,7 +158,7 @@ function EditorContent() {
     setMediaAssets(updatedAssets);
     if (newAsset.type !== 'audio') setVideoData(url);
     handleSave({ mediaAssets: updatedAssets });
-    toast({ title: "Asset Injected", description: `${file.name} synced to timeline.` });
+    toast({ title: "Asset Injected", description: `${file.name} added to project.` });
   };
 
   const handleGenerateScript = async () => {
@@ -167,9 +168,9 @@ function EditorContent() {
       const result = await generateAiScript({ topic: scriptTopic, platform: 'YouTube' });
       handleSave({ aiNotes: result.script, magicHook: result.hook });
       setMagicHook(result.hook);
-      toast({ title: "Narrative Ready", description: "Viral script generated via Neural Sync." });
+      toast({ title: "Narrative Ready", description: "Script generated via Gemini Fast AI." });
     } catch (e: any) {
-      toast({ variant: "destructive", title: "Neural Sync Failed", description: "Simulation mode active." });
+      toast({ variant: "destructive", title: "AI Error", description: "Gemini core temporarily busy." });
     } finally {
       setIsProcessing(false);
     }
@@ -182,9 +183,9 @@ function EditorContent() {
       const result = await generateAiVideo({ prompt: videoPrompt });
       setVideoData(result.videoDataUri);
       handleSave({ videoDataUri: result.videoDataUri });
-      toast({ title: "Visual Rendered", description: "Motion clip added to visual track." });
+      toast({ title: "Video Rendered", description: "Clip generated via Gemini Video Engine." });
     } catch (e: any) {
-      toast({ variant: "destructive", title: "Render Error", description: "Neural core timeout." });
+      toast({ variant: "destructive", title: "Render Error", description: "Visual core quota reached." });
     } finally {
       setIsProcessing(false);
     }
@@ -222,7 +223,7 @@ function EditorContent() {
             <div className="flex items-center gap-2 mt-1">
               <div className={cn("w-2 h-2 rounded-full", isSaving ? "bg-amber-500 animate-pulse" : "bg-emerald-500")} />
               <span className="text-[10px] font-black uppercase tracking-widest opacity-40">
-                {isSaving ? "Neural Sync..." : "Sequence Stabilized"}
+                {isSaving ? "Syncing..." : "Saved to Gemini Cloud"}
               </span>
             </div>
           </div>
@@ -231,7 +232,7 @@ function EditorContent() {
         <div className="flex items-center gap-4">
           <Button className="h-14 px-10 rounded-xl font-black uppercase tracking-[0.2em] bg-primary shadow-glow text-[11px] gap-3">
             {profile?.isPremium ? <Download className="w-5 h-5" /> : <Lock className="w-5 h-5" />}
-            Export Sequence
+            Export Project
           </Button>
         </div>
       </div>
@@ -239,11 +240,11 @@ function EditorContent() {
       <div className="flex-1 flex overflow-hidden">
         <div className="w-24 bg-[#05070a] border-r border-white/5 flex flex-col items-center py-10 gap-10">
            {[
-             { icon: Wand2, id: 'ai', label: 'AI CORE' },
+             { icon: Wand2, id: 'ai', label: 'GEMINI' },
              { icon: Film, id: 'media', label: 'MEDIA' },
              { icon: Music, id: 'audio', label: 'AUDIO' },
              { icon: Type, id: 'text', label: 'TEXT' },
-             { icon: Settings2, id: 'settings', label: 'STUDIO' }
+             { icon: Settings2, id: 'settings', label: 'CONFIG' }
            ].map((item) => (
              <button 
                key={item.id} 
@@ -261,33 +262,33 @@ function EditorContent() {
         <div className="w-[420px] bg-[#0a0d14] border-r border-white/5 flex flex-col p-8 space-y-8 overflow-y-auto scrollbar-hide">
            {activeTab === 'ai' && (
              <div className="space-y-10 animate-in fade-in slide-in-from-left-4">
-                <h3 className="text-sm font-black uppercase tracking-[0.3em] text-white">Neural Processing</h3>
+                <h3 className="text-sm font-black uppercase tracking-[0.3em] text-white">Gemini Fast Processing</h3>
                 
                 <div className="space-y-6">
-                   <p className="text-[10px] font-black uppercase tracking-widest text-primary opacity-60">Narrative Logic</p>
+                   <p className="text-[10px] font-black uppercase tracking-widest text-primary opacity-60">Narrative Generator</p>
                    <textarea 
                      className="w-full bg-black/40 border border-white/10 rounded-2xl p-5 text-sm h-32 outline-none focus:border-primary/40 resize-none" 
-                     placeholder="Define viral objective..." 
+                     placeholder="Enter video topic for script..." 
                      value={scriptTopic} 
                      onChange={(e) => setScriptTopic(e.target.value)} 
                    />
                    <Button className="w-full h-14 rounded-2xl font-black text-[10px] uppercase tracking-widest bg-primary/10 text-primary hover:bg-primary hover:text-white transition-all" onClick={handleGenerateScript} disabled={isProcessing}>
                       {isProcessing ? <Loader2 className="w-4 h-4 animate-spin mr-3" /> : <Wand2 className="w-4 h-4 mr-3" />}
-                      Sync Script
+                      Generate Script
                    </Button>
                 </div>
 
                 <div className="space-y-6">
-                   <p className="text-[10px] font-black uppercase tracking-widest text-indigo-400 opacity-60">Visual Synthesis</p>
+                   <p className="text-[10px] font-black uppercase tracking-widest text-indigo-400 opacity-60">Visual AI Render</p>
                    <textarea 
                      className="w-full bg-black/40 border border-white/10 rounded-2xl p-5 text-sm h-32 outline-none focus:border-primary/40 resize-none" 
-                     placeholder="Describe cinematic frames..." 
+                     placeholder="Describe scene for AI video..." 
                      value={videoPrompt} 
                      onChange={(e) => setVideoPrompt(e.target.value)} 
                    />
                    <Button className="w-full h-14 rounded-2xl font-black text-[10px] uppercase tracking-widest bg-indigo-600 shadow-xl shadow-indigo-600/20" onClick={handleGenerateVideo} disabled={isProcessing}>
                       {isProcessing ? <Loader2 className="w-4 h-4 animate-spin mr-3" /> : <VideoIcon className="w-4 h-4 mr-3" />}
-                      Render Clip
+                      Synthesize Video
                    </Button>
                 </div>
              </div>
@@ -295,13 +296,13 @@ function EditorContent() {
 
            {activeTab === 'media' && (
              <div className="space-y-8 animate-in fade-in slide-in-from-left-4">
-                <h3 className="text-sm font-black uppercase tracking-[0.3em] text-white">Asset Protocol</h3>
+                <h3 className="text-sm font-black uppercase tracking-[0.3em] text-white">Asset Manager</h3>
                 <input type="file" ref={fileInputRef} className="hidden" accept="video/*,image/*,audio/*" onChange={handleFileUpload} />
                 <Button className="w-full h-44 border-2 border-dashed border-white/10 rounded-3xl bg-white/[0.02] flex flex-col gap-6 hover:bg-primary/5 hover:border-primary/40 transition-all group" onClick={() => fileInputRef.current?.click()}>
                    <div className="w-16 h-16 bg-black rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform">
                       <Upload className="w-8 h-8 text-muted-foreground" />
                    </div>
-                   <span className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Inject Artifacts</span>
+                   <span className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Upload Media</span>
                 </Button>
                 <div className="grid grid-cols-2 gap-4">
                    {mediaAssets.map((asset) => (
@@ -318,22 +319,22 @@ function EditorContent() {
            
            {activeTab === 'settings' && (
              <div className="space-y-10 animate-in fade-in slide-in-from-left-4">
-                <h3 className="text-sm font-black uppercase tracking-[0.3em] text-white">Studio Config</h3>
+                <h3 className="text-sm font-black uppercase tracking-[0.3em] text-white">Project Config</h3>
                 <div className="space-y-8">
                    <div className="space-y-4">
-                      <p className="text-[9px] font-black uppercase tracking-widest text-muted-foreground">Neural Density</p>
+                      <p className="text-[9px] font-black uppercase tracking-widest text-muted-foreground">AI Creativity</p>
                       <Slider defaultValue={[100]} max={100} step={1} className="[&_[role=slider]]:bg-primary" />
                    </div>
                    <div className="space-y-6 pt-6 border-t border-white/5">
-                      <p className="text-[9px] font-black uppercase tracking-widest text-muted-foreground">Canvas Architecture</p>
+                      <p className="text-[9px] font-black uppercase tracking-widest text-muted-foreground">Aspect Ratio</p>
                       <div className="grid grid-cols-2 gap-4">
                          <button className="h-16 rounded-2xl border border-primary bg-primary/10 flex flex-col items-center justify-center gap-2">
                             <Smartphone size={16} className="text-primary" />
-                            <span className="text-[8px] font-black uppercase tracking-widest">Mobile</span>
+                            <span className="text-[8px] font-black uppercase tracking-widest">9:16 Mobile</span>
                          </button>
                          <button className="h-16 rounded-2xl border border-white/5 bg-white/5 flex flex-col items-center justify-center gap-2 text-muted-foreground">
                             <Monitor size={16} />
-                            <span className="text-[8px] font-black uppercase tracking-widest">Desktop</span>
+                            <span className="text-[8px] font-black uppercase tracking-widest">16:9 Web</span>
                          </button>
                       </div>
                    </div>
@@ -348,7 +349,7 @@ function EditorContent() {
                 {!videoData ? (
                   <div className="text-center space-y-4 opacity-10">
                      <Monitor size={48} className="mx-auto" />
-                     <p className="text-xs font-black uppercase tracking-[0.4em]">Sequence Monitor</p>
+                     <p className="text-xs font-black uppercase tracking-[0.4em]">Preview Monitor</p>
                   </div>
                 ) : isImageData ? (
                   <img src={videoData} className="w-full h-full object-contain" alt="Preview" />
@@ -383,7 +384,7 @@ function EditorContent() {
            <div className="h-60 bg-[#0a0d14] rounded-[3rem] border border-white/5 flex flex-col overflow-hidden shadow-2xl relative">
               <div className="h-12 border-b border-white/5 px-8 flex items-center justify-between bg-white/[0.03]">
                  <div className="flex items-center gap-6">
-                    <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-primary">Neural Track</h4>
+                    <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-primary">Gemini AI Track</h4>
                     <span className="text-[12px] font-mono text-white/40">{currentTime.toFixed(2)}s / {duration.toFixed(2)}s</span>
                  </div>
               </div>
@@ -396,13 +397,13 @@ function EditorContent() {
                  <div className="h-12 bg-primary/10 border border-primary/20 rounded-2xl relative flex items-center px-6 overflow-hidden">
                     <div className="absolute left-0 top-0 bottom-0 w-1 bg-primary" />
                     <Film className="w-4 h-4 text-primary mr-6 opacity-40" />
-                    <span className="text-[9px] font-black uppercase tracking-widest text-primary">Primary Track</span>
+                    <span className="text-[9px] font-black uppercase tracking-widest text-primary">Visual Track</span>
                  </div>
 
                  <div className="h-10 bg-indigo-500/5 border border-indigo-500/10 rounded-2xl relative flex items-center px-6 overflow-hidden opacity-40">
                     <div className="absolute left-0 top-0 bottom-0 w-1 bg-indigo-500" />
                     <Volume2 className="w-4 h-4 text-indigo-400 mr-6 opacity-40" />
-                    <span className="text-[9px] font-black uppercase tracking-widest text-indigo-400">Audio Node</span>
+                    <span className="text-[9px] font-black uppercase tracking-widest text-indigo-400">Audio Track</span>
                  </div>
                  
                  <div 
@@ -416,28 +417,28 @@ function EditorContent() {
         <div className="w-[380px] bg-[#05070a] border-l border-white/5 p-8 space-y-12">
            <div className="space-y-10">
               <header className="flex items-center gap-4 text-primary">
-                 <Settings2 size={20} />
-                 <h4 className="text-[10px] font-black uppercase tracking-[0.3em]">Studio Analytics</h4>
+                 <Cpu size={20} />
+                 <h4 className="text-[10px] font-black uppercase tracking-[0.3em]">AI Diagnostics</h4>
               </header>
 
               <div className="space-y-10">
                  <div className="p-6 bg-white/[0.02] border border-white/5 rounded-3xl space-y-4">
-                    <p className="text-[9px] font-black uppercase tracking-widest text-muted-foreground">Neural Efficiency</p>
+                    <p className="text-[9px] font-black uppercase tracking-widest text-muted-foreground">Neural Sync Efficiency</p>
                     <div className="flex items-center justify-between">
-                       <span className="text-2xl font-bold font-headline">99.9%</span>
+                       <span className="text-2xl font-bold font-headline">Fast (Flash)</span>
                        <Zap className="text-emerald-500 w-5 h-5 animate-pulse" />
                     </div>
                  </div>
                  
                  <div className="space-y-6 pt-6 border-t border-white/5">
-                    <p className="text-[9px] font-black uppercase tracking-widest text-muted-foreground">Export Protocol</p>
+                    <p className="text-[9px] font-black uppercase tracking-widest text-muted-foreground">Export Settings</p>
                     <div className="space-y-3">
                        <button className="w-full p-5 rounded-2xl bg-white/5 border border-white/5 flex items-center justify-between hover:bg-white/10 transition-all">
                           <span className="text-xs font-bold">Standard HD</span>
                           <span className="text-[8px] font-black opacity-40">1080P</span>
                        </button>
                        <button className="w-full p-5 rounded-2xl bg-primary/10 border border-primary/40 flex items-center justify-between">
-                          <span className="text-xs font-bold text-primary">Neural 4K</span>
+                          <span className="text-xs font-bold text-primary">Ultra 4K AI</span>
                           <Crown className="w-3 h-3 text-primary fill-current" />
                        </button>
                     </div>
@@ -452,8 +453,8 @@ function EditorContent() {
            <div className="text-center space-y-12 max-w-xl">
               <Loader2 className="w-16 h-16 animate-spin text-primary mx-auto" />
               <div className="space-y-4">
-                 <h2 className="text-4xl font-headline font-black text-white tracking-tighter uppercase">NEURAL MAGIC</h2>
-                 <p className="text-xl text-muted-foreground italic font-medium opacity-60">Synchronizing global AI engines to materialize your vision.</p>
+                 <h2 className="text-4xl font-headline font-black text-white tracking-tighter uppercase">GEMINI FAST PROCESSING</h2>
+                 <p className="text-xl text-muted-foreground italic font-medium opacity-60">Leveraging Gemini Flash 1.5 for high-speed AI generation.</p>
               </div>
            </div>
         </div>

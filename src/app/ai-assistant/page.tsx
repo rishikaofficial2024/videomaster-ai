@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useRef, useEffect } from "react";
@@ -8,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { 
-  Sparkles, Send, Bot, User, Loader2, 
+  Sparkles, Send, Bot, Loader2, 
   ArrowLeft, BrainCircuit, Zap, MessageSquare,
   Tornado, ShieldCheck, Globe, Share2, TrendingUp, Cpu, Rocket, ArrowRight
 } from "lucide-react";
@@ -23,7 +24,7 @@ interface Message {
 
 export default function AiAssistantPage() {
   const [messages, setMessages] = useState<Message[]>([
-    { role: 'model', text: 'Identity Verified. Growth Strategist Core Online. How shall we expand your viral empire today?' }
+    { role: 'model', text: 'Gemini Fast AI Online. How can I help you grow your viral empire today?' }
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -46,22 +47,22 @@ export default function AiAssistantPage() {
 
     try {
       const messageWithContext = antigravityMode 
-        ? `[ANTIGRAVITY MODE ACTIVE: Focus on high-risk, high-reward viral strategies for social dominance] ${userMsg}` 
+        ? `[FAST MODE ACTIVE: Focus on Gemini Flash optimization] ${userMsg}` 
         : userMsg;
         
       const result = await sendAiChatMessage({ message: messageWithContext });
       setMessages(prev => [...prev, { role: 'model', text: result.response }]);
     } catch (e) {
-      setMessages(prev => [...prev, { role: 'model', text: "Neural Sync Error. The core is temporarily busy. Please retry in 10 seconds." }]);
+      setMessages(prev => [...prev, { role: 'model', text: "Gemini Sync Error. Please retry in a moment." }]);
     } finally {
       setLoading(false);
     }
   };
 
   const presets = [
-    { label: "Viral Dominance", icon: TrendingUp, msg: "Give me 5 viral strategies to grow my YouTube Shorts channel using this app's AI features." },
-    { label: "Expansion Protocol", icon: Rocket, msg: "How can I earn 2000+ credits fast by sharing VideoMaster AI across platforms?" },
-    { label: "CTR Engineering", icon: Zap, msg: "Design a high-CTR narrative hook for a tech-focused TikTok reel." }
+    { label: "Viral Growth", icon: TrendingUp, msg: "Give me 5 viral strategies to grow my channel using Gemini Fast AI." },
+    { label: "Credit Protocol", icon: Rocket, msg: "How can I earn more credits fast by sharing VideoMaster AI?" },
+    { label: "AI Hooks", icon: Zap, msg: "Design a high-retention narrative hook for my next video." }
   ];
 
   return (
@@ -70,14 +71,14 @@ export default function AiAssistantPage() {
       
       <main className="max-w-6xl mx-auto p-6 mt-20 space-y-10 h-[calc(100vh-120px)] flex flex-col md:flex-row gap-10">
         
-        {/* 🧠 NEURAL CORE INFO (DESKTOP) */}
+        {/* 🧠 GEMINI FAST CORE INFO */}
         <div className="hidden md:flex flex-col w-80 space-y-8 shrink-0">
            <div className="space-y-4">
               <Link href="/dashboard" className="flex items-center gap-2 text-[10px] font-black text-muted-foreground hover:text-primary transition-all uppercase tracking-[0.4em]">
-                <ArrowLeft className="w-3 h-3" /> Exit Terminal
+                <ArrowLeft className="w-3 h-3" /> Exit Assistant
               </Link>
               <h1 className="text-5xl font-headline font-black text-white tracking-tighter leading-none">
-                Neural <span className="text-primary italic">Core</span>
+                Gemini <span className="text-primary italic">Fast</span>
               </h1>
            </div>
 
@@ -86,17 +87,17 @@ export default function AiAssistantPage() {
                  <Cpu className="w-40 h-40 text-primary" />
               </div>
               <div className="space-y-2 relative z-10">
-                 <h4 className="text-xs font-black uppercase tracking-widest text-primary">Core Intelligence</h4>
-                 <p className="text-xl font-bold text-white leading-tight">Gemini 1.5 Flash Overclocked</p>
+                 <h4 className="text-xs font-black uppercase tracking-widest text-primary">AI Architecture</h4>
+                 <p className="text-xl font-bold text-white leading-tight">Gemini 1.5 Flash (Optimized)</p>
               </div>
               <div className="space-y-4 pt-4 border-t border-primary/20 relative z-10">
                  <div className="flex items-center justify-between">
-                    <span className="text-[10px] font-bold uppercase text-muted-foreground">Uptime</span>
-                    <span className="text-[10px] font-bold text-emerald-500 uppercase">99.9%</span>
+                    <span className="text-[10px] font-bold uppercase text-muted-foreground">Speed</span>
+                    <span className="text-[10px] font-bold text-emerald-500 uppercase">Fastest Tier</span>
                  </div>
                  <div className="flex items-center justify-between">
-                    <span className="text-[10px] font-bold uppercase text-muted-foreground">Region</span>
-                    <span className="text-[10px] font-bold text-white uppercase">Global Multi-Node</span>
+                    <span className="text-[10px] font-bold uppercase text-muted-foreground">Status</span>
+                    <span className="text-[10px] font-bold text-white uppercase">Operational</span>
                  </div>
               </div>
            </Card>
@@ -120,7 +121,7 @@ export default function AiAssistantPage() {
            </div>
         </div>
 
-        {/* 🎨 MAIN CHAT INTERFACE */}
+        {/* 🎨 CHAT INTERFACE */}
         <Card className="flex-1 bg-[#0a0d14]/90 backdrop-blur-3xl border-white/5 rounded-[4rem] overflow-hidden flex flex-col shadow-2xl blue-glow relative">
           
           <div className="p-8 border-b border-white/5 bg-white/5 flex items-center justify-between shrink-0 relative z-10">
@@ -132,10 +133,10 @@ export default function AiAssistantPage() {
                  </div>
               </div>
               <div>
-                <p className="text-2xl font-black font-headline text-white uppercase tracking-tight">Growth Strategist</p>
+                <p className="text-2xl font-black font-headline text-white uppercase tracking-tight">Gemini Assistant</p>
                 <div className="flex items-center gap-2">
                    <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
-                   <p className="text-[10px] text-emerald-500 font-black uppercase tracking-widest">Neural Link Verified</p>
+                   <p className="text-[10px] text-emerald-500 font-black uppercase tracking-widest">Flash Engine Online</p>
                 </div>
               </div>
             </div>
@@ -144,8 +145,8 @@ export default function AiAssistantPage() {
                 <div className="flex items-center gap-4">
                    <Tornado className={cn("w-6 h-6 transition-all", antigravityMode ? "text-primary animate-spin" : "text-muted-foreground")} />
                    <div className="flex flex-col">
-                      <Label htmlFor="antigravity" className="text-[10px] font-black uppercase tracking-widest text-white cursor-pointer">Antigravity Mode</Label>
-                      <span className="text-[8px] text-muted-foreground font-black uppercase tracking-tight">Viral Ideation Active</span>
+                      <Label htmlFor="antigravity" className="text-[10px] font-black uppercase tracking-widest text-white cursor-pointer">Fast Mode</Label>
+                      <span className="text-[8px] text-muted-foreground font-black uppercase tracking-tight">Rapid Response Active</span>
                    </div>
                    <Switch 
                      id="antigravity" 
@@ -184,7 +185,7 @@ export default function AiAssistantPage() {
                      <div className="w-2 h-2 bg-primary rounded-full animate-bounce [animation-delay:-0.15s]" />
                      <div className="w-2 h-2 bg-primary rounded-full animate-bounce" />
                   </div>
-                  <span className="text-[10px] font-black uppercase tracking-[0.4em] text-muted-foreground">Core Thinking...</span>
+                  <span className="text-[10px] font-black uppercase tracking-[0.4em] text-muted-foreground">Gemini Thinking...</span>
                 </div>
               </div>
             )}
@@ -199,7 +200,7 @@ export default function AiAssistantPage() {
                  <Input 
                    value={input}
                    onChange={(e) => setInput(e.target.value)}
-                   placeholder={antigravityMode ? "Initiate viral dominance protocol..." : "Ask for strategic guidance..."}
+                   placeholder="Ask Gemini Fast AI anything..."
                    className="h-20 rounded-[2rem] bg-[#05070a] border-white/10 px-10 text-lg text-white focus:border-primary/50 transition-all pr-24 font-medium"
                  />
                  <Button 
@@ -211,13 +212,7 @@ export default function AiAssistantPage() {
                  </Button>
               </div>
             </form>
-            <p className="text-center mt-6 text-[9px] font-black text-muted-foreground uppercase tracking-[0.5em] opacity-40">Growth Strategist Node v2.5 • Powered by Elite Neural Core</p>
-          </div>
-
-          {/* 🌟 HOLOGRAPHIC BACKGROUND EFFECT */}
-          <div className="absolute inset-0 pointer-events-none">
-             <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] neural-pulse" />
-             <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-indigo-600/5 rounded-full blur-[100px] neural-pulse" style={{ animationDelay: '2s' }} />
+            <p className="text-center mt-6 text-[9px] font-black text-muted-foreground uppercase tracking-[0.5em] opacity-40">Powered by Gemini 1.5 Flash • Global Multi-Node</p>
           </div>
         </Card>
       </main>
