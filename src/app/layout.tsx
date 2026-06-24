@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   title: 'VideoMaster AI - Professional AI Video Studio',
   description: 'Produce viral AI content 10x faster. Stable, professional design studio for global creators. Claim 100 FREE AI credits.',
   keywords: ['AI Video Maker', 'Viral Script Writer', 'Cinematic AI', 'VideoMaster AI Tech'],
-  metadataBase: new URL('https://studio-9489287013-59986.web.app'),
+  metadataBase: new URL('https://videomaster-ai.tech'),
   alternates: { canonical: '/' },
   verification: {
     google: '', 
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'VideoMaster AI - The Ultimate Production Studio',
     description: 'Transform cinematic ideas into professional video assets with Elite AI.',
-    url: 'https://studio-9489287013-59986.web.app',
+    url: 'https://videomaster-ai.tech',
     siteName: 'VideoMaster AI',
     locale: 'en_US',
     type: 'website',
