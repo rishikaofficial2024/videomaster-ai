@@ -1,4 +1,3 @@
-
 "use client";
 
 import Link from "next/link";
@@ -36,7 +35,7 @@ export default function LandingPage() {
       const docSnap = await getDoc(userRef);
       if (!docSnap.exists()) {
         await setDoc(userRef, {
-          email: "guest@videomaster.ai",
+          email: "guest@videomaster-ai.tech",
           displayName: "Guest Creator",
           isPremium: false,
           isAdmin: false,
@@ -50,7 +49,7 @@ export default function LandingPage() {
       toast({ title: "Welcome Guest!", description: "100 FREE Credits assigned to your node." });
       router.push("/dashboard");
     } catch (error: any) {
-      toast({ variant: "destructive", title: "Entry Failed", description: "Could not initialize neural link." });
+      toast({ variant: "destructive", title: "Entry Failed", description: "Could not initialize Gemini Fast AI link." });
     } finally {
       setLoading(false);
     }
@@ -85,11 +84,11 @@ export default function LandingPage() {
               </div>
               
               <h1 className="text-6xl md:text-[10rem] font-bold tracking-tighter font-headline max-w-7xl leading-[0.85] uppercase">
-                AI Studio <span className="text-primary italic">Unlocked.</span>
+                Gemini <span className="text-primary italic">Studio.</span>
               </h1>
               
               <p className="max-w-3xl text-muted-foreground text-xl md:text-3xl font-medium leading-relaxed italic">
-                No password required. Enter as a guest and claim your <span className="text-white font-bold">100 FREE credits</span> instantly.
+                Experience high-speed video production. Enter as a guest and claim your <span className="text-white font-bold">100 FREE credits</span> instantly.
               </p>
 
               <div className="flex flex-col items-center gap-8 w-full max-w-3xl mx-auto">
@@ -102,13 +101,13 @@ export default function LandingPage() {
                   <Button asChild variant="outline" size="lg" className="h-24 px-12 rounded-[2.5rem] text-xl font-black uppercase tracking-tight bg-white/5 border-white/10 hover:bg-primary/20 hover:border-primary/50 transition-all group">
                     <Link href="/login">
                       <UserCircle className="mr-3 w-7 h-7 text-primary group-hover:scale-110 transition-transform" /> 
-                      Sign In (Owner)
+                      Owner Login
                     </Link>
                   </Button>
                 </div>
 
                 <div className="flex items-center gap-4 text-[10px] font-black uppercase tracking-[0.5em] text-muted-foreground opacity-40">
-                  <ShieldCheck className="w-3 h-3" /> Anonymous Node Access Protocol Active
+                  <ShieldCheck className="w-3 h-3" /> Fast AI Node Access Protocol Active
                 </div>
               </div>
             </div>
@@ -117,7 +116,7 @@ export default function LandingPage() {
               <div className="premium-card overflow-hidden blue-glow border-2 border-white/5 rounded-[4rem]">
                 {heroImg && (
                   <Image
-                    alt="AI Video Generator Dashboard Preview"
+                    alt="Gemini AI Video Generator Preview"
                     className="w-full aspect-video object-cover opacity-60"
                     height={720}
                     src={heroImg.imageUrl}
@@ -141,18 +140,18 @@ export default function LandingPage() {
             <div className="grid lg:grid-cols-2 gap-20 items-center">
                <div className="space-y-8">
                   <div className="inline-flex items-center gap-3 px-5 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-[10px] font-bold uppercase tracking-[0.3em]">
-                    <Coins className="w-4 h-4" /> ZERO FRICTION ENTRY
+                    <Coins className="w-4 h-4" /> ZERO FRICTION STUDIO
                   </div>
                   <h2 className="text-5xl md:text-7xl font-bold font-headline tracking-tighter text-white">Start Creating <span className="text-indigo-400 italic">Immediately.</span></h2>
                   <p className="text-muted-foreground text-xl leading-relaxed italic">
-                    Click "Skip Login" to enter the studio as a guest. Earn more credits by watching ads, or register later to save your projects permanently.
+                    Launch Gemini Fast AI tools instantly. Enter as a guest, earn more credits by watching ads, and scale your channel.
                   </p>
                   <ul className="space-y-6">
                      {[
-                       "No Password Needed for Guest Entry",
-                       "100 FREE Credits instantly on Guest Start",
-                       "+20 Credits for Ad impressions",
-                       "Full access to AI Script & Video tools"
+                       "Instant Guest Access (No Password)",
+                       "100 FREE Gemini Credits on Start",
+                       "Rewarded Credits for Ad Impressions",
+                       "Full access to Script & Motion Engines"
                      ].map((feat, i) => (
                        <li key={i} className="flex items-center gap-4 text-white font-bold italic">
                           <Check className="w-6 h-6 text-emerald-500" /> {feat}
@@ -160,7 +159,7 @@ export default function LandingPage() {
                      ))}
                   </ul>
                   <Button onClick={handleGuestEntry} disabled={loading} size="lg" className="h-16 px-10 rounded-2xl bg-indigo-600 hover:bg-indigo-700 shadow-xl">
-                     Launch Guest Node
+                     Launch Gemini Node
                   </Button>
                </div>
                <div className="relative">
@@ -169,7 +168,7 @@ export default function LandingPage() {
                         <div className="w-20 h-20 bg-primary/20 rounded-full flex items-center justify-center mx-auto animate-pulse">
                            <Zap className="w-10 h-10 text-primary" />
                         </div>
-                        <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.4em]">Assigning Guest Node...</p>
+                        <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.4em]">Initializing Gemini Fast AI...</p>
                         <div className="w-48 h-1 bg-white/10 rounded-full overflow-hidden mx-auto">
                            <div className="h-full bg-primary animate-progress" />
                         </div>
@@ -183,15 +182,15 @@ export default function LandingPage() {
         <section className="w-full py-40 bg-[#05070a]">
           <div className="container px-6 mx-auto max-w-4xl">
              <div className="text-center mb-20">
-                <h2 className="text-5xl font-headline font-bold mb-4 uppercase tracking-tighter">Guest <span className="text-primary">FAQ</span></h2>
-                <p className="text-muted-foreground italic tracking-widest text-xs font-black uppercase opacity-40">Zero Friction Policy</p>
+                <h2 className="text-5xl font-headline font-bold mb-4 uppercase tracking-tighter">Gemini <span className="text-primary">FAQ</span></h2>
+                <p className="text-muted-foreground italic tracking-widest text-xs font-black uppercase opacity-40">Zero Friction Protocol</p>
              </div>
              
              <Accordion type="single" collapsible className="space-y-4">
                 {[
-                  { q: "Can I enter without a password?", a: "Yes. Use the 'Skip Login' or 'Guest Entry' button to start using AI tools instantly." },
-                  { q: "Will I lose my credits as a guest?", a: "No. Credits stay on your device session. You can link your account later to save them permanently." },
-                  { q: "Is anonymous access safe?", a: "100%. We use Firebase Anonymous Authentication to provide secure temporary nodes for all creators." }
+                  { q: "Is Gemini Fast AI free?", a: "Yes. Every new guest receives 100 free credits to explore our script and video synthesis tools." },
+                  { q: "Will I lose projects as a guest?", a: "Projects are stored in your device session. Sign in with Google to save them permanently to the Gemini Cloud." },
+                  { q: "How fast is Gemini Flash?", a: "Gemini 1.5 Flash is optimized for sub-second text generation and high-speed asset processing." }
                 ].map((item, i) => (
                   <AccordionItem key={i} value={`item-${i}`} className="border-white/5 bg-white/5 rounded-3xl px-8 py-2">
                     <AccordionTrigger className="text-lg font-bold hover:no-underline hover:text-primary transition-colors uppercase tracking-tight">{item.q}</AccordionTrigger>
@@ -215,7 +214,7 @@ export default function LandingPage() {
              <Link href="/privacy" className="text-[10px] font-bold uppercase tracking-widest hover:text-primary">Privacy</Link>
              <Link href="/terms" className="text-[10px] font-bold uppercase tracking-widest hover:text-primary">Terms</Link>
           </div>
-          <p className="text-[9px] text-muted-foreground/30 font-black uppercase tracking-[0.8em]">Production Build v1.7.0 Guest Ready</p>
+          <p className="text-[9px] text-muted-foreground/30 font-black uppercase tracking-[0.8em]">Production Build v2.0.0 Gemini Ready</p>
         </div>
       </footer>
     </div>

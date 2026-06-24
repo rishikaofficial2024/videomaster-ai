@@ -1,4 +1,3 @@
-
 "use client";
 
 import { Navbar } from "@/components/navbar";
@@ -69,7 +68,7 @@ export default function Dashboard() {
       setShowAdOverlay(false);
       toast({ 
         title: "Credits Replenished", 
-        description: "+20 AI Credits added to your node." 
+        description: "+20 AI Credits added to your account." 
       });
     }, 15000);
   };
@@ -86,7 +85,7 @@ export default function Dashboard() {
       <div className="h-screen flex items-center justify-center bg-[#020408]">
         <div className="text-center space-y-8">
            <Loader2 className="w-12 h-12 animate-spin text-primary mx-auto" />
-           <p className="text-[10px] font-black uppercase tracking-[0.5em] text-muted-foreground">Synchronizing Gemini Core...</p>
+           <p className="text-[10px] font-black uppercase tracking-[0.5em] text-muted-foreground">Synchronizing Gemini Fast AI...</p>
         </div>
       </div>
     );
@@ -116,7 +115,7 @@ export default function Dashboard() {
                 </div>
              </div>
              <Button className="rounded-2xl h-16 font-black px-10 shadow-glow text-lg gap-4 bg-primary group-hover:scale-105 transition-all" asChild>
-                <Link href="/editor"><Plus className="w-6 h-6" /> NEW SEQUENCE</Link>
+                <Link href="/editor"><Plus className="w-6 h-6" /> NEW PROJECT</Link>
              </Button>
           </div>
         </header>
@@ -145,7 +144,7 @@ export default function Dashboard() {
                            <p className="text-[10px] text-muted-foreground font-black uppercase tracking-widest mt-1">{tool.desc}</p>
                         </div>
                         <div className="pt-4 flex items-center gap-2 text-primary opacity-0 group-hover:opacity-100 transition-all translate-x-[-10px] group-hover:translate-x-0">
-                           <span className="text-[10px] font-black uppercase tracking-widest">Execute Node</span>
+                           <span className="text-[10px] font-black uppercase tracking-widest">Execute AI Tool</span>
                            <ArrowRight size={14} />
                         </div>
                      </div>
