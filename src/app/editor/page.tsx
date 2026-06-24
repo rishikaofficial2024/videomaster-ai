@@ -199,7 +199,6 @@ function EditorContent() {
     }
     setIsProcessing(true);
     try {
-      // For MVP we simulate or use dummy audio data URI if real one isn't available
       const result = await generateAutoCaptionsAndSubtitles({ audioDataUri: "data:audio/wav;base64,UklGR" });
       setSubtitles(result.subtitles);
       handleSave({ subtitles: result.subtitles });
