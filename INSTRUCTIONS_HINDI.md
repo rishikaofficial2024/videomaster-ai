@@ -3,13 +3,13 @@
 Bhaai, GitHub se APK download karne ke liye ye steps follow karein:
 
 ### 1. Command Run Karein ✅
-Pehle terminal mein ye command chalayein taaki aapka latest code GitHub par chala jaye:
+Pehle terminal mein ye command chalayein taaki aapka latest code GitHub par chala jaye aur build start ho jaye:
 ```bash
 npm run mobile:push
 ```
 
 ### 2. Is Link par Jayein ✅
-Yahan click karke dekhein ki build poori hui ya nahi:
+Yahan click karke dekhein ki build poori hui ya nahi (Isme 2-3 minute lag sakte hain):
 👉 [GitHub Build Status](https://github.com/rishikaofficial2024/videomaster-ai/actions)
 
 ### 3. APK File Dhoondhein ✅
@@ -20,4 +20,4 @@ Yahan click karke dekhein ki build poori hui ya nahi:
 ### 4. Install Karein ✅
 Download ki hui file ko apne mobile mein open karein aur APK install kar lein.
 
-**Ab aapka app live ho chuka hai!** 🚀📱💎💸🎬
+**Ab aapka app Android par live ho chuka hai!** 🚀📱💎💸🎬
