@@ -1,3 +1,4 @@
+
 {
   "name": "videomaster-ai",
   "version": "1.0.0",
@@ -7,7 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "mobile:push": "git remote remove origin || true && git remote add origin https://github.com/rishikaofficial2024/videomaster-ai.git && git add . && (git commit -m '🚀 Elite Production Launch Build' || true) && git push origin main --force",
+    "mobile:push": "git remote remove origin || true && git remote add origin https://github.com/rishikaofficial2024/videomaster-ai.git && git add . && (git commit -m '🚀 Elite Production APK Build' || true) && git push origin main --force",
     "web:deploy": "next build && firebase deploy --only hosting",
     "android:sync": "next build && npx cap sync android",
     "android:open": "npx cap open android",
