@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useEffect } from 'react';
@@ -14,7 +15,8 @@ export function FirebaseErrorListener() {
 
   useEffect(() => {
     const handlePermissionError = (error: FirestorePermissionError) => {
-      // Visual notification instead of console crash
+      // Visual notification instead of console crash.
+      // Logging to console is removed as it triggers the dev overlay in Next.js.
       toast({
         variant: 'destructive',
         title: 'Access Restricted',
