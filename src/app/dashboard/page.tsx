@@ -3,27 +3,24 @@
 
 import { Navbar } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { 
   Plus, Sparkles, Loader2, Coins, 
-  Play, History, LayoutTemplate, Zap,
-  ArrowRight, Wand2, Video as VideoIcon, Type, Mic, Image as ImageIcon,
-  Smartphone, Monitor, Cpu, TrendingUp
+  Play, Zap, ArrowRight, Wand2, Video as VideoIcon, Mic, Image as ImageIcon,
+  Cpu, TrendingUp
 } from "lucide-react";
 import Link from "next/link";
-import { useUser, useFirestore, useDoc, useMemoFirebase, useCollection } from "@/firebase";
-import { doc, updateDoc, increment, collection, query, limit, orderBy } from "firebase/firestore";
+import { useUser, useFirestore, useDoc, useMemoFirebase } from "@/firebase";
+import { doc, updateDoc, increment } from "firebase/firestore";
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { errorEmitter } from '@/firebase/error-emitter';
 import { FirestorePermissionError, type SecurityRuleContext } from '@/firebase/errors';
-import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 
 export default function Dashboard() {
   const { user, loading: userLoading } = useUser();
   const db = useFirestore();
-  const router = useRouter();
   const { toast } = useToast();
   const [adLoading, setAdLoading] = useState(false);
   const [showAdOverlay, setShowAdOverlay] = useState(false);
@@ -40,17 +37,6 @@ export default function Dashboard() {
   }, [user?.uid, db]);
 
   const { data: profile } = useDoc(userProfileRef);
-
-  const projectsQuery = useMemoFirebase(() => {
-    if (!db || !user) return null;
-    return query(
-      collection(db, "users", user.uid, "projects"),
-      orderBy("updatedAt", "desc"),
-      limit(4)
-    );
-  }, [db, user?.uid]);
-
-  const { data: projects, loading: projectsLoading } = useCollection(projectsQuery);
 
   const handleWatchAd = () => {
     if (!userProfileRef || adLoading) return;
@@ -89,10 +75,10 @@ export default function Dashboard() {
   };
 
   const toolSuite = [
-    { label: "Script Writer", icon: Wand2, desc: "AI viral narrative engine", color: "text-primary", href: "/editor?tool=ai" },
-    { label: "Video Engine", icon: VideoIcon, desc: "Text-to-Video generation", color: "text-indigo-400", href: "/editor?tool=ai" },
-    { label: "Neural Voice", icon: Mic, desc: "High-fidelity voiceovers", color: "text-rose-400", href: "/editor?tool=audio" },
-    { label: "Thumbnail Designer", icon: ImageIcon, desc: "4K cinematic thumbnails", color: "text-emerald-400", href: "/editor?tool=ai" },
+    { label: "Viral Script", icon: Wand2, desc: "Neural Narrative Engine", color: "text-primary", href: "/editor?tool=ai" },
+    { label: "AI Video", icon: VideoIcon, desc: "Text-to-Video Synthesis", color: "text-indigo-400", href: "/editor?tool=ai" },
+    { label: "Neural Voice", icon: Mic, desc: "High-Fidelity Studio TTS", color: "text-rose-400", href: "/editor?tool=audio" },
+    { label: "Thumbnail AI", icon: ImageIcon, desc: "4K High-CTR Visuals", color: "text-emerald-400", href: "/editor?tool=ai" },
   ];
 
   if (!mounted || userLoading) {
@@ -111,14 +97,13 @@ export default function Dashboard() {
       <Navbar />
       <main className="max-w-7xl mx-auto p-6 lg:p-12 space-y-20">
         
-        {/* ✨ ELITE HEADER & BALANCE */}
         <header className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-10 pt-10">
           <div className="space-y-4">
             <h1 className="text-6xl md:text-8xl font-headline font-black tracking-tighter text-white leading-none">
               Studio <span className="text-primary italic">Hub</span>
             </h1>
             <p className="text-muted-foreground text-xl font-medium italic opacity-60">
-              Welcome, {profile?.displayName || 'Creator'}. Select your node to begin.
+              Welcome back, {profile?.displayName || 'Creator'}. Everything is ready for your next viral clip.
             </p>
           </div>
           
@@ -136,13 +121,12 @@ export default function Dashboard() {
           </div>
         </header>
 
-        {/* 🛠️ NEURAL TOOL SUITE (FRONT-PAGE ACCESS) */}
         <section className="space-y-10">
            <div className="flex items-center gap-6">
               <div className="p-4 bg-primary/10 rounded-2xl border border-primary/20">
                  <Cpu className="w-6 h-6 text-primary" />
               </div>
-              <h3 className="text-3xl font-bold font-headline text-white uppercase tracking-tight">AI Command Center</h3>
+              <h3 className="text-3xl font-bold font-headline text-white uppercase tracking-tight">AI Suite (Front Page Access)</h3>
            </div>
 
            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -171,19 +155,18 @@ export default function Dashboard() {
            </div>
         </section>
 
-        {/* ⚡ REPLENISH PROTOCOL */}
         <section>
            <Card className="rounded-[4rem] bg-primary/[0.02] border-primary/10 p-12 flex flex-col lg:flex-row items-center justify-between gap-12 group overflow-hidden relative hover:bg-primary/[0.04] transition-all duration-1000 shadow-2xl">
               <div className="absolute top-0 right-0 p-12 opacity-5 -rotate-12 group-hover:rotate-0 transition-all">
-                 <Zap className="w-64 h-64 text-primary" />
+                 <TrendingUp className="w-64 h-64 text-primary" />
               </div>
               <div className="flex items-center gap-10 relative z-10">
                  <div className="w-20 h-20 bg-primary/20 rounded-[2rem] flex items-center justify-center border border-primary/30 shadow-xl">
                     <Zap className="w-8 h-8 text-primary animate-pulse" />
                  </div>
                  <div className="space-y-2">
-                    <h3 className="text-4xl font-bold font-headline text-white uppercase tracking-tight">Attention Rewards</h3>
-                    <p className="text-muted-foreground text-lg font-medium italic opacity-60">Sync with sponsored content to earn +20 credits.</p>
+                    <h3 className="text-4xl font-bold font-headline text-white uppercase tracking-tight">Replenish Node</h3>
+                    <p className="text-muted-foreground text-lg font-medium italic opacity-60">Sync with sponsored content to earn +20 credits instantly.</p>
                  </div>
               </div>
               <Button onClick={handleWatchAd} disabled={adLoading} className="h-20 px-12 rounded-[2rem] bg-primary font-black text-xl uppercase tracking-widest shadow-xl relative z-10">
@@ -206,7 +189,7 @@ export default function Dashboard() {
               </div>
               <div className="space-y-6">
                  <h2 className="text-4xl font-headline font-bold text-white tracking-tighter uppercase">NEURAL VERIFICATION</h2>
-                 <p className="text-xl text-muted-foreground italic font-medium opacity-60">Validating attention metrics for node replenishment.</p>
+                 <p className="text-xl text-muted-foreground italic font-medium opacity-60">Validating attention metrics for credit replenishment.</p>
                  <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden border border-white/5">
                     <div className="h-full bg-primary transition-all duration-1000" style={{ width: `${(15 - adTimer) / 15 * 100}%` }} />
                  </div>

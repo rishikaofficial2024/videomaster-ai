@@ -6,16 +6,15 @@ import { Navbar } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
 import { 
   Pause, Play, SkipBack, SkipForward,
-  Wand2, Download, Sparkles, ChevronLeft, Loader2, Video as VideoIcon,
+  Wand2, Download, ChevronLeft, Loader2, Video as VideoIcon,
   Plus, Music, 
-  Trash2, Upload, Scissors, Film,
-  Settings2, Type, Crown, Lock, Layers, Zap, Volume2, Search,
-  HardDrive, Monitor, RefreshCw, Smartphone
+  Upload, Film,
+  Settings2, Type, Crown, Lock, Zap, Volume2,
+  Monitor, Smartphone, RefreshCw
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { generateAiVideo } from "@/ai/flows/ai-video-generation-flow";
 import { generateAiScript } from "@/ai/flows/ai-script-writer-flow";
-import { generateAutoCaptionsAndSubtitles } from "@/ai/flows/ai-auto-caption-and-subtitle-generation-flow";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useUser, useFirestore, useDoc, useMemoFirebase } from "@/firebase";
