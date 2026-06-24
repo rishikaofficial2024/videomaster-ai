@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect, useRef, Suspense } from "react";
@@ -93,11 +94,12 @@ function EditorContent() {
   }, [project, mounted]);
 
   useEffect(() => {
-    if (!projectId && !projectIdFromUrl && mounted) {
+    // Generate ID only on client to avoid hydration mismatch
+    if (mounted && !projectId && !projectIdFromUrl) {
       const newId = "prj-" + Math.random().toString(36).substring(2, 9);
       setProjectId(newId);
     }
-  }, [projectId, projectIdFromUrl, mounted]);
+  }, [mounted, projectId, projectIdFromUrl]);
 
   const handleSave = (extraData: any = {}) => {
     if (!user || !projectRef || !mounted) return;
@@ -168,7 +170,7 @@ function EditorContent() {
       setMagicHook(result.hook);
       toast({ title: "Narrative Ready", description: "Script engineered via Gemini Fast AI." });
     } catch (e: any) {
-      toast({ variant: "destructive", title: "AI Sync Alert", description: "Neural engine link was interrupted. Please retry." });
+      toast({ variant: "destructive", title: "AI Sync Alert", description: "Neural engine link was interrupted." });
     } finally {
       setIsProcessing(false);
     }

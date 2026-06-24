@@ -1,3 +1,4 @@
+
 "use client";
 
 import { Navbar } from "@/components/navbar";
@@ -37,41 +38,43 @@ export default function Dashboard() {
 
   const { data: profile } = useDoc(userProfileRef);
 
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (showAdOverlay && adTimer > 0) {
+      interval = setInterval(() => {
+        setAdTimer((prev) => prev - 1);
+      }, 1000);
+    } else if (adTimer === 0 && showAdOverlay) {
+      completeAdReward();
+    }
+    return () => clearInterval(interval);
+  }, [showAdOverlay, adTimer]);
+
+  const completeAdReward = () => {
+    if (!userProfileRef) return;
+    const updateData = { credits: increment(20), updatedAt: new Date().toISOString() };
+    updateDoc(userProfileRef, updateData)
+      .catch(async (err) => {
+        errorEmitter.emit('permission-error', new FirestorePermissionError({
+          path: userProfileRef.path,
+          operation: 'update',
+          requestResourceData: updateData,
+        } satisfies SecurityRuleContext));
+      });
+
+    setAdLoading(false);
+    setShowAdOverlay(false);
+    toast({ 
+      title: "Credits Replenished", 
+      description: "+20 AI Credits added to your account." 
+    });
+  };
+
   const handleWatchAd = () => {
     if (!userProfileRef || adLoading) return;
     setAdLoading(true);
     setShowAdOverlay(true);
     setAdTimer(15);
-    
-    // Defer timer side effect to post-hydration
-    const interval = setInterval(() => {
-      setAdTimer((prev) => {
-        if (prev <= 1) {
-          clearInterval(interval);
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-    
-    setTimeout(() => {
-      const updateData = { credits: increment(20), updatedAt: new Date().toISOString() };
-      updateDoc(userProfileRef, updateData)
-        .catch(async (err) => {
-          errorEmitter.emit('permission-error', new FirestorePermissionError({
-            path: userProfileRef.path,
-            operation: 'update',
-            requestResourceData: updateData,
-          } satisfies SecurityRuleContext));
-        });
-
-      setAdLoading(false);
-      setShowAdOverlay(false);
-      toast({ 
-        title: "Credits Replenished", 
-        description: "+20 AI Credits added to your account." 
-      });
-    }, 15000);
   };
 
   const toolSuite = [
