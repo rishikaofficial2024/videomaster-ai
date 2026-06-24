@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Video, Chrome, Loader2, Eye, EyeOff, ArrowLeft, AlertCircle } from "lucide-react";
+import { Video, Chrome, Loader2, Eye, EyeOff, ArrowLeft, ShieldCheck } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { 
   createUserWithEmailAndPassword, 
@@ -18,16 +18,13 @@ import {
 import { doc, setDoc } from "firebase/firestore";
 import { useAuth, useFirestore } from "@/firebase";
 import { useToast } from "@/hooks/use-toast";
-import { errorEmitter } from "@/firebase/error-emitter";
-import { FirestorePermissionError, type SecurityRuleContext } from "@/firebase/errors";
 
 export default function SignupPage() {
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+  const [fullName, setFullName] = useState("");
   
   const router = useRouter();
   const { toast } = useToast();
@@ -36,20 +33,19 @@ export default function SignupPage() {
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email || !password || !firstName) return;
+    if (!email || !password || !fullName) return;
     
     setLoading(true);
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email.trim(), password);
       const user = userCredential.user;
-      const displayName = `${firstName} ${lastName}`;
 
-      await updateProfile(user, { displayName });
+      await updateProfile(user, { displayName: fullName });
 
       const userRef = doc(db, "users", user.uid);
       const userData = {
         email: user.email,
-        displayName: displayName,
+        displayName: fullName,
         isPremium: false,
         isAdmin: false,
         subscriptionPlan: "free",
@@ -59,17 +55,14 @@ export default function SignupPage() {
       };
 
       await setDoc(userRef, userData, { merge: true });
-      toast({ title: "Account Created", description: "Welcome to your AI Studio!" });
+      toast({ title: "Welcome!", description: "100 FREE Credits added to your node." });
       router.push("/dashboard");
     } catch (error: any) {
-      let errorMessage = "Registration failed. Please try again.";
-      
+      let errorMessage = "Registration failed. Try again.";
       if (error.code === 'auth/email-already-in-use') {
-        errorMessage = "This email is already registered. Please Sign In instead.";
+        errorMessage = "Email already in use. Try logging in.";
       } else if (error.code === 'auth/weak-password') {
-        errorMessage = "Password is too weak. Please use at least 6 characters.";
-      } else if (error.code === 'auth/invalid-email') {
-        errorMessage = "Invalid email format. Please check your entry.";
+        errorMessage = "Password is too weak.";
       }
 
       toast({ 
@@ -104,7 +97,7 @@ export default function SignupPage() {
       await setDoc(userRef, userData, { merge: true });
       router.push("/dashboard");
     } catch (error: any) {
-      toast({ variant: "destructive", title: "Google Login Failed", description: "Please try again." });
+      toast({ variant: "destructive", title: "Social Signup Failed", description: "Connection error." });
     } finally {
       setLoading(false);
     }
@@ -119,28 +112,36 @@ export default function SignupPage() {
       </div>
 
       <div className="w-full max-w-md animate-in fade-in duration-500">
-        <Card className="border-white/5 bg-[#0a0d14] rounded-[2rem] shadow-2xl overflow-hidden border-t-2 border-primary/20">
-          <CardHeader className="text-center pt-8">
+        <Card className="border-white/5 bg-[#0a0d14] rounded-[2.5rem] shadow-2xl overflow-hidden border-t-2 border-primary/20">
+          <CardHeader className="text-center pt-8 pb-4">
             <div className="flex justify-center mb-2">
               <div className="p-3 bg-primary/10 rounded-2xl">
                 <Video className="w-10 h-10 text-primary" />
               </div>
             </div>
-            <CardTitle className="text-2xl font-bold font-headline">Join Studio</CardTitle>
-            <CardDescription className="italic">Get 100 FREE AI Credits instantly</CardDescription>
+            <CardTitle className="text-2xl font-bold font-headline">Join VideoMaster AI</CardTitle>
+            <CardDescription className="italic">Claim 100 FREE Credits instantly</CardDescription>
           </CardHeader>
 
           <CardContent className="space-y-6">
+            <Button 
+              variant="outline" 
+              className="w-full h-14 gap-3 border-white/10 bg-white/5 font-bold rounded-2xl hover:bg-primary/10 transition-all text-white" 
+              onClick={handleSocialSignup} 
+              disabled={loading}
+            >
+              <Chrome className="w-5 h-5 text-red-500" /> Sign up with Google
+            </Button>
+
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center"><span className="w-full border-t border-white/5"></span></div>
+              <div className="relative flex justify-center text-[10px] uppercase font-bold text-muted-foreground"><span className="bg-[#0a0d14] px-4">OR EMAIL</span></div>
+            </div>
+
             <form onSubmit={handleSignup} className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-1">
-                  <Label className="text-[10px] uppercase text-primary ml-1 font-bold">First Name</Label>
-                  <Input placeholder="John" required className="h-12 bg-black/40 border-white/10" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
-                </div>
-                <div className="space-y-1">
-                  <Label className="text-[10px] uppercase text-primary ml-1 font-bold">Last Name</Label>
-                  <Input placeholder="Doe" className="h-12 bg-black/40 border-white/10" value={lastName} onChange={(e) => setLastName(e.target.value)} />
-                </div>
+              <div className="space-y-1">
+                <Label className="text-[10px] uppercase text-primary ml-1 font-bold">Full Name</Label>
+                <Input placeholder="John Doe" required className="h-12 bg-black/40 border-white/10" value={fullName} onChange={(e) => setFullName(e.target.value)} />
               </div>
               <div className="space-y-1">
                 <Label className="text-[10px] uppercase text-primary ml-1 font-bold">Email</Label>
@@ -167,22 +168,16 @@ export default function SignupPage() {
                 </div>
               </div>
               <Button type="submit" className="w-full h-14 font-black uppercase tracking-widest rounded-xl" disabled={loading}>
-                {loading ? <Loader2 className="animate-spin" /> : "Initialize Node"}
+                {loading ? <Loader2 className="animate-spin" /> : "Get Started"}
               </Button>
             </form>
-            
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center"><span className="w-full border-t border-white/5"></span></div>
-              <div className="relative flex justify-center text-[10px] uppercase font-bold text-muted-foreground"><span className="bg-[#0a0d14] px-4">Social Access</span></div>
-            </div>
-
-            <Button variant="outline" className="w-full h-12 gap-2 border-white/10 bg-black/20 font-bold" onClick={handleSocialSignup} disabled={loading}>
-              <Chrome className="w-4 h-4 text-red-500" /> Sign up with Google
-            </Button>
           </CardContent>
           <CardFooter className="flex flex-col space-y-4 pb-8 pt-2">
             <div className="text-sm text-center text-muted-foreground">
-              Already have an account? <Link href="/login" className="text-primary font-bold hover:underline">Sign In</Link>
+              Already have an account? <Link href="/login" className="text-primary font-bold hover:underline">Login</Link>
+            </div>
+            <div className="flex items-center justify-center gap-2 text-[9px] text-muted-foreground uppercase font-black tracking-widest opacity-20">
+               <ShieldCheck className="w-3 h-3" /> Secure Node Access
             </div>
           </CardFooter>
         </Card>
