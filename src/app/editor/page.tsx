@@ -10,7 +10,7 @@ import {
   Plus, Music, 
   Trash2, Upload, Scissors, Film,
   Settings2, Type, Crown, Lock, Layers, Zap, Volume2, Search,
-  HardDrive, Monitor, RefreshCw, Smartphone, Smartphone as SmartphoneIcon
+  HardDrive, Monitor, RefreshCw, Smartphone
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { generateAiVideo } from "@/ai/flows/ai-video-generation-flow";
@@ -54,7 +54,7 @@ function EditorContent() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
-  const [activeTab, setActiveTab] = useState(toolFromUrl === 'audio' ? 'audio' : 'ai');
+  const [activeTab, setActiveTab] = useState(toolFromUrl || 'ai');
   
   const [mediaAssets, setMediaAssets] = useState<MediaAsset[]>([]);
   const [videoData, setVideoData] = useState<string | null>(null);

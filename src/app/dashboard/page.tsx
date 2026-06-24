@@ -89,10 +89,10 @@ export default function Dashboard() {
   };
 
   const toolSuite = [
-    { label: "Script Writer", icon: Wand2, desc: "AI viral narrative engine", color: "text-primary", href: "/editor?tool=script" },
-    { label: "Video Engine", icon: VideoIcon, desc: "Text-to-Video generation", color: "text-indigo-400", href: "/editor?tool=video" },
+    { label: "Script Writer", icon: Wand2, desc: "AI viral narrative engine", color: "text-primary", href: "/editor?tool=ai" },
+    { label: "Video Engine", icon: VideoIcon, desc: "Text-to-Video generation", color: "text-indigo-400", href: "/editor?tool=ai" },
     { label: "Neural Voice", icon: Mic, desc: "High-fidelity voiceovers", color: "text-rose-400", href: "/editor?tool=audio" },
-    { label: "Thumbnail Designer", icon: ImageIcon, desc: "4K cinematic thumbnails", color: "text-emerald-400", href: "/editor?tool=thumbnail" },
+    { label: "Thumbnail Designer", icon: ImageIcon, desc: "4K cinematic thumbnails", color: "text-emerald-400", href: "/editor?tool=ai" },
   ];
 
   if (!mounted || userLoading) {
@@ -118,7 +118,7 @@ export default function Dashboard() {
               Studio <span className="text-primary italic">Hub</span>
             </h1>
             <p className="text-muted-foreground text-xl font-medium italic opacity-60">
-              Welcome, {profile?.displayName || 'Creator'}. Everything you need is right here.
+              Welcome, {profile?.displayName || 'Creator'}. Select your node to begin.
             </p>
           </div>
           
@@ -136,19 +136,19 @@ export default function Dashboard() {
           </div>
         </header>
 
-        {/* 🛠️ NEURAL TOOL SUITE (IMMEDIATE FEATURES) */}
+        {/* 🛠️ NEURAL TOOL SUITE (FRONT-PAGE ACCESS) */}
         <section className="space-y-10">
            <div className="flex items-center gap-6">
               <div className="p-4 bg-primary/10 rounded-2xl border border-primary/20">
                  <Cpu className="w-6 h-6 text-primary" />
               </div>
-              <h3 className="text-3xl font-bold font-headline text-white uppercase tracking-tight">Neural Tool Suite</h3>
+              <h3 className="text-3xl font-bold font-headline text-white uppercase tracking-tight">AI Command Center</h3>
            </div>
 
            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
               {toolSuite.map((tool, i) => (
                 <Link key={i} href={tool.href}>
-                  <Card className="group p-8 rounded-[2.5rem] bg-white/[0.02] border-white/5 hover:bg-white/[0.05] hover:border-primary/40 transition-all cursor-pointer relative overflow-hidden h-full">
+                  <Card className="group p-8 rounded-[2.5rem] bg-white/[0.02] border-white/5 hover:bg-white/[0.05] hover:border-primary/40 transition-all cursor-pointer relative overflow-hidden h-full shadow-xl">
                      <div className="absolute top-0 right-0 p-8 opacity-5 -rotate-12 group-hover:rotate-0 transition-all duration-700">
                         <tool.icon size={100} />
                      </div>
@@ -161,56 +161,13 @@ export default function Dashboard() {
                            <p className="text-[10px] text-muted-foreground font-black uppercase tracking-widest mt-1">{tool.desc}</p>
                         </div>
                         <div className="pt-4 flex items-center gap-2 text-primary opacity-0 group-hover:opacity-100 transition-all translate-x-[-10px] group-hover:translate-x-0">
-                           <span className="text-[10px] font-black uppercase tracking-widest">Launch Protocol</span>
+                           <span className="text-[10px] font-black uppercase tracking-widest">Execute Node</span>
                            <ArrowRight size={14} />
                         </div>
                      </div>
                   </Card>
                 </Link>
               ))}
-           </div>
-        </section>
-
-        {/* 🎬 PROJECT ARCHIVE */}
-        <section className="space-y-10">
-           <div className="flex items-center justify-between">
-              <div className="flex items-center gap-6">
-                 <div className="p-4 bg-white/5 rounded-2xl border border-white/5">
-                    <History className="w-6 h-6 text-muted-foreground" />
-                 </div>
-                 <h3 className="text-3xl font-bold font-headline text-white uppercase tracking-tight">Active Sequences</h3>
-              </div>
-              <Link href="/projects" className="text-[10px] font-black text-primary hover:tracking-[0.2em] transition-all uppercase tracking-[0.4em] flex items-center gap-2">
-                 ALL PROJECTS <ArrowRight className="w-3 h-3" />
-              </Link>
-           </div>
-
-           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-              {projectsLoading ? (
-                [1,2,3,4].map(i => <div key={i} className="aspect-video bg-white/[0.03] animate-pulse rounded-3xl" />)
-              ) : projects && projects.length > 0 ? (
-                projects.map((p: any) => (
-                  <Card key={p.id} className="group overflow-hidden rounded-[2.5rem] border-white/5 bg-white/[0.01] hover:bg-white/[0.04] hover:border-primary/40 transition-all cursor-pointer shadow-xl relative" onClick={() => router.push(`/editor?id=${p.id}`)}>
-                     <div className="aspect-video relative overflow-hidden">
-                        <img 
-                           src={p.thumbnailUrl || `https://picsum.photos/seed/${p.id}/600/400`} 
-                           alt={p.title} 
-                           className="w-full h-full object-cover opacity-40 group-hover:scale-110 transition-transform duration-1000"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
-                        <div className="absolute bottom-6 left-6 right-6">
-                           <h4 className="text-white font-bold truncate text-lg uppercase tracking-tight">{p.title || 'Untitled'}</h4>
-                           <span className="text-[8px] text-muted-foreground font-black uppercase tracking-[0.3em]">Last Sync: {new Date(p.updatedAt?.seconds * 1000 || p.updatedAt).toLocaleDateString()}</span>
-                        </div>
-                     </div>
-                  </Card>
-                ))
-              ) : (
-                <Card className="col-span-full py-20 bg-white/[0.005] rounded-[3rem] border-2 border-dashed border-white/10 text-center space-y-6">
-                   <LayoutTemplate className="w-12 h-12 text-muted-foreground mx-auto opacity-20" />
-                   <p className="text-muted-foreground italic font-medium opacity-40">No sequences detected in local storage.</p>
-                </Card>
-              )}
            </div>
         </section>
 
@@ -225,13 +182,13 @@ export default function Dashboard() {
                     <Zap className="w-8 h-8 text-primary animate-pulse" />
                  </div>
                  <div className="space-y-2">
-                    <h3 className="text-4xl font-bold font-headline text-white uppercase tracking-tight">Fuel Reserve</h3>
-                    <p className="text-muted-foreground text-lg font-medium italic opacity-60">Replenish +20 credits via attention sync.</p>
+                    <h3 className="text-4xl font-bold font-headline text-white uppercase tracking-tight">Attention Rewards</h3>
+                    <p className="text-muted-foreground text-lg font-medium italic opacity-60">Sync with sponsored content to earn +20 credits.</p>
                  </div>
               </div>
               <Button onClick={handleWatchAd} disabled={adLoading} className="h-20 px-12 rounded-[2rem] bg-primary font-black text-xl uppercase tracking-widest shadow-xl relative z-10">
                  {adLoading ? <Loader2 className="animate-spin mr-4 w-8 h-8" /> : <Play className="w-6 h-6 mr-4 fill-current" />}
-                 WATCH & EARN
+                 START SYNC
               </Button>
            </Card>
         </section>
@@ -248,8 +205,8 @@ export default function Dashboard() {
                  </div>
               </div>
               <div className="space-y-6">
-                 <h2 className="text-4xl font-headline font-bold text-white tracking-tighter uppercase">VERIFYING NEURAL LOAD</h2>
-                 <p className="text-xl text-muted-foreground italic font-medium opacity-60">Synchronizing attention metrics for credit injection.</p>
+                 <h2 className="text-4xl font-headline font-bold text-white tracking-tighter uppercase">NEURAL VERIFICATION</h2>
+                 <p className="text-xl text-muted-foreground italic font-medium opacity-60">Validating attention metrics for node replenishment.</p>
                  <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden border border-white/5">
                     <div className="h-full bg-primary transition-all duration-1000" style={{ width: `${(15 - adTimer) / 15 * 100}%` }} />
                  </div>
