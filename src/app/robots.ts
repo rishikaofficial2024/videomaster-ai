@@ -1,7 +1,9 @@
+
 import { MetadataRoute } from 'next'
 
 /**
  * 🛠️ FIXED: Explicit static export requirement for Next.js 15
+ * Optimized for branded domain indexing.
  */
 export const dynamic = 'force-static'
  

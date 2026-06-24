@@ -2,9 +2,9 @@
 /**
  * Firebase configuration object for VideoMaster AI.
  * 
- * ✅ STATUS: Optimized for FREE DOMAIN.
+ * ✅ STATUS: Optimized for Branded Domain & Stability.
  * authDomain is set to the internal firebaseapp.com link to ensure 
- * 100% login stability even if the branded DNS is propagating.
+ * 100% login stability even if the branded DNS is still propagating.
  */
 export const firebaseConfig = {
   apiKey: "AIzaSyCz-pMZtY7_OVr9IyyHiIqwPWnpP3Lb21w",
@@ -17,6 +17,7 @@ export const firebaseConfig = {
   /**
    * 🛡️ SECURITY ACTION:
    * Paste your reCAPTCHA v3 "SITE KEY" below once generated.
+   * This protects your Gemini AI credits from bots.
    */
   appCheckSiteKey: "" 
 };
