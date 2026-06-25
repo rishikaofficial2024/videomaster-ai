@@ -2,13 +2,13 @@ import { genkit } from 'genkit';
 import { googleAI } from '@genkit-ai/google-genai';
 
 /**
- * 🧠 Genkit AI Initialization (Server-Side Only).
- * Hardened to prevent Node.js modules from leaking into client bundles.
+ * 🧠 Genkit AI Initialization.
+ * Optimized for both Static and Dynamic environments.
  */
 
 const getApiKey = () => {
-  // Use server-side environment variable only
-  const rawKey = process.env.GEMINI_API_KEY || "";
+  // Check for public key first (for static/client calls) then fall back to server env
+  const rawKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY || process.env.GEMINI_API_KEY || "";
   return rawKey.trim().replace(/^["']|["']$/g, '').trim();
 };
 

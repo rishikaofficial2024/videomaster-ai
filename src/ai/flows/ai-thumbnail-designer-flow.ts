@@ -1,7 +1,5 @@
-'use server';
 /**
  * @fileOverview Cinematic video thumbnail designer.
- * ✅ REVERTED: Now a Server Action.
  */
 
 import { ai, imagenModel, z } from '@/ai/genkit';

@@ -3,8 +3,8 @@ import path from 'path';
 
 /** @type {import('next').NextConfig} */
 const nextConfig: NextConfig = {
-  // 🛡️ DYNAMIC MODE: Removed 'output: export' to support Server Actions for AI flows.
-  // This resolves build-time bundling of Node.js modules into client code.
+  // ✅ ELITE STATIC EXPORT: Mandatory for Capacitor (Android APK) and Firebase Hosting.
+  output: 'export',
   
   images: {
     loader: 'custom',
@@ -22,6 +22,7 @@ const nextConfig: NextConfig = {
     const shimPath = path.resolve(process.cwd(), 'src/lib/empty-module.ts');
 
     if (!isServer) {
+      // 🛡️ BROWSER-SIDE AI SHIELD: Polyfill Node modules for Genkit client-side usage.
       config.resolve.fallback = {
         ...config.resolve.fallback,
         async_hooks: false,
@@ -57,6 +58,7 @@ const nextConfig: NextConfig = {
       'dns': shimPath,
       'http2': shimPath,
       'diagnostics_channel': shimPath,
+      // Force ESM version of firestore to prevent Node.js util.promisify errors during build
       '@firebase/firestore': path.resolve(process.cwd(), 'node_modules/@firebase/firestore/dist/index.esm2017.js'),
     };
 

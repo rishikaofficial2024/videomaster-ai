@@ -1,7 +1,5 @@
-'use server';
 /**
  * @fileOverview An AI agent that generates professional voiceovers.
- * ✅ REVERTED: Now a Server Action.
  */
 
 import { ai, z, ttsModel } from '@/ai/genkit';

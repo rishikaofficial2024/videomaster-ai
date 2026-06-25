@@ -1,7 +1,5 @@
-'use server';
 /**
  * @fileOverview A Genkit flow for automatically generating captions and subtitles.
- * ✅ REVERTED: Now a Server Action for security and build stability.
  */
 
 import { ai, geminiModel, z } from '@/ai/genkit';

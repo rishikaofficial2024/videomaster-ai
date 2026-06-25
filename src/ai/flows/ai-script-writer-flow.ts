@@ -1,7 +1,5 @@
-'use server';
 /**
  * @fileOverview Professional video script writer.
- * ✅ REVERTED: Now a Server Action.
  */
 
 import { ai, geminiModel, z } from '@/ai/genkit';
