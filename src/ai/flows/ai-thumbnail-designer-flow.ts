@@ -1,10 +1,9 @@
+'use server';
 /**
- * @fileOverview A Genkit flow for designing cinematic video thumbnails.
- * 
- * ✅ TRANSFORMED: Converted to Client-Side utility.
+ * @fileOverview A Genkit flow for designing cinematic video thumbnails (Server-Side Action).
  */
 
-import { ai, imagenModel, geminiModel, z } from '@/ai/genkit';
+import { ai, imagenModel, z } from '@/ai/genkit';
 
 const ThumbnailDesignerInputSchema = z.object({
   prompt: z.string().describe('Visual description of the thumbnail to generate'),
@@ -23,7 +22,7 @@ export async function generateAiThumbnail(input: ThumbnailDesignerInput): Promis
       model: imagenModel,
       prompt: `Cinematic professional video thumbnail: ${input.prompt}. 4k resolution, professional photography.`,
       config: {
-        responseModalities: ['TEXT', 'IMAGE']
+        responseModalities: ['IMAGE']
       }
     });
 
@@ -33,8 +32,8 @@ export async function generateAiThumbnail(input: ThumbnailDesignerInput): Promis
     throw new Error('No media generated.');
 
   } catch (e: any) {
-    // Fallback logic remains consistent for reliability
-    const fallbackUrl = `https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1200&q=80&sig=${Math.random()}`;
+    console.error("Thumbnail Generation Error:", e.message);
+    const fallbackUrl = `https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1200&q=80`;
     return { thumbnailDataUri: fallbackUrl, isAiGenerated: false };
   }
 }

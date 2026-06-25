@@ -1,5 +1,6 @@
+'use server';
 /**
- * Professional video script writer (Client-Side).
+ * @fileOverview Professional video script writer (Server-Side Action).
  */
 
 import { ai, geminiModel, z } from '@/ai/genkit';

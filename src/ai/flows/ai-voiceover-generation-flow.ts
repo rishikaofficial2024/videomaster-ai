@@ -1,11 +1,9 @@
+'use server';
 /**
- * @fileOverview An AI agent that generates professional voiceovers.
- * 
- * ✅ TRANSFORMED: Converted to Client-Side utility.
- * 🎙️ SUPPORT: English + Hindi multi-lingual support.
+ * @fileOverview An AI agent that generates professional voiceovers (Server-Side Action).
  */
 
-import { ai, z } from '@/ai/genkit';
+import { ai, z, ttsModel } from '@/ai/genkit';
 
 const VoiceoverInputSchema = z.object({
   text: z.string().describe('The text script to convert to speech.'),
@@ -20,24 +18,30 @@ const VoiceoverOutputSchema = z.object({
 export type VoiceoverOutput = z.infer<typeof VoiceoverOutputSchema>;
 
 export async function generateAiVoiceover(input: VoiceoverInput): Promise<VoiceoverOutput> {
-  const { media } = await ai.generate({
-    model: 'googleai/gemini-2.5-flash-preview-tts',
-    config: {
-      responseModalities: ['AUDIO'],
-      speechConfig: {
-        voiceConfig: {
-          prebuiltVoiceConfig: { voiceName: input.voiceName },
+  try {
+    const { media } = await ai.generate({
+      model: ttsModel,
+      config: {
+        responseModalities: ['AUDIO'],
+        speechConfig: {
+          voiceConfig: {
+            prebuiltVoiceConfig: { voiceName: input.voiceName },
+          },
         },
       },
-    },
-    prompt: `Language: ${input.language}. Convert this text to a professional high-fidelity voiceover: ${input.text}`,
-  });
+      prompt: `Language: ${input.language}. Convert this text to a professional high-fidelity voiceover: ${input.text}`,
+    });
 
-  if (!media?.url) {
-    throw new Error('No audio returned from AI.');
+    if (!media?.url) {
+      throw new Error('No audio returned from AI.');
+    }
+
+    // Media from Gemini TTS is PCM format, but usually transferred as data uri or url
+    return {
+      audioDataUri: media.url,
+    };
+  } catch (error: any) {
+    console.error("Audio Generation Error:", error.message);
+    throw error;
   }
-
-  return {
-    audioDataUri: media.url,
-  };
 }

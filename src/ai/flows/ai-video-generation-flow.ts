@@ -1,5 +1,8 @@
+'use server';
 /**
- * Elite Text-to-Video generation engine (Client-Side).
+ * @fileOverview Elite Text-to-Video generation engine (Server-Side Action).
+ *
+ * - generateAiVideo - Handles the multi-step video generation process.
  */
 
 import { ai, veoModel, z } from '@/ai/genkit';
@@ -28,6 +31,7 @@ export async function generateAiVideo(input: VideoGenerationInput): Promise<Vide
       throw new Error('Neural core failed to initiate motion operation.');
     }
 
+    // Wait until the operation completes (Veo is asynchronous)
     let attempts = 0;
     while (!operation.done && attempts < 40) { 
       await new Promise((resolve) => setTimeout(resolve, 5000));
@@ -41,28 +45,28 @@ export async function generateAiVideo(input: VideoGenerationInput): Promise<Vide
 
     const videoPart = operation.output?.message?.content.find((p) => !!p.media);
     if (!videoPart || !videoPart.media?.url) {
-      throw new Error('Failed to retrieve generated video artifact.');
+      throw new Error('Failed to find the generated video artifact.');
     }
 
-    const rawKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY || process.env.GEMINI_API_KEY || '';
-    const apiKey = rawKey.trim().replace(/^["']|["']$/g, '').trim();
-    const response = await fetch(`${videoPart.media.url}&key=${apiKey}`);
+    const apiKey = (process.env.GEMINI_API_KEY || '').trim().replace(/^["']|["']$/g, '').trim();
+    const videoUrlWithKey = `${videoPart.media.url}&key=${apiKey}`;
     
+    const response = await fetch(videoUrlWithKey);
     if (!response.ok) {
-      throw new Error('Failed to fetch generated video.');
+      throw new Error('Failed to fetch generated video binary.');
     }
 
-    const blob = await response.blob();
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onloadend = () => resolve({ videoDataUri: reader.result as string });
-      reader.onerror = reject;
-      reader.readAsDataURL(blob);
-    });
+    const arrayBuffer = await response.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+    const contentType = response.headers.get('content-type') || 'video/mp4';
+    
+    return {
+      videoDataUri: `data:${contentType};base64,${buffer.toString('base64')}`
+    };
 
   } catch (e: any) {
-    console.warn("⚠️ AI Motion Engine Error:", e.message);
-    const fallbacks = ["https://www.w3schools.com/html/mov_bbb.mp4"];
-    return { videoDataUri: fallbacks[0] };
+    console.error("⚠️ AI Motion Engine Error:", e.message);
+    // Return a safe fallback for the UI to handle
+    return { videoDataUri: "https://www.w3schools.com/html/mov_bbb.mp4" };
   }
 }

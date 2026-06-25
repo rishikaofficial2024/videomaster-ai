@@ -1,10 +1,9 @@
+'use server';
 /**
- * @fileOverview AI agent that suggests optimized hashtags, titles, and descriptions.
- * 
- * ✅ TRANSFORMED: Converted to Client-Side utility.
+ * @fileOverview AI agent that suggests optimized hashtags, titles, and descriptions (Server-Side Action).
  */
 
-import { ai, z } from '@/ai/genkit';
+import { ai, geminiModel, z } from '@/ai/genkit';
 
 const AiVideoContentOptimizationInputSchema = z.object({
   videoTranscript: z.string().describe('The transcript of the video content.'),
@@ -22,7 +21,7 @@ export async function aiVideoContentOptimization(
   input: AiVideoContentOptimizationInput
 ): Promise<AiVideoContentOptimizationOutput> {
   const { output } = await ai.generate({
-    model: 'googleai/gemini-1.5-flash-latest',
+    model: geminiModel,
     prompt: `Analyze this transcript and provide optimized SEO metadata:
     
     ${input.videoTranscript}`,

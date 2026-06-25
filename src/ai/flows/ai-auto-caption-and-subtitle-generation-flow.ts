@@ -1,11 +1,9 @@
+'use server';
 /**
- * @fileOverview A Genkit flow for automatically generating captions and subtitles.
- * 
- * ✅ TRANSFORMED: Converted to Client-Side utility.
+ * @fileOverview A Genkit flow for automatically generating captions and subtitles (Server-Side Action).
  */
 
-import { ai } from '@/ai/genkit';
-import { z } from 'genkit';
+import { ai, geminiModel, z } from '@/ai/genkit';
 
 const AutoCaptionAndSubtitleInputSchema = z.object({
   audioDataUri: z
@@ -25,13 +23,12 @@ export async function generateAutoCaptionsAndSubtitles(
   input: AutoCaptionAndSubtitleInput
 ): Promise<AutoCaptionAndSubtitleOutput> {
   const { output } = await ai.generate({
-    model: 'googleai/gemini-1.5-flash-latest',
-    prompt: `You are an expert transcriber. Transcribe this audio into WebVTT format.
-    
-    {{media url=audioDataUri}}`,
+    model: geminiModel,
+    prompt: [
+      { text: `You are an expert transcriber. Transcribe this audio into WebVTT format.` },
+      { media: { url: input.audioDataUri } }
+    ],
     output: { schema: AutoCaptionAndSubtitleOutputSchema },
-    // @ts-ignore
-    input: input
   });
 
   if (!output) {

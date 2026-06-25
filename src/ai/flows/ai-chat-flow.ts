@@ -1,6 +1,6 @@
+'use server';
 /**
- * AI Growth Assistant (Pure Client-Side).
- * 🧠 Optimized for VideoMaster AI Strategy.
+ * @fileOverview AI Growth Assistant (Server-Side Action).
  */
 
 import { ai, geminiModel, z } from '@/ai/genkit';
@@ -17,8 +17,6 @@ const AiChatOutputSchema = z.object({
 export type AiChatOutput = z.infer<typeof AiChatOutputSchema>;
 
 export async function sendAiChatMessage(input: AiChatInput): Promise<AiChatOutput> {
-  if (typeof window === 'undefined') return { response: "" };
-
   try {
     const { text } = await ai.generate({
       model: geminiModel,
@@ -29,6 +27,7 @@ export async function sendAiChatMessage(input: AiChatInput): Promise<AiChatOutpu
     if (!text) throw new Error("Empty response from AI core.");
     return { response: text };
   } catch (error: any) {
-    return { response: "Gemini Sync Error. Please check your network connection and retry." };
+    console.error("AI Chat Error:", error.message);
+    return { response: "I'm currently recalibrating my neural links. Please try again in a moment." };
   }
 }
