@@ -5,7 +5,7 @@ import { FirebaseClientProvider } from '@/firebase';
 
 export const metadata: Metadata = {
   title: 'VideoMaster AI - India\'s #1 Professional AI Video Studio',
-  description: 'Produce viral AI videos 10x faster with Gemini Fast AI. Developed by Rinku Ganjawala.',
+  description: 'Produce viral AI videos 10x faster with Gemini Fast AI. Created by Rinku Ganjawala.',
   keywords: ['AI Video Maker', 'Viral Script Writer', 'VideoMaster AI Tech', 'Gemini AI Video', 'YouTube Shorts AI', 'Video Editor India', 'Rinku Ganjawala', 'Professional Video Editor'],
   authors: [{ name: 'Rinku Ganjawala', url: 'https://videomaster-ai.tech' }],
   creator: 'Rinku Ganjawala',
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: 'VideoMaster AI - The Ultimate Neural Production Studio',
-    description: 'Transform cinematic ideas into professional video assets. Developed by Rinku Ganjawala.',
+    description: 'Transform cinematic ideas into professional video assets. Created by Rinku Ganjawala.',
     url: 'https://videomaster-ai.tech',
     siteName: 'VideoMaster AI',
     locale: 'en_IN',
@@ -63,8 +63,6 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
         <meta name="theme-color" content="#020202" />
-        
-        {/* 📊 ADSENSE NODES */}
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8946933317699938" crossOrigin="anonymous"></script>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       </head>

@@ -13,7 +13,7 @@ let firestore: Firestore;
 
 /**
  * Optimized Firebase Initialization for Next.js 15 Production.
- * Ensures services are only initialized once and safely on the client.
+ * Forces the use of browser SDK instances and safely initializes App Check.
  */
 export function initializeFirebase() {
   if (getApps().length > 0) {
@@ -26,7 +26,6 @@ export function initializeFirebase() {
   firestore = getFirestore(app);
 
   // 🛡️ ELITE SECURITY: App Check Initialization
-  // Only initialize on the client and not in localhost/test environments
   if (typeof window !== 'undefined' && 
       firebaseConfig.appCheckSiteKey && 
       !window.location.hostname.includes('localhost') &&
@@ -37,18 +36,13 @@ export function initializeFirebase() {
         isTokenAutoRefreshEnabled: true
       });
     } catch (e) {
-      // App Check is non-critical for initial boot logic
-      console.warn("App Check Shield: Handshake Pending.");
+      // App Check is non-critical for core logical flow
     }
   }
   
   return { app, auth, firestore };
 }
 
-/**
- * useMemoFirebase stabilizes Firestore references or queries.
- * Essential to prevent infinite re-render loops in useDoc/useCollection hooks.
- */
 export function useMemoFirebase<T>(factory: () => T, deps: DependencyList): T {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   return useMemo(factory, deps);

@@ -7,12 +7,10 @@ const nextConfig: NextConfig = {
   output: 'export',
   
   images: {
-    // 🎨 CUSTOM IMAGE LOADER: Required for static optimization with external assets.
     loader: 'custom',
     loaderFile: './my-loader.ts',
   },
 
-  // 🛡️ BUILD STABILITY: Ignore non-critical errors during elite production builds.
   typescript: {
     ignoreBuildErrors: true,
   },
@@ -21,14 +19,14 @@ const nextConfig: NextConfig = {
   },
   
   webpack: (config, { isServer }) => {
-    // 🚀 FIRESTORE OPTIMIZATION: Force the use of the browser ESM build even on the server (SSR).
-    // This completely bypasses the gRPC Node.js implementation during pre-rendering.
+    // 🚀 FIRESTORE OPTIMIZATION: Force the use of the browser ESM build even during SSR pass.
+    // This bypasses the gRPC Node.js implementation which causes promisify errors.
     config.resolve.alias = {
       ...config.resolve.alias,
       'firebase/firestore': path.resolve(__dirname, 'node_modules/@firebase/firestore/dist/index.esm2017.js'),
     };
 
-    // 🛡️ BROWSER-SIDE AI SHIELD: Polyfill Node modules for Genkit & Firestore client-side usage.
+    // 🛡️ BROWSER-SIDE SHIELD: Polyfill Node modules for client-side usage.
     if (!isServer) {
       config.resolve.fallback = {
         ...config.resolve.fallback,
@@ -59,7 +57,7 @@ const nextConfig: NextConfig = {
         string_decoder: false,
       };
     } else {
-      // On the server (SSR pass for export), we alias Node built-ins that gRPC tries to use
+      // On the server (SSR pass), we alias problematic Node built-ins to our proxy shim.
       config.resolve.alias = {
         ...config.resolve.alias,
         'fs': path.resolve(__dirname, 'src/lib/empty-module.ts'),
@@ -73,27 +71,18 @@ const nextConfig: NextConfig = {
     return config;
   },
 
-  // ⚡ TURBOPACK ALIASES: Ensure 'next dev --turbopack' works without Node module errors.
   experimental: {
     turbo: {
       resolveAlias: {
-        // Force browser build for Turbopack SSR
+        // Force browser build for Turbopack as well
         'firebase/firestore': './node_modules/@firebase/firestore/dist/index.esm2017.js',
-        // Shim Node internals
         'async_hooks': './src/lib/empty-module.ts',
         'diagnostics_channel': './src/lib/empty-module.ts',
         'fs': './src/lib/empty-module.ts',
         'net': './src/lib/empty-module.ts',
         'tls': './src/lib/empty-module.ts',
         'dns': './src/lib/empty-module.ts',
-        'dns/promises': './src/lib/empty-module.ts',
-        'child_process': './src/lib/empty-module.ts',
-        'os': './src/lib/empty-module.ts',
-        'readline': './src/lib/empty-module.ts',
-        'perf_hooks': './src/lib/empty-module.ts',
         'http2': './src/lib/empty-module.ts',
-        'vm': './src/lib/empty-module.ts',
-        'util': './src/lib/empty-module.ts',
       },
     },
   },
