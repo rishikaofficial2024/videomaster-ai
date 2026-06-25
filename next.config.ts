@@ -33,7 +33,7 @@ const nextConfig: NextConfig = {
     ignoreDuringBuilds: true,
   },
   webpack: (config, { isServer }) => {
-    // 🛡️ BROWSER-SIDE AI FIX: Polyfill Node modules for Genkit & Opentelemetry client-side usage.
+    // 🛡️ BROWSER-SIDE AI SHIELD: Polyfill Node modules for Genkit & Opentelemetry client-side usage.
     // This stops "Module not found: Can't resolve 'fs'" errors during build.
     if (!isServer) {
       config.resolve.fallback = {
