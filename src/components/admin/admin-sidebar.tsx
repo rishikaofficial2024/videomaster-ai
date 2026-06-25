@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { 
   LayoutDashboard, Users, Banknote, ShieldCheck, 
   Settings, Layers, Database, Activity, 
-  BarChart3, Globe, Lock, ArrowLeft, Zap, Shield, Key
+  BarChart3, Globe, Lock, ArrowLeft, Zap, Shield, History
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useUser, useFirestore, useDoc, useMemoFirebase } from "@/firebase";
@@ -18,7 +18,7 @@ const menuItems = [
   { name: "Overview", href: "/admin", icon: LayoutDashboard },
   { name: "Creator Nodes", href: "/admin/users", icon: Users },
   { name: "Revenue Hub", href: "/admin/revenue", icon: Banknote },
-  { name: "Audit Logs", href: "/admin/audit", icon: ShieldCheck },
+  { name: "Audit Ledger", href: "/admin/audit", icon: History },
   { name: "App Settings", href: "/admin/settings", icon: Settings },
 ];
 
@@ -37,7 +37,7 @@ export function AdminSidebar() {
   return (
     <aside className="w-80 h-screen sticky top-0 bg-[#0a061c]/60 backdrop-blur-3xl border-r border-white/5 flex flex-col p-8 z-50">
       <div className="mb-12 flex flex-col gap-6">
-        <Link href="/dashboard" className="flex items-center gap-3 text-[10px] font-black text-muted-foreground hover:text-primary transition-all uppercase tracking-[0.4em] group">
+        <Link href="/dashboard" className="flex items-center gap-3 text-[10px] font-black text-muted-foreground hover:text-primary transition-all uppercase tracking-[0.5em] group">
           <div className="p-3 bg-white/5 rounded-2xl group-hover:border-primary/50 transition-all border border-transparent shadow-xl">
             <ArrowLeft className="w-4 h-4" />
           </div>

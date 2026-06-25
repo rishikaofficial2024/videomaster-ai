@@ -104,9 +104,9 @@ export default function AdminUserManagement() {
         <div className="flex flex-col sm:flex-row gap-6 w-full lg:w-auto">
           <div className="relative flex-1 lg:w-[400px]">
              <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-muted-foreground w-5 h-5" />
-             <Input 
+             <input 
                placeholder="Search Identity ID or Email..." 
-               className="h-16 pl-16 pr-8 bg-white/[0.03] border-white/10 rounded-full text-lg focus:border-primary/50 transition-all font-medium shadow-inner"
+               className="h-16 pl-16 pr-8 bg-white/[0.03] border-white/10 rounded-full text-lg focus:border-primary/50 transition-all outline-none text-white font-medium shadow-inner"
                value={search}
                onChange={(e) => setSearch(e.target.value)}
              />
@@ -237,15 +237,6 @@ export default function AdminUserManagement() {
               )})}
             </TableBody>
           </Table>
-          {!filteredUsers?.length && !usersLoading && (
-            <div className="py-60 text-center space-y-8">
-               <UserMinus className="w-32 h-32 mx-auto text-muted-foreground opacity-10" />
-               <div className="space-y-2">
-                  <h4 className="text-4xl font-black font-headline text-white/20 uppercase tracking-tight">Node Registry Empty</h4>
-                  <p className="text-muted-foreground italic text-lg opacity-40">No identity matches found in the current sector.</p>
-               </div>
-            </div>
-          )}
         </CardContent>
       </Card>
     </main>

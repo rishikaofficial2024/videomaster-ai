@@ -12,20 +12,34 @@ import {
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
-import { useUser } from "@/firebase";
+import { useUser, useFirestore } from "@/firebase";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 
 const OWNER_EMAIL = "rinkukumarpaswan1796@gmail.com";
 
 export default function AdminSettings() {
   const { toast } = useToast();
   const { user } = useUser();
+  const db = useFirestore();
   const [saving, setSaving] = useState(false);
   const isMaster = user?.email === OWNER_EMAIL;
+
+  const logAction = (action: string, details: string) => {
+    const logRef = collection(db, "admin_logs");
+    addDoc(logRef, {
+      adminId: user?.uid,
+      adminEmail: user?.email,
+      action,
+      details,
+      timestamp: serverTimestamp()
+    }).catch(() => {});
+  };
 
   const handleSave = () => {
     setSaving(true);
     setTimeout(() => {
       toast({ title: "Matrix Settings Propagation Complete", description: "All creative nodes have been synchronized with the new master protocols." });
+      logAction("Settings Mutation", "Global system feature toggles updated.");
       setSaving(false);
     }, 1500);
   };
