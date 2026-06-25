@@ -7,7 +7,7 @@ export const dynamic = 'force-static';
 
 export default function middleware() {
   // Middleware logic is not supported in static exports.
-  // Use Client-side guards for authentication where needed.
+  // Authentication is handled via Client-side AuthGuard components.
   return;
 }
 
