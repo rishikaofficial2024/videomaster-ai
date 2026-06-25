@@ -22,7 +22,6 @@ const nextConfig: NextConfig = {
   
   webpack: (config, { isServer }) => {
     // 🛡️ BROWSER-SIDE AI SHIELD: Polyfill Node modules for Genkit & Firestore client-side usage.
-    // This stops "Module not found" errors during static export.
     if (!isServer) {
       config.resolve.fallback = {
         ...config.resolve.fallback,
@@ -31,32 +30,31 @@ const nextConfig: NextConfig = {
         fs: false,
         net: false,
         tls: false,
+        dns: false,
+        'dns/promises': false,
         child_process: false,
+        os: false,
         readline: false,
         perf_hooks: false,
-        path: false,
-        os: false,
-        stream: false,
-        constants: false,
-        crypto: false,
+        http2: false,
         vm: false,
+        stream: false,
+        crypto: false,
+        path: false,
         http: false,
         https: false,
         zlib: false,
-        dns: false,
-        'dns/promises': false,
-        http2: false,
         timers: false,
         buffer: false,
         process: false,
-        string_decoder: false,
         util: false,
         events: false,
+        string_decoder: false,
       };
     }
 
-    // 🚀 FIRESTORE OPTIMIZATION: Force the use of the browser ESM build even on the server.
-    // This avoids loading gRPC (which requires 'dns', 'net', etc.) during the SSR pass.
+    // 🚀 FIRESTORE OPTIMIZATION: Force the use of the browser ESM build even on the server (SSR).
+    // This completely bypasses the gRPC Node.js implementation during pre-rendering.
     config.resolve.alias = {
       ...config.resolve.alias,
       'firebase/firestore': path.resolve(__dirname, 'node_modules/@firebase/firestore/dist/index.esm2017.js'),
@@ -65,15 +63,26 @@ const nextConfig: NextConfig = {
     return config;
   },
 
-  // ⚡ TURBOPACK ALIASES: Ensure 'next dev' works without Node module errors.
-  // We use the universal proxy shim to satisfy internal Node-like calls.
+  // ⚡ TURBOPACK ALIASES: Ensure 'next dev --turbopack' works without Node module errors.
   experimental: {
     turbo: {
       resolveAlias: {
-        async_hooks: './src/lib/empty-module.ts',
-        diagnostics_channel: './src/lib/empty-module.ts',
-        // Note: fs, net, dns are intentionally left out here to allow SSR to function
-        // if gRPC is loaded. Our Firestore alias above mitigates the need for them.
+        // Force browser build for Turbopack SSR
+        'firebase/firestore': './node_modules/@firebase/firestore/dist/index.esm2017.js',
+        // Shim Node internals
+        'async_hooks': './src/lib/empty-module.ts',
+        'diagnostics_channel': './src/lib/empty-module.ts',
+        'fs': './src/lib/empty-module.ts',
+        'net': './src/lib/empty-module.ts',
+        'tls': './src/lib/empty-module.ts',
+        'dns': './src/lib/empty-module.ts',
+        'dns/promises': './src/lib/empty-module.ts',
+        'child_process': './src/lib/empty-module.ts',
+        'os': './src/lib/empty-module.ts',
+        'readline': './src/lib/empty-module.ts',
+        'perf_hooks': './src/lib/empty-module.ts',
+        'http2': './src/lib/empty-module.ts',
+        'vm': './src/lib/empty-module.ts',
       },
     },
   },
