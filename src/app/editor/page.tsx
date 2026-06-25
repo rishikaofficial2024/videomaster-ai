@@ -23,8 +23,6 @@ import { doc, setDoc, updateDoc, serverTimestamp } from "firebase/firestore";
 import { errorEmitter } from "@/firebase/error-emitter";
 import { FirestorePermissionError, type SecurityRuleContext } from "@/firebase/errors";
 import { cn } from "@/lib/utils";
-import { Slider } from "@/components/ui/badge"; // Using a badge-styled slider simulator for simplicity or custom slider
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface MediaAsset {
   id: string;
@@ -83,6 +81,7 @@ function EditorContent() {
       setProjectId(projectIdFromUrl);
       setIsNewProject(false);
     } else {
+      // ✅ HYDRATION FIX: Generate ID only on client
       const newId = "prj-" + Math.random().toString(36).substring(7);
       setProjectId(newId);
     }
@@ -134,7 +133,7 @@ function EditorContent() {
       }).then(() => setIsNewProject(false));
     }
     
-    // Add to history
+    // Add to history for Undo/Redo
     const newHistory = history.slice(0, historyIndex + 1);
     newHistory.push(JSON.parse(JSON.stringify(data)));
     setHistory(newHistory);
@@ -195,7 +194,7 @@ function EditorContent() {
       setMagicHook(result.hook);
       toast({ title: "Script Engineered" });
     } catch (e: any) {
-      toast({ variant: "destructive", title: "AI Error" });
+      toast({ variant: "destructive", title: "AI Error", description: "Neural sync interrupted." });
     } finally {
       setIsProcessing(false);
     }
@@ -210,7 +209,7 @@ function EditorContent() {
       handleSave({ videoDataUri: result.videoDataUri });
       toast({ title: "Video Synthesized" });
     } catch (e: any) {
-      toast({ variant: "destructive", title: "AI Error" });
+      toast({ variant: "destructive", title: "AI Error", description: "Motion core busy." });
     } finally {
       setIsProcessing(false);
     }
