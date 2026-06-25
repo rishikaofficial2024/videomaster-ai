@@ -1,4 +1,5 @@
 import type {NextConfig} from 'next';
+import path from 'path';
 
 /** @type {import('next').NextConfig} */
 const nextConfig: NextConfig = {
@@ -20,8 +21,8 @@ const nextConfig: NextConfig = {
   },
   
   webpack: (config, { isServer }) => {
-    // 🛡️ BROWSER-SIDE AI SHIELD: Polyfill Node modules for Genkit & Opentelemetry client-side usage.
-    // This stops "Module not found" errors for async_hooks, fs, etc. during browser bundling.
+    // 🛡️ BROWSER-SIDE AI SHIELD: Polyfill Node modules for Genkit & Firestore client-side usage.
+    // This stops "Module not found" errors during static export.
     if (!isServer) {
       config.resolve.fallback = {
         ...config.resolve.fallback,
@@ -43,6 +44,8 @@ const nextConfig: NextConfig = {
         https: false,
         zlib: false,
         dns: false,
+        'dns/promises': false,
+        http2: false,
         timers: false,
         buffer: false,
         process: false,
@@ -51,7 +54,28 @@ const nextConfig: NextConfig = {
         events: false,
       };
     }
+
+    // 🚀 FIRESTORE OPTIMIZATION: Force the use of the browser ESM build even on the server.
+    // This avoids loading gRPC (which requires 'dns', 'net', etc.) during the SSR pass.
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      'firebase/firestore': path.resolve(__dirname, 'node_modules/@firebase/firestore/dist/index.esm2017.js'),
+    };
+
     return config;
+  },
+
+  // ⚡ TURBOPACK ALIASES: Ensure 'next dev' works without Node module errors.
+  // We use the universal proxy shim to satisfy internal Node-like calls.
+  experimental: {
+    turbo: {
+      resolveAlias: {
+        async_hooks: './src/lib/empty-module.ts',
+        diagnostics_channel: './src/lib/empty-module.ts',
+        // Note: fs, net, dns are intentionally left out here to allow SSR to function
+        // if gRPC is loaded. Our Firestore alias above mitigates the need for them.
+      },
+    },
   },
 };
 
