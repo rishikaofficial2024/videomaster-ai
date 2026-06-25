@@ -1,9 +1,11 @@
+
 "use client";
 
 import { useState, useEffect } from "react";
 import { Navbar } from "@/components/navbar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { 
   CheckCircle2, XCircle, Loader2, Database, 
   Zap, ArrowLeft, ShieldCheck, 
@@ -11,9 +13,8 @@ import {
   TrendingUp, Tornado, Globe2, Link2, Blocks, DollarSign, RefreshCw,
   Search, ShieldAlert
 } from "lucide-react";
-import { useAuth, useFirestore, useUser } from "@/firebase";
+import { useAuth, useFirestore, useUser, useCollection } from "@/firebase";
 import { doc, setDoc, serverTimestamp, collection, query, limit, orderBy } from "firebase/firestore";
-import { useCollection } from "@/firebase";
 import Link from "next/link";
 import { errorEmitter } from "@/firebase/error-emitter";
 import { FirestorePermissionError, type SecurityRuleContext } from "@/firebase/errors";
@@ -173,9 +174,9 @@ export default function MasterMonitoringPage() {
                       <div key={log.id} className="flex items-center justify-between p-4 bg-white/5 rounded-2xl border border-white/5">
                         <div className="flex flex-col">
                           <span className="text-xs font-bold text-white uppercase tracking-tight">{log.node}</span>
-                          <span className="text-[8px] text-muted-foreground uppercase">{new Date(log.timestamp?.seconds * 1000).toLocaleTimeString()}</span>
+                          <span className="text-[8px] text-muted-foreground uppercase">{log.timestamp ? new Date(log.timestamp.seconds * 1000).toLocaleTimeString() : 'Recent'}</span>
                         </div>
-                        <Badge className="bg-emerald-500/20 text-emerald-500 uppercase text-[8px]">{log.status}</Badge>
+                        <Badge className="bg-emerald-500/20 text-emerald-500 uppercase text-[8px]">Operational</Badge>
                       </div>
                     ))}
                     {!logs?.length && <p className="text-center text-xs text-muted-foreground italic opacity-40">No recent activity detected.</p>}

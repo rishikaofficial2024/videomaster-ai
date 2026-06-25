@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect, useRef, Suspense } from "react";
@@ -69,7 +70,8 @@ function EditorContent() {
       setProjectId(projectIdFromUrl);
       setIsNewProject(false);
     } else {
-      setProjectId("prj-" + Math.random().toString(36).substring(2, 9));
+      const newId = "prj-" + Math.random().toString(36).substring(2, 9);
+      setProjectId(newId);
     }
   }, [projectIdFromUrl]);
 
@@ -79,13 +81,6 @@ function EditorContent() {
   }, [user?.uid, db, projectId]);
 
   const { data: project } = useDoc(projectRef);
-
-  const userProfileRef = useMemoFirebase(() => {
-    if (!user || !db) return null;
-    return doc(db, "users", user.uid);
-  }, [user?.uid, db]);
-
-  const { data: profile } = useDoc(userProfileRef);
 
   useEffect(() => {
     if (project && mounted) {
@@ -111,7 +106,7 @@ function EditorContent() {
     };
     
     if (!isNewProject) {
-      updateDoc(projectRef, data).catch(async () => {
+      updateDoc(projectRef, data).catch(async (error) => {
         errorEmitter.emit('permission-error', new FirestorePermissionError({
           path: projectRef.path,
           operation: 'update',
@@ -217,7 +212,7 @@ function EditorContent() {
 
         <Button className="h-14 px-10 rounded-xl font-black uppercase tracking-[0.2em] bg-primary shadow-glow text-[11px] gap-3">
           <Download className="w-5 h-5" />
-          Export Project (PRO)
+          Export Project (FREE)
         </Button>
       </div>
 
@@ -367,7 +362,7 @@ function EditorContent() {
               <div className="space-y-6 pt-6 border-t border-white/5">
                  <p className="text-[9px] font-black uppercase tracking-widest text-muted-foreground">Export Resolution</p>
                  <button className="w-full p-5 rounded-2xl bg-primary/10 border border-primary/40 flex items-center justify-between">
-                    <span className="text-xs font-bold text-primary uppercase tracking-tight">Elite 4K (PRO)</span>
+                    <span className="text-xs font-bold text-primary uppercase tracking-tight">Elite 4K (FREE)</span>
                     <Crown className="w-3 h-3 text-primary fill-current" />
                  </button>
               </div>
