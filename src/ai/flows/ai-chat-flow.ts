@@ -1,6 +1,6 @@
 /**
  * AI Growth Assistant (Pure Client-Side).
- * Refactored to avoid server-side dependency injection.
+ * Removed 'use server' to comply with static export architecture.
  */
 
 import { ai, geminiModel, z } from '@/ai/genkit';
@@ -16,10 +16,8 @@ const AiChatOutputSchema = z.object({
 });
 export type AiChatOutput = z.infer<typeof AiChatOutputSchema>;
 
-/**
- * sendAiChatMessage - Client-side wrapper for Gemini interaction.
- */
 export async function sendAiChatMessage(input: AiChatInput): Promise<AiChatOutput> {
+  // Safety check for browser environment
   if (typeof window === 'undefined') return { response: "" };
 
   try {

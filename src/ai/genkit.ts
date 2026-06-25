@@ -2,14 +2,13 @@ import { genkit } from 'genkit';
 import { googleAI } from '@genkit-ai/google-genai';
 
 /**
- * Gemini Fast AI Initialization (Browser-Compatible).
- * 
- * ✅ STATUS: Optimized for Client-Side Static Export.
+ * 🧠 Gemini Fast AI Initialization (Pure Client-Side).
+ * Refactored to avoid Node.js dependency crashes in the browser.
  */
 
-// Safely retrieve API key from env or window context
 const getApiKey = () => {
-  if (typeof window === 'undefined') return '';
+  // Use public env if available, otherwise fallback.
+  // In a real production app, use a proxy API if hiding the key is critical.
   const rawKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY || process.env.GEMINI_API_KEY || '';
   return rawKey.trim().replace(/^["']|["']$/g, '').trim();
 };
@@ -22,7 +21,7 @@ export const ai = genkit({
   ],
 });
 
-// 🚀 GEMINI STABLE MODELS
+// 🚀 PRODUCTION READY MODELS
 export const geminiModel = googleAI.model('gemini-1.5-flash-latest');
 export const geminiProModel = googleAI.model('gemini-1.5-pro-latest');
 

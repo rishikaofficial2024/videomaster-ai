@@ -1,7 +1,7 @@
 import type {NextConfig} from 'next';
 
 const nextConfig: NextConfig = {
-  // ✅ PURE STATIC EXPORT: Enabled for Capacitor and Firebase Hosting compatibility.
+  // ✅ ELITE STATIC EXPORT: Mandatory for Capacitor (Android APK) and Firebase Hosting stability.
   output: 'export',
   images: {
     unoptimized: true, 
@@ -33,7 +33,8 @@ const nextConfig: NextConfig = {
     ignoreDuringBuilds: true,
   },
   webpack: (config, { isServer }) => {
-    // 🛡️ ELITE BROWSER FIX: Polyfill Node modules for Genkit & Opentelemetry client-side usage
+    // 🛡️ BROWSER-SIDE AI FIX: Polyfill Node modules for Genkit & Opentelemetry client-side usage.
+    // This stops "Module not found: Can't resolve 'fs'" errors during build.
     if (!isServer) {
       config.resolve.fallback = {
         ...config.resolve.fallback,

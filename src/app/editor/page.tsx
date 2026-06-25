@@ -76,6 +76,7 @@ function EditorContent() {
 
   useEffect(() => {
     setMounted(true);
+    // ✅ HYDRATION FIX: ID generation must happen inside useEffect for static export.
     if (projectIdFromUrl) {
       setProjectId(projectIdFromUrl);
       setIsNewProject(false);
