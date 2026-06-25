@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { 
   Video, ArrowRight, Play, Zap, Cpu, Crown, Check, 
-  Gift, Coins, UserCircle, ShieldCheck, Sparkles
+  Gift, Coins, UserCircle, ShieldCheck, Sparkles, Image as ImageIcon
 } from "lucide-react";
 import Image from "next/image";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
@@ -122,6 +122,7 @@ export default function LandingPage() {
                     src={heroImg.imageUrl}
                     width={1280}
                     priority
+                    data-ai-hint="video studio"
                   />
                 )}
                 <div className="absolute inset-0 bg-gradient-to-t from-[#05070a] via-transparent to-transparent"></div>
@@ -177,6 +178,27 @@ export default function LandingPage() {
                </div>
             </div>
           </div>
+        </section>
+
+        {/* 🐢 TEST IMAGE SECTION (As requested) */}
+        <section className="w-full py-40 border-b border-white/5">
+           <div className="container px-6 mx-auto text-center space-y-12">
+              <h2 className="text-4xl font-headline font-black uppercase tracking-tight">Optimized Rendering Test</h2>
+              <div className="max-w-sm mx-auto p-4 bg-white/5 rounded-[3rem] border border-white/10 shadow-2xl relative group overflow-hidden">
+                 <Image 
+                   alt="Optimized Test Image" 
+                   src="https://picsum.photos/seed/turtles/600/600" 
+                   width={300} 
+                   height={300} 
+                   className="rounded-[2.5rem] mx-auto grayscale group-hover:grayscale-0 transition-all duration-700"
+                   data-ai-hint="turtles underwater"
+                 />
+                 <div className="mt-6 flex items-center justify-center gap-3 text-primary">
+                    <ImageIcon className="w-4 h-4" />
+                    <span className="text-[10px] font-black uppercase tracking-widest">Custom Loader Active</span>
+                 </div>
+              </div>
+           </div>
         </section>
 
         <section className="w-full py-40 bg-[#05070a]">
