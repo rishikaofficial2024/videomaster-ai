@@ -33,7 +33,7 @@ const nextConfig: NextConfig = {
     ignoreDuringBuilds: true,
   },
   webpack: (config, { isServer }) => {
-    // 🛡️ ELITE BROWSER FIX: Polyfill Node modules for Genkit client-side usage
+    // 🛡️ ELITE BROWSER FIX: Polyfill Node modules for Genkit & Opentelemetry client-side usage
     if (!isServer) {
       config.resolve.fallback = {
         ...config.resolve.fallback,
@@ -43,6 +43,18 @@ const nextConfig: NextConfig = {
         child_process: false,
         readline: false,
         perf_hooks: false,
+        path: false,
+        os: false,
+        stream: false,
+        constants: false,
+        crypto: false,
+        vm: false,
+        http: false,
+        https: false,
+        zlib: false,
+        dns: false,
+        timers: false,
+        buffer: false,
       };
     }
     return config;

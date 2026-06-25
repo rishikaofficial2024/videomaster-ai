@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, useRef, useEffect } from "react";
@@ -9,9 +8,9 @@ import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { 
-  Sparkles, Send, Bot, Loader2, 
-  ArrowLeft, BrainCircuit, Zap, MessageSquare,
-  Tornado, ShieldCheck, Globe, Share2, TrendingUp, Cpu, Rocket, ArrowRight
+  Send, Bot, Loader2, 
+  ArrowLeft, Zap,
+  Tornado, Cpu, ArrowRight, TrendingUp, Rocket
 } from "lucide-react";
 import { sendAiChatMessage } from "@/ai/flows/ai-chat-flow";
 import { cn } from "@/lib/utils";
@@ -29,7 +28,12 @@ export default function AiAssistantPage() {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [antigravityMode, setAntigravityMode] = useState(true);
+  const [mounted, setMounted] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -47,7 +51,7 @@ export default function AiAssistantPage() {
 
     try {
       const messageWithContext = antigravityMode 
-        ? `[FAST MODE ACTIVE: Focus on Gemini Flash optimization] ${userMsg}` 
+        ? `[FAST MODE ACTIVE] ${userMsg}` 
         : userMsg;
         
       const result = await sendAiChatMessage({ message: messageWithContext });
@@ -64,6 +68,8 @@ export default function AiAssistantPage() {
     { label: "Credit Protocol", icon: Rocket, msg: "How can I earn more credits fast by sharing VideoMaster AI?" },
     { label: "AI Hooks", icon: Zap, msg: "Design a high-retention narrative hook for my next video." }
   ];
+
+  if (!mounted) return null;
 
   return (
     <div className="min-h-screen bg-[#05070a] hero-gradient pb-20">

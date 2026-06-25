@@ -4,16 +4,20 @@ import { googleAI } from '@genkit-ai/google-genai';
 /**
  * Gemini Fast AI Initialization (Browser-Compatible).
  * 
- * ✅ Converted to client-side initialization.
+ * ✅ STATUS: Optimized for Client-Side Static Export.
  */
 
-const rawKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY || process.env.GEMINI_API_KEY || '';
-const apiKey = rawKey.trim().replace(/^["']|["']$/g, '').trim();
+// Safely retrieve API key from env or window context
+const getApiKey = () => {
+  if (typeof window === 'undefined') return '';
+  const rawKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY || process.env.GEMINI_API_KEY || '';
+  return rawKey.trim().replace(/^["']|["']$/g, '').trim();
+};
 
 export const ai = genkit({
   plugins: [
     googleAI({
-      apiKey: apiKey,
+      apiKey: getApiKey(),
     }),
   ],
 });
