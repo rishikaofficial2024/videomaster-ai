@@ -8,7 +8,8 @@ import {
   Plus, Video, Wand2, Sparkles, History, Play, 
   MoreVertical, Search, Star, Youtube, Instagram, 
   ChevronRight, Zap, ExternalLink, Upload, 
-  CloudUpload, LayoutDashboard, Clock, FileVideo
+  CloudUpload, LayoutDashboard, Clock, FileVideo,
+  TrendingUp
 } from "lucide-react";
 import Link from "next/link";
 import { useUser, useFirestore, useCollection, useMemoFirebase } from "@/firebase";
@@ -150,7 +151,7 @@ export default function Dashboard() {
                     <CardContent className="p-8 flex justify-between items-center bg-card">
                        <div className="space-y-2">
                           <h3 className="text-xl font-black truncate max-w-[200px] uppercase tracking-tight group-hover:text-primary transition-colors">{project.title || "Untitled Sequence"}</h3>
-                          <div className="text-[9px] text-muted-foreground uppercase tracking-widest font-black flex items-center gap-3">
+                          <div className="text-[10px] text-muted-foreground uppercase tracking-widest font-black flex items-center gap-3">
                              <div className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]" /> 
                              {isClient ? (project.updatedAt ? new Date(project.updatedAt).toLocaleDateString() : "Active Now") : "Syncing..."}
                           </div>
