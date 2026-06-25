@@ -1,8 +1,6 @@
 'use server';
 /**
  * @fileOverview Elite Text-to-Video generation engine using Veo 3.0 with Polling.
- * 
- * - generateAiVideo - Handles cinematic motion generation with operation polling.
  */
 
 import { ai, veoModel, z } from '@/ai/genkit';
@@ -17,10 +15,6 @@ const VideoGenerationOutputSchema = z.object({
 });
 export type VideoGenerationOutput = z.infer<typeof VideoGenerationOutputSchema>;
 
-/**
- * 📽️ Cinematic Motion Protocol
- * Generates HD clips using the Veo 3.0 architecture with proper polling logic.
- */
 const generateAiVideoFlow = ai.defineFlow(
   {
     name: 'generateAiVideoFlow',
@@ -34,7 +28,6 @@ const generateAiVideoFlow = ai.defineFlow(
         model: veoModel,
         prompt: `Cinematic HD high-quality video clip: ${input.prompt}. 4k, hyper-realistic, professional cinematography, 24fps.`,
         config: {
-          durationSeconds: 8, // Veo 3.0 default
           aspectRatio: '16:9',
         }
       });
@@ -43,9 +36,9 @@ const generateAiVideoFlow = ai.defineFlow(
         throw new Error('Neural core failed to initiate motion operation.');
       }
 
-      // 2. Poll until operation is complete (Veo requires polling)
+      // 2. Poll until operation is complete (Veo requires polling logic)
       let attempts = 0;
-      while (!operation.done && attempts < 40) { // Max ~3 minutes polling
+      while (!operation.done && attempts < 40) { 
         await new Promise((resolve) => setTimeout(resolve, 5000));
         operation = await ai.checkOperation(operation);
         attempts++;
@@ -79,14 +72,12 @@ const generateAiVideoFlow = ai.defineFlow(
     } catch (e: any) {
       console.warn("⚠️ AI Motion Engine Error:", e.message);
       
-      // FALLBACK: Demonstration video to prevent UI crash
       const fallbacks = [
         "https://www.w3schools.com/html/mov_bbb.mp4",
         "https://www.w3schools.com/html/horse.mp4"
       ];
       
-      const randomVideo = fallbacks[Math.floor(Math.random() * fallbacks.length)];
-      return { videoDataUri: randomVideo };
+      return { videoDataUri: fallbacks[Math.floor(Math.random() * fallbacks.length)] };
     }
   }
 );

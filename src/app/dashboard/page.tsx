@@ -1,4 +1,3 @@
-
 "use client";
 
 import { Navbar } from "@/components/navbar";
@@ -31,7 +30,6 @@ export default function Dashboard() {
 
   const { data: profile } = useDoc(userProfileRef);
 
-  // Auto-upgrade to Pro if not already
   useEffect(() => {
     if (mounted && userProfileRef && profile && (!profile.isPremium || profile.credits < 10000)) {
       updateDoc(userProfileRef, {
@@ -106,24 +104,6 @@ export default function Dashboard() {
               </Card>
             </Link>
           ))}
-        </section>
-
-        <section>
-           <Card className="rounded-[4rem] bg-primary/[0.02] border-primary/10 p-12 flex flex-col lg:flex-row items-center justify-between gap-12 group overflow-hidden relative shadow-2xl">
-              <div className="flex items-center gap-10 relative z-10">
-                 <div className="w-20 h-20 bg-primary/20 rounded-[2rem] flex items-center justify-center border border-primary/30 shadow-xl">
-                    <Sparkles className="w-8 h-8 text-primary animate-pulse" />
-                 </div>
-                 <div className="space-y-2">
-                    <h3 className="text-4xl font-bold font-headline text-white uppercase tracking-tight">100% Free Forever</h3>
-                    <p className="text-muted-foreground text-lg font-medium italic opacity-60">Enjoy unlimited access to all professional Gemini AI tools without any cost.</p>
-                 </div>
-              </div>
-              <div className="flex items-center gap-4 bg-white/5 px-8 py-6 rounded-[2rem] border border-white/10">
-                <Coins className="w-6 h-6 text-primary" />
-                <span className="text-2xl font-black font-headline text-white">UNLIMITED</span>
-              </div>
-           </Card>
         </section>
       </main>
     </div>

@@ -7,7 +7,6 @@ import { googleAI } from '@genkit-ai/google-genai';
  * ✅ Optimized for Gemini Flash Latest Aliases (v1.29+).
  */
 
-// Safely extract and clean the API Key from environment variables
 const rawKey = process.env.GEMINI_API_KEY || '';
 const apiKey = rawKey.trim().replace(/^["']|["']$/g, '').trim();
 
@@ -24,7 +23,6 @@ export const geminiModel = googleAI.model('gemini-flash-latest');
 export const geminiProModel = googleAI.model('gemini-pro-latest');
 
 // 🎨 VISUAL ENGINES: Optimized for latest Genkit specs
-// Using latest Imagen and Veo models
 export const imagenModel = googleAI.model('googleai/imagen-4.0-fast-generate-001');
 export const veoModel = googleAI.model('googleai/veo-3.0-generate-preview');
 
