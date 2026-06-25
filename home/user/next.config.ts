@@ -2,7 +2,7 @@ import type {NextConfig} from 'next';
 
 /** @type {import('next').NextConfig} */
 const nextConfig: NextConfig = {
-  // ✅ ELITE STATIC EXPORT: Mandatory for Capacitor (Android APK) and Firebase Hosting stability.
+  // ✅ ELITE STATIC EXPORT: Mandatory for Capacitor (Android APK) and Firebase Hosting.
   output: 'export',
   
   images: {
