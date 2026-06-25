@@ -14,10 +14,9 @@ import { useUser, useFirestore, useDoc, useMemoFirebase } from "@/firebase";
 import { doc, updateDoc } from "firebase/firestore";
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
+import { errorEmitter } from "@/firebase/error-emitter";
+import { FirestorePermissionError, type SecurityRuleContext } from "@/firebase/errors";
 
-/**
- * 🎨 PREMIUM DASHBOARD: The Creator's Institutional Hub.
- */
 export default function Dashboard() {
   const { user, loading: userLoading } = useUser();
   const db = useFirestore();
@@ -33,17 +32,6 @@ export default function Dashboard() {
   }, [user?.uid, db]);
 
   const { data: profile } = useDoc(userProfileRef);
-
-  useEffect(() => {
-    if (mounted && userProfileRef && profile && (!profile.isPremium || profile.credits < 10000)) {
-      updateDoc(userProfileRef, {
-        isPremium: true,
-        subscriptionPlan: "pro",
-        credits: 999999,
-        updatedAt: new Date().toISOString()
-      }).catch(() => {});
-    }
-  }, [mounted, profile, userProfileRef]);
 
   const toolSuite = [
     { label: "Viral Script", icon: Wand2, desc: "AI Narrative Node", color: "text-primary", bg: "bg-primary/15", href: "/editor?tool=ai" },
@@ -68,7 +56,6 @@ export default function Dashboard() {
       <Navbar />
       
       <main className="max-w-[95rem] mx-auto p-6 lg:p-12 space-y-16 pt-32 lg:pt-40">
-        {/* HEADER AREA */}
         <header className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-12 animate-in fade-in slide-in-from-bottom-5 duration-1000">
           <div className="space-y-6">
             <div className="flex flex-wrap items-center gap-4">
@@ -105,7 +92,6 @@ export default function Dashboard() {
           </div>
         </header>
 
-        {/* QUICK STATS / SEARCH */}
         <div className="flex flex-col lg:flex-row gap-8 items-center">
            <div className="flex-1 w-full relative group">
               <Search className="absolute left-8 top-1/2 -translate-y-1/2 text-muted-foreground w-6 h-6 group-focus-within:text-primary transition-colors" />
@@ -131,7 +117,6 @@ export default function Dashboard() {
            </div>
         </div>
 
-        {/* TOOL GRID */}
         <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
           {toolSuite.map((tool, i) => (
             <Link key={i} href={tool.href}>
@@ -148,7 +133,7 @@ export default function Dashboard() {
                        <p className="text-[11px] text-muted-foreground font-black uppercase tracking-[0.4em] opacity-50">{tool.desc}</p>
                     </div>
                  </div>
-                 <div className="pt-10 flex items-center justify-between relative LUXURY_ANIMATION">
+                 <div className="pt-10 flex items-center justify-between relative">
                     <div className="h-1 flex-1 bg-white/5 rounded-full overflow-hidden mr-6">
                        <div className={cn("h-full w-0 group-hover:w-full transition-all duration-1000 bg-primary shadow-glow")} />
                     </div>
@@ -159,7 +144,6 @@ export default function Dashboard() {
           ))}
         </section>
 
-        {/* RECENT PROJECTS & GROWTH */}
         <section className="grid lg:grid-cols-3 gap-12">
            <Card className="lg:col-span-2 premium-card p-12 space-y-12 relative overflow-hidden border-white/10 bg-white/[0.01]">
               <div className="absolute top-0 right-0 p-20 opacity-[0.03] rotate-12">

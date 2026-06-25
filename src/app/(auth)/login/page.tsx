@@ -15,8 +15,10 @@ import {
   GoogleAuthProvider,
   signInAnonymously
 } from "firebase/auth";
-import { doc, setDoc, getDoc, updateDoc } from "firebase/firestore";
+import { doc, setDoc, getDoc } from "firebase/firestore";
 import { useAuth, useFirestore } from "@/firebase";
+import { errorEmitter } from "@/firebase/error-emitter";
+import { FirestorePermissionError, type SecurityRuleContext } from "@/firebase/errors";
 
 const OWNER_EMAIL = "rinkukumarpaswan1796@gmail.com";
 
@@ -43,15 +45,24 @@ function LoginForm() {
       const result = await signInWithEmailAndPassword(auth, email.trim(), password);
       const user = result.user;
 
-      // Automatically promote Owner identity
       if (user.email === OWNER_EMAIL) {
         const userRef = doc(db, "users", user.uid);
-        await setDoc(userRef, {
+        const updateData = {
           isAdmin: true,
           subscriptionPlan: "pro",
           isPremium: true,
           credits: 9999999
-        }, { merge: true });
+        };
+        
+        setDoc(userRef, updateData, { merge: true })
+          .catch(async (err) => {
+            errorEmitter.emit('permission-error', new FirestorePermissionError({
+              path: userRef.path,
+              operation: 'write',
+              requestResourceData: updateData
+            } satisfies SecurityRuleContext));
+          });
+          
         toast({ title: "Master Hub Authorized", description: "Loading Executive Protocols." });
       } else {
         toast({ title: "Session Established", description: "Loading workspace nodes..." });
@@ -74,8 +85,7 @@ function LoginForm() {
       
       const userRef = doc(db, "users", user.uid);
       const isOwner = user.email === OWNER_EMAIL;
-
-      await setDoc(userRef, {
+      const userData = {
         email: user.email,
         displayName: user.displayName,
         isPremium: true,
@@ -83,7 +93,16 @@ function LoginForm() {
         subscriptionPlan: isOwner ? "business" : "pro",
         credits: 999999,
         createdAt: new Date().toISOString()
-      }, { merge: true });
+      };
+
+      setDoc(userRef, userData, { merge: true })
+        .catch(async (err) => {
+          errorEmitter.emit('permission-error', new FirestorePermissionError({
+            path: userRef.path,
+            operation: 'write',
+            requestResourceData: userData
+          } satisfies SecurityRuleContext));
+        });
 
       router.push(returnUrl);
     } catch (error: any) {
@@ -99,8 +118,7 @@ function LoginForm() {
       const result = await signInAnonymously(auth);
       const user = result.user;
       const userRef = doc(db, "users", user.uid);
-      
-      await setDoc(userRef, {
+      const guestData = {
         email: "guest-" + user.uid.slice(0, 5) + "@videomaster.ai",
         displayName: "Guest Creator",
         isPremium: true,
@@ -109,7 +127,16 @@ function LoginForm() {
         credits: 999999,
         createdAt: new Date().toISOString(),
         isAnonymous: true
-      }, { merge: true });
+      };
+      
+      setDoc(userRef, guestData, { merge: true })
+        .catch(async (err) => {
+          errorEmitter.emit('permission-error', new FirestorePermissionError({
+            path: userRef.path,
+            operation: 'write',
+            requestResourceData: guestData
+          } satisfies SecurityRuleContext));
+        });
 
       toast({ title: "Ephemeral Access Active", description: "Entering Unlocked Pro Workspace." });
       router.push(returnUrl);
@@ -197,7 +224,6 @@ function LoginWrapper() {
 export default function LoginPage() {
   return (
     <div className="min-h-screen flex items-center justify-center p-6 bg-[#03010a] relative overflow-hidden">
-      {/* DECOR */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/5 blur-[150px] -z-10" />
       
       <div className="fixed top-12 left-12">

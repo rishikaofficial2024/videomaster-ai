@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, useEffect } from "react";
@@ -34,7 +33,6 @@ export default function MasterMonitoringPage() {
   const [loading, setLoading] = useState(false);
   const [isDnsError, setIsDnsError] = useState(false);
 
-  // Monitoring real-time logs from diagnostics
   const logsQuery = query(
     collection(db, "connection_tests"),
     orderBy("timestamp", "desc"),
@@ -53,7 +51,6 @@ export default function MasterMonitoringPage() {
       app_check: "testing"
     });
 
-    // 1. Integration: Firestore Real-time Diagnostic
     if (user && db) {
       const testRef = doc(collection(db, "connection_tests"));
       const testData = { 
@@ -65,13 +62,18 @@ export default function MasterMonitoringPage() {
 
       setDoc(testRef, testData)
         .then(() => setStatus(prev => ({ ...prev, firestore: "success" })))
-        .catch(() => setStatus(prev => ({ ...prev, firestore: "error" })));
+        .catch(async (err) => {
+          setStatus(prev => ({ ...prev, firestore: "error" }));
+          errorEmitter.emit('permission-error', new FirestorePermissionError({
+            path: testRef.path,
+            operation: 'create',
+            requestResourceData: testData
+          } satisfies SecurityRuleContext));
+        });
     }
 
-    // 2. Integration: AI Neural Core
     setStatus(prev => ({ ...prev, ai_integration: "success" }));
 
-    // 3. Integration: Domain Sync
     const hostname = typeof window !== 'undefined' ? window.location.hostname : "";
     if (hostname !== "videomaster-ai.tech" && hostname !== "localhost" && !hostname.includes('web.app')) {
        setIsDnsError(true);
@@ -81,7 +83,6 @@ export default function MasterMonitoringPage() {
        setStatus(prev => ({ ...prev, domain_sync: "success" }));
     }
 
-    // 4. AdSense Check
     const adsenseLoaded = typeof window !== 'undefined' && !!document.querySelector('script[src*="adsbygoogle"]');
     setStatus(prev => ({ ...prev, adsense: adsenseLoaded ? "success" : "warning" }));
     

@@ -16,6 +16,8 @@ import {
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import { useAuth, useFirestore } from "@/firebase";
 import { useToast } from "@/hooks/use-toast";
+import { errorEmitter } from "@/firebase/error-emitter";
+import { FirestorePermissionError, type SecurityRuleContext } from "@/firebase/errors";
 
 export default function SignupPage() {
   const [loading, setLoading] = useState(false);
@@ -41,7 +43,7 @@ export default function SignupPage() {
       await updateProfile(user, { displayName: fullName });
 
       const userRef = doc(db, "users", user.uid);
-      await setDoc(userRef, {
+      const userData = {
         email: user.email,
         displayName: fullName,
         isPremium: true,
@@ -50,10 +52,18 @@ export default function SignupPage() {
         credits: 999999,
         createdAt: new Date().toISOString(),
         usageStats: { totalVideos: 0, aiGenerations: 0 }
-      }, { merge: true });
+      };
+
+      setDoc(userRef, userData, { merge: true })
+        .catch(async (err) => {
+          errorEmitter.emit('permission-error', new FirestorePermissionError({
+            path: userRef.path,
+            operation: 'write',
+            requestResourceData: userData
+          } satisfies SecurityRuleContext));
+        });
       
       toast({ title: "Welcome!", description: "Loading your Pro Studio workspace..." });
-      // 🔥 REDIRECT TO EDITOR
       router.push("/editor");
     } catch (error: any) {
       toast({ variant: "destructive", title: "Registration Alert", description: "Error during account creation." });
@@ -68,23 +78,27 @@ export default function SignupPage() {
       const result = await signInAnonymously(auth);
       const user = result.user;
       const userRef = doc(db, "users", user.uid);
+      const guestData = {
+        email: "guest@videomaster.ai",
+        displayName: "Guest Creator",
+        isPremium: true,
+        isAdmin: false,
+        subscriptionPlan: "pro",
+        credits: 999999,
+        createdAt: new Date().toISOString(),
+        isAnonymous: true
+      };
       
-      const docSnap = await getDoc(userRef);
-      if (!docSnap.exists()) {
-        await setDoc(userRef, {
-          email: "guest@videomaster.ai",
-          displayName: "Guest Creator",
-          isPremium: true,
-          isAdmin: false,
-          subscriptionPlan: "pro",
-          credits: 999999,
-          createdAt: new Date().toISOString(),
-          isAnonymous: true
-        }, { merge: true });
-      }
+      setDoc(userRef, guestData, { merge: true })
+        .catch(async (err) => {
+          errorEmitter.emit('permission-error', new FirestorePermissionError({
+            path: userRef.path,
+            operation: 'write',
+            requestResourceData: guestData
+          } satisfies SecurityRuleContext));
+        });
 
       toast({ title: "Guest Protocol Active", description: "Entering Workspace..." });
-      // 🔥 REDIRECT TO EDITOR
       router.push("/editor");
     } catch (error: any) {
       toast({ variant: "destructive", title: "Guest Access Failed", description: "Connection interrupted." });

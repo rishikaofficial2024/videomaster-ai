@@ -24,10 +24,6 @@ import { errorEmitter } from "@/firebase/error-emitter";
 import { FirestorePermissionError, type SecurityRuleContext } from "@/firebase/errors";
 import { cn } from "@/lib/utils";
 
-/**
- * 🎬 PROFESSIONAL EDITOR: VN/CapCut Style Architecture.
- * Optimized for high-speed multi-track editing on all nodes.
- */
 function EditorContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -95,22 +91,34 @@ function EditorContent() {
     };
     
     if (!isNewProject) {
-      updateDoc(projectRef, data).catch(async (error) => {
-        errorEmitter.emit('permission-error', new FirestorePermissionError({
-          path: projectRef.path,
-          operation: 'update',
-          requestResourceData: data,
-        } satisfies SecurityRuleContext));
-      });
+      updateDoc(projectRef, data)
+        .catch(async (error) => {
+          errorEmitter.emit('permission-error', new FirestorePermissionError({
+            path: projectRef.path,
+            operation: 'update',
+            requestResourceData: data,
+          } satisfies SecurityRuleContext));
+        })
+        .finally(() => setIsSaving(false));
     } else {
       setDoc(projectRef, {
         ...data,
         createdAt: serverTimestamp(),
         status: "draft",
-      }).then(() => setIsNewProject(false));
+      })
+      .then(() => {
+        setIsNewProject(false);
+        setIsSaving(false);
+      })
+      .catch(async (error) => {
+        setIsSaving(false);
+        errorEmitter.emit('permission-error', new FirestorePermissionError({
+          path: projectRef.path,
+          operation: 'create',
+          requestResourceData: data,
+        } satisfies SecurityRuleContext));
+      });
     }
-    
-    setTimeout(() => setIsSaving(false), 800);
   };
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -155,7 +163,6 @@ function EditorContent() {
 
   return (
     <div className="h-screen bg-[#020108] flex flex-col overflow-hidden text-[#e1e4e8]">
-      {/* TOP NAV BAR */}
       <div className="h-24 bg-[#050314]/80 backdrop-blur-3xl px-8 flex items-center justify-between z-40 border-b border-white/5">
         <div className="flex items-center gap-10">
           <Link href="/dashboard" className="p-4 hover:bg-white/5 rounded-3xl transition-all border border-transparent hover:border-white/10 group">
@@ -189,7 +196,6 @@ function EditorContent() {
       </div>
 
       <div className="flex-1 flex overflow-hidden">
-        {/* SIDEBAR TOOLBAR */}
         <div className="w-28 bg-[#050314] border-r border-white/5 flex flex-col items-center py-12 gap-12">
            {[
              { icon: Wand2, id: 'ai', label: 'AI' },
@@ -211,7 +217,6 @@ function EditorContent() {
            ))}
         </div>
 
-        {/* SIDE PANEL (DRAWER) */}
         <div className="w-[450px] bg-[#0a061c] border-r border-white/5 flex flex-col p-10 space-y-12 overflow-y-auto scrollbar-hide hidden xl:flex shadow-2xl relative z-10">
            {activeTab === 'ai' && (
              <div className="space-y-12 animate-in fade-in slide-in-from-left-6 duration-700">
@@ -270,9 +275,7 @@ function EditorContent() {
            )}
         </div>
 
-        {/* MAIN VIEWER AREA */}
         <div className="flex-1 flex flex-col bg-[#03010a] p-8 lg:p-12 space-y-12 relative overflow-hidden">
-           {/* VIDEO PREVIEW CONTAINER */}
            <div className="flex-1 relative aspect-video mx-auto w-full max-w-6xl bg-black rounded-[5rem] border-[12px] border-[#0a061c] overflow-hidden shadow-[0_50px_100px_rgba(0,0,0,0.8)] group flex flex-col items-center justify-center">
               {!videoData ? (
                 <div className="text-center space-y-8 opacity-10 group-hover:opacity-20 transition-opacity">
@@ -304,7 +307,6 @@ function EditorContent() {
               </div>
            </div>
 
-           {/* TIMELINE AREA */}
            <div className="h-72 glass-panel rounded-[4rem] border-white/5 flex flex-col overflow-hidden relative shadow-[0_-20px_50px_rgba(0,0,0,0.5)]">
               <div className="h-16 border-b border-white/5 px-12 flex items-center justify-between bg-white/[0.03]">
                  <div className="flex items-center gap-10">
@@ -329,7 +331,6 @@ function EditorContent() {
                 ref={timelineRef}
                 className="flex-1 p-12 space-y-6 relative cursor-crosshair scrollbar-hide overflow-hidden bg-black/20"
               >
-                 {/* TRACK 1 */}
                  <div className="h-16 bg-primary/10 border border-primary/20 rounded-[1.5rem] relative flex items-center px-8 group/track transition-all hover:bg-primary/15">
                     <Film className="w-5 h-5 text-primary mr-6 opacity-30 group-hover/track:opacity-60 transition-opacity" />
                     <span className="text-[11px] font-black uppercase tracking-widest text-primary opacity-50">Master Visual Track</span>
@@ -340,13 +341,11 @@ function EditorContent() {
                     )}
                  </div>
 
-                 {/* TRACK 2 */}
                  <div className="h-12 bg-accent/5 border border-accent/10 rounded-2xl relative flex items-center px-8 opacity-30 group/track2">
                     <Music className="w-4 h-4 text-accent mr-6 opacity-30" />
                     <span className="text-[9px] font-black uppercase tracking-widest text-accent opacity-40">Audio Sequence</span>
                  </div>
 
-                 {/* PLAYHEAD */}
                  <div 
                    className="absolute top-0 bottom-0 w-1 bg-white z-20 shadow-[0_0_20px_rgba(255,255,255,0.8)]" 
                    style={{ left: `${(currentTime / duration) * 100}%` }}
@@ -357,7 +356,6 @@ function EditorContent() {
            </div>
         </div>
 
-        {/* RIGHT DIAGNOSTICS PANEL */}
         <div className="w-[380px] bg-[#050314] border-l border-white/5 p-12 space-y-12 hidden 2xl:flex flex-col">
            <header className="flex items-center gap-4 text-primary">
               <div className="p-2 bg-primary/10 rounded-lg animate-pulse"><Cpu size={20} /></div>
@@ -400,7 +398,6 @@ function EditorContent() {
         </div>
       </div>
 
-      {/* OVERLAY LOADER */}
       {isProcessing && (
         <div className="fixed inset-0 z-[100] bg-[#020108]/95 backdrop-blur-[50px] flex items-center justify-center">
            <div className="text-center space-y-16 max-w-2xl px-10">
