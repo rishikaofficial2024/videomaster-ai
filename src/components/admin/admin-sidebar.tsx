@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -5,10 +6,11 @@ import { usePathname } from "next/navigation";
 import { 
   LayoutDashboard, Users, Banknote, ShieldCheck, 
   Settings, Layers, Database, Activity, 
-  BarChart3, Globe, Lock, ArrowLeft, Zap, Shield
+  BarChart3, Globe, Lock, ArrowLeft, Zap, Shield, Key
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useUser } from "@/firebase";
+import { useUser, useFirestore, useDoc, useMemoFirebase } from "@/firebase";
+import { doc } from "firebase/firestore";
 
 const OWNER_EMAIL = "rinkukumarpaswan1796@gmail.com";
 
@@ -16,16 +18,21 @@ const menuItems = [
   { name: "Overview", href: "/admin", icon: LayoutDashboard },
   { name: "Creator Nodes", href: "/admin/users", icon: Users },
   { name: "Revenue Hub", href: "/admin/revenue", icon: Banknote },
-  { name: "Content Node", href: "/admin/content", icon: Layers },
-  { name: "Matrix Health", href: "/admin/monitoring", icon: Activity },
-  { name: "System Logs", href: "/admin/security", icon: ShieldCheck },
+  { name: "Audit Logs", href: "/admin/audit", icon: ShieldCheck },
   { name: "App Settings", href: "/admin/settings", icon: Settings },
 ];
 
 export function AdminSidebar() {
   const pathname = usePathname();
   const { user } = useUser();
+  const db = useFirestore();
   const isMaster = user?.email === OWNER_EMAIL;
+
+  const profileRef = useMemoFirebase(() => {
+    if (!user || !db) return null;
+    return doc(db, "users", user.uid);
+  }, [user?.uid, db]);
+  const { data: profile } = useDoc(profileRef);
 
   return (
     <aside className="w-80 h-screen sticky top-0 bg-[#0a061c]/60 backdrop-blur-3xl border-r border-white/5 flex flex-col p-8 z-50">
@@ -38,7 +45,7 @@ export function AdminSidebar() {
         </Link>
         <div className="space-y-1">
           <h2 className="text-3xl font-black font-headline text-white tracking-tighter uppercase">
-            {isMaster ? "Executive" : "Admin"} <span className="text-primary italic">Node.</span>
+            {isMaster ? "Executive" : profile?.role === 'moderator' ? 'Moderator' : 'Admin'} <span className="text-primary italic">Node.</span>
           </h2>
           <div className="flex items-center gap-2">
             <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" />
@@ -84,11 +91,11 @@ export function AdminSidebar() {
       <div className="mt-auto space-y-6 pt-10 border-t border-white/5">
         <div className="p-6 bg-white/[0.02] rounded-[2rem] border border-white/5 space-y-4">
           <div className="flex items-center justify-between">
-            <span className="text-[9px] font-black text-muted-foreground uppercase tracking-widest">Health</span>
-            <span className="text-[9px] font-black text-emerald-500 uppercase tracking-widest">Optimal</span>
+            <span className="text-[9px] font-black text-muted-foreground uppercase tracking-widest">Clearance</span>
+            <span className="text-[9px] font-black text-primary uppercase tracking-widest">{profile?.role?.toUpperCase() || 'VERIFIED'}</span>
           </div>
           <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden">
-            <div className="h-full bg-emerald-500 w-[98%] shadow-glow" />
+            <div className="h-full bg-primary w-[98%] shadow-glow" />
           </div>
         </div>
         <p className="text-[8px] text-muted-foreground font-black uppercase tracking-[0.5em] text-center opacity-20">BUILD_NODE_v4.5.2_ELITE_OWNER</p>

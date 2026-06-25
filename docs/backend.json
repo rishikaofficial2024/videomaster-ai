@@ -10,55 +10,27 @@
         "email": { "type": "string", "format": "email" },
         "photoURL": { "type": "string" },
         "isPremium": { "type": "boolean" },
-        "isAdmin": { "type": "boolean", "description": "Global admin privileges" },
+        "isAdmin": { "type": "boolean", "description": "Legacy admin flag" },
+        "role": { "type": "string", "enum": ["user", "moderator", "admin", "super_admin", "owner"] },
+        "status": { "type": "string", "enum": ["active", "suspended", "banned"] },
         "subscriptionPlan": { "type": "string", "enum": ["free", "pro", "business"] },
-        "credits": { "type": "number", "description": "Available AI processing credits" },
-        "totalSpent": { "type": "number", "description": "Total lifetime revenue from user" },
-        "usageStats": {
-          "type": "object",
-          "properties": {
-            "totalVideos": { "type": "number" },
-            "aiGenerations": { "type": "number" }
-          }
-        }
+        "credits": { "type": "number" },
+        "totalSpent": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" }
       },
       "required": ["email"]
     },
-    "VideoProject": {
-      "title": "Video Project",
-      "description": "Professional video project metadata including AI assets and multi-track media",
+    "AdminLog": {
+      "title": "Admin Audit Log",
+      "description": "Immutable record of administrative actions for security audits.",
       "type": "object",
       "properties": {
-        "title": { "type": "string" },
-        "createdAt": { "type": "string", "format": "date-time" },
-        "updatedAt": { "type": "string", "format": "date-time" },
-        "status": { "type": "string", "enum": ["draft", "processing", "completed", "error"] },
-        "videoDataUri": { "type": "string" },
-        "mediaAssets": { "type": "array", "items": { "type": "object" } }
-      },
-      "required": ["title", "createdAt", "status"]
-    },
-    "VideoTemplate": {
-      "title": "Video Template",
-      "description": "Reusable creative framework for users.",
-      "type": "object",
-      "properties": {
-        "title": { "type": "string" },
-        "description": { "type": "string" },
-        "category": { "type": "string" },
-        "thumbnailUrl": { "type": "string" },
-        "isPremium": { "type": "boolean" }
-      }
-    },
-    "SystemAnalytics": {
-      "title": "System Analytics",
-      "description": "Institutional event logging for growth tracking.",
-      "type": "object",
-      "properties": {
-        "event": { "type": "string" },
+        "adminId": { "type": "string" },
+        "adminEmail": { "type": "string" },
+        "action": { "type": "string" },
+        "targetId": { "type": "string" },
         "timestamp": { "type": "string", "format": "date-time" },
-        "userId": { "type": "string" },
-        "node": { "type": "string" }
+        "details": { "type": "string" }
       }
     }
   },
@@ -68,19 +40,11 @@
   "firestore": {
     "/users/{userId}": {
       "schema": { "$ref": "#/backend/entities/UserProfile" },
-      "description": "The user's core profile and billing state."
+      "description": "User identity and role node."
     },
-    "/users/{userId}/projects/{projectId}": {
-      "schema": { "$ref": "#/backend/entities/VideoProject" },
-      "description": "User's individual creative workspace."
-    },
-    "/templates/{templateId}": {
-      "schema": { "$ref": "#/backend/entities/VideoTemplate" },
-      "description": "Global repository of viral video templates."
-    },
-    "/analytics/{docId}": {
-      "schema": { "$ref": "#/backend/entities/SystemAnalytics" },
-      "description": "Enterprise-level activity logging node."
+    "/admin_logs/{logId}": {
+      "schema": { "$ref": "#/backend/entities/AdminLog" },
+      "description": "Institutional activity ledger."
     }
   }
 }

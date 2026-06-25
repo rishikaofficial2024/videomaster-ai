@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -7,14 +8,19 @@ import { Switch } from "@/components/ui/switch";
 import { 
   Settings, ShieldCheck, Globe, Zap, 
   Terminal, Database, Bell, LayoutTemplate,
-  Cpu, Lock, RefreshCw, Save, Activity
+  Cpu, Lock, RefreshCw, Save, Activity, ShieldAlert, Key
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
+import { useUser } from "@/firebase";
+
+const OWNER_EMAIL = "rinkukumarpaswan1796@gmail.com";
 
 export default function AdminSettings() {
   const { toast } = useToast();
+  const { user } = useUser();
   const [saving, setSaving] = useState(false);
+  const isMaster = user?.email === OWNER_EMAIL;
 
   const handleSave = () => {
     setSaving(true);
@@ -25,6 +31,16 @@ export default function AdminSettings() {
   };
 
   const sections = [
+    {
+      title: "Master Governance",
+      icon: Key,
+      restricted: !isMaster,
+      items: [
+        { label: "Institutional Lockdown", desc: "Instantly suspend all non-owner administrative access.", status: false },
+        { label: "Permanent Audit Logging", desc: "Enforce immutable activity tracking for all node operations.", status: true },
+        { label: "Owner-Only Mutations", desc: "Block admin-level updates to billing and subscription schemas.", status: true },
+      ]
+    },
     {
       title: "Core Infrastructure",
       icon: Terminal,
@@ -41,14 +57,6 @@ export default function AdminSettings() {
         { label: "AdSense Global Feed", desc: "Allow AdSense bots to crawl new creative landings.", status: true },
         { label: "Premium Tier Enforcement", desc: "Enable 4K export locks for non-pro identities.", status: true },
         { label: "Referral Logic Node", desc: "Activate invite-based credit rewards globally.", status: true },
-      ]
-    },
-    {
-      title: "Neural Performance",
-      icon: Activity,
-      items: [
-        { label: "Low Latency Matrix", desc: "Prioritize node speed over preview fidelity.", status: true },
-        { label: "High Fidelity Sync", desc: "Synchronize raw media assets between mobile and web.", status: true },
       ]
     }
   ];
@@ -75,9 +83,21 @@ export default function AdminSettings() {
         </Button>
       </header>
 
+      {!isMaster && (
+        <Card className="rounded-[3rem] bg-amber-500/10 border-2 border-amber-500/30 p-10 animate-in fade-in zoom-in">
+           <div className="flex items-center gap-6 text-amber-500">
+              <ShieldAlert size={40} />
+              <div>
+                 <h3 className="text-3xl font-black font-headline uppercase tracking-tight">LIMITED CLEARANCE</h3>
+                 <p className="text-lg italic opacity-80">Some governance protocols are restricted to the Master Owner Node.</p>
+              </div>
+           </div>
+        </Card>
+      )}
+
       <div className="space-y-12">
         {sections.map((section, idx) => (
-          <section key={idx} className="space-y-8">
+          <section key={idx} className={cn("space-y-8", section.restricted && "opacity-30 pointer-events-none")}>
             <div className="flex items-center gap-4 px-4">
               <div className="p-3 bg-primary/10 rounded-2xl border border-primary/20">
                 <section.icon className="w-5 h-5 text-primary" />

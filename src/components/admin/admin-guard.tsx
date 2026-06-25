@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useUser, useFirestore, useDoc, useMemoFirebase } from '@/firebase';
@@ -10,7 +11,7 @@ const OWNER_EMAIL = "rinkukumarpaswan1796@gmail.com";
 
 /**
  * 🛡️ MASTER GUARD: Enforces absolute clearance protocols.
- * Only the designated Owner or verified Admins can pass.
+ * Updated to support RBAC roles and Owner hardcoding.
  */
 export function AdminGuard({ children }: { children: React.ReactNode }) {
   const { user, loading: authLoading } = useUser();
@@ -27,7 +28,7 @@ export function AdminGuard({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (!authLoading && !profileLoading) {
       const isOwner = user?.email === OWNER_EMAIL;
-      const isAdmin = profile?.isAdmin === true;
+      const isAdmin = profile?.isAdmin === true || ['owner', 'super_admin', 'admin', 'moderator'].includes(profile?.role || '');
 
       if (!user || (!isOwner && !isAdmin)) {
         console.warn("Access Denied: Insufficient Node Clearance.");
@@ -44,14 +45,14 @@ export function AdminGuard({ children }: { children: React.ReactNode }) {
             <Loader2 className="w-full h-full animate-spin text-primary relative z-10" />
             <div className="absolute inset-0 blur-2xl bg-primary/20 rounded-full" />
           </div>
-          <p className="text-muted-foreground animate-pulse font-headline font-black uppercase tracking-[0.4em] text-xs">Verifying Master Clearance...</p>
+          <p className="text-muted-foreground animate-pulse font-headline font-black uppercase tracking-[0.4em] text-xs text-primary">Verifying Master Clearance...</p>
         </div>
       </div>
     );
   }
 
   const isOwner = user?.email === OWNER_EMAIL;
-  const isAdmin = profile?.isAdmin === true;
+  const isAdmin = profile?.isAdmin === true || ['owner', 'super_admin', 'admin', 'moderator'].includes(profile?.role || '');
 
   if (!isOwner && !isAdmin) return null;
 

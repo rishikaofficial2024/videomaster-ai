@@ -1,6 +1,7 @@
+
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { 
   Table, 
   TableBody, 
@@ -23,17 +24,20 @@ import {
   Users, Search, MoreVertical, Zap, 
   Crown, ShieldAlert, Coins, RefreshCw, 
   UserPlus, UserMinus, ShieldCheck, Mail,
-  ExternalLink, Loader2
+  Loader2, Ban, ShieldX, CheckCircle2, History
 } from "lucide-react";
-import { useFirestore, useCollection, useMemoFirebase } from "@/firebase";
-import { collection, query, limit, orderBy, doc, updateDoc, increment, deleteDoc, getDocs, where } from "firebase/firestore";
+import { useFirestore, useCollection, useMemoFirebase, useUser } from "@/firebase";
+import { collection, query, limit, orderBy, doc, updateDoc, increment, addDoc, serverTimestamp } from "firebase/firestore";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { errorEmitter } from "@/firebase/error-emitter";
 import { FirestorePermissionError, type SecurityRuleContext } from "@/firebase/errors";
 
+const OWNER_EMAIL = "rinkukumarpaswan1796@gmail.com";
+
 export default function AdminUserManagement() {
   const db = useFirestore();
+  const { user: currentAdmin } = useUser();
   const { toast } = useToast();
   const [search, setSearch] = useState("");
   const [updatingId, setUpdatingUser] = useState<string | null>(null);
@@ -48,9 +52,22 @@ export default function AdminUserManagement() {
 
   const filteredUsers = users?.filter(u => {
     const matchesSearch = u.displayName?.toLowerCase().includes(search.toLowerCase()) || u.email?.toLowerCase().includes(search.toLowerCase());
-    const matchesFilter = filter === 'all' ? true : filter === 'premium' ? u.isPremium : filter === 'admin' ? u.isAdmin : true;
+    const matchesFilter = filter === 'all' ? true : filter === 'premium' ? u.isPremium : filter === 'admin' ? (u.isAdmin || u.role === 'admin') : true;
     return matchesSearch && matchesFilter;
   });
+
+  const logAction = (action: string, targetId: string, details: string) => {
+    const logRef = collection(db, "admin_logs");
+    const logData = {
+      adminId: currentAdmin?.uid,
+      adminEmail: currentAdmin?.email,
+      action,
+      targetId,
+      details,
+      timestamp: serverTimestamp()
+    };
+    addDoc(logRef, logData).catch(() => {});
+  };
 
   const handleUpdate = async (userId: string, data: any, label: string) => {
     setUpdatingUser(userId);
@@ -59,6 +76,7 @@ export default function AdminUserManagement() {
     updateDoc(userRef, data)
       .then(() => {
         toast({ title: "Identity Node Synced", description: `${label} protocol initiated successfully.` });
+        logAction(label, userId, JSON.stringify(data));
       })
       .catch(async (e) => {
         errorEmitter.emit('permission-error', new FirestorePermissionError({
@@ -100,7 +118,7 @@ export default function AdminUserManagement() {
                  onClick={() => setFilter(f)}
                  className={cn(
                    "px-8 h-16 rounded-full text-[10px] font-black uppercase tracking-widest border transition-all active:scale-95",
-                   filter === f ? "bg-primary text-black border-primary shadow-glow" : "bg-white/5 border-white/5 text-muted-foreground hover:bg-white/10"
+                   filter === f ? "bg-primary text-black border-primary shadow-glow" : "bg-white/5 border-white/10 text-muted-foreground hover:bg-white/10"
                  )}
                >
                  {f.toUpperCase()}
@@ -129,7 +147,7 @@ export default function AdminUserManagement() {
             <TableHeader className="bg-white/[0.03]">
               <TableRow className="border-white/10 hover:bg-transparent">
                 <TableHead className="text-[12px] font-black uppercase tracking-[0.5em] px-16 py-10 text-primary">Identity Terminal</TableHead>
-                <TableHead className="text-[12px] font-black uppercase tracking-[0.5em] text-accent">Clearance Level</TableHead>
+                <TableHead className="text-[12px] font-black uppercase tracking-[0.5em] text-accent">Clearance / Status</TableHead>
                 <TableHead className="text-[12px] font-black uppercase tracking-[0.5em] text-secondary">Neural Reserves</TableHead>
                 <TableHead className="text-right px-16 text-[12px] font-black uppercase tracking-[0.5em] text-white">Protocols</TableHead>
               </TableRow>
@@ -137,7 +155,9 @@ export default function AdminUserManagement() {
             <TableBody>
               {usersLoading ? (
                 <TableRow><TableCell colSpan={4} className="text-center py-60 animate-pulse italic text-3xl font-black tracking-widest text-primary opacity-20 uppercase">SYNCHRONIZING WITH DATABASE...</TableCell></TableRow>
-              ) : filteredUsers?.map((u: any) => (
+              ) : filteredUsers?.map((u: any) => {
+                const isOwner = u.email === OWNER_EMAIL;
+                return (
                 <TableRow key={u.id} className="border-white/5 hover:bg-white/[0.04] transition-all group">
                   <TableCell className="px-16 py-12">
                      <div className="flex items-center gap-8">
@@ -153,12 +173,20 @@ export default function AdminUserManagement() {
                      </div>
                   </TableCell>
                   <TableCell>
-                     <Badge className={cn(
-                       "rounded-full text-[11px] font-black uppercase tracking-[0.4em] px-8 py-3 shadow-2xl",
-                       u.isAdmin ? 'bg-indigo-500 text-white' : u.isPremium ? 'bg-primary text-black' : 'bg-white/5 text-muted-foreground border-white/5'
-                     )}>
-                        {u.isAdmin ? 'MASTER' : u.subscriptionPlan?.toUpperCase() || 'STARTER'}
-                     </Badge>
+                     <div className="flex flex-col gap-3">
+                        <Badge className={cn(
+                          "rounded-full text-[11px] font-black uppercase tracking-[0.4em] px-8 py-3 shadow-2xl w-fit",
+                          isOwner ? 'bg-amber-500 text-black' : u.isAdmin ? 'bg-indigo-500 text-white' : u.isPremium ? 'bg-primary text-black' : 'bg-white/5 text-muted-foreground border-white/5'
+                        )}>
+                            {isOwner ? 'MASTER OWNER' : u.role?.toUpperCase() || u.subscriptionPlan?.toUpperCase() || 'STARTER'}
+                        </Badge>
+                        <Badge className={cn(
+                          "rounded-full text-[9px] font-black uppercase tracking-[0.2em] px-6 py-1 w-fit",
+                          u.status === 'suspended' ? 'bg-rose-500/20 text-rose-500' : u.status === 'banned' ? 'bg-red-600 text-white' : 'bg-emerald-500/20 text-emerald-500'
+                        )}>
+                           {u.status || 'active'}
+                        </Badge>
+                     </div>
                   </TableCell>
                   <TableCell>
                      <div className="flex items-center gap-4 text-2xl font-black text-primary font-headline">
@@ -168,7 +196,7 @@ export default function AdminUserManagement() {
                   <TableCell className="text-right px-16">
                      {updatingId === u.id ? (
                         <Loader2 className="w-8 h-8 animate-spin text-primary ml-auto" />
-                     ) : (
+                     ) : !isOwner && (
                         <DropdownMenu>
                            <DropdownMenuTrigger asChild>
                               <Button variant="ghost" size="icon" className="rounded-2xl h-16 w-16 glass-panel border-white/10 hover:bg-primary/20 transition-all shadow-xl group">
@@ -182,19 +210,31 @@ export default function AdminUserManagement() {
                               <DropdownMenuItem className="rounded-[1.5rem] font-black text-[12px] uppercase tracking-widest p-6 hover:bg-primary/10 cursor-pointer transition-all mb-4" onClick={() => handleUpdate(u.id, { credits: increment(100000) }, "Credit Injection")}>
                                  <Zap className="w-5 h-5 mr-4 text-primary" /> Inject +100K Credits
                               </DropdownMenuItem>
-                              <DropdownMenuItem className="rounded-[1.5rem] font-black text-[12px] uppercase tracking-widest p-6 hover:bg-emerald-500/10 cursor-pointer transition-all mb-4" onClick={() => handleUpdate(u.id, { isPremium: true, subscriptionPlan: 'pro', totalSpent: increment(99) }, "Pro Authorization")}>
+                              <DropdownMenuItem className="rounded-[1.5rem] font-black text-[12px] uppercase tracking-widest p-6 hover:bg-emerald-500/10 cursor-pointer transition-all mb-4" onClick={() => handleUpdate(u.id, { isPremium: true, subscriptionPlan: 'pro', totalSpent: increment(99), role: 'user' }, "Pro Authorization")}>
                                  <Crown className="w-5 h-5 mr-4 text-emerald-500" /> Authorize Elite Access
                               </DropdownMenuItem>
+                              
                               <div className="h-px bg-white/5 my-6" />
-                              <DropdownMenuItem className="rounded-[1.5rem] font-black text-[12px] uppercase tracking-widest p-6 text-red-500 hover:bg-red-500/10 cursor-pointer transition-all" onClick={() => handleUpdate(u.id, { isAdmin: !u.isAdmin }, "Master Clearance")}>
-                                 <ShieldAlert className="w-5 h-5 mr-4" /> {u.isAdmin ? 'Revoke Master Clearance' : 'Grant Master Clearance'}
+                              
+                              <DropdownMenuItem className="rounded-[1.5rem] font-black text-[12px] uppercase tracking-widest p-6 hover:bg-indigo-500/10 cursor-pointer transition-all mb-4" onClick={() => handleUpdate(u.id, { role: 'admin', isAdmin: true }, "Grant Admin Node")}>
+                                 <ShieldCheck className="w-5 h-5 mr-4 text-indigo-400" /> Make Admin
+                              </DropdownMenuItem>
+                              
+                              <div className="h-px bg-white/5 my-6" />
+
+                              <DropdownMenuItem className="rounded-[1.5rem] font-black text-[12px] uppercase tracking-widest p-6 text-rose-400 hover:bg-rose-500/10 cursor-pointer transition-all mb-4" onClick={() => handleUpdate(u.id, { status: u.status === 'suspended' ? 'active' : 'suspended' }, "Clearance Toggle")}>
+                                 <Ban className="w-5 h-5 mr-4" /> {u.status === 'suspended' ? 'Re-activate Node' : 'Suspend Access'}
+                              </DropdownMenuItem>
+
+                              <DropdownMenuItem className="rounded-[1.5rem] font-black text-[12px] uppercase tracking-widest p-6 text-red-600 hover:bg-red-600/10 cursor-pointer transition-all" onClick={() => handleUpdate(u.id, { status: 'banned', role: 'user', isAdmin: false }, "Permanent Termination")}>
+                                 <ShieldX className="w-5 h-5 mr-4" /> Permanent Ban
                               </DropdownMenuItem>
                            </DropdownMenuContent>
                         </DropdownMenu>
                      )}
                   </TableCell>
                 </TableRow>
-              ))}
+              )})}
             </TableBody>
           </Table>
           {!filteredUsers?.length && !usersLoading && (
