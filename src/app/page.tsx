@@ -55,21 +55,21 @@ export default function LandingPage() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#060606] selection:bg-primary/30 overflow-x-hidden">
+    <div className="flex flex-col min-h-screen bg-[#0f0f0f] selection:bg-primary/30 overflow-x-hidden">
       {/* HEADER */}
-      <header className="px-6 lg:px-12 h-24 flex items-center fixed top-0 w-full bg-black/40 backdrop-blur-xl z-50 border-b border-white/5">
+      <header className="px-6 lg:px-12 h-24 flex items-center fixed top-0 w-full bg-black/60 backdrop-blur-xl z-50 border-b border-white/5">
         <Link className="flex items-center justify-center gap-4 group" href="/">
           <div className="bg-gradient-to-br from-primary to-yellow-600 p-2.5 rounded-2xl shadow-glow group-hover:rotate-6 transition-all duration-500">
             <Video className="h-6 w-6 text-black" />
           </div>
-          <span className="font-headline font-bold text-2xl tracking-tighter text-white">VideoMaster<span className="text-primary italic">AI</span></span>
+          <span className="font-headline font-bold text-2xl tracking-tighter text-white uppercase">VideoMaster<span className="text-primary italic">AI</span></span>
         </Link>
         <nav className="ml-auto hidden lg:flex items-center gap-12">
           <Link href="#features" className="text-[10px] font-black uppercase tracking-[0.4em] text-muted-foreground hover:text-primary transition-all">Features</Link>
           <Link href="/templates" className="text-[10px] font-black uppercase tracking-[0.4em] text-muted-foreground hover:text-primary transition-all">Templates</Link>
           <div className="h-6 w-px bg-white/10 mx-2" />
           <Link href="/login" className="text-[10px] font-black uppercase tracking-[0.4em] text-white hover:text-primary transition-all">Sign In</Link>
-          <Button onClick={handleGuestEntry} disabled={loading} className="h-11 rounded-full bg-white text-black hover:bg-primary transition-all font-black text-[10px] uppercase tracking-widest px-8 shadow-xl">
+          <Button onClick={handleGuestEntry} disabled={loading} className="h-11 rounded-full bg-white text-black hover:bg-primary transition-all font-black text-[10px] uppercase tracking-widest px-8 shadow-2xl">
              Try For Free
           </Button>
         </nav>
@@ -78,11 +78,11 @@ export default function LandingPage() {
       <main className="flex-1">
         {/* HERO SECTION */}
         <section className="relative pt-40 pb-32 lg:pt-60 lg:pb-60 overflow-hidden">
-          <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[1200px] h-[1200px] bg-primary/5 rounded-full blur-[200px] -z-10 animate-pulse" />
+          <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[1200px] h-[1200px] bg-primary/10 rounded-full blur-[250px] -z-10 animate-pulse" />
           
           <div className="container px-6 mx-auto relative">
             <div className="flex flex-col items-center text-center space-y-12 mb-32">
-              <div className="inline-flex items-center gap-3 px-6 py-2.5 rounded-full bg-primary/10 border border-primary/20 backdrop-blur-xl text-primary text-[10px] font-black uppercase tracking-[0.4em] animate-in fade-in zoom-in duration-1000">
+              <div className="inline-flex items-center gap-3 px-6 py-2.5 rounded-full bg-primary/15 border border-primary/30 backdrop-blur-xl text-primary text-[10px] font-black uppercase tracking-[0.4em] animate-in fade-in zoom-in duration-1000 shadow-glow">
                 <Sparkles className="w-4 h-4" /> THE GOLD STANDARD OF AI PRODUCTION
               </div>
               
@@ -97,17 +97,17 @@ export default function LandingPage() {
 
               <div className="flex flex-col items-center gap-12 w-full max-w-4xl mx-auto pt-8">
                 <div className="flex flex-col sm:flex-row gap-8 w-full justify-center">
-                  <Button onClick={handleGuestEntry} disabled={loading} className="h-24 px-16 rounded-full text-2xl font-black uppercase tracking-tight shadow-glow hover:scale-105 active:scale-95 bg-primary text-black border-b-8 border-yellow-700 group relative overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-[shimmer_2s_infinite] pointer-events-none" />
+                  <Button onClick={handleGuestEntry} disabled={loading} className="h-24 px-16 rounded-full text-2xl font-black uppercase tracking-tight shadow-glow hover:scale-105 active:scale-95 bg-primary text-black border-b-[10px] border-yellow-800 group relative overflow-hidden">
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/25 to-transparent -translate-x-full group-hover:animate-[shimmer_2s_infinite] pointer-events-none" />
                     {loading ? <Sparkles className="animate-spin mr-4" /> : <Zap className="mr-4 w-8 h-8 fill-current" />}
                     Enter Pro Studio
                   </Button>
-                  <Button variant="outline" className="h-24 px-12 rounded-full text-xl font-bold uppercase tracking-widest border-white/10 bg-white/5 text-white hover:bg-primary/10 transition-all backdrop-blur-xl">
+                  <Button variant="outline" className="h-24 px-12 rounded-full text-xl font-bold uppercase tracking-widest border-white/20 bg-white/5 text-white hover:bg-primary/20 transition-all backdrop-blur-xl">
                     <Play className="mr-4 fill-current" /> Watch Showreel
                   </Button>
                 </div>
 
-                <div className="flex items-center gap-10 opacity-30">
+                <div className="flex items-center gap-10 opacity-40">
                   {[Globe, ShieldCheck, Cpu].map((Icon, i) => (
                     <div key={i} className="flex items-center gap-3">
                        <Icon className="w-5 h-5 text-primary" />
@@ -120,35 +120,35 @@ export default function LandingPage() {
 
             {/* PREVIEW IMAGE */}
             <div className="relative max-w-[95rem] mx-auto group">
-              <div className="absolute -inset-1 bg-gradient-to-r from-primary via-yellow-200 to-primary rounded-[5rem] blur opacity-10 group-hover:opacity-30 transition duration-1000" />
-              <div className="premium-card overflow-hidden rounded-[5rem] relative group border-white/5 shadow-[0_50px_100px_rgba(0,0,0,0.8)]">
+              <div className="absolute -inset-1 bg-gradient-to-r from-primary via-[#F9E272] to-primary rounded-[5rem] blur opacity-15 group-hover:opacity-40 transition duration-1000" />
+              <div className="premium-card overflow-hidden rounded-[5rem] relative group border-white/10 shadow-[0_50px_100px_rgba(0,0,0,0.9)]">
                 {heroImg && (
                   <Image
                     alt="VideoMaster AI Luxury Hub"
-                    className="w-full aspect-[21/9] object-cover opacity-40 group-hover:scale-105 transition-transform duration-[4s]"
+                    className="w-full aspect-[21/9] object-cover opacity-50 group-hover:scale-105 transition-transform duration-[6s]"
                     height={1080}
                     src={heroImg.imageUrl}
                     width={1920}
                     priority
-                    data-ai-hint="luxury office desk setup gold"
+                    data-ai-hint="luxury office gold"
                   />
                 )}
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-90" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-90" />
                 
                 <div className="absolute bottom-16 left-16 right-16 flex flex-col md:flex-row items-end justify-between gap-10">
                    <div className="space-y-4 max-w-xl">
-                      <div className="flex items-center gap-3 px-4 py-1.5 rounded-full bg-primary/20 border border-primary/40 w-fit">
+                      <div className="flex items-center gap-3 px-4 py-1.5 rounded-full bg-primary/30 border border-primary/50 w-fit backdrop-blur-xl">
                          <Star className="w-4 h-4 text-primary fill-current" />
                          <span className="text-[10px] font-black text-white uppercase tracking-widest">The Gold Standard</span>
                       </div>
-                      <h3 className="text-4xl md:text-6xl font-headline font-bold text-white uppercase leading-none">Designed for <br/> High-Value Creators.</h3>
+                      <h3 className="text-4xl md:text-6xl font-headline font-bold text-white uppercase leading-none tracking-tighter">Designed for <br/> High-Value Creators.</h3>
                    </div>
-                   <div className="p-8 bg-black/60 backdrop-blur-2xl rounded-[3rem] border border-white/10 flex items-center gap-8 shadow-2xl">
+                   <div className="p-8 bg-black/70 backdrop-blur-3xl rounded-[3rem] border border-white/20 flex items-center gap-8 shadow-2xl">
                       <div className="flex flex-col">
                          <span className="text-4xl font-bold text-primary tracking-tighter">0.4s</span>
                          <span className="text-[9px] font-black text-muted-foreground uppercase tracking-widest">Production Latency</span>
                       </div>
-                      <div className="w-px h-12 bg-white/10" />
+                      <div className="w-px h-12 bg-white/20" />
                       <div className="flex flex-col">
                          <span className="text-4xl font-bold text-white tracking-tighter">100k+</span>
                          <span className="text-[9px] font-black text-muted-foreground uppercase tracking-widest">Premium Nodes</span>
@@ -161,7 +161,7 @@ export default function LandingPage() {
         </section>
 
         {/* FEATURE GRID */}
-        <section id="features" className="w-full py-40 border-y border-white/5 relative bg-black/40">
+        <section id="features" className="w-full py-40 border-y border-white/5 relative bg-[#0a0a0a]">
            <div className="container px-6 mx-auto">
               <div className="text-center mb-32 space-y-4">
                  <h2 className="text-6xl md:text-8xl font-headline font-bold text-white uppercase tracking-tighter">The <span className="text-gradient">Elite</span> Stack</h2>
@@ -174,8 +174,8 @@ export default function LandingPage() {
                    { icon: Zap, title: "Veo Motion", desc: "State-of-the-art text-to-video synthesis engine for professional-grade 4K motion assets.", color: "text-primary" },
                    { icon: MousePointer2, title: "Precision Edit", desc: "An intelligent VN-style editor optimized for high-speed luxury mobile and web workflows.", color: "text-white" }
                  ].map((feat, i) => (
-                   <div key={i} className="premium-card p-12 text-center group space-y-8 h-full border-white/5">
-                      <div className="w-24 h-24 rounded-[2.5rem] bg-white/5 flex items-center justify-center mx-auto border border-white/5 group-hover:scale-110 transition-all duration-500 shadow-2xl">
+                   <div key={i} className="premium-card p-12 text-center group space-y-8 h-full border-white/10 bg-white/[0.01]">
+                      <div className="w-24 h-24 rounded-[2.5rem] bg-white/5 flex items-center justify-center mx-auto border border-white/10 group-hover:scale-110 transition-all duration-500 shadow-2xl">
                         <feat.icon className={`w-10 h-10 ${feat.color}`} />
                       </div>
                       <div className="space-y-4">
@@ -193,17 +193,17 @@ export default function LandingPage() {
         </section>
 
         {/* CTA SECTION */}
-        <section className="py-40 relative">
+        <section className="py-40 relative bg-[#0f0f0f]">
            <div className="container px-6 mx-auto">
-              <div className="max-w-6xl mx-auto glass-panel rounded-[5rem] p-16 md:p-32 text-center space-y-12 relative overflow-hidden gold-glow border-primary/20">
-                 <div className="absolute top-0 right-0 p-20 opacity-[0.03] rotate-12">
+              <div className="max-w-6xl mx-auto glass-panel rounded-[5rem] p-16 md:p-32 text-center space-y-12 relative overflow-hidden gold-glow border-primary/30">
+                 <div className="absolute top-0 right-0 p-20 opacity-[0.05] rotate-12">
                     <Crown className="w-96 h-96 text-primary" />
                  </div>
                  <div className="space-y-6 relative z-10">
                     <h2 className="text-7xl md:text-[10rem] font-headline font-black text-white leading-none uppercase tracking-tighter">Enter the <br/> <span className="text-gradient">Elite Circle.</span></h2>
                     <p className="text-2xl md:text-4xl text-muted-foreground font-medium italic opacity-60 max-w-4xl mx-auto">Luxury production tools for those who refuse to compromise.</p>
                  </div>
-                 <Button onClick={handleGuestEntry} disabled={loading} className="h-28 px-24 rounded-full bg-white text-black hover:bg-primary transition-all font-black text-3xl uppercase tracking-tight shadow-2xl relative z-10">
+                 <Button onClick={handleGuestEntry} disabled={loading} className="h-28 px-24 rounded-full bg-white text-black hover:bg-primary transition-all font-black text-3xl uppercase tracking-tight shadow-glow relative z-10 active:scale-95">
                     Start Your Legacy
                  </Button>
               </div>
@@ -217,7 +217,7 @@ export default function LandingPage() {
              <div className="bg-gradient-to-br from-primary to-yellow-600 p-4 rounded-3xl shadow-glow">
                 <Video className="w-10 h-10 text-black" />
              </div>
-             <span className="text-5xl font-headline font-bold tracking-tighter text-white">VideoMaster<span className="text-primary italic">AI.</span></span>
+             <span className="text-5xl font-headline font-bold tracking-tighter text-white uppercase">VideoMaster<span className="text-primary italic">AI.</span></span>
           </div>
           <div className="flex flex-wrap justify-center gap-12 lg:gap-24 opacity-40">
              {['Privacy', 'Terms', 'About', 'Help', 'Security'].map(link => (
@@ -225,7 +225,7 @@ export default function LandingPage() {
              ))}
           </div>
           <div className="space-y-6 max-w-xl mx-auto">
-             <p className="text-[10px] text-muted-foreground font-black uppercase tracking-[1em] opacity-20">GOLD STANDARD PRODUCTION NODE v4.0.0</p>
+             <p className="text-[10px] text-muted-foreground font-black uppercase tracking-[1em] opacity-20">GOLD STANDARD PRODUCTION NODE v4.2.0</p>
              <p className="text-sm text-muted-foreground/30 italic leading-relaxed">
                © 2026 VideoMaster AI Technologies. Luxury video synthesis powered by Google Deep Research Labs.
              </p>
