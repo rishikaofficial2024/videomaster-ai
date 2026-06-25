@@ -48,7 +48,7 @@ export default function AdminUserManagement() {
 
   const { data: users, loading: usersLoading } = useCollection(usersQuery);
 
-  const filteredUsers = users?.filter(u => {
+  const filteredUsers = (users || []).filter(u => {
     const displayName = (u.displayName || "").toLowerCase();
     const email = (u.email || "").toLowerCase();
     const searchTerm = search.toLowerCase();
@@ -59,10 +59,11 @@ export default function AdminUserManagement() {
   });
 
   const logAction = (action: string, targetId: string, details: string) => {
+    if (!db || !currentAdmin) return;
     const logRef = collection(db, "admin_logs");
     const logData = {
-      adminId: currentAdmin?.uid,
-      adminEmail: currentAdmin?.email,
+      adminId: currentAdmin.uid,
+      adminEmail: currentAdmin.email,
       action,
       targetId,
       details,
@@ -108,7 +109,7 @@ export default function AdminUserManagement() {
              <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-muted-foreground w-5 h-5" />
              <input 
                placeholder="Search Identity ID or Email..." 
-               className="h-16 pl-16 pr-8 bg-white/[0.03] border-white/10 rounded-full text-lg focus:border-primary/50 transition-all outline-none text-white font-medium shadow-inner"
+               className="w-full h-16 pl-16 pr-8 bg-white/[0.03] border-white/10 rounded-full text-lg focus:border-primary/50 transition-all outline-none text-white font-medium shadow-inner"
                value={search}
                onChange={(e) => setSearch(e.target.value)}
              />
