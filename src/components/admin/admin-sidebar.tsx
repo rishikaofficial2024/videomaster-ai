@@ -5,21 +5,27 @@ import { usePathname } from "next/navigation";
 import { 
   LayoutDashboard, Users, Banknote, ShieldCheck, 
   Settings, Layers, Database, Activity, 
-  BarChart3, Globe, Lock, ArrowLeft, Zap
+  BarChart3, Globe, Lock, ArrowLeft, Zap, Shield
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useUser } from "@/firebase";
+
+const OWNER_EMAIL = "rinkukumarpaswan1796@gmail.com";
 
 const menuItems = [
   { name: "Overview", href: "/admin", icon: LayoutDashboard },
   { name: "Creator Nodes", href: "/admin/users", icon: Users },
   { name: "Revenue Hub", href: "/admin/revenue", icon: Banknote },
   { name: "Content Node", href: "/admin/content", icon: Layers },
+  { name: "Matrix Health", href: "/admin/monitoring", icon: Activity },
   { name: "System Logs", href: "/admin/security", icon: ShieldCheck },
   { name: "App Settings", href: "/admin/settings", icon: Settings },
 ];
 
 export function AdminSidebar() {
   const pathname = usePathname();
+  const { user } = useUser();
+  const isMaster = user?.email === OWNER_EMAIL;
 
   return (
     <aside className="w-80 h-screen sticky top-0 bg-[#0a061c]/60 backdrop-blur-3xl border-r border-white/5 flex flex-col p-8 z-50">
@@ -31,10 +37,14 @@ export function AdminSidebar() {
           Exit Master Hub
         </Link>
         <div className="space-y-1">
-          <h2 className="text-3xl font-black font-headline text-white tracking-tighter uppercase">Master <span className="text-primary italic">Hub.</span></h2>
+          <h2 className="text-3xl font-black font-headline text-white tracking-tighter uppercase">
+            {isMaster ? "Executive" : "Admin"} <span className="text-primary italic">Node.</span>
+          </h2>
           <div className="flex items-center gap-2">
             <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" />
-            <span className="text-[9px] font-black text-muted-foreground uppercase tracking-[0.3em]">Institutional Grade Node</span>
+            <span className="text-[9px] font-black text-muted-foreground uppercase tracking-[0.3em]">
+              {isMaster ? "MASTER KEY ACTIVE" : "Authorized Personnel"}
+            </span>
           </div>
         </div>
       </div>
@@ -61,6 +71,16 @@ export function AdminSidebar() {
         })}
       </nav>
 
+      {isMaster && (
+        <div className="mt-6 mb-6 p-6 bg-primary/10 rounded-[2.5rem] border border-primary/20 shadow-2xl">
+           <div className="flex items-center gap-4 mb-3">
+              <Shield className="w-5 h-5 text-primary" />
+              <span className="text-[10px] font-black uppercase tracking-widest text-primary">Master Control</span>
+           </div>
+           <p className="text-[10px] text-muted-foreground italic leading-relaxed">Full system governance protocol active for rinkukumarpaswan1796@gmail.com</p>
+        </div>
+      )}
+
       <div className="mt-auto space-y-6 pt-10 border-t border-white/5">
         <div className="p-6 bg-white/[0.02] rounded-[2rem] border border-white/5 space-y-4">
           <div className="flex items-center justify-between">
@@ -71,7 +91,7 @@ export function AdminSidebar() {
             <div className="h-full bg-emerald-500 w-[98%] shadow-glow" />
           </div>
         </div>
-        <p className="text-[8px] text-muted-foreground font-black uppercase tracking-[0.5em] text-center opacity-20">BUILD_NODE_v4.5.2_ELITE</p>
+        <p className="text-[8px] text-muted-foreground font-black uppercase tracking-[0.5em] text-center opacity-20">BUILD_NODE_v4.5.2_ELITE_OWNER</p>
       </div>
     </aside>
   );

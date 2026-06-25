@@ -15,8 +15,10 @@ import {
   GoogleAuthProvider,
   signInAnonymously
 } from "firebase/auth";
-import { doc, setDoc, getDoc } from "firebase/firestore";
+import { doc, setDoc, getDoc, updateDoc } from "firebase/firestore";
 import { useAuth, useFirestore } from "@/firebase";
+
+const OWNER_EMAIL = "rinkukumarpaswan1796@gmail.com";
 
 function LoginForm() {
   const [loading, setLoading] = useState(false);
@@ -38,8 +40,23 @@ function LoginForm() {
     
     setLoading(true);
     try {
-      await signInWithEmailAndPassword(auth, email.trim(), password);
-      toast({ title: "Session Established", description: "Loading global workspace nodes..." });
+      const result = await signInWithEmailAndPassword(auth, email.trim(), password);
+      const user = result.user;
+
+      // Automatically promote Owner identity
+      if (user.email === OWNER_EMAIL) {
+        const userRef = doc(db, "users", user.uid);
+        await setDoc(userRef, {
+          isAdmin: true,
+          subscriptionPlan: "pro",
+          isPremium: true,
+          credits: 9999999
+        }, { merge: true });
+        toast({ title: "Master Hub Authorized", description: "Loading Executive Protocols." });
+      } else {
+        toast({ title: "Session Established", description: "Loading workspace nodes..." });
+      }
+      
       router.push(returnUrl);
     } catch (error: any) {
       toast({ variant: "destructive", title: "Access Denied", description: "Invalid node credentials." });
@@ -56,18 +73,17 @@ function LoginForm() {
       const user = result.user;
       
       const userRef = doc(db, "users", user.uid);
-      const docSnap = await getDoc(userRef);
-      if (!docSnap.exists()) {
-        await setDoc(userRef, {
-          email: user.email,
-          displayName: user.displayName,
-          isPremium: true,
-          isAdmin: false,
-          subscriptionPlan: "pro",
-          credits: 999999,
-          createdAt: new Date().toISOString()
-        }, { merge: true });
-      }
+      const isOwner = user.email === OWNER_EMAIL;
+
+      await setDoc(userRef, {
+        email: user.email,
+        displayName: user.displayName,
+        isPremium: true,
+        isAdmin: isOwner,
+        subscriptionPlan: isOwner ? "business" : "pro",
+        credits: 999999,
+        createdAt: new Date().toISOString()
+      }, { merge: true });
 
       router.push(returnUrl);
     } catch (error: any) {
@@ -84,19 +100,16 @@ function LoginForm() {
       const user = result.user;
       const userRef = doc(db, "users", user.uid);
       
-      const docSnap = await getDoc(userRef);
-      if (!docSnap.exists()) {
-        await setDoc(userRef, {
-          email: "guest-" + user.uid.slice(0, 5) + "@videomaster.ai",
-          displayName: "Guest Creator",
-          isPremium: true,
-          isAdmin: false,
-          subscriptionPlan: "pro",
-          credits: 999999,
-          createdAt: new Date().toISOString(),
-          isAnonymous: true
-        }, { merge: true });
-      }
+      await setDoc(userRef, {
+        email: "guest-" + user.uid.slice(0, 5) + "@videomaster.ai",
+        displayName: "Guest Creator",
+        isPremium: true,
+        isAdmin: false,
+        subscriptionPlan: "pro",
+        credits: 999999,
+        createdAt: new Date().toISOString(),
+        isAnonymous: true
+      }, { merge: true });
 
       toast({ title: "Ephemeral Access Active", description: "Entering Unlocked Pro Workspace." });
       router.push(returnUrl);

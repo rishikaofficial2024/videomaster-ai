@@ -1,12 +1,17 @@
-
-'use client';
+"use client";
 
 import { useUser, useFirestore, useDoc, useMemoFirebase } from '@/firebase';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
-import { Loader2, ShieldAlert } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import { doc } from 'firebase/firestore';
 
+const OWNER_EMAIL = "rinkukumarpaswan1796@gmail.com";
+
+/**
+ * 🛡️ MASTER GUARD: Enforces absolute clearance protocols.
+ * Only the designated Owner or verified Admins can pass.
+ */
 export function AdminGuard({ children }: { children: React.ReactNode }) {
   const { user, loading: authLoading } = useUser();
   const db = useFirestore();
@@ -21,7 +26,11 @@ export function AdminGuard({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (!authLoading && !profileLoading) {
-      if (!user || !profile?.isAdmin) {
+      const isOwner = user?.email === OWNER_EMAIL;
+      const isAdmin = profile?.isAdmin === true;
+
+      if (!user || (!isOwner && !isAdmin)) {
+        console.warn("Access Denied: Insufficient Node Clearance.");
         router.push('/dashboard');
       }
     }
@@ -29,16 +38,22 @@ export function AdminGuard({ children }: { children: React.ReactNode }) {
 
   if (authLoading || profileLoading) {
     return (
-      <div className="h-screen flex items-center justify-center bg-background">
-        <div className="text-center space-y-4">
-          <Loader2 className="w-10 h-10 animate-spin text-primary mx-auto" />
-          <p className="text-muted-foreground animate-pulse font-headline font-bold uppercase tracking-widest">Verifying Admin Clearance...</p>
+      <div className="h-screen flex items-center justify-center bg-[#03010a]">
+        <div className="text-center space-y-6">
+          <div className="relative mx-auto w-20 h-20">
+            <Loader2 className="w-full h-full animate-spin text-primary relative z-10" />
+            <div className="absolute inset-0 blur-2xl bg-primary/20 rounded-full" />
+          </div>
+          <p className="text-muted-foreground animate-pulse font-headline font-black uppercase tracking-[0.4em] text-xs">Verifying Master Clearance...</p>
         </div>
       </div>
     );
   }
 
-  if (!profile?.isAdmin) return null;
+  const isOwner = user?.email === OWNER_EMAIL;
+  const isAdmin = profile?.isAdmin === true;
+
+  if (!isOwner && !isAdmin) return null;
 
   return <>{children}</>;
 }

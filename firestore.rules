@@ -1,8 +1,10 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // 🛡️ ELITE SECURITY CORE: Production Ready
+    // 🛡️ INSTITUTIONAL SECURITY PROTOCOLS
     
+    const OWNER_EMAIL = "rinkukumarpaswan1796@gmail.com";
+
     function isAuthenticated() {
       return request.auth != null;
     }
@@ -11,24 +13,30 @@ service cloud.firestore {
       return isAuthenticated() && request.auth.uid == userId;
     }
     
-    function isAdmin() {
-      return isAuthenticated() && 
-             exists(/databases/$(database)/documents/users/$(request.auth.uid)) && 
-             get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isAdmin == true;
+    function isMaster() {
+      return isAuthenticated() && request.auth.token.email == OWNER_EMAIL;
     }
 
-    // 👤 User Profile - Mission Critical Security
+    function isAdmin() {
+      return isMaster() || (
+             isAuthenticated() && 
+             exists(/databases/$(database)/documents/users/$(request.auth.uid)) && 
+             get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isAdmin == true
+      );
+    }
+
+    // 👤 User Profile - Master Clearance Check
     match /users/{userId} {
       allow read: if isOwner(userId) || isAdmin();
       allow create: if isAuthenticated() && request.auth.uid == userId;
                     
-      // STRICT UPDATE: Users can change basic fields but NEVER their own isAdmin or email.
-      allow update: if isOwner(userId) && 
-                    !request.resource.data.diff(resource.data).affectedKeys().hasAny(['isAdmin', 'email']);
+      // Owner can update everything. Others are restricted.
+      allow update: if isMaster() || (
+                    isOwner(userId) && 
+                    !request.resource.data.diff(resource.data).affectedKeys().hasAny(['isAdmin', 'email'])
+      );
       
-      // Admin bypass for manual adjustments
-      allow update: if isAdmin();
-      allow delete: if isAdmin();
+      allow delete: if isMaster() || isAdmin();
       
       match /projects/{projectId} {
         allow read, write: if isOwner(userId) || isAdmin();
