@@ -3,35 +3,21 @@ import type {NextConfig} from 'next';
 const nextConfig: NextConfig = {
   // ✅ ELITE STATIC EXPORT: Mandatory for Capacitor (Android APK) and Firebase Hosting stability.
   output: 'export',
+  
   images: {
-    unoptimized: true, 
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'placehold.co',
-        port: '',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'images.unsplash.com',
-        port: '',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'picsum.photos',
-        port: '',
-        pathname: '/**',
-      },
-    ],
+    // 🎨 CUSTOM IMAGE LOADER: As requested for professional static optimization.
+    loader: 'custom',
+    loaderFile: './my-loader.ts',
+    unoptimized: false, // Set to true if you don't have a resizing proxy
   },
+
   typescript: {
     ignoreBuildErrors: true,
   },
   eslint: {
     ignoreDuringBuilds: true,
   },
+  
   webpack: (config, { isServer }) => {
     // 🛡️ BROWSER-SIDE AI SHIELD: Polyfill Node modules for Genkit & Opentelemetry client-side usage.
     // This stops "Module not found: Can't resolve 'fs'" errors during build.
