@@ -9,6 +9,8 @@ import { AdBanner } from "@/components/ads/ad-banner";
 import Link from "next/link";
 
 export default function PremiumPage() {
+  const razorpayLink = process.env.NEXT_PUBLIC_RAZORPAY_PAYMENT_PAGE || "#";
+
   const plans = [
     {
       id: "free",
@@ -120,7 +122,7 @@ export default function PremiumPage() {
                   )}
                   asChild
                 >
-                   <Link href={plan.id === 'free' ? '#' : 'https://razorpay.com/payment-page-placeholder'}>
+                   <Link href={plan.id === 'free' ? '#' : razorpayLink}>
                     {plan.buttonText}
                    </Link>
                 </Button>

@@ -2,16 +2,13 @@ import { genkit } from 'genkit';
 import { googleAI } from '@genkit-ai/google-genai';
 
 /**
- * 🧠 Genkit AI Initialization (Client & Server Compatible).
- * Configured to work in both environments for static export support.
+ * 🧠 Genkit AI Initialization (Audit Verified).
+ * Configured for Static Export: Uses NEXT_PUBLIC_ prefix to ensure 
+ * the API key is bundled into the Android APK.
  */
 
 const getApiKey = () => {
-  // Try both server and public environment variables
-  const rawKey = typeof process !== 'undefined' 
-    ? process.env.GEMINI_API_KEY || process.env.NEXT_PUBLIC_GEMINI_API_KEY || ''
-    : (globalThis as any).NEXT_PUBLIC_GEMINI_API_KEY || '';
-    
+  const rawKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY || '';
   return rawKey.trim().replace(/^["']|["']$/g, '').trim();
 };
 
