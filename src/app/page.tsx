@@ -15,6 +15,8 @@ import { doc, setDoc, getDoc } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { errorEmitter } from "@/firebase/error-emitter";
+import { FirestorePermissionError, type SecurityRuleContext } from "@/firebase/errors";
 
 /**
  * 🚀 PRODUCTION LANDING: VideoMaster AI Elite Release.
@@ -35,9 +37,10 @@ export default function LandingPage() {
       const user = result.user;
       const userRef = doc(db, "users", user.uid);
       
+      // We read the doc to see if we need to initialize it
       const docSnap = await getDoc(userRef);
       if (!docSnap.exists()) {
-        await setDoc(userRef, {
+        const guestData = {
           email: "guest@videomaster-ai.tech",
           displayName: "Guest Creator",
           isPremium: true,
@@ -46,7 +49,17 @@ export default function LandingPage() {
           credits: 999999,
           createdAt: new Date().toISOString(),
           isAnonymous: true
-        }, { merge: true });
+        };
+
+        // Non-blocking mutation with contextual error handling
+        setDoc(userRef, guestData, { merge: true })
+          .catch(async (err) => {
+            errorEmitter.emit('permission-error', new FirestorePermissionError({
+              path: userRef.path,
+              operation: 'create',
+              requestResourceData: guestData
+            } satisfies SecurityRuleContext));
+          });
       }
 
       toast({ title: "Elite Access Activated", description: "Loading the Pro Workspace..." });
@@ -154,7 +167,7 @@ export default function LandingPage() {
                       </div>
                       <div className="w-px h-12 bg-white/20" />
                       <div className="flex flex-col">
-                         <span className="text-4xl font-bold text-white tracking-tighter">100k+</span>
+                         <span className="text-4xl font-bold text-primary tracking-tighter">100k+</span>
                          <span className="text-[9px] font-black text-muted-foreground uppercase tracking-widest">Active Projects</span>
                       </div>
                    </div>
