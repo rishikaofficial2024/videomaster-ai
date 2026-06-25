@@ -37,6 +37,20 @@ export default function Dashboard() {
 
   const { data: projects, loading } = useCollection(projectsQuery);
 
+  const formatProjectDate = (project: any) => {
+    if (!isClient) return "SYNCING...";
+    const ts = project.updatedAt || project.createdAt;
+    if (!ts) return "JUST NOW";
+    
+    try {
+      // Handle Firestore Timestamp objects
+      const date = ts.seconds ? new Date(ts.seconds * 1000) : new Date(ts);
+      return date.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+    } catch (e) {
+      return "RECENTLY";
+    }
+  };
+
   const quickTools = [
     { name: "AI Script", icon: Wand2, desc: "Neural narratives", href: "/ai-tools/script", color: "text-blue-500", bg: "bg-blue-500/10", border: "border-blue-500/20" },
     { name: "YT Shorts", icon: Youtube, desc: "Viral conversion", href: "/editor?mode=shorts", color: "text-red-500", bg: "bg-red-500/10", border: "border-red-500/20" },
@@ -44,7 +58,13 @@ export default function Dashboard() {
     { name: "Design Node", icon: Instagram, desc: "Art generation", href: "/ai-tools/thumbnail", color: "text-pink-500", bg: "bg-pink-500/10", border: "border-pink-500/20" },
   ];
 
-  if (!isClient) return null;
+  if (!isClient) {
+    return (
+      <div className="min-h-screen bg-[#03010a] flex items-center justify-center">
+        <div className="animate-pulse text-primary font-black uppercase tracking-[0.5em] text-xs">Initializing Hub...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#03010a] hero-gradient pb-40">
@@ -155,7 +175,7 @@ export default function Dashboard() {
                           <h3 className="text-3xl font-black truncate max-w-[280px] uppercase tracking-tight group-hover:text-primary transition-colors text-white">{project.title || "Untitled Masterpiece"}</h3>
                           <div className="text-[10px] text-muted-foreground uppercase tracking-[0.4em] font-black flex items-center gap-4">
                              <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-[0_0_20px_rgba(16,185,129,0.8)] animate-pulse" /> 
-                             {project.updatedAt ? new Date(project.updatedAt).toLocaleDateString() : "SYNCED NOW"}
+                             {formatProjectDate(project)}
                           </div>
                        </div>
                        <Button variant="ghost" size="icon" className="h-16 w-16 rounded-3xl hover:bg-primary/10 transition-all">
