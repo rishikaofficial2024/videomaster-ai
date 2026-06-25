@@ -128,9 +128,9 @@ export default function Dashboard() {
                     <CardContent className="p-6 flex justify-between items-center bg-card">
                        <div className="space-y-1">
                           <h3 className="text-lg font-black truncate max-w-[200px] uppercase tracking-tight group-hover:text-primary transition-colors">{project.title || "Untitled Masterpiece"}</h3>
-                          <p className="text-[10px] text-muted-foreground uppercase tracking-widest font-black flex items-center gap-2">
+                          <div className="text-[10px] text-muted-foreground uppercase tracking-widest font-black flex items-center gap-2">
                              <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" /> Modified Yesterday
-                          </p>
+                          </div>
                        </div>
                        <Button variant="ghost" size="icon" className="h-12 w-12 rounded-2xl hover:bg-primary/10 transition-all">
                          <MoreVertical className="h-6 w-6" />
