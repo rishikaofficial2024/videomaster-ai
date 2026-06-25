@@ -9,18 +9,22 @@ import {
   Plus, Music, 
   Upload, Film,
   Settings2, Type, Crown, Zap, Volume2,
-  Monitor, RefreshCw, Cpu, Smartphone
+  Monitor, RefreshCw, Cpu, Smartphone, Scissors, Timer, 
+  Layers, Smile, Undo2, Redo2, Maximize, Crop, RotateCcw, 
+  Check, Save, Trash2, Gauge, Palette
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { generateAiVideo } from "@/ai/flows/ai-video-generation-flow";
 import { generateAiScript } from "@/ai/flows/ai-script-writer-flow";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { useUser, useFirestore, useDoc, useMemoFirebase } from "@/firebase";
 import { doc, setDoc, updateDoc, serverTimestamp } from "firebase/firestore";
 import { errorEmitter } from "@/firebase/error-emitter";
 import { FirestorePermissionError, type SecurityRuleContext } from "@/firebase/errors";
 import { cn } from "@/lib/utils";
+import { Slider } from "@/components/ui/badge"; // Using a badge-styled slider simulator for simplicity or custom slider
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface MediaAsset {
   id: string;
@@ -28,10 +32,15 @@ interface MediaAsset {
   type: 'video' | 'image' | 'audio';
   name: string;
   duration?: number;
+  startTime?: number;
+  endTime?: number;
+  speed?: number;
+  filter?: string;
 }
 
 function EditorContent() {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const projectIdFromUrl = searchParams.get("id");
   const toolFromUrl = searchParams.get("tool");
   const { user } = useUser();
@@ -61,6 +70,12 @@ function EditorContent() {
   
   const [magicHook, setMagicHook] = useState("");
   const [subtitles, setSubtitles] = useState("");
+  
+  // Advanced Features State
+  const [playbackSpeed, setPlaybackSpeed] = useState(1);
+  const [activeFilter, setActiveFilter] = useState("none");
+  const [history, setHistory] = useState<any[]>([]);
+  const [historyIndex, setHistoryIndex] = useState(-1);
 
   useEffect(() => {
     setMounted(true);
@@ -68,8 +83,7 @@ function EditorContent() {
       setProjectId(projectIdFromUrl);
       setIsNewProject(false);
     } else {
-      // 🛡️ HYDRATION FIX: ID generation moved to useEffect
-      const newId = "prj-" + Date.now().toString(36).substring(4);
+      const newId = "prj-" + Math.random().toString(36).substring(7);
       setProjectId(newId);
     }
   }, [projectIdFromUrl]);
@@ -119,6 +133,13 @@ function EditorContent() {
         status: "draft",
       }).then(() => setIsNewProject(false));
     }
+    
+    // Add to history
+    const newHistory = history.slice(0, historyIndex + 1);
+    newHistory.push(JSON.parse(JSON.stringify(data)));
+    setHistory(newHistory);
+    setHistoryIndex(newHistory.length - 1);
+
     setTimeout(() => setIsSaving(false), 800);
   };
 
@@ -135,12 +156,34 @@ function EditorContent() {
       type: type,
       name: file.name,
       duration: 5,
+      speed: 1,
+      filter: 'none'
     };
 
     const updatedAssets = [...mediaAssets, newAsset];
     setMediaAssets(updatedAssets);
     if (newAsset.type !== 'audio') setVideoData(url);
     handleSave({ mediaAssets: updatedAssets });
+  };
+
+  const handleUndo = () => {
+    if (historyIndex > 0) {
+      const prev = history[historyIndex - 1];
+      setMediaAssets(prev.mediaAssets);
+      setVideoData(prev.videoDataUri);
+      setHistoryIndex(historyIndex - 1);
+      toast({ title: "Undo successful" });
+    }
+  };
+
+  const handleRedo = () => {
+    if (historyIndex < history.length - 1) {
+      const next = history[historyIndex + 1];
+      setMediaAssets(next.mediaAssets);
+      setVideoData(next.videoDataUri);
+      setHistoryIndex(historyIndex + 1);
+      toast({ title: "Redo successful" });
+    }
   };
 
   const handleGenerateScript = async () => {
@@ -173,6 +216,14 @@ function EditorContent() {
     }
   };
 
+  const togglePlay = () => {
+    if (videoRef.current) {
+      if (isPlaying) videoRef.current.pause();
+      else videoRef.current.play();
+      setIsPlaying(!isPlaying);
+    }
+  };
+
   const handleTimelineClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!timelineRef.current) return;
     const rect = timelineRef.current.getBoundingClientRect();
@@ -189,106 +240,163 @@ function EditorContent() {
     <div className="h-screen bg-[#020408] flex flex-col overflow-hidden text-[#e1e4e8]">
       <Navbar />
       
-      <div className="h-24 border-b bg-[#05070a]/90 backdrop-blur-3xl px-8 flex items-center justify-between z-40 border-white/5 mt-24">
-        <div className="flex items-center gap-6">
-          <Link href="/dashboard" className="p-3 hover:bg-white/5 rounded-2xl">
-            <ChevronLeft className="w-6 h-6 text-muted-foreground" />
+      {/* 🚀 TOP BAR: Elite Controls */}
+      <div className="h-20 border-b bg-[#05070a]/90 backdrop-blur-3xl px-6 flex items-center justify-between z-40 border-white/5 mt-20">
+        <div className="flex items-center gap-4">
+          <Link href="/dashboard" className="p-2 hover:bg-white/5 rounded-xl transition-all">
+            <ChevronLeft className="w-5 h-5 text-muted-foreground" />
           </Link>
           <div className="flex flex-col">
             <input 
               value={title} 
               onChange={(e) => setTitle(e.target.value)}
-              className="bg-transparent font-bold text-xl focus:outline-none w-[300px] truncate text-white"
+              className="bg-transparent font-bold text-lg focus:outline-none w-[200px] md:w-[300px] truncate text-white"
             />
-            <div className="flex items-center gap-2 mt-1">
-              <div className={cn("w-2 h-2 rounded-full", isSaving ? "bg-amber-500 animate-pulse" : "bg-emerald-500")} />
-              <span className="text-[10px] font-black uppercase tracking-widest opacity-40">
-                {isSaving ? "Syncing..." : "Gemini Fast Cloud Active"}
+            <div className="flex items-center gap-2 mt-0.5">
+              <div className={cn("w-1.5 h-1.5 rounded-full", isSaving ? "bg-amber-500 animate-pulse" : "bg-emerald-500")} />
+              <span className="text-[9px] font-black uppercase tracking-widest opacity-40">
+                {isSaving ? "Auto-Saving..." : "Project Synced"}
               </span>
             </div>
           </div>
         </div>
 
-        <div className="flex items-center gap-4">
-           <div className="hidden md:flex items-center gap-2 px-4 py-2 bg-white/5 rounded-xl border border-white/5">
-              <Smartphone className="w-4 h-4 text-primary" />
-              <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Mobile Bridge Ready</span>
+        <div className="flex items-center gap-3">
+           <div className="hidden md:flex items-center gap-1 p-1 bg-white/5 rounded-xl border border-white/5">
+              <Button variant="ghost" size="icon" onClick={handleUndo} disabled={historyIndex <= 0} className="h-9 w-9 rounded-lg">
+                <Undo2 className="w-4 h-4" />
+              </Button>
+              <Button variant="ghost" size="icon" onClick={handleRedo} disabled={historyIndex >= history.length - 1} className="h-9 w-9 rounded-lg">
+                <Redo2 className="w-4 h-4" />
+              </Button>
            </div>
-           <Button className="h-14 px-10 rounded-xl font-black uppercase tracking-[0.2em] bg-primary shadow-glow text-[11px] gap-3">
-            <Download className="w-5 h-5" />
-            Export Project (FREE)
+           
+           <div className="h-10 w-px bg-white/10 mx-2 hidden md:block" />
+
+           <Button className="h-11 px-6 rounded-xl font-black uppercase tracking-[0.1em] bg-primary shadow-glow text-[10px] gap-2 hover:scale-105 transition-all">
+            <Download className="w-4 h-4" />
+            Export 4K
           </Button>
         </div>
       </div>
 
       <div className="flex-1 flex overflow-hidden">
-        <div className="w-24 bg-[#05070a] border-r border-white/5 flex flex-col items-center py-10 gap-10">
+        {/* 🛠️ LEFT SIDEBAR: Tools */}
+        <div className="w-20 bg-[#05070a] border-r border-white/5 flex flex-col items-center py-8 gap-8">
            {[
-             { icon: Wand2, id: 'ai', label: 'GEMINI' },
-             { icon: Film, id: 'media', label: 'MEDIA' },
+             { icon: Wand2, id: 'ai', label: 'AI' },
+             { icon: Film, id: 'media', label: 'ASSETS' },
+             { icon: Scissors, id: 'edit', label: 'TRIM' },
+             { icon: Palette, id: 'filters', label: 'FX' },
              { icon: Music, id: 'audio', label: 'AUDIO' },
              { icon: Type, id: 'text', label: 'TEXT' },
-             { icon: Settings2, id: 'settings', label: 'CONFIG' }
+             { icon: Settings2, id: 'settings', label: 'BUILD' }
            ].map((item) => (
              <button 
                key={item.id} 
-               className={cn("flex flex-col items-center gap-2 transition-all", activeTab === item.id ? "text-primary" : "text-muted-foreground")} 
+               className={cn("flex flex-col items-center gap-1.5 transition-all", activeTab === item.id ? "text-primary" : "text-muted-foreground")} 
                onClick={() => setActiveTab(item.id)}
              >
-               <div className={cn("p-4 rounded-3xl border-2", activeTab === item.id ? "bg-primary/10 border-primary/30" : "bg-transparent border-transparent")}>
-                 <item.icon className="w-6 h-6" />
+               <div className={cn("p-3 rounded-2xl border-2 transition-all", activeTab === item.id ? "bg-primary/10 border-primary/30 scale-110" : "bg-transparent border-transparent hover:bg-white/5")}>
+                 <item.icon className="w-5 h-5" />
                </div>
-               <span className="text-[8px] font-black uppercase tracking-widest">{item.label}</span>
+               <span className="text-[7px] font-black uppercase tracking-widest">{item.label}</span>
              </button>
            ))}
         </div>
 
-        <div className="w-[420px] bg-[#0a0d14] border-r border-white/5 flex flex-col p-8 space-y-8 overflow-y-auto scrollbar-hide">
+        {/* 🎛️ PANEL: Active Tool Settings */}
+        <div className="w-[380px] bg-[#0a0d14] border-r border-white/5 flex flex-col p-6 space-y-8 overflow-y-auto scrollbar-hide hidden lg:flex">
            {activeTab === 'ai' && (
-             <div className="space-y-10 animate-in fade-in slide-in-from-left-4">
-                <div className="space-y-6">
-                   <p className="text-[10px] font-black uppercase tracking-widest text-primary opacity-60">Narrative Strategist</p>
+             <div className="space-y-8 animate-in fade-in slide-in-from-left-4">
+                <div className="space-y-4">
+                   <p className="text-[9px] font-black uppercase tracking-widest text-primary">Viral Strategist</p>
                    <textarea 
-                     className="w-full bg-black/40 border border-white/10 rounded-2xl p-5 text-sm h-32 outline-none focus:border-primary/40 transition-all" 
-                     placeholder="What's your viral topic?" 
+                     className="w-full bg-black/40 border border-white/10 rounded-2xl p-4 text-sm h-28 outline-none focus:border-primary/40 transition-all" 
+                     placeholder="Topic for viral video..." 
                      value={scriptTopic} 
                      onChange={(e) => setScriptTopic(e.target.value)} 
                    />
-                   <Button className="w-full h-14 rounded-2xl font-black text-[10px] uppercase tracking-widest bg-primary/10 text-primary hover:bg-primary/20" onClick={handleGenerateScript} disabled={isProcessing}>
-                      {isProcessing ? <Loader2 className="w-4 h-4 animate-spin mr-3" /> : <Wand2 className="w-4 h-4 mr-3" />}
-                      Generate Script
+                   <Button className="w-full h-12 rounded-xl font-black text-[9px] uppercase tracking-widest bg-primary/10 text-primary hover:bg-primary/20" onClick={handleGenerateScript} disabled={isProcessing}>
+                      {isProcessing ? <Loader2 className="w-3 h-3 animate-spin mr-2" /> : <Wand2 className="w-3 h-3 mr-2" />}
+                      Write Script
                    </Button>
                 </div>
 
-                <div className="space-y-6">
-                   <p className="text-[10px] font-black uppercase tracking-widest text-indigo-400 opacity-60">Motion Engine</p>
+                <div className="space-y-4">
+                   <p className="text-[9px] font-black uppercase tracking-widest text-indigo-400">Veo Motion Engine</p>
                    <textarea 
-                     className="w-full bg-black/40 border border-white/10 rounded-2xl p-5 text-sm h-32 outline-none focus:border-indigo-400/40 transition-all" 
-                     placeholder="Describe cinematic scene..." 
+                     className="w-full bg-black/40 border border-white/10 rounded-2xl p-4 text-sm h-28 outline-none focus:border-indigo-400/40 transition-all" 
+                     placeholder="Describe cinematic clip..." 
                      value={videoPrompt} 
                      onChange={(e) => setVideoPrompt(e.target.value)} 
                    />
-                   <Button className="w-full h-14 rounded-2xl font-black text-[10px] uppercase tracking-widest bg-indigo-600 shadow-xl hover:bg-indigo-700" onClick={handleGenerateVideo} disabled={isProcessing}>
-                      {isProcessing ? <Loader2 className="w-4 h-4 animate-spin mr-3" /> : <VideoIcon className="w-4 h-4 mr-3" />}
-                      Synthesize Clip
+                   <Button className="w-full h-12 rounded-xl font-black text-[9px] uppercase tracking-widest bg-indigo-600 shadow-xl hover:bg-indigo-700" onClick={handleGenerateVideo} disabled={isProcessing}>
+                      {isProcessing ? <Loader2 className="w-3 h-3 animate-spin mr-2" /> : <VideoIcon className="w-3 h-3 mr-2" />}
+                      Generate Clip
                    </Button>
                 </div>
              </div>
            )}
 
-           {activeTab === 'media' && (
+           {activeTab === 'edit' && (
              <div className="space-y-8 animate-in fade-in slide-in-from-left-4">
+                <div className="p-5 bg-white/5 rounded-2xl border border-white/10 space-y-6">
+                   <div className="flex items-center justify-between">
+                      <p className="text-[10px] font-black uppercase tracking-widest text-white">Playback Speed</p>
+                      <span className="text-primary font-bold text-xs">{playbackSpeed}x</span>
+                   </div>
+                   <div className="grid grid-cols-4 gap-2">
+                      {[0.5, 1, 1.5, 2].map(speed => (
+                        <Button 
+                          key={speed} 
+                          variant={playbackSpeed === speed ? 'default' : 'outline'} 
+                          size="sm"
+                          onClick={() => setPlaybackSpeed(speed)}
+                          className="rounded-lg h-10 text-[10px]"
+                        >
+                          {speed}x
+                        </Button>
+                      ))}
+                   </div>
+                </div>
+
+                <div className="p-5 bg-white/5 rounded-2xl border border-white/10 space-y-4">
+                   <p className="text-[10px] font-black uppercase tracking-widest text-white">Orientation</p>
+                   <div className="grid grid-cols-3 gap-3">
+                      <Button variant="outline" className="flex flex-col h-20 gap-2 rounded-xl">
+                        <Smartphone className="w-4 h-4" />
+                        <span className="text-[8px]">9:16</span>
+                      </Button>
+                      <Button variant="outline" className="flex flex-col h-20 gap-2 rounded-xl">
+                        <Monitor className="w-4 h-4" />
+                        <span className="text-[8px]">16:9</span>
+                      </Button>
+                      <Button variant="outline" className="flex flex-col h-20 gap-2 rounded-xl">
+                        <Maximize className="w-4 h-4" />
+                        <span className="text-[8px]">1:1</span>
+                      </Button>
+                   </div>
+                </div>
+             </div>
+           )}
+
+           {activeTab === 'media' && (
+             <div className="space-y-6 animate-in fade-in slide-in-from-left-4">
                 <input type="file" ref={fileInputRef} className="hidden" accept="video/*,image/*,audio/*" onChange={handleFileUpload} />
-                <Button className="w-full h-44 border-2 border-dashed border-white/10 rounded-3xl bg-white/[0.02] flex flex-col gap-6 hover:bg-white/[0.05] transition-all" onClick={() => fileInputRef.current?.click()}>
-                   <Upload className="w-8 h-8 text-muted-foreground" />
-                   <span className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Inject Asset</span>
+                <Button className="w-full h-40 border-2 border-dashed border-white/10 rounded-2xl bg-white/[0.02] flex flex-col gap-4 hover:bg-white/[0.05] transition-all group" onClick={() => fileInputRef.current?.click()}>
+                   <div className="p-3 bg-white/5 rounded-full group-hover:scale-110 transition-all">
+                      <Upload className="w-6 h-6 text-muted-foreground" />
+                   </div>
+                   <span className="text-[9px] font-black text-muted-foreground uppercase tracking-widest">Import Content</span>
                 </Button>
-                <div className="grid grid-cols-2 gap-4">
+                
+                <div className="grid grid-cols-2 gap-3">
                    {mediaAssets.map((asset) => (
-                     <div key={asset.id} className="aspect-video rounded-2xl bg-black border border-white/10 overflow-hidden relative group cursor-pointer">
+                     <div key={asset.id} className="aspect-video rounded-xl bg-black border border-white/10 overflow-hidden relative group cursor-pointer hover:border-primary/40 transition-all">
                         {asset.type === 'video' ? <video src={asset.url} className="w-full h-full object-cover opacity-60" /> : <img src={asset.url} className="w-full h-full object-cover opacity-60" alt={asset.name} />}
                         <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 bg-black/60 transition-all">
-                           <Plus className="w-6 h-6 text-white" />
+                           <Plus className="w-5 h-5 text-white" />
                         </div>
                      </div>
                    ))}
@@ -297,97 +405,150 @@ function EditorContent() {
            )}
         </div>
 
-        <div className="flex-1 flex flex-col bg-[#020408] p-8 lg:p-12 space-y-8 relative overflow-hidden">
-           <div className="flex-1 relative aspect-video mx-auto bg-black rounded-[3rem] border-[12px] border-[#0a0d14] overflow-hidden shadow-2xl group flex flex-col">
-              <div className="flex-1 relative flex items-center justify-center">
-                {!videoData ? (
-                  <div className="text-center space-y-4 opacity-10">
-                     <Monitor size={48} className="mx-auto" />
-                     <p className="text-xs font-black uppercase tracking-[0.4em]">Gemini Output Link Offline</p>
-                  </div>
-                ) : (
-                  <video 
-                    ref={videoRef} 
-                    src={videoData} 
-                    className="w-full h-full object-contain" 
-                    onPlay={() => setIsPlaying(true)} 
-                    onPause={() => setIsPlaying(false)}
-                    onTimeUpdate={() => setCurrentTime(videoRef.current?.currentTime || 0)}
-                  />
-                )}
+        {/* 🎬 PREVIEW: Main Viewport */}
+        <div className="flex-1 flex flex-col bg-[#020408] p-4 md:p-8 space-y-6 relative overflow-hidden">
+           <div className="flex-1 relative aspect-video mx-auto bg-black rounded-[2.5rem] border-[8px] border-[#0a0d14] overflow-hidden shadow-2xl group flex flex-col items-center justify-center">
+              {!videoData ? (
+                <div className="text-center space-y-4 opacity-10">
+                   <Monitor size={48} className="mx-auto" />
+                   <p className="text-[10px] font-black uppercase tracking-[0.4em]">Awaiting Output Node</p>
+                </div>
+              ) : (
+                <video 
+                  ref={videoRef} 
+                  src={videoData} 
+                  className="w-full h-full object-contain" 
+                  onPlay={() => setIsPlaying(true)} 
+                  onPause={() => setIsPlaying(false)}
+                  onTimeUpdate={() => setCurrentTime(videoRef.current?.currentTime || 0)}
+                  style={{ filter: activeFilter === 'none' ? 'none' : activeFilter }}
+                />
+              )}
+              
+              {/* Play Overlay */}
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                 <Button 
+                   size="icon" 
+                   onClick={togglePlay} 
+                   className={cn("w-16 h-16 rounded-full bg-primary/20 backdrop-blur-md border-2 border-primary/40 transition-all pointer-events-auto", isPlaying ? "opacity-0 scale-90" : "opacity-100 scale-100 hover:scale-110")}
+                 >
+                   {isPlaying ? <Pause className="fill-primary" /> : <Play className="fill-primary ml-1" />}
+                 </Button>
               </div>
            </div>
 
-           <div className="h-60 bg-[#0a0d14] rounded-[3rem] border border-white/5 flex flex-col overflow-hidden relative shadow-2xl">
-              <div className="h-12 border-b border-white/5 px-8 flex items-center justify-between bg-white/[0.03]">
-                 <div className="flex items-center gap-6">
-                    <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-primary">Gemini Neural Timeline</h4>
-                    <span className="text-[12px] font-mono text-white/40">{currentTime.toFixed(2)}s / {duration.toFixed(2)}s</span>
+           {/* 📽️ TIMELINE: Multi-track simulation */}
+           <div className="h-52 bg-[#0a0d14] rounded-[2.5rem] border border-white/5 flex flex-col overflow-hidden relative shadow-2xl">
+              <div className="h-10 border-b border-white/5 px-6 flex items-center justify-between bg-white/[0.03]">
+                 <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-1.5">
+                       <Film className="w-3.5 h-3.5 text-primary" />
+                       <h4 className="text-[8px] font-black uppercase tracking-[0.2em] text-white">Project Timeline</h4>
+                    </div>
+                    <span className="text-[10px] font-mono text-white/40">{currentTime.toFixed(2)}s / {duration.toFixed(2)}s</span>
+                 </div>
+                 <div className="flex items-center gap-3">
+                    <Button variant="ghost" size="icon" className="h-7 w-7"><Maximize className="w-3 h-3" /></Button>
                  </div>
               </div>
 
               <div 
                 ref={timelineRef}
-                className="flex-1 overflow-x-auto p-8 space-y-4 relative cursor-crosshair"
+                className="flex-1 overflow-x-auto p-6 space-y-3 relative cursor-crosshair scrollbar-hide"
                 onClick={handleTimelineClick}
               >
-                 <div className="h-12 bg-primary/10 border border-primary/20 rounded-2xl relative flex items-center px-6">
-                    <Film className="w-4 h-4 text-primary mr-6 opacity-40" />
-                    <span className="text-[9px] font-black uppercase tracking-widest text-primary">Primary Track</span>
+                 {/* Simulate layers */}
+                 <div className="h-10 bg-primary/10 border border-primary/20 rounded-xl relative flex items-center px-4">
+                    <Film className="w-3 h-3 text-primary mr-3 opacity-40" />
+                    <span className="text-[8px] font-black uppercase tracking-widest text-primary">Video Layer 1</span>
+                    {videoData && (
+                      <div className="absolute left-0 h-full bg-primary/30 border-x border-primary w-[80%] rounded-xl" />
+                    )}
                  </div>
 
-                 <div className="h-10 bg-indigo-500/5 border border-indigo-500/10 rounded-2xl relative flex items-center px-6 opacity-40">
-                    <Volume2 className="w-4 h-4 text-indigo-400 mr-6 opacity-40" />
-                    <span className="text-[9px] font-black uppercase tracking-widest text-indigo-400">Audio Sync Node</span>
+                 <div className="h-10 bg-rose-500/5 border border-rose-500/10 rounded-xl relative flex items-center px-4 opacity-40">
+                    <Type className="w-3 h-3 text-rose-400 mr-3 opacity-40" />
+                    <span className="text-[8px] font-black uppercase tracking-widest text-rose-400">Captions</span>
+                 </div>
+
+                 <div className="h-10 bg-indigo-500/5 border border-indigo-500/10 rounded-xl relative flex items-center px-4 opacity-40">
+                    <Volume2 className="w-3 h-3 text-indigo-400 mr-3 opacity-40" />
+                    <span className="text-[8px] font-black uppercase tracking-widest text-indigo-400">Studio Audio</span>
                  </div>
                  
+                 {/* Playhead */}
                  <div 
                    className="absolute top-0 bottom-0 w-0.5 bg-white z-20 shadow-glow" 
                    style={{ left: `${(currentTime / duration) * 100}%` }}
-                 />
+                 >
+                    <div className="absolute -top-1 -left-[3px] w-2 h-2 bg-white rounded-full" />
+                 </div>
               </div>
            </div>
         </div>
 
-        <div className="w-[380px] bg-[#05070a] border-l border-white/5 p-8 space-y-12">
-           <header className="flex items-center gap-4 text-primary">
-              <Cpu size={20} />
-              <h4 className="text-[10px] font-black uppercase tracking-[0.3em]">Neural Analytics</h4>
+        {/* 📊 RIGHT PANEL: Stats & Export */}
+        <div className="w-[320px] bg-[#05070a] border-l border-white/5 p-6 space-y-8 hidden xl:flex flex-col">
+           <header className="flex items-center gap-3 text-primary">
+              <Cpu size={18} />
+              <h4 className="text-[9px] font-black uppercase tracking-[0.3em]">Engine Stats</h4>
            </header>
 
-           <div className="space-y-10">
-              <div className="p-6 bg-white/[0.02] border border-white/5 rounded-3xl space-y-4">
-                 <p className="text-[9px] font-black uppercase tracking-widest text-muted-foreground">Engine Performance</p>
+           <div className="space-y-6 flex-1">
+              <div className="p-5 bg-white/[0.02] border border-white/5 rounded-2xl space-y-3">
+                 <p className="text-[8px] font-black uppercase tracking-widest text-muted-foreground">Neural Performance</p>
                  <div className="flex items-center justify-between">
-                    <span className="text-2xl font-bold font-headline uppercase">Flash Tier</span>
-                    <Zap className="text-emerald-500 w-5 h-5 animate-pulse" />
+                    <span className="text-xl font-bold font-headline">Ultra Tier</span>
+                    <Zap className="text-emerald-500 w-4 h-4 animate-pulse" />
+                 </div>
+                 <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
+                    <div className="h-full bg-emerald-500 w-[94%]" />
                  </div>
               </div>
               
-              <div className="space-y-6 pt-6 border-t border-white/5">
-                 <p className="text-[9px] font-black uppercase tracking-widest text-muted-foreground">Export Resolution</p>
-                 <button className="w-full p-5 rounded-2xl bg-primary/10 border border-primary/40 flex items-center justify-between">
-                    <span className="text-xs font-bold text-primary uppercase tracking-tight">Elite 4K (FREE)</span>
-                    <Crown className="w-3 h-3 text-primary fill-current" />
-                 </button>
+              <div className="space-y-4 pt-4 border-t border-white/5">
+                 <p className="text-[8px] font-black uppercase tracking-widest text-muted-foreground">Export Node</p>
+                 <div className="space-y-2">
+                    {[
+                      { label: 'SD 720p', speed: 'Fast' },
+                      { label: 'HD 1080p', speed: 'Balanced' },
+                      { label: 'Elite 4K', speed: 'Render required', active: true }
+                    ].map((fmt, i) => (
+                      <button key={i} className={cn("w-full p-3.5 rounded-xl border flex items-center justify-between transition-all", fmt.active ? "bg-primary/10 border-primary/40 text-primary" : "bg-white/5 border-white/5 text-muted-foreground")}>
+                        <span className="text-[10px] font-bold uppercase">{fmt.label}</span>
+                        <span className="text-[8px] italic opacity-60">{fmt.speed}</span>
+                      </button>
+                    ))}
+                 </div>
               </div>
 
-              <div className="p-6 bg-emerald-500/5 border border-emerald-500/10 rounded-3xl">
-                 <div className="flex items-center gap-3 text-emerald-400 mb-2">
-                    <RefreshCw size={14} className="animate-spin-slow" />
-                    <span className="text-[10px] font-black uppercase tracking-widest">Live Cloud Sync</span>
+              <div className="p-5 bg-indigo-500/5 border border-indigo-500/10 rounded-2xl">
+                 <div className="flex items-center gap-2 text-indigo-400 mb-1.5">
+                    <RefreshCw size={12} className="animate-spin-slow" />
+                    <span className="text-[8px] font-black uppercase tracking-widest">Neural Link Active</span>
                  </div>
-                 <p className="text-[11px] text-muted-foreground italic">Project is automatically saved to your private creative node.</p>
+                 <p className="text-[10px] text-muted-foreground italic leading-tight">Your changes are being streamed to the cloud factory in real-time.</p>
               </div>
            </div>
+
+           <Button variant="outline" className="w-full h-12 rounded-xl border-white/10 text-white font-bold text-[10px] uppercase tracking-widest" onClick={() => handleSave()}>
+              <Save className="w-3 h-3 mr-2" /> Save Workspace
+           </Button>
         </div>
       </div>
 
+      {/* 🔮 MODAL: Processing */}
       {isProcessing && (
-        <div className="fixed inset-0 z-[100] bg-black/98 backdrop-blur-[100px] flex items-center justify-center">
-           <div className="text-center space-y-12 max-w-xl">
-              <Loader2 className="w-16 h-16 animate-spin text-primary mx-auto" />
-              <h2 className="text-4xl font-headline font-black text-white uppercase tracking-tighter">GEMINI NEURAL PROCESSING</h2>
+        <div className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-[80px] flex items-center justify-center">
+           <div className="text-center space-y-10 max-w-sm px-6">
+              <div className="relative mx-auto">
+                 <Loader2 className="w-16 h-16 animate-spin text-primary mx-auto" />
+                 <div className="absolute inset-0 blur-2xl bg-primary/20 rounded-full" />
+              </div>
+              <div className="space-y-2">
+                 <h2 className="text-2xl font-headline font-black text-white uppercase tracking-tighter">GEMINI CORE PROCESSING</h2>
+                 <p className="text-[10px] text-muted-foreground font-black uppercase tracking-widest animate-pulse">Syncing with High-Speed Neural Nodes...</p>
+              </div>
            </div>
         </div>
       )}
