@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -157,7 +158,7 @@ export default function AiThumbnailMaker() {
                               src={imageUrl} 
                               alt="Generated Visual Node" 
                               fill 
-                              className="object-cover transition-all duration-[2s] group-hover:scale-105"
+                              className="object-cover transition-all duration-2s group-hover:scale-105"
                             />
                             <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-700 flex items-center justify-center">
                                <Button variant="secondary" className="rounded-[1.5rem] h-20 px-12 shadow-2xl opacity-0 group-hover:opacity-100 transition-all font-black uppercase tracking-widest text-[11px] scale-90 group-hover:scale-100 bg-white text-primary">

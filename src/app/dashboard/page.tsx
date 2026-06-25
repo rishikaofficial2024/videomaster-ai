@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect } from "react";
@@ -158,7 +159,7 @@ export default function Dashboard() {
                         src={project.thumbnailUrl || `https://picsum.photos/seed/${project.id}/800/450`} 
                         alt={project.title}
                         fill
-                        className="object-cover group-hover:scale-110 transition-transform duration-[2s] opacity-70"
+                        className="object-cover group-hover:scale-110 transition-transform duration-2s opacity-70"
                       />
                       <div className="absolute inset-0 bg-black/60 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-700 gap-8 backdrop-blur-md">
                          <div className="p-8 bg-white rounded-[2.5rem] shadow-[0_0_80px_rgba(255,255,255,0.4)] scale-50 group-hover:scale-100 transition-all duration-700">
@@ -205,7 +206,7 @@ export default function Dashboard() {
 
           <aside className="space-y-16">
             <Card className="rounded-[4rem] border-none shadow-[0_50px_100px_-20px_rgba(0,112,243,0.3)] bg-primary text-primary-foreground overflow-hidden group relative">
-              <div className="absolute top-0 right-0 p-16 opacity-10 rotate-12 group-hover:rotate-0 transition-transform duration-[1.5s]">
+              <div className="absolute top-0 right-0 p-16 opacity-10 rotate-12 group-hover:rotate-0 transition-transform duration-1.5s">
                  <Sparkles className="h-80 w-80" />
               </div>
               <CardContent className="p-12 space-y-12 relative z-10">

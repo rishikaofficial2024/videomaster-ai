@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useRef, useEffect } from "react";
@@ -25,7 +26,7 @@ function EditorSlider({ label, value, min = 0, max = 100, onChange }: any) {
         <span className="text-primary">{value}%</span>
       </div>
       <div className="relative h-1.5 w-full bg-white/5 rounded-full overflow-hidden group">
-         <div className="absolute inset-0 bg-primary/20 scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-500" />
+         <div className="absolute inset-0 bg-primary/20 scale-x-0 group-hover:scale-x-100 origin-left transition-all duration-500" />
          <input 
           type="range" 
           min={min} 
@@ -144,7 +145,7 @@ export default function Editor() {
                 <div className="space-y-6">
                   <h3 className="text-[11px] font-black uppercase tracking-[0.6em] text-primary/40 ml-4">INGESTION PROTOCOL</h3>
                   <div className="border-4 border-dashed border-white/5 rounded-[4rem] h-72 flex flex-col items-center justify-center gap-8 hover:bg-white/5 hover:border-primary/40 cursor-pointer transition-all group overflow-hidden relative shadow-inner">
-                    <div className="p-8 bg-primary/10 rounded-[2.5rem] group-hover:scale-110 transition-all duration-700 shadow-2xl border-2 border-primary/20">
+                    <div className="p-8 bg-primary/10 rounded-[2.5rem] group-hover:scale-110 transition-all duration-1s shadow-2xl border-2 border-primary/20">
                       <CloudUpload className="h-14 w-14 text-primary" />
                     </div>
                     <div className="text-center space-y-3">
@@ -159,7 +160,7 @@ export default function Editor() {
                    <div className="grid grid-cols-2 gap-8">
                       {[1, 2, 3, 4].map(i => (
                         <div key={i} className="aspect-[4/3] bg-white/5 rounded-[3rem] relative overflow-hidden group cursor-pointer border-2 border-white/5 hover:border-primary/50 transition-all shadow-2xl">
-                           <img src={`https://picsum.photos/seed/editor${i}/400/300`} className="object-cover w-full h-full opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all duration-[1.5s]" />
+                           <img src={`https://picsum.photos/seed/editor${i}/400/300`} className="object-cover w-full h-full opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all duration-1.5s" />
                            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all bg-black/60 backdrop-blur-md">
                              <div className="p-5 bg-primary rounded-3xl shadow-2xl scale-50 group-hover:scale-100 transition-all duration-500"><Plus className="h-8 w-8 text-white" /></div>
                            </div>
@@ -215,7 +216,7 @@ export default function Editor() {
 
               <TabsContent value="ai" className="mt-0 space-y-12">
                 <div className="p-12 bg-gradient-to-br from-primary/30 to-purple-600/30 rounded-[4rem] border-2 border-primary/40 space-y-8 relative overflow-hidden group shadow-[0_0_80px_rgba(0,112,243,0.2)]">
-                  <div className="absolute top-0 right-0 p-10 opacity-10 group-hover:rotate-12 transition-transform duration-[2s]">
+                  <div className="absolute top-0 right-0 p-10 opacity-10 group-hover:rotate-12 transition-all duration-2s">
                     <Sparkles size={100} />
                   </div>
                   <div className="flex items-center gap-6 text-primary font-black text-sm uppercase tracking-[0.6em] relative z-10">
@@ -227,7 +228,7 @@ export default function Editor() {
                 
                 <div className="grid grid-cols-1 gap-6">
                    <Button onClick={() => handleAction("AI Enhancement")} className="h-28 rounded-[3rem] flex items-center justify-start px-12 gap-10 font-black uppercase tracking-[0.4em] text-[14px] shadow-2xl shadow-primary/40 border border-primary/40 group relative overflow-hidden active:scale-95 transition-all bg-primary text-white">
-                     <div className="absolute inset-0 bg-gradient-to-r from-primary via-blue-600 to-indigo-600 opacity-90 group-hover:opacity-100 transition-all duration-[1s]" />
+                     <div className="absolute inset-0 bg-gradient-to-r from-primary via-blue-600 to-indigo-600 opacity-90 group-hover:opacity-100 transition-all duration-1s" />
                      <Wand2 className="h-10 w-10 relative z-10 group-hover:animate-pulse" /> 
                      <span className="relative z-10">NEURAL AUTO-ENHANCE</span>
                    </Button>
@@ -250,13 +251,13 @@ export default function Editor() {
         <main className="flex-1 flex flex-col bg-black relative">
           <div className="flex-1 flex flex-col items-center justify-center p-16 relative overflow-hidden">
              {/* Atmospheric Neural Glow */}
-             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1200px] h-[1200px] bg-primary/10 blur-[300px] -z-10 rounded-full animate-pulse duration-[5s]" />
+             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1200px] h-[1200px] bg-primary/10 blur-[300px] -z-10 rounded-full animate-pulse duration-5s" />
              
              <div className="relative aspect-video max-w-7xl w-full bg-[#050505] rounded-[5rem] shadow-[0_120px_250px_-50px_rgba(0,0,0,1)] overflow-hidden ring-4 ring-white/5 group border-2 border-white/5">
                 <video 
                   ref={videoRef}
                   src="https://www.w3schools.com/html/mov_bbb.mp4" 
-                  className="w-full h-full object-contain transition-all duration-[1s]"
+                  className="w-full h-full object-contain transition-all duration-1s"
                   style={{ 
                     filter: `brightness(${brightness}%) contrast(${contrast}%) saturate(${saturation}%)` 
                   }}
@@ -288,7 +289,7 @@ export default function Editor() {
              </div>
              
              {/* Dynamic HUD Controllers */}
-             <div className="flex items-center gap-16 mt-20 p-8 bg-[#0a061c]/80 backdrop-blur-3xl border border-white/10 shadow-[0_50px_150px_rgba(0,0,0,0.7)] rounded-full px-24 animate-in fade-in slide-in-from-bottom-20 duration-[1.2s] ring-1 ring-white/10">
+             <div className="flex items-center gap-16 mt-20 p-8 bg-[#0a061c]/80 backdrop-blur-3xl border border-white/10 shadow-[0_50px_150px_rgba(0,0,0,0.7)] rounded-full px-24 animate-in fade-in slide-in-from-bottom-20 duration-1.2s ring-1 ring-white/10">
                 <Button variant="ghost" size="icon" className="rounded-3xl h-16 w-16 hover:bg-white/10 hover:text-primary transition-all active:scale-90"><RotateCcw className="h-10 w-10" /></Button>
                 <div className="h-12 w-px bg-white/10" />
                 <button 
@@ -336,7 +337,7 @@ export default function Editor() {
                       >
                          {[1,2,3,4,5,6,7,8].map(i => (
                            <div key={i} className="shrink-0 w-32 h-14 bg-black/40 rounded-2xl border border-white/5 group-hover/clip:border-primary/50 transition-all relative overflow-hidden shadow-inner">
-                              <img src={`https://picsum.photos/seed/thumb${i}/1200/800`} className="object-cover w-full h-full opacity-40 group-hover:scale-110 transition-transform duration-1000" />
+                              <img src={`https://picsum.photos/seed/thumb${i}/1200/800`} className="object-cover w-full h-full opacity-40 group-hover:scale-110 transition-all duration-1s" />
                            </div>
                          ))}
                          <div className="absolute top-0 bottom-0 left-1/4 w-1 bg-white shadow-[0_0_30px_white] z-20 animate-pulse" />
@@ -367,7 +368,7 @@ export default function Editor() {
                         className="h-14 bg-purple-500/10 border-2 border-purple-500/30 rounded-[1.5rem] flex items-center px-8 gap-3 overflow-hidden relative group/audio cursor-move shadow-2xl"
                         style={{ width: '70%', marginLeft: '12%' }}
                       >
-                         <div className="flex-1 flex items-center gap-1.5 opacity-40 group-hover/audio:opacity-100 transition-all duration-[1s]">
+                         <div className="flex-1 flex items-center gap-1.5 opacity-40 group-hover/audio:opacity-100 transition-all duration-1s">
                            {[...Array(120)].map((_, i) => (
                              <div key={i} className="w-[2px] bg-purple-500 rounded-full shadow-[0_0_10px_rgba(168,85,247,0.5)]" style={{ height: `${Math.sin(i * 0.4) * 50 + 50}%` }} />
                            ))}
@@ -386,7 +387,7 @@ export default function Editor() {
         <div className="fixed inset-0 bg-[#000000]/98 backdrop-blur-[60px] z-[500] flex flex-col items-center justify-center gap-16 animate-in fade-in duration-1000">
            <div className="relative">
               <div className="h-64 w-64 rounded-full border-8 border-primary/10 animate-ping absolute inset-0" />
-              <div className="h-64 w-64 rounded-full border-8 border-t-primary animate-spin relative z-10 duration-[3s]" />
+              <div className="h-64 w-64 rounded-full border-8 border-t-primary animate-spin relative z-10 duration-3s" />
               <div className="absolute inset-0 flex items-center justify-center">
                  <VideoIcon className="h-24 w-24 text-primary animate-pulse" />
               </div>
