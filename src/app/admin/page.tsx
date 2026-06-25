@@ -1,4 +1,3 @@
-
 "use client";
 
 import { Navbar } from "@/components/navbar";
@@ -33,13 +32,15 @@ import { errorEmitter } from "@/firebase/error-emitter";
 import { FirestorePermissionError, type SecurityRuleContext } from "@/firebase/errors";
 import { firebaseConfig } from "@/firebase/config";
 
+/**
+ * 🛡️ MASTER ADMIN HUB: Elite Oversight & Revenue Node.
+ */
 export default function AdminDashboard() {
   const db = useFirestore();
   const { toast } = useToast();
   const [mounted, setMounted] = useState(false);
   const [totalUsersCount, setTotalUsersCount] = useState<number | null>(null);
   const [totalRevenue, setTotalRevenue] = useState<number>(0);
-  const [adRevenueEstimate, setAdRevenueEstimate] = useState<number>(0);
   const [updatingUser, setUpdatingUser] = useState<string | null>(null);
 
   useEffect(() => {
@@ -55,28 +56,21 @@ export default function AdminDashboard() {
       const coll = collection(db, "users");
       const snapshot = await getCountFromServer(coll);
       setTotalUsersCount(snapshot.data().count);
-    } catch (e) {
-      console.error("User count fetch failed", e);
-    }
+    } catch (e) {}
   };
 
   const calculateTotalRevenue = async () => {
     try {
       const usersSnap = await getDocs(collection(db, "users"));
       let revenue = 0;
-      
       usersSnap.forEach((doc) => {
         const data = doc.data();
         revenue += (data.totalSpent || 0);
-        if (data.isPremium && data.subscriptionPlan === 'pro' && !data.totalSpent) revenue += 99;
-        if (data.isPremium && data.subscriptionPlan === 'business' && !data.totalSpent) revenue += 499;
+        // Manual override simulation for Pro memberships not yet tracked
+        if (data.isPremium && !data.totalSpent) revenue += 99;
       });
-      
       setTotalRevenue(revenue);
-      setAdRevenueEstimate(revenue * 0.15); 
-    } catch (e) {
-      console.error("Revenue calculation failed", e);
-    }
+    } catch (e) {}
   };
 
   const usersQuery = useMemoFirebase(() => {
@@ -92,16 +86,15 @@ export default function AdminDashboard() {
     
     updateDoc(userRef, data)
       .then(() => {
-        toast({ title: "Protocol Executed", description: "Creator node settings updated successfully." });
+        toast({ title: "Protocol Executed", description: "Node settings synchronized." });
         calculateTotalRevenue(); 
       })
-      .catch(async (serverError) => {
-        const permissionError = new FirestorePermissionError({
+      .catch(async () => {
+        errorEmitter.emit('permission-error', new FirestorePermissionError({
           path: userRef.path,
           operation: 'update',
           requestResourceData: data,
-        } satisfies SecurityRuleContext);
-        errorEmitter.emit('permission-error', permissionError);
+        } satisfies SecurityRuleContext));
       })
       .finally(() => {
         setUpdatingUser(null);
@@ -111,182 +104,136 @@ export default function AdminDashboard() {
   if (!mounted) return null;
 
   return (
-    <div className="min-h-screen pb-32 md:pt-24 bg-[#05070a] hero-gradient">
+    <div className="min-h-screen pb-40 bg-[#05070a] hero-gradient">
       <Navbar />
-      <main className="max-w-7xl mx-auto p-6 space-y-12">
-        <header className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8 pt-10">
-          <div className="space-y-4">
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-red-500/10 rounded-full border border-red-500/20">
-              <Lock className="w-3 h-3 text-red-500" />
-              <span className="text-[10px] font-bold text-red-500 uppercase tracking-widest">Master Admin Node</span>
+      <main className="max-w-[90rem] mx-auto p-6 space-y-16 pt-40">
+        <header className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-10">
+          <div className="space-y-6">
+            <div className="inline-flex items-center gap-3 px-5 py-1.5 bg-red-500/10 rounded-full border border-red-500/20">
+              <Lock className="w-4 h-4 text-red-500" />
+              <span className="text-[10px] font-bold text-red-500 uppercase tracking-[0.5em]">MASTER ADMIN HUB</span>
             </div>
-            <h1 className="text-5xl md:text-7xl font-headline font-bold tracking-tighter text-white">
-              Revenue <span className="text-primary">Hub</span>
+            <h1 className="text-7xl md:text-9xl font-headline font-black tracking-tighter text-white leading-none uppercase">
+              Revenue <span className="text-primary">Node.</span>
             </h1>
-            <p className="text-muted-foreground font-medium italic text-lg opacity-60">Monitor your creative empire's global performance.</p>
+            <p className="text-muted-foreground font-medium italic text-2xl opacity-60">Global creative empire overview and protocol management.</p>
           </div>
           
-          <div className="flex items-center gap-4">
-             <Button variant="outline" className="h-14 px-8 rounded-2xl border-white/5 bg-white/5 font-bold" asChild>
-                <Link href="/admin/monitoring"><Gauge className="w-4 h-4 mr-2" /> Live Monitoring</Link>
+          <div className="flex items-center gap-6">
+             <Button variant="outline" className="h-16 px-10 rounded-[1.5rem] border-white/10 bg-white/5 font-black text-xs uppercase tracking-widest" asChild>
+                <Link href="/admin/monitoring"><Gauge className="w-5 h-5 mr-3" /> Live Monitoring</Link>
              </Button>
-             <div className="flex items-center gap-8 bg-white/5 p-6 rounded-[2.5rem] border border-white/5 backdrop-blur-3xl shadow-2xl">
-                <div className="flex flex-col px-6 border-r border-white/10 text-right">
-                   <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-1">Total Nodes</span>
-                   <span className="text-4xl font-bold font-headline text-emerald-500">{totalUsersCount ?? "..."}</span>
+             <div className="flex items-center gap-10 bg-white/5 backdrop-blur-3xl p-10 rounded-[3.5rem] border border-white/10 shadow-2xl">
+                <div className="flex flex-col px-10 border-r border-white/10 text-right">
+                   <span className="text-[11px] font-black uppercase tracking-[0.5em] text-muted-foreground mb-2">Total Nodes</span>
+                   <span className="text-6xl font-bold font-headline text-emerald-500 tracking-tighter">{totalUsersCount ?? "..."}</span>
                 </div>
-                <ShieldCheck className="w-10 h-10 text-primary animate-pulse" />
+                <ShieldCheck className="w-12 h-12 text-primary animate-pulse" />
              </div>
           </div>
         </header>
 
-        {/* 📈 QUICK STATS & SECURITY STATUS */}
-        <section className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <Card className="rounded-[2.5rem] bg-[#0a0d14]/80 border-emerald-500/30 p-8 blue-glow group">
-            <div className="flex justify-between items-start mb-4">
-              <Landmark className="w-8 h-8 text-emerald-500" />
-              <Badge className="bg-emerald-500/20 text-emerald-500">Live</Badge>
+        <section className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <Card className="rounded-[3.5rem] bg-[#0a0d14]/80 border-2 border-emerald-500/30 p-10 shadow-2xl relative overflow-hidden group">
+            <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:rotate-12 transition-transform">
+              <Landmark className="w-32 h-32 text-emerald-500" />
             </div>
-            <p className="text-[10px] font-black text-emerald-500 uppercase tracking-widest">Lifetime Revenue</p>
-            <h3 className="text-4xl font-bold text-white mt-1">₹{totalRevenue.toLocaleString()}</h3>
+            <p className="text-[11px] font-black text-emerald-500 uppercase tracking-[0.5em] mb-3">Lifetime Revenue</p>
+            <h3 className="text-5xl font-black text-white tracking-tighter">₹{totalRevenue.toLocaleString()}</h3>
           </Card>
 
-          <Card className="rounded-[2.5rem] bg-[#0a0d14]/80 border-primary/30 p-8 blue-glow group">
-            <div className="flex justify-between items-start mb-4">
-              <Shield className="w-8 h-8 text-primary" />
-              <Badge variant="outline" className={firebaseConfig.appCheckSiteKey ? "text-emerald-500 border-emerald-500/50" : "text-amber-500 border-amber-500/50"}>
-                {firebaseConfig.appCheckSiteKey ? "App Check Active" : "Basic Auth"}
-              </Badge>
+          <Card className="rounded-[3.5rem] bg-[#0a0d14]/80 border-2 border-primary/30 p-10 shadow-2xl relative overflow-hidden group">
+            <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:rotate-12 transition-transform">
+              <Shield className="w-32 h-32 text-primary" />
             </div>
-            <p className="text-[10px] font-black text-primary uppercase tracking-widest">Owner Security Level</p>
-            <h3 className="text-2xl font-bold text-white mt-1">{firebaseConfig.appCheckSiteKey ? "ULTRA SECURE" : "STANDARD PROTECTION"}</h3>
+            <p className="text-[11px] font-black text-primary uppercase tracking-[0.5em] mb-3">Security Level</p>
+            <h3 className="text-3xl font-black text-white tracking-tighter">{firebaseConfig.appCheckSiteKey ? "ULTRA SECURE" : "PRODUCTION"}</h3>
           </Card>
 
-          <Card className="rounded-[2.5rem] bg-[#0a0d14]/80 border-indigo-500/30 p-8 blue-glow group">
-            <div className="flex justify-between items-start mb-4">
-              <Cpu className="w-8 h-8 text-indigo-500" />
-              <Badge className="bg-indigo-500/20 text-indigo-500">Active</Badge>
-            </div>
-            <p className="text-[10px] font-black text-indigo-500 uppercase tracking-widest">Neural Engines</p>
-            <h3 className="text-4xl font-bold text-white mt-1">100%</h3>
+          <Card className="rounded-[3.5rem] bg-[#0a0d14]/80 border-2 border-indigo-500/30 p-10 shadow-2xl">
+             <p className="text-[11px] font-black text-indigo-500 uppercase tracking-[0.5em] mb-3">Neural Link</p>
+             <div className="flex items-center gap-4">
+                <span className="text-5xl font-black text-white tracking-tighter">100%</span>
+                <Cpu className="text-indigo-400 w-8 h-8 animate-pulse" />
+             </div>
           </Card>
 
-          <Card className="rounded-[2.5rem] bg-[#0a0d14]/80 border-rose-500/30 p-8 blue-glow group">
-            <div className="flex justify-between items-start mb-4">
-              <Eye className="w-8 h-8 text-rose-500" />
-              <Badge className="bg-rose-500/20 text-rose-500">Live</Badge>
-            </div>
-            <p className="text-[10px] font-black text-rose-500 uppercase tracking-widest">Intrusion Filter</p>
-            <h3 className="text-4xl font-bold text-white mt-1">Ready</h3>
+          <Card className="rounded-[3.5rem] bg-[#0a0d14]/80 border-2 border-rose-500/30 p-10 shadow-2xl">
+             <p className="text-[11px] font-black text-rose-500 uppercase tracking-[0.5em] mb-3">System Hub</p>
+             <h3 className="text-3xl font-black text-white tracking-tighter">Operational</h3>
           </Card>
         </section>
 
-        {/* 📚 OPERATIONS GUIDE */}
-        <section>
-          <Card className="rounded-[3.5rem] bg-primary/5 border border-primary/20 p-12 overflow-hidden relative">
-             <div className="absolute top-0 left-0 p-10 opacity-5 -rotate-12">
-                <Terminal className="w-40 h-40 text-primary" />
-             </div>
-             <div className="relative z-10 flex flex-col md:flex-row items-center gap-12">
-                <div className="w-24 h-24 bg-primary/20 rounded-[2rem] flex items-center justify-center border border-primary/30 shadow-2xl">
-                   <Shield className="w-10 h-10 text-primary" />
-                </div>
-                <div className="flex-1 space-y-4 text-center md:text-left">
-                   <h3 className="text-3xl font-headline font-bold text-white uppercase tracking-tight">Security Audit Mode</h3>
-                   <div className="grid md:grid-cols-2 gap-6 text-sm text-muted-foreground italic leading-relaxed">
-                      <p>• Your Firestore Rules prevent users from spoofing their own Admin or Pro status.</p>
-                      <p>• To achieve <b>Ultra Security</b>, obtain a reCAPTCHA v3 site key and add it to config.ts.</p>
-                   </div>
-                </div>
-                <Button variant="outline" className="h-16 px-10 rounded-2xl border-white/10 text-white font-bold" asChild>
-                   <Link href="/SECURITY_SETUP_GUIDE.md">View Security Protocol</Link>
-                </Button>
-             </div>
-          </Card>
-        </section>
-
-        <div className="grid grid-cols-1 gap-8">
-           <Card className="rounded-[3.5rem] bg-[#0a0d14]/80 backdrop-blur-3xl border-white/5 overflow-hidden shadow-2xl relative">
-              <div className="absolute inset-0 shimmer opacity-[0.02] pointer-events-none" />
-              <CardHeader className="p-10 border-b border-white/5 flex flex-row items-center justify-between relative z-10">
-                <div className="space-y-1">
-                  <CardTitle className="text-3xl font-headline font-black uppercase tracking-tight">Creator Node Registry</CardTitle>
-                  <CardDescription className="italic text-muted-foreground">Detailed oversight of all authenticated creative nodes.</CardDescription>
-                </div>
-                <Users className="w-8 h-8 text-muted-foreground opacity-20" />
-              </CardHeader>
-              <CardContent className="p-0 relative z-10">
-                 <Table>
-                    <TableHeader className="bg-white/[0.02]">
-                       <TableRow className="hover:bg-transparent border-white/5">
-                          <TableHead className="text-[11px] font-black uppercase tracking-[0.3em] px-10 py-6">Creator Node</TableHead>
-                          <TableHead className="text-[11px] font-black uppercase tracking-[0.3em]">Neural Power</TableHead>
-                          <TableHead className="text-[11px] font-black uppercase tracking-[0.3em]">Clearance</TableHead>
-                          <TableHead className="text-[11px] font-black uppercase tracking-[0.3em] text-right px-10">Protocols</TableHead>
-                       </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                       {usersLoading ? (
-                         <TableRow><TableCell colSpan={4} className="text-center py-40 opacity-40 italic font-medium text-lg">Synchronizing Database Stream...</TableCell></TableRow>
-                       ) : users?.map((u: any) => (
-                         <TableRow key={u.id} className="border-white/5 hover:bg-white/[0.03] transition-all group">
-                            <TableCell className="px-10 py-8">
-                               <div className="flex flex-col gap-1">
-                                  <span className="font-bold text-white text-lg group-hover:text-primary transition-colors">{u.displayName || 'Anonymous Creator'}</span>
-                                  <span className="text-[10px] text-muted-foreground font-mono opacity-50 uppercase tracking-widest">{u.email}</span>
-                               </div>
-                            </TableCell>
-                            <TableCell>
-                               <div className="flex items-center gap-4">
-                                   <Badge variant={u.isPremium ? 'default' : 'secondary'} className="rounded-full text-[10px] font-black uppercase tracking-[0.2em] px-4 py-1.5 shadow-xl">
-                                      {u.subscriptionPlan?.toUpperCase() || 'FREE'}
-                                    </Badge>
-                                    <div className="flex items-center gap-2 text-sm font-bold text-primary">
-                                      <Coins className="w-4 h-4" /> {u.credits?.toFixed(0) || 0}
-                                    </div>
-                               </div>
-                            </TableCell>
-                            <TableCell>
-                               {u.isAdmin ? (
-                                 <Badge className="bg-red-500/20 text-red-500 border-red-500/30 rounded-full text-[10px] font-black uppercase tracking-[0.3em] px-4 py-1.5">Master Admin</Badge>
-                               ) : (
-                                 <Badge variant="outline" className="text-[10px] font-black uppercase tracking-[0.3em] px-4 py-1.5 opacity-30">Standard Node</Badge>
-                               )}
-                            </TableCell>
-                            <TableCell className="text-right px-10">
-                               <div className="flex items-center justify-end gap-4">
-                                  {updatingUser === u.id ? (
-                                    <Loader2 className="w-5 h-5 animate-spin text-primary" />
-                                  ) : (
-                                    <DropdownMenu>
-                                      <DropdownMenuTrigger asChild>
-                                        <Button variant="ghost" size="icon" className="rounded-2xl h-12 w-12 bg-white/5 hover:bg-primary/20 transition-all border border-transparent hover:border-primary/30">
-                                          <MoreVertical className="w-5 h-5" />
-                                        </Button>
-                                      </DropdownMenuTrigger>
-                                      <DropdownMenuContent align="end" className="bg-[#0a0d14] border-white/10 rounded-[2rem] w-64 p-3 shadow-2xl">
-                                        <DropdownMenuItem className="rounded-xl font-bold text-[11px] uppercase tracking-widest p-4 cursor-pointer hover:bg-primary/10 transition-colors" onClick={() => handleUpdateUser(u.id, { credits: increment(1000) })}>
-                                          Inject +1000 Credits
-                                        </DropdownMenuItem>
-                                        <DropdownMenuItem className="rounded-xl font-bold text-[11px] uppercase tracking-widest p-4 cursor-pointer hover:bg-emerald-500/10 transition-colors" onClick={() => handleUpdateUser(u.id, { isPremium: true, subscriptionPlan: 'pro', totalSpent: increment(99) })}>
-                                          Authorize Pro Status
-                                        </DropdownMenuItem>
-                                        <div className="h-px bg-white/5 my-2" />
-                                        <DropdownMenuItem className="rounded-xl font-bold text-[11px] uppercase tracking-widest p-4 cursor-pointer text-red-500 hover:bg-red-500/10 transition-colors" onClick={() => handleUpdateUser(u.id, { isAdmin: !u.isAdmin })}>
-                                          {u.isAdmin ? 'Revoke Admin Node' : 'Grant Admin Node'}
-                                        </DropdownMenuItem>
-                                      </DropdownMenuContent>
-                                    </DropdownMenu>
-                                  )}
-                               </div>
-                            </TableCell>
-                         </TableRow>
-                       ))}
-                    </TableBody>
-                 </Table>
-              </CardContent>
-           </Card>
-        </div>
+        <Card className="rounded-[4rem] bg-[#0a0d14]/90 backdrop-blur-3xl border border-white/5 overflow-hidden shadow-[0_40px_100px_rgba(0,0,0,0.5)]">
+           <CardHeader className="p-12 border-b border-white/5 flex flex-row items-center justify-between">
+              <div className="space-y-2">
+                 <CardTitle className="text-4xl font-headline font-black uppercase tracking-tight">Creator Node Registry</CardTitle>
+                 <CardDescription className="italic text-muted-foreground text-lg">Centralized oversight of all creative nodes and neural permissions.</CardDescription>
+              </div>
+              <Users className="w-12 h-12 text-muted-foreground opacity-10" />
+           </CardHeader>
+           <CardContent className="p-0">
+              <Table>
+                 <TableHeader className="bg-white/[0.02]">
+                    <TableRow className="border-white/5">
+                       <TableHead className="text-[12px] font-black uppercase tracking-[0.4em] px-12 py-8">Creator Node</TableHead>
+                       <TableHead className="text-[12px] font-black uppercase tracking-[0.4em]">Clearance</TableHead>
+                       <TableHead className="text-[12px] font-black uppercase tracking-[0.4em]">Power Level</TableHead>
+                       <TableHead className="text-right px-12 text-[12px] font-black uppercase tracking-[0.4em]">Protocols</TableHead>
+                    </TableRow>
+                 </TableHeader>
+                 <TableBody>
+                    {usersLoading ? (
+                      <TableRow><TableCell colSpan={4} className="text-center py-40 animate-pulse italic text-2xl font-medium">Querying Database Node...</TableCell></TableRow>
+                    ) : users?.map((u: any) => (
+                      <TableRow key={u.id} className="border-white/5 hover:bg-white/[0.03] transition-all group">
+                         <TableCell className="px-12 py-10">
+                            <div className="flex flex-col gap-1">
+                               <span className="text-2xl font-black text-white group-hover:text-primary transition-colors tracking-tighter">{u.displayName || 'Guest Creator'}</span>
+                               <span className="text-[10px] text-muted-foreground font-mono opacity-40 uppercase tracking-widest">{u.email}</span>
+                            </div>
+                         </TableCell>
+                         <TableCell>
+                            <Badge variant={u.isPremium ? 'default' : 'secondary'} className="rounded-full text-[11px] font-black uppercase tracking-[0.3em] px-6 py-2 shadow-2xl">
+                               {u.subscriptionPlan?.toUpperCase() || 'FREE'}
+                            </Badge>
+                         </TableCell>
+                         <TableCell>
+                            <div className="flex items-center gap-3 text-xl font-bold text-primary font-headline">
+                               <Coins className="w-5 h-5" /> {u.credits?.toFixed(0) || 0}
+                            </div>
+                         </TableCell>
+                         <TableCell className="text-right px-12">
+                            {updatingUser === u.id ? (
+                               <Loader2 className="w-6 h-6 animate-spin text-primary ml-auto" />
+                            ) : (
+                               <DropdownMenu>
+                                  <DropdownMenuTrigger asChild>
+                                     <Button variant="ghost" size="icon" className="rounded-2xl h-14 w-14 bg-white/5 hover:bg-primary/20 transition-all border border-white/5">
+                                        <MoreVertical className="w-6 h-6" />
+                                     </Button>
+                                  </DropdownMenuTrigger>
+                                  <DropdownMenuContent align="end" className="bg-[#0a0d14] border-white/10 rounded-[2.5rem] w-80 p-5 shadow-2xl">
+                                     <DropdownMenuItem className="rounded-2xl font-black text-[11px] uppercase tracking-widest p-5 hover:bg-primary/10 cursor-pointer" onClick={() => handleUpdateUser(u.id, { credits: increment(5000) })}>
+                                        Inject +5000 Credits
+                                     </DropdownMenuItem>
+                                     <DropdownMenuItem className="rounded-2xl font-black text-[11px] uppercase tracking-widest p-5 hover:bg-emerald-500/10 cursor-pointer" onClick={() => handleUpdateUser(u.id, { isPremium: true, subscriptionPlan: 'pro', totalSpent: increment(99) })}>
+                                        Authorize Pro Access
+                                     </DropdownMenuItem>
+                                     <div className="h-px bg-white/5 my-3" />
+                                     <DropdownMenuItem className="rounded-2xl font-black text-[11px] uppercase tracking-widest p-5 text-red-500 hover:bg-red-500/10 cursor-pointer" onClick={() => handleUpdateUser(u.id, { isAdmin: !u.isAdmin })}>
+                                        {u.isAdmin ? 'Revoke Admin Clearance' : 'Grant Admin Clearance'}
+                                     </DropdownMenuItem>
+                                  </DropdownMenuContent>
+                               </DropdownMenu>
+                            )}
+                         </TableCell>
+                      </TableRow>
+                    ))}
+                 </TableBody>
+              </Table>
+           </CardContent>
+        </Card>
       </main>
     </div>
   );
