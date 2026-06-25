@@ -3,6 +3,7 @@
 import { initializeApp, getApps, getApp, FirebaseApp } from 'firebase/app';
 import { getAuth, Auth } from 'firebase/auth';
 import { getFirestore, Firestore } from 'firebase/firestore';
+import { getStorage, FirebaseStorage } from 'firebase/storage';
 import { initializeAppCheck, ReCaptchaV3Provider } from 'firebase/app-check';
 import { firebaseConfig } from './config';
 import { useMemo, DependencyList } from 'react';
@@ -10,6 +11,7 @@ import { useMemo, DependencyList } from 'react';
 let app: FirebaseApp;
 let auth: Auth;
 let firestore: Firestore;
+let storage: FirebaseStorage;
 
 /**
  * Optimized Firebase Initialization for Next.js 15 Production.
@@ -24,6 +26,7 @@ export function initializeFirebase() {
   
   auth = getAuth(app);
   firestore = getFirestore(app);
+  storage = getStorage(app);
 
   // 🛡️ ELITE SECURITY: App Check Initialization
   // Only attempt initialization if key is present AND not on localhost
@@ -45,7 +48,7 @@ export function initializeFirebase() {
     console.log("🛡️ Development Mode: App Check bypassed on localhost.");
   }
   
-  return { app, auth, firestore };
+  return { app, auth, firestore, storage };
 }
 
 export function useMemoFirebase<T>(factory: () => T, deps: DependencyList): T {
@@ -53,7 +56,7 @@ export function useMemoFirebase<T>(factory: () => T, deps: DependencyList): T {
   return useMemo(factory, deps);
 }
 
-export { FirebaseProvider, useFirebase, useFirebaseApp, useFirestore, useAuth } from './provider';
+export { FirebaseProvider, useFirebase, useFirebaseApp, useFirestore, useAuth, useStorage } from './provider';
 export { FirebaseClientProvider } from './client-provider';
 export { useCollection } from './firestore/use-collection';
 export { useDoc } from './firestore/use-doc';

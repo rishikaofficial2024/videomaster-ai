@@ -1,15 +1,16 @@
-
 'use client';
 
 import React, { createContext, useContext, ReactNode, useMemo } from 'react';
 import { FirebaseApp } from 'firebase/app';
 import { Firestore } from 'firebase/firestore';
 import { Auth } from 'firebase/auth';
+import { FirebaseStorage } from 'firebase/storage';
 
 interface FirebaseContextProps {
   app: FirebaseApp;
   firestore: Firestore;
   auth: Auth;
+  storage: FirebaseStorage;
 }
 
 const FirebaseContext = createContext<FirebaseContextProps | undefined>(undefined);
@@ -19,14 +20,16 @@ export const FirebaseProvider = ({
   app,
   firestore,
   auth,
+  storage,
 }: {
   children: ReactNode;
   app: FirebaseApp;
   firestore: Firestore;
   auth: Auth;
+  storage: FirebaseStorage;
 }) => {
   // Memoize the context value to prevent unnecessary re-renders of all consumers
-  const value = useMemo(() => ({ app, firestore, auth }), [app, firestore, auth]);
+  const value = useMemo(() => ({ app, firestore, auth, storage }), [app, firestore, auth, storage]);
 
   return (
     <FirebaseContext.Provider value={value}>
@@ -44,3 +47,4 @@ export const useFirebase = () => {
 export const useFirebaseApp = () => useFirebase().app;
 export const useFirestore = () => useFirebase().firestore;
 export const useAuth = () => useFirebase().auth;
+export const useStorage = () => useFirebase().storage;
