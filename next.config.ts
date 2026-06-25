@@ -21,6 +21,13 @@ const nextConfig: NextConfig = {
   },
   
   webpack: (config, { isServer }) => {
+    // 🚀 FIRESTORE OPTIMIZATION: Force the use of the browser ESM build even on the server (SSR).
+    // This completely bypasses the gRPC Node.js implementation during pre-rendering.
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      'firebase/firestore': path.resolve(__dirname, 'node_modules/@firebase/firestore/dist/index.esm2017.js'),
+    };
+
     // 🛡️ BROWSER-SIDE AI SHIELD: Polyfill Node modules for Genkit & Firestore client-side usage.
     if (!isServer) {
       config.resolve.fallback = {
@@ -51,14 +58,17 @@ const nextConfig: NextConfig = {
         events: false,
         string_decoder: false,
       };
+    } else {
+      // On the server (SSR pass for export), we alias Node built-ins that gRPC tries to use
+      config.resolve.alias = {
+        ...config.resolve.alias,
+        'fs': path.resolve(__dirname, 'src/lib/empty-module.ts'),
+        'net': path.resolve(__dirname, 'src/lib/empty-module.ts'),
+        'tls': path.resolve(__dirname, 'src/lib/empty-module.ts'),
+        'dns': path.resolve(__dirname, 'src/lib/empty-module.ts'),
+        'http2': path.resolve(__dirname, 'src/lib/empty-module.ts'),
+      };
     }
-
-    // 🚀 FIRESTORE OPTIMIZATION: Force the use of the browser ESM build even on the server (SSR).
-    // This completely bypasses the gRPC Node.js implementation during pre-rendering.
-    config.resolve.alias = {
-      ...config.resolve.alias,
-      'firebase/firestore': path.resolve(__dirname, 'node_modules/@firebase/firestore/dist/index.esm2017.js'),
-    };
 
     return config;
   },
@@ -83,6 +93,7 @@ const nextConfig: NextConfig = {
         'perf_hooks': './src/lib/empty-module.ts',
         'http2': './src/lib/empty-module.ts',
         'vm': './src/lib/empty-module.ts',
+        'util': './src/lib/empty-module.ts',
       },
     },
   },

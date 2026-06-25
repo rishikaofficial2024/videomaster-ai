@@ -26,13 +26,18 @@ export function initializeFirebase() {
   firestore = getFirestore(app);
 
   // 🛡️ ELITE SECURITY: App Check Initialization
-  if (typeof window !== 'undefined' && firebaseConfig.appCheckSiteKey && !window.location.hostname.includes('localhost')) {
+  // Only initialize on the client and not in localhost/test environments
+  if (typeof window !== 'undefined' && 
+      firebaseConfig.appCheckSiteKey && 
+      !window.location.hostname.includes('localhost') &&
+      !window.location.hostname.includes('127.0.0.1')) {
     try {
       initializeAppCheck(app, {
         provider: new ReCaptchaV3Provider(firebaseConfig.appCheckSiteKey),
         isTokenAutoRefreshEnabled: true
       });
     } catch (e) {
+      // App Check is non-critical for initial boot logic
       console.warn("App Check Shield: Handshake Pending.");
     }
   }
