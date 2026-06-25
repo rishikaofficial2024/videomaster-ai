@@ -1,16 +1,13 @@
-
 "use client";
 
 import { Navbar } from "@/components/navbar";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { 
-  ShieldCheck, History, User, Activity, 
-  Search, RefreshCw, Loader2, ArrowLeft, 
-  Lock, Terminal, Globe, ShieldAlert
+  ShieldCheck, History, Search, 
+  ShieldAlert
 } from "lucide-react";
 import { useFirestore, useCollection, useMemoFirebase } from "@/firebase";
 import { collection, query, orderBy, limit } from "firebase/firestore";
-import Link from "next/link";
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 
@@ -30,11 +27,16 @@ export default function AdminAuditLogs() {
 
   const { data: logs, loading } = useCollection(logsQuery);
 
-  const filteredLogs = logs?.filter(l => 
-    l.adminEmail?.toLowerCase().includes(search.toLowerCase()) || 
-    l.action?.toLowerCase().includes(search.toLowerCase()) ||
-    l.targetId?.toLowerCase().includes(search.toLowerCase())
-  );
+  const filteredLogs = logs?.filter(l => {
+    const adminEmail = (l.adminEmail || "").toLowerCase();
+    const action = (l.action || "").toLowerCase();
+    const targetId = (l.targetId || "").toLowerCase();
+    const searchTerm = search.toLowerCase();
+    
+    return adminEmail.includes(searchTerm) || 
+           action.includes(searchTerm) || 
+           targetId.includes(searchTerm);
+  });
 
   return (
     <main className="p-12 space-y-16 max-w-[100rem] mx-auto">
@@ -96,20 +98,20 @@ export default function AdminAuditLogs() {
                     <td className="px-12 py-10">
                        <div className="flex items-center gap-4">
                           <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/5 flex items-center justify-center text-primary/40 font-black">
-                             {log.adminEmail?.charAt(0).toUpperCase()}
+                             {(log.adminEmail || "A").charAt(0).toUpperCase()}
                           </div>
-                          <span className="text-base font-bold text-white uppercase tracking-tight">{log.adminEmail}</span>
+                          <span className="text-base font-bold text-white uppercase tracking-tight">{log.adminEmail || "anonymous-admin"}</span>
                        </div>
                     </td>
                     <td>
                        <span className={cn(
                          "px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-widest border",
-                         log.action?.includes('Ban') || log.action?.includes('Terminate') ? 'bg-rose-500/10 text-rose-500 border-rose-500/20' : 'bg-primary/10 text-primary border-primary/20'
+                         (log.action || "").includes('Ban') || (log.action || "").includes('Terminate') ? 'bg-rose-500/10 text-rose-500 border-rose-500/20' : 'bg-primary/10 text-primary border-primary/20'
                        )}>
                           {log.action}
                        </span>
                     </td>
-                    <td className="text-sm font-mono text-muted-foreground uppercase opacity-60">...{log.targetId?.slice(-8)}</td>
+                    <td className="text-sm font-mono text-muted-foreground uppercase opacity-60">...{(log.targetId || "").slice(-8)}</td>
                     <td className="text-xs text-muted-foreground italic">
                        {!isClient ? 'Loading...' : log.timestamp ? new Date(log.timestamp.seconds * 1000).toLocaleString() : 'Processing...'}
                     </td>

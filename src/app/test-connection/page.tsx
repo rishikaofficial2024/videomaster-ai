@@ -8,8 +8,8 @@ import {
   CheckCircle2, XCircle, Loader2, Database, 
   Zap, ArrowLeft, ShieldCheck, 
   Activity, Globe, Info, Cpu, AlertTriangle, 
-  TrendingUp, Tornado, Globe2, Link2, Blocks, DollarSign, RefreshCw,
-  Layout, ShieldAlert, Smartphone, Laptop
+  Tornado, Globe2, Link2, Blocks, DollarSign, RefreshCw,
+  ExternalLink
 } from "lucide-react";
 import { useAuth, useFirestore, useUser, useStorage } from "@/firebase";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
@@ -18,6 +18,7 @@ import Link from "next/link";
 import { errorEmitter } from "@/firebase/error-emitter";
 import { FirestorePermissionError, type SecurityRuleContext } from "@/firebase/errors";
 import { isAiEngineAuthorized } from "@/ai/genkit";
+import { cn } from "@/lib/utils";
 
 export default function TestConnectionPage() {
   const auth = useAuth();
@@ -253,7 +254,7 @@ export default function TestConnectionPage() {
 
               <Card className="rounded-[4rem] bg-primary/5 border border-primary/20 p-12 space-y-8 shadow-xl">
                  <h4 className="text-xs font-black uppercase tracking-[0.5em] flex items-center gap-4 text-primary">
-                   <Info className="w-5 h-5" /> Config Registry
+                   <span className="p-1"><Info size={16}/></span> Config Registry
                  </h4>
                  <div className="space-y-6 pt-4">
                     <div className="flex justify-between text-[12px] font-black uppercase tracking-widest border-b border-white/5 pb-4">
@@ -280,6 +281,3 @@ export default function TestConnectionPage() {
     </div>
   );
 }
-
-import { cn } from "@/lib/utils";
-import { ExternalLink } from "lucide-react";

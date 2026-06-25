@@ -3,11 +3,12 @@
 import { useState } from "react";
 import { Navbar } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Image as ImageIcon, Sparkles, Loader2, Download, Wand2, Youtube, Eye, MousePointer2 } from "lucide-react";
+import { Image as ImageIcon, Sparkles, Loader2, Download, Wand2, Youtube, Eye, MousePointer2, Info } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import Image from "next/image";
+import { cn } from "@/lib/utils";
 
 export default function AiThumbnailMaker() {
   const [prompt, setTopic] = useState("");
@@ -169,5 +170,3 @@ export default function AiThumbnailMaker() {
     </div>
   );
 }
-
-import { cn } from "@/lib/utils";

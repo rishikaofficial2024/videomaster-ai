@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState } from "react";
@@ -12,7 +11,6 @@ import {
 } from "@/components/ui/table";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { 
   DropdownMenu, 
@@ -22,9 +20,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { 
   Users, Search, MoreVertical, Zap, 
-  Crown, ShieldAlert, Coins, RefreshCw, 
-  UserPlus, UserMinus, ShieldCheck, Mail,
-  Loader2, Ban, ShieldX, CheckCircle2, History
+  Crown, Coins, RefreshCw, 
+  Mail,
+  Loader2, Ban, ShieldX, CheckCircle2, History, ShieldCheck
 } from "lucide-react";
 import { useFirestore, useCollection, useMemoFirebase, useUser } from "@/firebase";
 import { collection, query, limit, orderBy, doc, updateDoc, increment, addDoc, serverTimestamp } from "firebase/firestore";
@@ -51,7 +49,11 @@ export default function AdminUserManagement() {
   const { data: users, loading: usersLoading } = useCollection(usersQuery);
 
   const filteredUsers = users?.filter(u => {
-    const matchesSearch = u.displayName?.toLowerCase().includes(search.toLowerCase()) || u.email?.toLowerCase().includes(search.toLowerCase());
+    const displayName = (u.displayName || "").toLowerCase();
+    const email = (u.email || "").toLowerCase();
+    const searchTerm = search.toLowerCase();
+    
+    const matchesSearch = displayName.includes(searchTerm) || email.includes(searchTerm);
     const matchesFilter = filter === 'all' ? true : filter === 'premium' ? u.isPremium : filter === 'admin' ? (u.isAdmin || u.role === 'admin') : true;
     return matchesSearch && matchesFilter;
   });
@@ -162,12 +164,12 @@ export default function AdminUserManagement() {
                   <TableCell className="px-16 py-12">
                      <div className="flex items-center gap-8">
                         <div className="w-20 h-20 rounded-[1.5rem] bg-white/5 border border-white/5 flex items-center justify-center text-4xl font-headline font-black text-primary/20 group-hover:text-primary/100 transition-all duration-700">
-                           {u.displayName?.charAt(0) || 'G'}
+                           {(u.displayName || "G").charAt(0)}
                         </div>
                         <div className="flex flex-col gap-2">
                            <span className="text-3xl font-black text-white group-hover:text-primary transition-colors tracking-tighter uppercase">{u.displayName || 'Guest Creator'}</span>
                            <span className="text-[10px] text-muted-foreground font-mono opacity-40 uppercase tracking-[0.4em] flex items-center gap-2">
-                              <Mail size={10} /> {u.email}
+                              <Mail size={10} /> {u.email || 'anonymous-node'}
                            </span>
                         </div>
                      </div>

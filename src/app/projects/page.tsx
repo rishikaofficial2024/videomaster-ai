@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, useEffect } from "react";
@@ -47,9 +46,11 @@ export default function ProjectsPage() {
 
   const { data: projects, loading: projectsLoading } = useCollection(projectsQuery);
 
-  const filteredProjects = projects ? projects.filter(p => 
-    p.title?.toLowerCase().includes(search.toLowerCase())
-  ) : [];
+  const filteredProjects = projects ? projects.filter(p => {
+    const title = (p.title || "").toLowerCase();
+    const searchTerm = search.toLowerCase();
+    return title.includes(searchTerm);
+  }) : [];
 
   const handleDelete = (projectId: string) => {
     if (!user) return;
@@ -138,7 +139,7 @@ export default function ProjectsPage() {
                 </div>
                 <CardContent className="p-4 flex justify-between items-start">
                   <div className="space-y-1">
-                    <h3 className="font-bold truncate max-w-[200px]">{project.title}</h3>
+                    <h3 className="font-bold truncate max-w-[200px]">{project.title || "Untitled"}</h3>
                     <p className="text-xs text-muted-foreground">
                       Modified {formatDate(project)}
                     </p>
