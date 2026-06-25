@@ -1,10 +1,8 @@
 'use server';
 /**
- * @fileOverview Elite Text-to-Video generation engine using Veo 2.0 with Polling.
+ * @fileOverview Elite Text-to-Video generation engine using Veo 3.0 with Polling.
  * 
  * - generateAiVideo - Handles cinematic motion generation with operation polling.
- * - VideoGenerationInput - Prompt-based input.
- * - VideoGenerationOutput - Base64 encoded MP4 output.
  */
 
 import { ai, veoModel, z } from '@/ai/genkit';
@@ -21,7 +19,7 @@ export type VideoGenerationOutput = z.infer<typeof VideoGenerationOutputSchema>;
 
 /**
  * 📽️ Cinematic Motion Protocol
- * Generates HD clips using the Veo 2.0 architecture with proper polling logic.
+ * Generates HD clips using the Veo 3.0 architecture with proper polling logic.
  */
 const generateAiVideoFlow = ai.defineFlow(
   {
@@ -36,7 +34,7 @@ const generateAiVideoFlow = ai.defineFlow(
         model: veoModel,
         prompt: `Cinematic HD high-quality video clip: ${input.prompt}. 4k, hyper-realistic, professional cinematography, 24fps.`,
         config: {
-          durationSeconds: 5,
+          durationSeconds: 8, // Veo 3.0 default
           aspectRatio: '16:9',
         }
       });
@@ -45,9 +43,9 @@ const generateAiVideoFlow = ai.defineFlow(
         throw new Error('Neural core failed to initiate motion operation.');
       }
 
-      // 2. Poll until operation is complete (Veo 2.0 requires polling)
+      // 2. Poll until operation is complete (Veo requires polling)
       let attempts = 0;
-      while (!operation.done && attempts < 24) { // Max 2 minutes polling
+      while (!operation.done && attempts < 40) { // Max ~3 minutes polling
         await new Promise((resolve) => setTimeout(resolve, 5000));
         operation = await ai.checkOperation(operation);
         attempts++;
@@ -63,8 +61,8 @@ const generateAiVideoFlow = ai.defineFlow(
         throw new Error('Failed to retrieve generated video artifact.');
       }
 
-      // 4. Download and convert to Base64 for client-side playback
-      const apiKey = process.env.GEMINI_API_KEY?.trim().replace(/^["']|["']$/g, '').trim();
+      // 4. Download and convert to Base64
+      const apiKey = (process.env.GEMINI_API_KEY || '').trim().replace(/^["']|["']$/g, '').trim();
       const response = await fetch(`${videoPart.media.url}&key=${apiKey}`);
       
       if (!response.ok) {
@@ -79,9 +77,9 @@ const generateAiVideoFlow = ai.defineFlow(
       };
 
     } catch (e: any) {
-      console.warn("⚠️ AI Motion Engine Quota Reached or Failed. Using Visual Cache.");
+      console.warn("⚠️ AI Motion Engine Error:", e.message);
       
-      // FALLBACK: High-quality curated cinematic resource for demonstration stability
+      // FALLBACK: Demonstration video to prevent UI crash
       const fallbacks = [
         "https://www.w3schools.com/html/mov_bbb.mp4",
         "https://www.w3schools.com/html/horse.mp4"

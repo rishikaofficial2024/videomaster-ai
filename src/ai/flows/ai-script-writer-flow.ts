@@ -1,6 +1,6 @@
 'use server';
 /**
- * @fileOverview A robust Genkit flow for generating professional video scripts with auto-retry logic and fallback.
+ * @fileOverview A robust Genkit flow for generating professional video scripts.
  */
 
 import { ai, geminiModel, geminiProModel, z } from '@/ai/genkit';
@@ -26,13 +26,12 @@ const scriptWriterFlow = ai.defineFlow(
     outputSchema: ScriptWriterOutputSchema,
   },
   async (input) => {
-    // STABILITY PATCH: 5-Stage Auto-Retry with Exponential Backoff
+    // 5-Stage Auto-Retry with Exponential Backoff for stability
     let attempts = 0;
     const maxAttempts = 5;
 
     while (attempts < maxAttempts) {
       try {
-        // Fallback Logic: If Flash fails consistently, try Pro model on last 2 attempts
         const activeModel = attempts < 3 ? geminiModel : geminiProModel;
         
         const { output } = await ai.generate({
@@ -46,17 +45,15 @@ const scriptWriterFlow = ai.defineFlow(
         return output;
       } catch (e: any) {
         attempts++;
-        const delay = Math.pow(2, attempts) * 1000; // 2s, 4s, 8s, 16s...
-        console.warn(`AI Attempt ${attempts} failed: ${e.message}. Retrying in ${delay}ms...`);
+        const delay = Math.pow(2, attempts) * 1000;
+        console.warn(`AI Attempt ${attempts} failed: ${e.message}. Retrying...`);
         
-        // Only retry if it's a server busy or rate limit error
         const isRetryable = e.message.includes('503') || e.message.includes('429') || e.message.includes('UNAVAILABLE');
-        
         if (attempts === maxAttempts || !isRetryable) throw e;
         await new Promise(resolve => setTimeout(resolve, delay));
       }
     }
-    throw new Error('AI Servers are currently overloaded. Please try again in 1 minute.');
+    throw new Error('AI Servers busy. Please retry in 1 minute.');
   }
 );
 
