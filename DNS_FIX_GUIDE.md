@@ -1,26 +1,23 @@
+# 🌐 How to Fix "Site Can't Be Reached" (NXDOMAIN)
 
-# 🌐 DNS Sync Guide: Solve Propagation Errors
+Bhaai, aapka domain `videomaster-ai.tech` resolve nahi ho raha hai. Iska matlab internet ko nahi pata ki aapki site kahan hai. Ise 2 minute mein fix karein:
 
-If you encounter a "This site can’t be reached" or `NXDOMAIN` error, it means your branded domain (`videomaster-ai.tech`) is not yet synchronized with the global internet map.
+### Step 1: Firebase Hosting se IP lein
+1. [Firebase Hosting Console](https://console.firebase.google.com/project/studio-9489287013-59986/hosting/main) par jayein.
+2. "Add Custom Domain" par click karein agar pehle nahi kiya.
+3. Google aapko do **IP Addresses** dega (Example: `199.36.158.100`).
 
-### ✅ Step-by-Step Resolution:
+### Step 2: Domain Registrar (GoDaddy/Hostinger) mein settings badlein
+1. Apne domain provider ke dashboard mein **DNS Management** kholiye.
+2. Purane saare "A" records delete kar dein.
+3. Naye do "A" records banayein:
+   - **Type**: A | **Name**: @ | **Value**: (Firebase se mili pehli IP)
+   - **Type**: A | **Name**: @ | **Value**: (Firebase se mili doosri IP)
 
-1.  **Access Firebase Hosting Console**:
-    - Go to [Firebase Hosting Dashboard](https://console.firebase.google.com/project/studio-9489287013-59986/hosting/main).
-    - Locate the domain `videomaster-ai.tech` and click "View" or "Finish Setup".
+### Step 3: Deployment Run karein
+Terminal mein ye command chalayein:
+```bash
+npm run web:deploy
+```
 
-2.  **Retrieve A-Records**:
-    - Google will provide two **IP Addresses** (e.g., `199.36.158.100` and `151.101.1.195`).
-    - Copy these values.
-
-3.  **Configure Domain Provider (GoDaddy/Hostinger/Namecheap)**:
-    - Log in to your domain registrar's **DNS Management** panel.
-    - Create two records:
-      - **Type**: `A` | **Name**: `@` | **Value**: (First IP Address)
-      - **Type**: `A` | **Name**: `@` | **Value**: (Second IP Address)
-
-4.  **Propagation Interval**:
-    - DNS changes typically take **1 to 2 hours** to propagate globally.
-    - Once the status shows "Connected" in Firebase, your app will be live on your custom domain.
-
-**The code is 100% ready; this final handshake connects your brand to the world!** 🚀🛡️💎
+**Note**: DNS badalne ke baad usey poori duniya mein update hone mein 1-2 ghante lagte hain. Tab tak aapka app `studio-9489287013-59986.web.app` par perfectly chalega! 🚀💎
