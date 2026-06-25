@@ -80,10 +80,6 @@ function EditorContent() {
       setProjectId(projectIdFromUrl);
       setIsNewProject(false);
     } else {
-      /**
-       * 🛠️ LEAD DEVELOPER FIX: Hydration safe ID generation.
-       * Generating IDs outside of useEffect causes server/client mismatch.
-       */
       const newId = "prj-" + Math.random().toString(36).substring(7);
       setProjectId(newId);
     }
@@ -135,7 +131,6 @@ function EditorContent() {
       }).then(() => setIsNewProject(false));
     }
     
-    // History Tracking
     const newHistory = history.slice(0, historyIndex + 1);
     newHistory.push(JSON.parse(JSON.stringify(data)));
     setHistory(newHistory);
@@ -281,7 +276,6 @@ function EditorContent() {
       </div>
 
       <div className="flex-1 flex overflow-hidden">
-        {/* Left Toolbar */}
         <div className="w-20 bg-[#05070a] border-r border-white/5 flex flex-col items-center py-8 gap-8">
            {[
              { icon: Wand2, id: 'ai', label: 'AI' },
@@ -305,7 +299,6 @@ function EditorContent() {
            ))}
         </div>
 
-        {/* Sidebar Controls */}
         <div className="w-[380px] bg-[#0a0d14] border-r border-white/5 flex flex-col p-6 space-y-8 overflow-y-auto scrollbar-hide hidden lg:flex">
            {activeTab === 'ai' && (
              <div className="space-y-8 animate-in fade-in slide-in-from-left-4">
@@ -360,24 +353,6 @@ function EditorContent() {
                       ))}
                    </div>
                 </div>
-
-                <div className="p-5 bg-white/5 rounded-2xl border border-white/10 space-y-4">
-                   <p className="text-[10px] font-black uppercase tracking-widest text-white">Orientation</p>
-                   <div className="grid grid-cols-3 gap-3">
-                      <Button variant="outline" className="flex flex-col h-20 gap-2 rounded-xl">
-                        <Smartphone className="w-4 h-4" />
-                        <span className="text-[8px]">9:16</span>
-                      </Button>
-                      <Button variant="outline" className="flex flex-col h-20 gap-2 rounded-xl">
-                        <Monitor className="w-4 h-4" />
-                        <span className="text-[8px]">16:9</span>
-                      </Button>
-                      <Button variant="outline" className="flex flex-col h-20 gap-2 rounded-xl">
-                        <Maximize className="w-4 h-4" />
-                        <span className="text-[8px]">1:1</span>
-                      </Button>
-                   </div>
-                </div>
              </div>
            )}
 
@@ -390,22 +365,10 @@ function EditorContent() {
                    </div>
                    <span className="text-[9px] font-black text-muted-foreground uppercase tracking-widest">Import Content</span>
                 </Button>
-                
-                <div className="grid grid-cols-2 gap-3">
-                   {mediaAssets.map((asset) => (
-                     <div key={asset.id} className="aspect-video rounded-xl bg-black border border-white/10 overflow-hidden relative group cursor-pointer hover:border-primary/40 transition-all">
-                        {asset.type === 'video' ? <video src={asset.url} className="w-full h-full object-cover opacity-60" /> : <img src={asset.url} className="w-full h-full object-cover opacity-60" alt={asset.name} />}
-                        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 bg-black/60 transition-all">
-                           <Plus className="w-5 h-5 text-white" />
-                        </div>
-                     </div>
-                   ))}
-                </div>
              </div>
            )}
         </div>
 
-        {/* Main Preview Area */}
         <div className="flex-1 flex flex-col bg-[#020408] p-4 md:p-8 space-y-6 relative overflow-hidden">
            <div className="flex-1 relative aspect-video mx-auto bg-black rounded-[2.5rem] border-[8px] border-[#0a0d14] overflow-hidden shadow-2xl group flex flex-col items-center justify-center">
               {!videoData ? (
@@ -436,7 +399,6 @@ function EditorContent() {
               </div>
            </div>
 
-           {/* Timeline */}
            <div className="h-52 bg-[#0a0d14] rounded-[2.5rem] border border-white/5 flex flex-col overflow-hidden relative shadow-2xl">
               <div className="h-10 border-b border-white/5 px-6 flex items-center justify-between bg-white/[0.03]">
                  <div className="flex items-center gap-4">
@@ -445,9 +407,6 @@ function EditorContent() {
                        <h4 className="text-[8px] font-black uppercase tracking-[0.2em] text-white">Project Timeline</h4>
                     </div>
                     <span className="text-[10px] font-mono text-white/40">{currentTime.toFixed(2)}s / {duration.toFixed(2)}s</span>
-                 </div>
-                 <div className="flex items-center gap-3">
-                    <Button variant="ghost" size="icon" className="h-7 w-7"><Maximize className="w-3 h-3" /></Button>
                  </div>
               </div>
 
@@ -464,16 +423,6 @@ function EditorContent() {
                     )}
                  </div>
 
-                 <div className="h-10 bg-rose-500/5 border border-rose-500/10 rounded-xl relative flex items-center px-4 opacity-40">
-                    <Type className="w-3 h-3 text-rose-400 mr-3 opacity-40" />
-                    <span className="text-[8px] font-black uppercase tracking-widest text-rose-400">Captions</span>
-                 </div>
-
-                 <div className="h-10 bg-indigo-500/5 border border-indigo-500/10 rounded-xl relative flex items-center px-4 opacity-40">
-                    <Volume2 className="w-3 h-3 text-indigo-400 mr-3 opacity-40" />
-                    <span className="text-[8px] font-black uppercase tracking-widest text-indigo-400">Studio Audio</span>
-                 </div>
-                 
                  <div 
                    className="absolute top-0 bottom-0 w-0.5 bg-white z-20 shadow-glow" 
                    style={{ left: `${(currentTime / duration) * 100}%` }}
@@ -484,7 +433,6 @@ function EditorContent() {
            </div>
         </div>
 
-        {/* Right Info Panel */}
         <div className="w-[320px] bg-[#05070a] border-l border-white/5 p-6 space-y-8 hidden xl:flex flex-col">
            <header className="flex items-center gap-3 text-primary">
               <Cpu size={18} />
@@ -501,30 +449,6 @@ function EditorContent() {
                  <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
                     <div className="h-full bg-emerald-500 w-[94%]" />
                  </div>
-              </div>
-              
-              <div className="space-y-4 pt-4 border-t border-white/5">
-                 <p className="text-[8px] font-black uppercase tracking-widest text-muted-foreground">Export Node</p>
-                 <div className="space-y-2">
-                    {[
-                      { label: 'SD 720p', speed: 'Fast' },
-                      { label: 'HD 1080p', speed: 'Balanced' },
-                      { label: 'Elite 4K', speed: 'Render required', active: true }
-                    ].map((fmt, i) => (
-                      <button key={i} className={cn("w-full p-3.5 rounded-xl border flex items-center justify-between transition-all", fmt.active ? "bg-primary/10 border-primary/40 text-primary" : "bg-white/5 border-white/5 text-muted-foreground")}>
-                        <span className="text-[10px] font-bold uppercase">{fmt.label}</span>
-                        <span className="text-[8px] italic opacity-60">{fmt.speed}</span>
-                      </button>
-                    ))}
-                 </div>
-              </div>
-
-              <div className="p-5 bg-indigo-500/5 border border-indigo-500/10 rounded-2xl">
-                 <div className="flex items-center gap-2 text-indigo-400 mb-1.5">
-                    <RefreshCw size={12} className="animate-spin-slow" />
-                    <span className="text-[8px] font-black uppercase tracking-widest">Neural Link Active</span>
-                 </div>
-                 <p className="text-[10px] text-muted-foreground italic leading-tight">Your changes are being streamed to the cloud factory in real-time.</p>
               </div>
            </div>
 
