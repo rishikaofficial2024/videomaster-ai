@@ -1,17 +1,15 @@
-
 "use client";
 
 import { useState, useEffect, useRef, Suspense } from "react";
 import { Navbar } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
-import { Slider } from "@/components/ui/slider";
 import { 
-  Pause, Play, SkipBack, SkipForward,
+  Pause, Play,
   Wand2, Download, ChevronLeft, Loader2, Video as VideoIcon,
   Plus, Music, 
   Upload, Film,
-  Settings2, Type, Crown, Lock, Zap, Volume2,
-  Monitor, Smartphone, RefreshCw, Cpu
+  Settings2, Type, Crown, Zap, Volume2,
+  Monitor, RefreshCw, Cpu, Smartphone
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { generateAiVideo } from "@/ai/flows/ai-video-generation-flow";
@@ -48,7 +46,7 @@ function EditorContent() {
   const [isNewProject, setIsNewProject] = useState(true);
   const [mounted, setMounted] = useState(false);
   
-  const [title, setTitle] = useState("New Gemini Project");
+  const [title, setTitle] = useState("Gemini Fast Studio");
   const [isPlaying, setIsPlaying] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -70,7 +68,8 @@ function EditorContent() {
       setProjectId(projectIdFromUrl);
       setIsNewProject(false);
     } else {
-      const newId = "prj-" + Math.random().toString(36).substring(2, 9);
+      // 🔥 Generate a deterministic project ID based on timestamp to avoid hydration mismatch
+      const newId = "prj-" + Date.now().toString(36).substring(4);
       setProjectId(newId);
     }
   }, [projectIdFromUrl]);
@@ -84,7 +83,7 @@ function EditorContent() {
 
   useEffect(() => {
     if (project && mounted) {
-      setTitle(project.title || "New Gemini Project");
+      setTitle(project.title || "Gemini Fast Studio");
       setVideoData(project.videoDataUri || null);
       setMediaAssets(project.mediaAssets || []);
       setMagicHook(project.magicHook || "");
@@ -204,7 +203,7 @@ function EditorContent() {
             <div className="flex items-center gap-2 mt-1">
               <div className={cn("w-2 h-2 rounded-full", isSaving ? "bg-amber-500 animate-pulse" : "bg-emerald-500")} />
               <span className="text-[10px] font-black uppercase tracking-widest opacity-40">
-                {isSaving ? "Syncing..." : "Gemini Cloud Active"}
+                {isSaving ? "Syncing..." : "Gemini Fast Cloud Active"}
               </span>
             </div>
           </div>
@@ -281,7 +280,7 @@ function EditorContent() {
                 <div className="grid grid-cols-2 gap-4">
                    {mediaAssets.map((asset) => (
                      <div key={asset.id} className="aspect-video rounded-2xl bg-black border border-white/10 overflow-hidden relative group cursor-pointer">
-                        {asset.type === 'video' ? <video src={asset.url} className="w-full h-full object-cover opacity-60" /> : <img src={asset.url} className="w-full h-full object-cover opacity-60" />}
+                        {asset.type === 'video' ? <video src={asset.url} className="w-full h-full object-cover opacity-60" /> : <img src={asset.url} className="w-full h-full object-cover opacity-60" alt={asset.name} />}
                         <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 bg-black/60">
                            <Plus className="w-6 h-6 text-white" />
                         </div>
@@ -298,7 +297,7 @@ function EditorContent() {
                 {!videoData ? (
                   <div className="text-center space-y-4 opacity-10">
                      <Monitor size={48} className="mx-auto" />
-                     <p className="text-xs font-black uppercase tracking-[0.4em]">Neural Output Link Offline</p>
+                     <p className="text-xs font-black uppercase tracking-[0.4em]">Gemini Output Link Offline</p>
                   </div>
                 ) : (
                   <video 
@@ -328,7 +327,7 @@ function EditorContent() {
               >
                  <div className="h-12 bg-primary/10 border border-primary/20 rounded-2xl relative flex items-center px-6">
                     <Film className="w-4 h-4 text-primary mr-6 opacity-40" />
-                    <span className="text-[9px] font-black uppercase tracking-widest text-primary">Primary Neural Track</span>
+                    <span className="text-[9px] font-black uppercase tracking-widest text-primary">Primary Track</span>
                  </div>
 
                  <div className="h-10 bg-indigo-500/5 border border-indigo-500/10 rounded-2xl relative flex items-center px-6 opacity-40">

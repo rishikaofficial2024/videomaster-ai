@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Video, Chrome, ArrowLeft, Loader2, Eye, EyeOff, ShieldCheck, UserCircle2, Zap, Crown } from "lucide-react";
+import { Video, Chrome, ArrowLeft, Loader2, Eye, EyeOff, ShieldCheck, Crown } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { 
@@ -27,7 +27,8 @@ function LoginForm() {
   
   const router = useRouter();
   const searchParams = useSearchParams();
-  const returnUrl = searchParams.get("returnUrl") || "/dashboard";
+  // 🔥 REDIRECT TO EDITOR BY DEFAULT
+  const returnUrl = searchParams.get("returnUrl") || "/editor";
   const { toast } = useToast();
   const auth = useAuth();
   const db = useFirestore();
@@ -41,7 +42,7 @@ function LoginForm() {
       await signInWithEmailAndPassword(auth, email.trim(), password);
       toast({
         title: "Access Granted",
-        description: "Welcome back to the Free Pro Studio.",
+        description: "Loading your professional studio workspace...",
       });
       router.push(returnUrl);
     } catch (error: any) {
@@ -105,7 +106,7 @@ function LoginForm() {
         }, { merge: true });
       }
 
-      toast({ title: "Guest Access Active", description: "Unlimited Free Pro Credits assigned." });
+      toast({ title: "Guest Access Active", description: "Entering Unlocked Studio Workspace." });
       router.push(returnUrl);
     } catch (error: any) {
       toast({ variant: "destructive", title: "Guest Access Failed", description: "Could not initialize anonymous node." });
@@ -123,7 +124,7 @@ function LoginForm() {
         disabled={guestLoading || loading}
       >
         {guestLoading ? <Loader2 className="animate-spin" /> : <Crown className="w-5 h-5 fill-current" />} 
-        Enter Free Pro Studio (Guest)
+        Enter Studio (Guest)
       </Button>
 
       <div className="relative">
@@ -174,7 +175,7 @@ function LoginForm() {
           </div>
         </div>
         <Button type="submit" className="w-full h-14 font-black uppercase tracking-[0.2em] rounded-xl shadow-xl shadow-primary/20" disabled={loading || guestLoading}>
-          {loading ? <Loader2 className="animate-spin" /> : "Sign In"}
+          {loading ? <Loader2 className="animate-spin" /> : "Sign In & Edit"}
         </Button>
       </form>
     </CardContent>
@@ -210,7 +211,7 @@ export default function LoginPage() {
               </div>
             </div>
             <CardTitle className="text-2xl font-bold font-headline text-white uppercase tracking-tight">Access Free Studio</CardTitle>
-            <CardDescription className="italic text-muted-foreground">Select your free entry protocol</CardDescription>
+            <CardDescription className="italic text-muted-foreground">Select your entry protocol</CardDescription>
           </CardHeader>
 
           <LoginWrapper />

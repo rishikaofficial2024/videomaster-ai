@@ -6,13 +6,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Video, Chrome, Loader2, Eye, EyeOff, ArrowLeft, ShieldCheck, Zap, Crown } from "lucide-react";
+import { Video, Loader2, Eye, EyeOff, ArrowLeft, ShieldCheck, Crown } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { 
   createUserWithEmailAndPassword, 
   updateProfile, 
-  signInWithPopup, 
-  GoogleAuthProvider,
   signInAnonymously
 } from "firebase/auth";
 import { doc, setDoc, getDoc } from "firebase/firestore";
@@ -54,8 +52,9 @@ export default function SignupPage() {
         usageStats: { totalVideos: 0, aiGenerations: 0 }
       }, { merge: true });
       
-      toast({ title: "Welcome!", description: "Unlimited Free Pro Credits unlocked." });
-      router.push("/dashboard");
+      toast({ title: "Welcome!", description: "Loading your Pro Studio workspace..." });
+      // 🔥 REDIRECT TO EDITOR
+      router.push("/editor");
     } catch (error: any) {
       toast({ variant: "destructive", title: "Registration Alert", description: "Error during account creation." });
     } finally {
@@ -84,8 +83,9 @@ export default function SignupPage() {
         }, { merge: true });
       }
 
-      toast({ title: "Guest Protocol Active", description: "Unlimited Pro Credits available." });
-      router.push("/dashboard");
+      toast({ title: "Guest Protocol Active", description: "Entering Workspace..." });
+      // 🔥 REDIRECT TO EDITOR
+      router.push("/editor");
     } catch (error: any) {
       toast({ variant: "destructive", title: "Guest Access Failed", description: "Connection interrupted." });
     } finally {
@@ -109,8 +109,8 @@ export default function SignupPage() {
                 <Video className="w-10 h-10 text-primary" />
               </div>
             </div>
-            <CardTitle className="text-2xl font-bold font-headline uppercase tracking-tight">Join Free Studio</CardTitle>
-            <CardDescription className="italic">Start creating with Unlimited Free Credits</CardDescription>
+            <CardTitle className="text-2xl font-bold font-headline uppercase tracking-tight">Join Studio</CardTitle>
+            <CardDescription className="italic">Start creating with Unlocked Pro Access</CardDescription>
           </CardHeader>
 
           <CardContent className="space-y-6">
@@ -120,7 +120,7 @@ export default function SignupPage() {
               disabled={guestLoading || loading}
             >
               {guestLoading ? <Loader2 className="animate-spin" /> : <Crown className="w-5 h-5 fill-current" />} 
-              Enter Free Pro Studio (Guest)
+              Enter Studio (Guest)
             </Button>
 
             <div className="relative">
@@ -147,7 +147,7 @@ export default function SignupPage() {
                 </div>
               </div>
               <Button type="submit" className="w-full h-14 font-black uppercase tracking-widest rounded-xl" disabled={loading || guestLoading}>
-                {loading ? <Loader2 className="animate-spin" /> : "Get Started Free"}
+                {loading ? <Loader2 className="animate-spin" /> : "Sign Up & Create"}
               </Button>
             </form>
           </CardContent>
