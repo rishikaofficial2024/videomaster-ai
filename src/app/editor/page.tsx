@@ -80,7 +80,10 @@ function EditorContent() {
       setProjectId(projectIdFromUrl);
       setIsNewProject(false);
     } else {
-      // 🛠️ LEAD DEVELOPER FIX: Hydration safe ID generation
+      /**
+       * 🛠️ LEAD DEVELOPER FIX: Hydration safe ID generation.
+       * Generating random IDs during render causes server-client mismatch.
+       */
       const newId = "prj-" + Math.random().toString(36).substring(7);
       setProjectId(newId);
     }
@@ -132,6 +135,7 @@ function EditorContent() {
       }).then(() => setIsNewProject(false));
     }
     
+    // History Tracking
     const newHistory = history.slice(0, historyIndex + 1);
     newHistory.push(JSON.parse(JSON.stringify(data)));
     setHistory(newHistory);
@@ -277,6 +281,7 @@ function EditorContent() {
       </div>
 
       <div className="flex-1 flex overflow-hidden">
+        {/* Left Toolbar */}
         <div className="w-20 bg-[#05070a] border-r border-white/5 flex flex-col items-center py-8 gap-8">
            {[
              { icon: Wand2, id: 'ai', label: 'AI' },
@@ -300,6 +305,7 @@ function EditorContent() {
            ))}
         </div>
 
+        {/* Sidebar Controls */}
         <div className="w-[380px] bg-[#0a0d14] border-r border-white/5 flex flex-col p-6 space-y-8 overflow-y-auto scrollbar-hide hidden lg:flex">
            {activeTab === 'ai' && (
              <div className="space-y-8 animate-in fade-in slide-in-from-left-4">
@@ -399,6 +405,7 @@ function EditorContent() {
            )}
         </div>
 
+        {/* Main Preview Area */}
         <div className="flex-1 flex flex-col bg-[#020408] p-4 md:p-8 space-y-6 relative overflow-hidden">
            <div className="flex-1 relative aspect-video mx-auto bg-black rounded-[2.5rem] border-[8px] border-[#0a0d14] overflow-hidden shadow-2xl group flex flex-col items-center justify-center">
               {!videoData ? (
@@ -429,6 +436,7 @@ function EditorContent() {
               </div>
            </div>
 
+           {/* Timeline */}
            <div className="h-52 bg-[#0a0d14] rounded-[2.5rem] border border-white/5 flex flex-col overflow-hidden relative shadow-2xl">
               <div className="h-10 border-b border-white/5 px-6 flex items-center justify-between bg-white/[0.03]">
                  <div className="flex items-center gap-4">
@@ -476,6 +484,7 @@ function EditorContent() {
            </div>
         </div>
 
+        {/* Right Info Panel */}
         <div className="w-[320px] bg-[#05070a] border-l border-white/5 p-6 space-y-8 hidden xl:flex flex-col">
            <header className="flex items-center gap-3 text-primary">
               <Cpu size={18} />
