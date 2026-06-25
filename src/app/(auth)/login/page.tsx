@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Video, Chrome, ArrowLeft, Loader2, Eye, EyeOff, ShieldCheck, Crown } from "lucide-react";
+import { Video, Chrome, ArrowLeft, Loader2, Eye, EyeOff, ShieldCheck, Crown, Zap, Sparkles } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { 
@@ -27,7 +27,6 @@ function LoginForm() {
   
   const router = useRouter();
   const searchParams = useSearchParams();
-  // 🔥 REDIRECT TO EDITOR BY DEFAULT FOR PRODUCTION SPEED
   const returnUrl = searchParams.get("returnUrl") || "/editor";
   const { toast } = useToast();
   const auth = useAuth();
@@ -40,17 +39,10 @@ function LoginForm() {
     setLoading(true);
     try {
       await signInWithEmailAndPassword(auth, email.trim(), password);
-      toast({
-        title: "Access Granted",
-        description: "Loading your professional studio workspace...",
-      });
+      toast({ title: "Session Established", description: "Loading global workspace nodes..." });
       router.push(returnUrl);
     } catch (error: any) {
-      let errorMessage = "Invalid email or password.";
-      if (error.code === 'auth/user-not-found' || error.code === 'auth/invalid-credential') {
-        errorMessage = "Account not found. Please sign up.";
-      }
-      toast({ variant: "destructive", title: "Security Alert", description: errorMessage });
+      toast({ variant: "destructive", title: "Access Denied", description: "Invalid node credentials." });
     } finally {
       setLoading(false);
     }
@@ -79,7 +71,7 @@ function LoginForm() {
 
       router.push(returnUrl);
     } catch (error: any) {
-      toast({ variant: "destructive", title: "Google Login Error", description: "Connection interrupted." });
+      toast({ variant: "destructive", title: "Social Sync Failed", description: "Handshake interrupted." });
     } finally {
       setLoading(false);
     }
@@ -106,76 +98,75 @@ function LoginForm() {
         }, { merge: true });
       }
 
-      toast({ title: "Guest Access Active", description: "Entering Unlocked Studio Workspace." });
+      toast({ title: "Ephemeral Access Active", description: "Entering Unlocked Pro Workspace." });
       router.push(returnUrl);
     } catch (error: any) {
-      toast({ variant: "destructive", title: "Guest Access Failed", description: "Could not initialize anonymous node." });
+      toast({ variant: "destructive", title: "Guest Link Error", description: "Node initialization failed." });
     } finally {
       setGuestLoading(false);
     }
   };
 
   return (
-    <CardContent className="space-y-6">
+    <CardContent className="space-y-10 p-12">
       <Button 
-        variant="default" 
-        className="w-full h-16 gap-3 bg-primary hover:bg-primary/90 font-black rounded-2xl shadow-xl shadow-primary/20 text-white uppercase tracking-widest text-xs" 
+        className="w-full h-24 gap-5 bg-primary hover:bg-primary/90 font-black rounded-full shadow-glow text-white uppercase tracking-widest text-lg relative overflow-hidden group" 
         onClick={handleGuestEntry} 
         disabled={guestLoading || loading}
       >
-        {guestLoading ? <Loader2 className="animate-spin" /> : <Crown className="w-5 h-5 fill-current" />} 
-        Enter Studio (Guest)
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:animate-[shimmer_2s_infinite]" />
+        {guestLoading ? <Loader2 className="animate-spin" /> : <Zap className="w-8 h-8 fill-current group-hover:animate-pulse" />} 
+        Enter Studio Free
       </Button>
 
       <div className="relative">
         <div className="absolute inset-0 flex items-center"><span className="w-full border-t border-white/5"></span></div>
-        <div className="relative flex justify-center text-[10px] uppercase font-black text-muted-foreground tracking-[0.3em]"><span className="bg-[#0a0d14] px-4">OR USE GOOGLE</span></div>
+        <div className="relative flex justify-center text-[10px] uppercase font-black text-muted-foreground tracking-[0.6em]"><span className="bg-[#0a061c] px-6">OR USE IDENTITY HUB</span></div>
       </div>
 
-      <Button 
-        variant="outline" 
-        className="w-full h-14 gap-3 border-white/10 bg-white/5 font-bold rounded-2xl hover:bg-primary/10 transition-all text-white" 
-        onClick={handleSocialLogin} 
-        disabled={loading || guestLoading}
-      >
-        <Chrome className="w-5 h-5 text-red-500" /> Continue with Google
-      </Button>
-
-      <div className="relative">
-        <div className="absolute inset-0 flex items-center"><span className="w-full border-t border-white/5"></span></div>
-        <div className="relative flex justify-center text-[10px] uppercase font-black text-muted-foreground tracking-[0.3em]"><span className="bg-[#0a0d14] px-4">OR EMAIL</span></div>
+      <div className="grid grid-cols-1 gap-6">
+        <Button 
+          variant="outline" 
+          className="w-full h-16 gap-4 border-white/10 bg-white/5 font-black rounded-full hover:bg-primary/10 transition-all text-white text-[11px] uppercase tracking-widest" 
+          onClick={handleSocialLogin} 
+          disabled={loading || guestLoading}
+        >
+          <Chrome className="w-5 h-5 text-accent" /> Continue with Google
+        </Button>
       </div>
 
-      <form onSubmit={handleLogin} className="space-y-4">
-        <div className="space-y-2">
-          <Label className="text-[10px] uppercase text-primary ml-1 font-bold tracking-widest">Email</Label>
-          <Input 
-            type="email" 
-            placeholder="name@example.com" 
-            required 
-            className="h-12 bg-black/40 border-white/10 rounded-xl focus:border-primary/50 text-white" 
-            value={email} 
-            onChange={(e) => setEmail(e.target.value)} 
-          />
-        </div>
-        <div className="space-y-2">
-          <Label className="text-[10px] uppercase text-primary ml-1 font-bold tracking-widest">Password</Label>
-          <div className="relative">
+      <form onSubmit={handleLogin} className="space-y-8">
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label className="text-[10px] uppercase text-primary ml-6 font-black tracking-[0.4em]">Email Node</Label>
             <Input 
-              type={showPassword ? "text" : "password"} 
-              placeholder="••••••••" 
+              type="email" 
+              placeholder="identity@videomaster.ai" 
               required 
-              className="h-12 bg-black/40 border-white/10 pr-12 rounded-xl focus:border-primary/50 text-white" 
-              value={password} 
-              onChange={(e) => setPassword(e.target.value)} 
+              className="h-16 bg-black/40 border-white/10 rounded-full px-8 focus:border-primary/50 text-white font-medium text-lg" 
+              value={email} 
+              onChange={(e) => setEmail(e.target.value)} 
             />
-            <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-white">
-              {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-            </button>
+          </div>
+          <div className="space-y-2">
+            <Label className="text-[10px] uppercase text-primary ml-6 font-black tracking-[0.4em]">Password Key</Label>
+            <div className="relative">
+              <Input 
+                type={showPassword ? "text" : "password"} 
+                placeholder="••••••••" 
+                required 
+                className="h-16 bg-black/40 border-white/10 pr-20 rounded-full px-8 focus:border-primary/50 text-white font-medium text-lg" 
+                value={password} 
+                onChange={(e) => setPassword(e.target.value)} 
+              />
+              <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-6 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-white transition-colors">
+                {showPassword ? <EyeOff size={22} /> : <Eye size={22} />}
+              </button>
+            </div>
           </div>
         </div>
-        <Button type="submit" className="w-full h-14 font-black uppercase tracking-[0.2em] rounded-xl shadow-xl shadow-primary/20" disabled={loading || guestLoading}>
-          {loading ? <Loader2 className="animate-spin" /> : "Sign In & Edit"}
+        <Button type="submit" className="w-full h-20 font-black uppercase tracking-[0.4em] rounded-full shadow-2xl active:scale-95 transition-all text-xs" disabled={loading || guestLoading}>
+          {loading ? <Loader2 className="animate-spin" /> : "Authorize & Enter"}
         </Button>
       </form>
     </CardContent>
@@ -184,7 +175,7 @@ function LoginForm() {
 
 function LoginWrapper() {
   return (
-    <Suspense fallback={<div className="p-10 text-center animate-pulse text-primary font-bold uppercase tracking-widest">Loading...</div>}>
+    <Suspense fallback={<div className="p-20 text-center animate-pulse text-primary font-black uppercase tracking-[1em]">Establishing Link...</div>}>
       <LoginForm />
     </Suspense>
   );
@@ -192,36 +183,40 @@ function LoginWrapper() {
 
 export default function LoginPage() {
   return (
-    <div className="min-h-screen flex items-center justify-center p-6 bg-[#05070a] relative">
-      <div className="fixed top-8 left-8">
-        <Link href="/" className="flex items-center gap-2 font-bold text-muted-foreground hover:text-primary transition-colors group">
-          <div className="p-2 bg-white/5 rounded-xl border border-white/5 group-hover:border-primary/50 transition-all">
-            <ArrowLeft className="w-4 h-4" />
+    <div className="min-h-screen flex items-center justify-center p-6 bg-[#03010a] relative overflow-hidden">
+      {/* DECOR */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/5 blur-[150px] -z-10" />
+      
+      <div className="fixed top-12 left-12">
+        <Link href="/" className="flex items-center gap-4 font-black text-muted-foreground hover:text-primary transition-all group text-[11px] uppercase tracking-[0.5em]">
+          <div className="p-4 glass-panel rounded-full group-hover:border-primary/50 group-hover:translate-x-[-4px] transition-all">
+            <ArrowLeft className="w-5 h-5" />
           </div>
-          Home
+          Exit Hub
         </Link>
       </div>
 
-      <div className="w-full max-w-md animate-in fade-in duration-500 space-y-6">
-        <Card className="border-white/5 bg-[#0a0d14] rounded-[2.5rem] shadow-2xl overflow-hidden border-t-primary/20 border-t-2">
-          <CardHeader className="text-center pt-8 pb-4">
-            <div className="flex justify-center mb-4">
-              <div className="p-3 bg-primary/10 rounded-2xl border border-primary/20">
-                <Video className="w-8 h-8 text-primary" />
+      <div className="w-full max-w-2xl animate-in fade-in zoom-in duration-700">
+        <Card className="border-white/5 bg-[#0a061c]/60 backdrop-blur-3xl rounded-[5rem] shadow-[0_50px_100px_rgba(0,0,0,0.8)] overflow-hidden">
+          <CardHeader className="text-center pt-20 pb-0">
+            <div className="flex justify-center mb-8">
+              <div className="p-6 bg-gradient-to-br from-primary to-accent rounded-[2.5rem] shadow-glow relative group">
+                <Video className="w-12 h-12 text-white group-hover:scale-110 transition-transform" />
+                <div className="absolute inset-0 blur-2xl bg-primary/40 rounded-full scale-150 animate-pulse" />
               </div>
             </div>
-            <CardTitle className="text-2xl font-bold font-headline text-white uppercase tracking-tight">Access Free Studio</CardTitle>
-            <CardDescription className="italic text-muted-foreground">Select your entry protocol</CardDescription>
+            <CardTitle className="text-5xl md:text-7xl font-bold font-headline text-white uppercase tracking-tighter mb-4 leading-none">Access <br/> Studio <span className="text-primary italic">Node.</span></CardTitle>
+            <CardDescription className="italic text-xl text-muted-foreground opacity-60">Select your entry protocol</CardDescription>
           </CardHeader>
 
           <LoginWrapper />
 
-          <CardFooter className="flex flex-col space-y-4 pb-8 pt-2">
-            <div className="text-sm text-center text-muted-foreground">
-              New creator? <Link href="/signup" className="text-primary font-bold hover:underline">Create Account</Link>
+          <CardFooter className="flex flex-col space-y-8 pb-20 pt-4">
+            <div className="text-lg text-center text-muted-foreground">
+              New node? <Link href="/signup" className="text-primary font-black uppercase tracking-widest hover:underline ml-2">Create Account</Link>
             </div>
-            <div className="flex items-center justify-center gap-2 text-[9px] text-muted-foreground uppercase font-black tracking-widest opacity-20">
-               <ShieldCheck className="w-3 h-3" /> Secure Auth Active
+            <div className="flex items-center justify-center gap-4 text-[10px] text-muted-foreground uppercase font-black tracking-[1em] opacity-20">
+               <ShieldCheck className="w-4 h-4" /> Secure Auth Hub Active
             </div>
           </CardFooter>
         </Card>

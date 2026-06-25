@@ -11,7 +11,7 @@ import {
   Settings2, Type, Crown, Zap, Volume2,
   Monitor, RefreshCw, Cpu, Smartphone, Scissors, Timer, 
   Layers, Smile, Undo2, Redo2, Maximize, Crop, RotateCcw, 
-  Check, Save, Trash2, Gauge, Palette
+  Check, Save, Trash2, Gauge, Palette, ArrowRight
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { generateAiVideo } from "@/ai/flows/ai-video-generation-flow";
@@ -24,9 +24,6 @@ import { errorEmitter } from "@/firebase/error-emitter";
 import { FirestorePermissionError, type SecurityRuleContext } from "@/firebase/errors";
 import { cn } from "@/lib/utils";
 
-/**
- * 🎨 ELITE STUDIO CORE: Static Export Compatible
- */
 function EditorContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -59,7 +56,6 @@ function EditorContent() {
 
   useEffect(() => {
     setMounted(true);
-    // ✅ HYDRATION SHIELD: Ensure ID generation only happens on client mount
     if (projectIdFromUrl) {
       setProjectId(projectIdFromUrl);
       setIsNewProject(false);
@@ -119,7 +115,7 @@ function EditorContent() {
     const url = URL.createObjectURL(file);
     setVideoData(url);
     handleSave({ videoDataUri: url });
-    toast({ title: "Asset Synchronized" });
+    toast({ title: "Media Node Linked", description: "Asset synchronized to workspace." });
   };
 
   const handleGenerateScript = async () => {
@@ -128,9 +124,9 @@ function EditorContent() {
     try {
       const result = await generateAiScript({ topic: scriptTopic, platform: 'YouTube' });
       handleSave({ aiNotes: result.script });
-      toast({ title: "Script Engineered", description: "Narrative node linked." });
+      toast({ title: "Narrative Engineered", description: "Viral script generated successfully." });
     } catch (e: any) {
-      toast({ variant: "destructive", title: "AI Error", description: "Neural sync interrupted." });
+      toast({ variant: "destructive", title: "Neural Link Error", description: "AI core timed out." });
     } finally {
       setIsProcessing(false);
     }
@@ -143,9 +139,9 @@ function EditorContent() {
       const result = await generateAiVideo({ prompt: videoPrompt });
       setVideoData(result.videoDataUri);
       handleSave({ videoDataUri: result.videoDataUri });
-      toast({ title: "Video Synthesized", description: "Motion core output verified." });
+      toast({ title: "Motion Synthesis Complete", description: "HD video clip rendered." });
     } catch (e: any) {
-      toast({ variant: "destructive", title: "AI Error", description: "Motion core busy." });
+      toast({ variant: "destructive", title: "Motion Core Busy", description: "Could not initiate render." });
     } finally {
       setIsProcessing(false);
     }
@@ -154,35 +150,34 @@ function EditorContent() {
   if (!mounted) return null;
 
   return (
-    <div className="h-screen bg-[#020408] flex flex-col overflow-hidden text-[#e1e4e8]">
-      <Navbar />
-      
-      <div className="h-20 border-b bg-[#05070a]/90 backdrop-blur-3xl px-6 flex items-center justify-between z-40 border-white/5 mt-20">
-        <div className="flex items-center gap-6">
-          <Link href="/dashboard" className="p-3 hover:bg-white/5 rounded-2xl transition-all border border-transparent hover:border-white/10">
-            <ChevronLeft className="w-5 h-5 text-muted-foreground" />
+    <div className="h-screen bg-[#020108] flex flex-col overflow-hidden text-[#e1e4e8]">
+      {/* TOP NAV BAR */}
+      <div className="h-24 bg-[#050314]/80 backdrop-blur-3xl px-8 flex items-center justify-between z-40 border-b border-white/5">
+        <div className="flex items-center gap-10">
+          <Link href="/dashboard" className="p-4 hover:bg-white/5 rounded-3xl transition-all border border-transparent hover:border-white/10 group">
+            <ChevronLeft className="w-6 h-6 text-muted-foreground group-hover:text-primary transition-colors" />
           </Link>
           <div className="flex flex-col">
             <input 
               value={title} 
               onChange={(e) => setTitle(e.target.value)}
-              className="bg-transparent font-bold text-xl focus:outline-none w-[300px] truncate text-white uppercase tracking-tight"
-              placeholder="Project ID..."
+              className="bg-transparent font-black text-3xl focus:outline-none w-[400px] truncate text-white uppercase tracking-tighter"
+              placeholder="PROJECT_ID..."
             />
-            <div className="flex items-center gap-2 mt-1">
-              <div className={cn("w-2 h-2 rounded-full shadow-glow", isSaving ? "bg-amber-500 animate-pulse" : "bg-emerald-500")} />
-              <span className="text-[10px] font-black uppercase tracking-widest opacity-40">
-                {isSaving ? "Syncing Workspace..." : "Node Synchronized"}
+            <div className="flex items-center gap-3 mt-1">
+              <div className={cn("w-2 h-2 rounded-full", isSaving ? "bg-amber-500 animate-pulse shadow-[0_0_10px_rgba(245,158,11,0.5)]" : "bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]")} />
+              <span className="text-[9px] font-black uppercase tracking-[0.3em] opacity-40">
+                {isSaving ? "Syncing Logic Node..." : "Workspace Operational"}
               </span>
             </div>
           </div>
         </div>
 
         <div className="flex items-center gap-6">
-           <Button variant="outline" className="h-12 rounded-xl bg-white/5 border-white/10 text-white font-bold" onClick={() => handleSave()}>
-             <Save className="w-4 h-4 mr-2" /> Save Draft
+           <Button variant="ghost" className="h-14 px-8 rounded-full border border-white/5 bg-white/5 text-white font-bold text-xs uppercase tracking-widest hover:bg-white/10" onClick={() => handleSave()}>
+             <Save className="w-4 h-4 mr-3" /> Save Draft
            </Button>
-           <Button className="h-12 px-10 rounded-xl font-black uppercase tracking-widest bg-primary shadow-glow text-[10px] gap-2 hover:scale-105 transition-all">
+           <Button className="h-14 px-12 rounded-full font-black uppercase tracking-[0.2em] bg-white text-black shadow-glow text-[10px] gap-3 hover:bg-primary hover:text-white transition-all active:scale-95">
             <Download className="w-4 h-4" />
             Export 4K
           </Button>
@@ -190,82 +185,98 @@ function EditorContent() {
       </div>
 
       <div className="flex-1 flex overflow-hidden">
-        <div className="w-24 bg-[#05070a] border-r border-white/5 flex flex-col items-center py-10 gap-10">
+        {/* SIDEBAR TOOLBAR */}
+        <div className="w-28 bg-[#050314] border-r border-white/5 flex flex-col items-center py-12 gap-12">
            {[
              { icon: Wand2, id: 'ai', label: 'AI' },
              { icon: Film, id: 'media', label: 'ASSETS' },
-             { icon: Palette, id: 'fx', label: 'FILTERS' },
+             { icon: Palette, id: 'fx', label: 'EFFECTS' },
              { icon: Type, id: 'text', label: 'TITLES' },
              { icon: Settings2, id: 'tools', label: 'RESIZE' }
            ].map((item) => (
              <button 
                key={item.id} 
-               className={cn("flex flex-col items-center gap-2 transition-all", activeTab === item.id ? "text-primary" : "text-muted-foreground")} 
+               className={cn("flex flex-col items-center gap-3 transition-all", activeTab === item.id ? "text-primary scale-110" : "text-muted-foreground hover:text-white")} 
                onClick={() => setActiveTab(item.id)}
              >
-               <div className={cn("p-4 rounded-[1.2rem] border-2 transition-all", activeTab === item.id ? "bg-primary/10 border-primary/40 scale-110 shadow-glow" : "bg-transparent border-transparent hover:bg-white/5")}>
-                 <item.icon className="w-6 h-6" />
+               <div className={cn("p-5 rounded-[2rem] border-2 transition-all duration-500", activeTab === item.id ? "bg-primary/15 border-primary shadow-glow" : "bg-transparent border-transparent hover:bg-white/5")}>
+                 <item.icon className="w-7 h-7" />
                </div>
-               <span className="text-[8px] font-black uppercase tracking-widest">{item.label}</span>
+               <span className="text-[9px] font-black uppercase tracking-widest">{item.label}</span>
              </button>
            ))}
         </div>
 
-        <div className="w-[420px] bg-[#0a0d14] border-r border-white/5 flex flex-col p-8 space-y-10 overflow-y-auto scrollbar-hide hidden lg:flex">
+        {/* SIDE PANEL (DRAWER) */}
+        <div className="w-[450px] bg-[#0a061c] border-r border-white/5 flex flex-col p-10 space-y-12 overflow-y-auto scrollbar-hide hidden xl:flex shadow-2xl relative z-10">
            {activeTab === 'ai' && (
-             <div className="space-y-10 animate-in fade-in slide-in-from-left-4">
-                <div className="space-y-5">
-                   <p className="text-[10px] font-black uppercase tracking-[0.4em] text-primary">Viral Narrative Core</p>
+             <div className="space-y-12 animate-in fade-in slide-in-from-left-6 duration-700">
+                <div className="space-y-6">
+                   <div className="flex items-center gap-3">
+                      <div className="p-2 bg-primary/20 rounded-lg text-primary"><Wand2 size={16} /></div>
+                      <p className="text-[11px] font-black uppercase tracking-[0.4em] text-white">Narrative Core</p>
+                   </div>
                    <textarea 
-                     className="w-full bg-black/40 border border-white/10 rounded-[2rem] p-6 text-sm h-32 outline-none focus:border-primary/40 transition-all placeholder:opacity-20" 
-                     placeholder="Topic for your next viral hit..." 
+                     className="w-full bg-black/40 border border-white/10 rounded-[2.5rem] p-8 text-sm h-48 outline-none focus:border-primary/40 transition-all placeholder:opacity-20 leading-relaxed font-medium" 
+                     placeholder="Design your next viral narrative..." 
                      value={scriptTopic} 
                      onChange={(e) => setScriptTopic(e.target.value)} 
                    />
-                   <Button className="w-full h-14 rounded-2xl font-black text-[10px] uppercase tracking-widest bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20" onClick={handleGenerateScript} disabled={isProcessing}>
-                      {isProcessing ? <Loader2 className="w-4 h-4 animate-spin mr-3" /> : <Wand2 className="w-4 h-4 mr-3" />}
-                      Write Viral Script
+                   <Button className="w-full h-16 rounded-full font-black text-[10px] uppercase tracking-widest bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20 transition-all" onClick={handleGenerateScript} disabled={isProcessing}>
+                      {isProcessing ? <Loader2 className="w-4 h-4 animate-spin mr-3" /> : <Zap className="w-4 h-4 mr-3 fill-current" />}
+                      Execute Script Protocol
                    </Button>
                 </div>
 
-                <div className="space-y-5">
-                   <p className="text-[10px] font-black uppercase tracking-[0.4em] text-indigo-400">Veo Motion Synthesis</p>
+                <div className="space-y-6">
+                   <div className="flex items-center gap-3 text-accent">
+                      <div className="p-2 bg-accent/20 rounded-lg"><VideoIcon size={16} /></div>
+                      <p className="text-[11px] font-black uppercase tracking-[0.4em]">Veo Motion Synthesis</p>
+                   </div>
                    <textarea 
-                     className="w-full bg-black/40 border border-white/10 rounded-[2rem] p-6 text-sm h-32 outline-none focus:border-indigo-400/40 transition-all placeholder:opacity-20" 
-                     placeholder="Describe the cinematic clip..." 
+                     className="w-full bg-black/40 border border-white/10 rounded-[2.5rem] p-8 text-sm h-48 outline-none focus:border-accent/40 transition-all placeholder:opacity-20 leading-relaxed font-medium" 
+                     placeholder="Describe cinematic motion details..." 
                      value={videoPrompt} 
                      onChange={(e) => setVideoPrompt(e.target.value)} 
                    />
-                   <Button className="w-full h-14 rounded-2xl font-black text-[10px] uppercase tracking-widest bg-indigo-600 shadow-2xl hover:bg-indigo-700" onClick={handleGenerateVideo} disabled={isProcessing}>
+                   <Button className="w-full h-16 rounded-full font-black text-[10px] uppercase tracking-widest bg-accent hover:bg-accent/90 shadow-glow transition-all" onClick={handleGenerateVideo} disabled={isProcessing}>
                       {isProcessing ? <Loader2 className="w-4 h-4 animate-spin mr-3" /> : <VideoIcon className="w-4 h-4 mr-3" />}
-                      Generate Clip
+                      Synthesize HD Clip
                    </Button>
                 </div>
              </div>
            )}
 
            {activeTab === 'media' && (
-             <div className="space-y-8 animate-in fade-in slide-in-from-left-4">
+             <div className="space-y-10 animate-in fade-in slide-in-from-left-6 duration-700">
                 <input type="file" ref={fileInputRef} className="hidden" accept="video/*" onChange={handleFileUpload} />
-                <Button className="w-full h-48 border-4 border-dashed border-white/5 rounded-[3rem] bg-white/[0.02] flex flex-col gap-5 hover:bg-white/[0.05] hover:border-primary/20 transition-all group" onClick={() => fileInputRef.current?.click()}>
-                   <div className="p-4 bg-white/5 rounded-full group-hover:scale-110 transition-all shadow-inner">
-                      <Upload className="w-8 h-8 text-muted-foreground" />
+                <div 
+                   className="w-full h-60 border-4 border-dashed border-white/5 rounded-[4rem] bg-white/[0.02] flex flex-col items-center justify-center gap-6 hover:bg-white/[0.05] hover:border-primary/20 transition-all group cursor-pointer" 
+                   onClick={() => fileInputRef.current?.click()}
+                >
+                   <div className="p-6 bg-white/5 rounded-full group-hover:scale-110 group-hover:rotate-12 transition-all shadow-2xl">
+                      <Upload className="w-10 h-10 text-muted-foreground" />
                    </div>
-                   <div className="text-center">
-                     <span className="text-[10px] font-black text-white uppercase tracking-[0.3em] block">Import Media</span>
-                     <span className="text-[8px] text-muted-foreground uppercase mt-2 block">Support 4K MP4 / MOV</span>
+                   <div className="text-center space-y-2">
+                     <span className="text-[11px] font-black text-white uppercase tracking-[0.4em] block">Import Local Node</span>
+                     <span className="text-[8px] text-muted-foreground uppercase tracking-widest opacity-40 block">4K MP4 • MOV • WebM</span>
                    </div>
-                </Button>
+                </div>
              </div>
            )}
         </div>
 
-        <div className="flex-1 flex flex-col bg-[#020408] p-6 md:p-12 space-y-10 relative overflow-hidden">
-           <div className="flex-1 relative aspect-video mx-auto bg-black rounded-[4rem] border-[12px] border-[#0a0d14] overflow-hidden shadow-2xl group flex flex-col items-center justify-center">
+        {/* MAIN VIEWER AREA */}
+        <div className="flex-1 flex flex-col bg-[#03010a] p-8 lg:p-12 space-y-12 relative overflow-hidden">
+           {/* VIDEO PREVIEW CONTAINER */}
+           <div className="flex-1 relative aspect-video mx-auto w-full max-w-6xl bg-black rounded-[5rem] border-[12px] border-[#0a061c] overflow-hidden shadow-[0_50px_100px_rgba(0,0,0,0.8)] group flex flex-col items-center justify-center">
               {!videoData ? (
-                <div className="text-center space-y-6 opacity-10 group-hover:opacity-20 transition-opacity">
-                   <Monitor size={80} className="mx-auto" />
-                   <p className="text-[12px] font-black uppercase tracking-[0.6em]">Waiting for Output Node</p>
+                <div className="text-center space-y-8 opacity-10 group-hover:opacity-20 transition-opacity">
+                   <div className="relative mx-auto">
+                      <Monitor size={100} className="mx-auto" />
+                      <div className="absolute inset-0 blur-3xl bg-primary/20 rounded-full" />
+                   </div>
+                   <p className="text-sm font-black uppercase tracking-[0.8em]">Waiting for Output Node</p>
                 </div>
               ) : (
                 <video 
@@ -282,104 +293,120 @@ function EditorContent() {
                  <Button 
                    size="icon" 
                    onClick={() => isPlaying ? videoRef.current?.pause() : videoRef.current?.play()} 
-                   className={cn("w-24 h-24 rounded-full bg-primary/20 backdrop-blur-xl border-4 border-primary/40 transition-all pointer-events-auto shadow-2xl", isPlaying ? "opacity-0 scale-90" : "opacity-100 scale-100 hover:scale-110")}
+                   className={cn("w-32 h-32 rounded-full bg-primary/20 backdrop-blur-3xl border-4 border-primary/50 transition-all pointer-events-auto shadow-[0_0_50px_rgba(109,40,217,0.5)]", isPlaying ? "opacity-0 scale-90" : "opacity-100 scale-100 hover:scale-110 hover:shadow-[0_0_80px_rgba(109,40,217,0.8)]")}
                  >
-                   {isPlaying ? <Pause className="fill-primary w-8 h-8" /> : <Play className="fill-primary w-8 h-8 ml-2" />}
+                   {isPlaying ? <Pause className="fill-primary w-10 h-10" /> : <Play className="fill-primary w-10 h-10 ml-2" />}
                  </Button>
               </div>
            </div>
 
-           <div className="h-64 bg-[#0a0d14] rounded-[3.5rem] border border-white/5 flex flex-col overflow-hidden relative shadow-2xl">
-              <div className="h-14 border-b border-white/5 px-10 flex items-center justify-between bg-white/[0.03]">
-                 <div className="flex items-center gap-6">
-                    <div className="flex items-center gap-3">
-                       <Film className="w-4 h-4 text-primary" />
-                       <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-white">Project Matrix</h4>
+           {/* TIMELINE AREA */}
+           <div className="h-72 glass-panel rounded-[4rem] border-white/5 flex flex-col overflow-hidden relative shadow-[0_-20px_50px_rgba(0,0,0,0.5)]">
+              <div className="h-16 border-b border-white/5 px-12 flex items-center justify-between bg-white/[0.03]">
+                 <div className="flex items-center gap-10">
+                    <div className="flex items-center gap-4">
+                       <div className="p-2 bg-primary/20 rounded-lg text-primary"><Film size={16} /></div>
+                       <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-white">Project Matrix</h4>
                     </div>
-                    <span className="text-[12px] font-mono text-white/40">{currentTime.toFixed(2)}s / {duration.toFixed(2)}s</span>
+                    <div className="h-8 w-px bg-white/10" />
+                    <span className="text-[13px] font-mono font-bold text-primary tracking-widest">{currentTime.toFixed(2)}s <span className="opacity-20 text-white">/ {duration.toFixed(2)}s</span></span>
                  </div>
-                 <div className="flex items-center gap-4">
-                    <Button variant="ghost" size="icon" className="h-8 w-8 opacity-40 hover:opacity-100"><Scissors size={14}/></Button>
-                    <Button variant="ghost" size="icon" className="h-8 w-8 opacity-40 hover:opacity-100"><Timer size={14}/></Button>
+                 <div className="flex items-center gap-6">
+                    {[Scissors, Timer, Layers, Smile].map((Icon, i) => (
+                      <Button key={i} variant="ghost" size="icon" className="h-10 w-10 text-muted-foreground hover:text-white hover:bg-white/5 transition-all"><Icon size={18}/></Button>
+                    ))}
+                    <div className="h-8 w-px bg-white/10 mx-2" />
+                    <Button variant="ghost" size="icon" className="h-10 w-10 text-muted-foreground hover:text-white"><Undo2 size={18}/></Button>
+                    <Button variant="ghost" size="icon" className="h-10 w-10 text-muted-foreground hover:text-white"><Redo2 size={18}/></Button>
                  </div>
               </div>
 
               <div 
                 ref={timelineRef}
-                className="flex-1 p-10 space-y-5 relative cursor-crosshair scrollbar-hide overflow-hidden"
+                className="flex-1 p-12 space-y-6 relative cursor-crosshair scrollbar-hide overflow-hidden bg-black/20"
               >
-                 <div className="h-14 bg-primary/10 border border-primary/20 rounded-2xl relative flex items-center px-6">
-                    <Film className="w-4 h-4 text-primary mr-5 opacity-40" />
-                    <span className="text-[10px] font-black uppercase tracking-widest text-primary opacity-60">Primary Track</span>
+                 {/* TRACK 1 */}
+                 <div className="h-16 bg-primary/10 border border-primary/20 rounded-[1.5rem] relative flex items-center px-8 group/track transition-all hover:bg-primary/15">
+                    <Film className="w-5 h-5 text-primary mr-6 opacity-30 group-hover/track:opacity-60 transition-opacity" />
+                    <span className="text-[11px] font-black uppercase tracking-widest text-primary opacity-50">Visual Primary Track</span>
                     {videoData && (
-                      <div className="absolute left-0 h-full bg-primary/25 border-x-2 border-primary w-[90%] rounded-2xl animate-in slide-in-from-left duration-1000" />
+                      <div className="absolute left-0 h-full bg-primary/30 border-x-4 border-primary w-[85%] rounded-[1.5rem] animate-in slide-in-from-left duration-1000 shadow-glow relative">
+                         <div className="absolute inset-0 shimmer-effect opacity-10" />
+                      </div>
                     )}
                  </div>
 
-                 <div className="h-10 bg-indigo-500/10 border border-indigo-500/20 rounded-xl relative flex items-center px-6 opacity-30">
-                    <Music className="w-3 h-3 text-indigo-400 mr-5 opacity-40" />
-                    <span className="text-[8px] font-black uppercase tracking-widest text-indigo-400">Audio Overlay</span>
+                 {/* TRACK 2 */}
+                 <div className="h-12 bg-accent/5 border border-accent/10 rounded-2xl relative flex items-center px-8 opacity-30 group/track2">
+                    <Music className="w-4 h-4 text-accent mr-6 opacity-30" />
+                    <span className="text-[9px] font-black uppercase tracking-widest text-accent opacity-40">Audio Overlay Node</span>
                  </div>
 
+                 {/* PLAYHEAD */}
                  <div 
-                   className="absolute top-0 bottom-0 w-1 bg-white z-20 shadow-glow" 
+                   className="absolute top-0 bottom-0 w-1 bg-white z-20 shadow-[0_0_20px_rgba(255,255,255,0.8)]" 
                    style={{ left: `${(currentTime / duration) * 100}%` }}
                  >
-                    <div className="absolute -top-1 -left-[6px] w-4 h-4 bg-white rounded-full border-4 border-black" />
+                    <div className="absolute -top-1 -left-[10px] w-6 h-6 bg-white rounded-full border-[6px] border-[#0a061c] shadow-2xl" />
                  </div>
               </div>
            </div>
         </div>
 
-        <div className="w-[360px] bg-[#05070a] border-l border-white/5 p-10 space-y-10 hidden xl:flex flex-col">
+        {/* RIGHT DIAGNOSTICS PANEL */}
+        <div className="w-[380px] bg-[#050314] border-l border-white/5 p-12 space-y-12 hidden 2xl:flex flex-col">
            <header className="flex items-center gap-4 text-primary">
-              <Cpu size={22} className="animate-pulse" />
-              <h4 className="text-[11px] font-black uppercase tracking-[0.4em]">Node Diagnostics</h4>
+              <div className="p-2 bg-primary/10 rounded-lg animate-pulse"><Cpu size={20} /></div>
+              <h4 className="text-[11px] font-black uppercase tracking-[0.5em]">Node Diagnostics</h4>
            </header>
 
-           <div className="space-y-8 flex-1">
-              <div className="p-8 bg-white/[0.02] border border-white/5 rounded-[2.5rem] space-y-4 shadow-inner">
+           <div className="space-y-10 flex-1">
+              <div className="glass-panel p-10 rounded-[3.5rem] border-white/5 space-y-6 relative overflow-hidden group">
+                 <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                  <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground opacity-40">Neural Health</p>
                  <div className="flex items-center justify-between">
-                    <span className="text-2xl font-bold font-headline text-white">Elite Tier</span>
-                    <Zap className="text-emerald-500 w-5 h-5 animate-pulse" />
+                    <span className="text-3xl font-black font-headline text-white uppercase tracking-tight">Elite Tier</span>
+                    <div className="p-3 bg-emerald-500/20 rounded-2xl"><Zap className="text-emerald-500 w-6 h-6 fill-current animate-pulse" /></div>
                  </div>
-                 <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden">
-                    <div className="h-full bg-emerald-500 w-[96%] shadow-glow" />
+                 <div className="w-full h-2 bg-white/5 rounded-full overflow-hidden">
+                    <div className="h-full bg-gradient-to-r from-emerald-500 to-primary w-[98%] shadow-glow" />
                  </div>
               </div>
 
-              <div className="p-8 bg-white/[0.02] border border-white/5 rounded-[2.5rem] space-y-4">
+              <div className="glass-panel p-10 rounded-[3.5rem] border-white/5 space-y-6">
                  <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground opacity-40">System Node</p>
-                 <div className="flex flex-col gap-2">
-                    <div className="flex justify-between text-[10px] font-bold">
-                       <span className="text-muted-foreground uppercase">Region</span>
-                       <span className="text-white">Global CDN</span>
-                    </div>
-                    <div className="flex justify-between text-[10px] font-bold">
-                       <span className="text-muted-foreground uppercase">Latency</span>
-                       <span className="text-emerald-400">0.4s</span>
-                    </div>
+                 <div className="space-y-4">
+                    {[
+                      { label: "Region", val: "Global-01", color: "text-white" },
+                      { label: "Latency", val: "0.4ms", color: "text-primary" },
+                      { label: "SSL Status", val: "Verified", color: "text-emerald-500" }
+                    ].map((row, i) => (
+                      <div key={i} className="flex justify-between items-center pb-3 border-b border-white/5 last:border-0">
+                         <span className="text-[10px] font-bold uppercase text-muted-foreground opacity-60">{row.label}</span>
+                         <span className={cn("text-[11px] font-black uppercase tracking-widest", row.color)}>{row.val}</span>
+                      </div>
+                    ))}
                  </div>
               </div>
            </div>
 
-           <Button variant="outline" className="w-full h-16 rounded-2xl border-white/10 text-white font-bold text-[11px] uppercase tracking-widest hover:bg-white/5" onClick={() => handleSave()}>
-              <RefreshCw className="w-4 h-4 mr-3" /> Sync Workspace
+           <Button variant="outline" className="w-full h-20 rounded-full border-white/10 text-white font-black text-[11px] uppercase tracking-widest hover:bg-white/5 hover:border-primary/40 transition-all group" onClick={() => handleSave()}>
+              <RefreshCw className="w-4 h-4 mr-4 group-hover:rotate-180 transition-transform duration-700" /> Propagate Changes
            </Button>
         </div>
       </div>
 
+      {/* OVERLAY LOADER */}
       {isProcessing && (
-        <div className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-[100px] flex items-center justify-center">
-           <div className="text-center space-y-12 max-w-lg px-8">
-              <div className="relative mx-auto">
-                 <Loader2 className="w-24 h-24 animate-spin text-primary mx-auto" />
-                 <div className="absolute inset-0 blur-3xl bg-primary/30 rounded-full" />
+        <div className="fixed inset-0 z-[100] bg-[#020108]/95 backdrop-blur-[50px] flex items-center justify-center">
+           <div className="text-center space-y-16 max-w-2xl px-10">
+              <div className="relative mx-auto w-32 h-32">
+                 <Loader2 className="w-full h-full animate-spin text-primary relative z-10" />
+                 <div className="absolute inset-0 blur-[50px] bg-primary/40 rounded-full scale-150 animate-pulse" />
               </div>
-              <div className="space-y-4">
-                 <h2 className="text-4xl font-headline font-black text-white uppercase tracking-tighter">GEMINI CORE ACTIVE</h2>
-                 <p className="text-[11px] text-muted-foreground font-black uppercase tracking-[0.5em] animate-pulse">Establishing High-Speed Neural Link...</p>
+              <div className="space-y-6">
+                 <h2 className="text-6xl font-headline font-black text-white uppercase tracking-tighter">Gemini Core Active</h2>
+                 <p className="text-[11px] text-muted-foreground font-black uppercase tracking-[0.8em] animate-pulse">Establishing Multi-Node High-Speed Link...</p>
               </div>
            </div>
         </div>
@@ -390,7 +417,7 @@ function EditorContent() {
 
 export default function EditorPage() {
   return (
-    <Suspense fallback={<div className="h-screen flex items-center justify-center bg-[#020408]"><Loader2 className="w-12 h-12 animate-spin text-primary" /></div>}>
+    <Suspense fallback={<div className="h-screen flex items-center justify-center bg-[#020108]"><div className="w-16 h-16 rounded-full border-4 border-primary border-t-transparent animate-spin" /></div>}>
       <EditorContent />
     </Suspense>
   );
