@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Video, Zap, Sparkles, Youtube, Instagram, Share2, Play, CheckCircle2, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
+import { cn } from "@/lib/utils";
 
 export default function LandingPage() {
   const heroImg = PlaceHolderImages.find(img => img.id === 'hero-main');
