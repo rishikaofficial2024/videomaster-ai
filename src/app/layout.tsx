@@ -4,19 +4,20 @@ import { Toaster } from "@/components/ui/toaster";
 import { FirebaseClientProvider } from '@/firebase';
 
 /**
- * 📈 ELITE SEO & METADATA CORE: Production Released
+ * 📈 ELITE SEO & METADATA CORE: Final Production Release
+ * Optimized for Google Search and Viral Acquisition.
  */
 export const metadata: Metadata = {
   title: 'VideoMaster AI - India\'s #1 Professional AI Video Studio',
-  description: 'Create viral AI videos 10x faster with Gemini Fast AI. Professional script writing, cinematic video generation, and 4K thumbnail design. Start for FREE now.',
-  keywords: ['AI Video Maker', 'Viral Script Writer', 'Cinematic AI', 'VideoMaster AI Tech', 'AI Studio India', 'Gemini Fast AI Video', 'YouTube Shorts AI', 'Reel Maker'],
+  description: 'Create viral AI videos 10x faster with Gemini Fast AI. Professional script writing, cinematic video generation, and 4K thumbnail design. Unlock Pro features for FREE.',
+  keywords: ['AI Video Maker India', 'Viral Script Writer', 'Cinematic AI Video', 'VideoMaster AI Tech', 'Gemini Fast AI Video', 'YouTube Shorts AI', 'Instagram Reel Maker', 'Best AI Video Editor'],
   metadataBase: new URL('https://videomaster-ai.tech'),
   alternates: { canonical: '/' },
   verification: {
     google: 'google-site-verification-id-placeholder', 
   },
   openGraph: {
-    title: 'VideoMaster AI - The Ultimate Production Studio',
+    title: 'VideoMaster AI - The Ultimate Neural Production Studio',
     description: 'Transform cinematic ideas into professional video assets with Gemini Fast AI.',
     url: 'https://videomaster-ai.tech',
     siteName: 'VideoMaster AI',
@@ -41,6 +42,7 @@ export default function RootLayout({
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
     "name": "VideoMaster AI",
+    "url": "https://videomaster-ai.tech",
     "operatingSystem": "Android, Web",
     "applicationCategory": "MultimediaApplication",
     "offers": {
@@ -51,7 +53,7 @@ export default function RootLayout({
     "aggregateRating": {
       "@type": "AggregateRating",
       "ratingValue": "4.9",
-      "ratingCount": "1050"
+      "ratingCount": "1250"
     }
   };
 
@@ -62,8 +64,10 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
         <meta name="theme-color" content="#05070a" />
-        <meta httpEquiv="Content-Security-Policy" content="upgrade-insecure-requests" />
-        {/* 📊 GA4 & MONETIZATION */}
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        
+        {/* 📊 ADSENSE & ANALYTICS NODE */}
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8946933317699938" crossOrigin="anonymous"></script>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       </head>

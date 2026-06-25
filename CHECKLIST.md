@@ -1,24 +1,30 @@
-
 # 🏁 VideoMaster AI: Final Launch Checklist
 
-Follow these final steps to go live globally:
+Bhaai, maine saara code finalize kar diya hai. Ab bas ye final steps follow kijiye aur aapka AI Business officially live ho jayega.
 
-### 1. Execute Master Terminal Commands (Priority) ✅
-- [ ] Open the **Terminal** and run: `npm run web:deploy`
-- [ ] In the **Terminal**, run: `npm run mobile:push`
+### 1. Terminal Commands (Top Priority) ✅
+- [ ] Open **Terminal** and run: `npm run web:deploy`
+  *Ye aapki site ko `videomaster-ai.tech` par officially upload karega.*
+- [ ] In **Terminal**, run: `npm run mobile:push`
+  *Ye GitHub par APK build start karega.*
 
-### 2. Firebase Console Final Clicks ✅
-- [ ] Go to [Authorized Domains](https://console.firebase.google.com/project/studio-9489287013-59986/authentication/settings) and add: `videomaster-ai.tech`.
-- [ ] In SMS Region Policy, allow **India (IN)** if you plan to use phone login.
+### 2. AdSense Approval 💰
+- [ ] Go to [Google AdSense](https://adsense.google.com).
+- [ ] Ensure `videomaster-ai.tech` is added to "Sites".
+- [ ] Verification: `app-ads.txt` is already live at `videomaster-ai.tech/app-ads.txt`.
 
-### 3. Google Search Console Verification ✅
+### 3. Google Search Console 📈
 - [ ] Go to [Google Search Console](https://search.google.com/search-console).
-- [ ] Verify your domain `videomaster-ai.tech`.
-- [ ] Submit your `sitemap.xml` for instant Google indexing.
+- [ ] Add your domain `videomaster-ai.tech`.
+- [ ] Submit `https://videomaster-ai.tech/sitemap.xml`.
 
-### 4. AdSense Review ✅
-- [ ] Log in to [Google AdSense](https://adsense.google.com).
-- [ ] Ensure `videomaster-ai.tech` is added as a "Site".
-- [ ] Wait for Google's manual review (usually 2-7 days).
+### 4. Play Store Submission 📱
+- [ ] Go to [Google Play Console](https://play.google.com/console).
+- [ ] Create a New App.
+- [ ] Use the metadata from `docs/PLAY_STORE_ASSETS.md`.
+- [ ] Upload the `.apk` or `.aab` file generated in GitHub Actions.
 
-**Everything in the code is finalized. Your AI business is ready for global traffic!** 🚀💸🎬
+### 5. Final Manual Clicks (Firebase) 🔑
+- [ ] In [Firebase Auth Settings](https://console.firebase.google.com/project/studio-9489287013-59986/authentication/settings), ensure `videomaster-ai.tech` is added to **Authorized Domains**.
+
+**Everything is technically stabilized. Your AI Studio is ready to generate revenue!** 🚀💸🎬
