@@ -1,6 +1,8 @@
 /**
- * 🛠️ CRITICAL FIX: Middleware neutralized to support "output: export".
- * Next.js does not allow middleware files when using static exports for Capacitor/Android.
+ * 🛠️ LEAD DEVELOPER FIX: Middleware neutralized to support static exports.
+ * This ensures the app can be compiled for Android APK and Firebase Hosting without errors.
  */
 export const dynamic = 'force-static';
-export default function middleware() {}
+export default function middleware() {
+  return;
+}

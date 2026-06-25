@@ -69,7 +69,6 @@ function EditorContent() {
   const [magicHook, setMagicHook] = useState("");
   const [subtitles, setSubtitles] = useState("");
   
-  // Advanced Features State
   const [playbackSpeed, setPlaybackSpeed] = useState(1);
   const [activeFilter, setActiveFilter] = useState("none");
   const [history, setHistory] = useState<any[]>([]);
@@ -81,7 +80,7 @@ function EditorContent() {
       setProjectId(projectIdFromUrl);
       setIsNewProject(false);
     } else {
-      // ✅ HYDRATION FIX: Generate ID only on client
+      // 🛠️ LEAD DEVELOPER FIX: Hydration safe ID generation
       const newId = "prj-" + Math.random().toString(36).substring(7);
       setProjectId(newId);
     }
@@ -133,7 +132,6 @@ function EditorContent() {
       }).then(() => setIsNewProject(false));
     }
     
-    // Add to history for Undo/Redo
     const newHistory = history.slice(0, historyIndex + 1);
     newHistory.push(JSON.parse(JSON.stringify(data)));
     setHistory(newHistory);
@@ -239,7 +237,6 @@ function EditorContent() {
     <div className="h-screen bg-[#020408] flex flex-col overflow-hidden text-[#e1e4e8]">
       <Navbar />
       
-      {/* 🚀 TOP BAR: Elite Controls */}
       <div className="h-20 border-b bg-[#05070a]/90 backdrop-blur-3xl px-6 flex items-center justify-between z-40 border-white/5 mt-20">
         <div className="flex items-center gap-4">
           <Link href="/dashboard" className="p-2 hover:bg-white/5 rounded-xl transition-all">
@@ -249,7 +246,7 @@ function EditorContent() {
             <input 
               value={title} 
               onChange={(e) => setTitle(e.target.value)}
-              className="bg-transparent font-bold text-lg focus:outline-none w-[200px] md:w-[300px] truncate text-white"
+              className="bg-transparent font-bold text-lg focus:outline-none w-[200px] md:w-[300px] truncate text-white uppercase tracking-tight"
             />
             <div className="flex items-center gap-2 mt-0.5">
               <div className={cn("w-1.5 h-1.5 rounded-full", isSaving ? "bg-amber-500 animate-pulse" : "bg-emerald-500")} />
@@ -280,7 +277,6 @@ function EditorContent() {
       </div>
 
       <div className="flex-1 flex overflow-hidden">
-        {/* 🛠️ LEFT SIDEBAR: Tools */}
         <div className="w-20 bg-[#05070a] border-r border-white/5 flex flex-col items-center py-8 gap-8">
            {[
              { icon: Wand2, id: 'ai', label: 'AI' },
@@ -304,7 +300,6 @@ function EditorContent() {
            ))}
         </div>
 
-        {/* 🎛️ PANEL: Active Tool Settings */}
         <div className="w-[380px] bg-[#0a0d14] border-r border-white/5 flex flex-col p-6 space-y-8 overflow-y-auto scrollbar-hide hidden lg:flex">
            {activeTab === 'ai' && (
              <div className="space-y-8 animate-in fade-in slide-in-from-left-4">
@@ -404,7 +399,6 @@ function EditorContent() {
            )}
         </div>
 
-        {/* 🎬 PREVIEW: Main Viewport */}
         <div className="flex-1 flex flex-col bg-[#020408] p-4 md:p-8 space-y-6 relative overflow-hidden">
            <div className="flex-1 relative aspect-video mx-auto bg-black rounded-[2.5rem] border-[8px] border-[#0a0d14] overflow-hidden shadow-2xl group flex flex-col items-center justify-center">
               {!videoData ? (
@@ -424,7 +418,6 @@ function EditorContent() {
                 />
               )}
               
-              {/* Play Overlay */}
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                  <Button 
                    size="icon" 
@@ -436,7 +429,6 @@ function EditorContent() {
               </div>
            </div>
 
-           {/* 📽️ TIMELINE: Multi-track simulation */}
            <div className="h-52 bg-[#0a0d14] rounded-[2.5rem] border border-white/5 flex flex-col overflow-hidden relative shadow-2xl">
               <div className="h-10 border-b border-white/5 px-6 flex items-center justify-between bg-white/[0.03]">
                  <div className="flex items-center gap-4">
@@ -456,7 +448,6 @@ function EditorContent() {
                 className="flex-1 overflow-x-auto p-6 space-y-3 relative cursor-crosshair scrollbar-hide"
                 onClick={handleTimelineClick}
               >
-                 {/* Simulate layers */}
                  <div className="h-10 bg-primary/10 border border-primary/20 rounded-xl relative flex items-center px-4">
                     <Film className="w-3 h-3 text-primary mr-3 opacity-40" />
                     <span className="text-[8px] font-black uppercase tracking-widest text-primary">Video Layer 1</span>
@@ -475,7 +466,6 @@ function EditorContent() {
                     <span className="text-[8px] font-black uppercase tracking-widest text-indigo-400">Studio Audio</span>
                  </div>
                  
-                 {/* Playhead */}
                  <div 
                    className="absolute top-0 bottom-0 w-0.5 bg-white z-20 shadow-glow" 
                    style={{ left: `${(currentTime / duration) * 100}%` }}
@@ -486,7 +476,6 @@ function EditorContent() {
            </div>
         </div>
 
-        {/* 📊 RIGHT PANEL: Stats & Export */}
         <div className="w-[320px] bg-[#05070a] border-l border-white/5 p-6 space-y-8 hidden xl:flex flex-col">
            <header className="flex items-center gap-3 text-primary">
               <Cpu size={18} />
@@ -536,7 +525,6 @@ function EditorContent() {
         </div>
       </div>
 
-      {/* 🔮 MODAL: Processing */}
       {isProcessing && (
         <div className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-[80px] flex items-center justify-center">
            <div className="text-center space-y-10 max-w-sm px-6">

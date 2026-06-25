@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://videomaster-ai.tech'),
   alternates: { canonical: '/' },
   verification: {
-    google: 'G-XXXXXXXXXX', // Replace with real search console ID when available
+    google: 'G-XXXXXXXXXX', // 🛠️ LEAD DEVELOPER: Add real search console ID here
   },
   openGraph: {
     title: 'VideoMaster AI - The Ultimate Production Studio',
@@ -41,7 +41,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
         <meta name="theme-color" content="#05070a" />
-        {/* Google AdSense Integration */}
+        {/* Google AdSense Integration: Authorized Publisher ca-pub-8946933317699938 */}
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8946933317699938" crossOrigin="anonymous"></script>
       </head>
       <body className="font-body antialiased bg-background text-foreground">
