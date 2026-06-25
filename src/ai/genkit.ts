@@ -8,8 +8,8 @@ import { googleAI } from '@genkit-ai/google-genai';
 
 const getApiKey = () => {
   // Use public env if available, otherwise fallback.
-  // In a real production app, use a proxy API if hiding the key is critical.
-  const rawKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY || process.env.GEMINI_API_KEY || '';
+  // Priority order: NEXT_PUBLIC_ > Direct Env > Empty String
+  const rawKey = (typeof process !== 'undefined' ? (process.env.NEXT_PUBLIC_GEMINI_API_KEY || process.env.GEMINI_API_KEY) : '') || '';
   return rawKey.trim().replace(/^["']|["']$/g, '').trim();
 };
 
