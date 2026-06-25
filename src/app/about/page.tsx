@@ -6,12 +6,13 @@ import { Card } from "@/components/ui/card";
 import { 
   Info, Zap, Cpu, Globe, Rocket, 
   Crown, Sparkles, ArrowLeft, Heart,
-  ShieldCheck, Smartphone, Monitor
+  ShieldCheck, Smartphone, Monitor, User, Mail
 } from "lucide-react";
 import Link from "next/link";
 
 /**
  * 🎨 ABOUT NODE: Mission Statement & Technology Stack.
+ * Updated: Included Creator Branding for Rinku Ganjawala.
  */
 export default function AboutPage() {
   return (
@@ -32,6 +33,41 @@ export default function AboutPage() {
              <p className="text-2xl md:text-4xl text-muted-foreground font-medium italic opacity-60 max-w-4xl mx-auto">India's first professional AI production studio built for the next generation of viral creators.</p>
           </div>
         </header>
+
+        {/* CREATOR SECTION */}
+        <section className="relative py-20 px-12 glass-panel rounded-[5rem] border-primary/30 overflow-hidden shadow-glow">
+           <div className="absolute top-0 right-0 p-20 opacity-5 rotate-12">
+              <User className="w-96 h-96 text-primary" />
+           </div>
+           <div className="grid md:grid-cols-2 gap-16 items-center relative z-10">
+              <div className="space-y-8">
+                 <div className="inline-flex items-center gap-3 px-5 py-2 rounded-full bg-primary/20 border border-primary/40 text-primary text-[10px] font-black uppercase tracking-[0.4em]">
+                    <Crown size={14} /> Master Architect
+                 </div>
+                 <h2 className="text-5xl md:text-7xl font-headline font-black text-white uppercase tracking-tighter">MEET THE <br/> <span className="text-gradient">CREATOR.</span></h2>
+                 <p className="text-xl text-muted-foreground leading-relaxed italic opacity-80">
+                   VideoMaster AI was conceptualized and engineered by **Rinku Ganjawala**, a vision-driven developer dedicated to democratizing Hollywood-grade production tools for creators in India and beyond.
+                 </p>
+                 <div className="space-y-4 pt-6">
+                    <div className="flex items-center gap-4 text-white font-bold uppercase tracking-widest text-sm">
+                       <User className="text-primary w-5 h-5" /> Rinku Ganjawala
+                    </div>
+                    <div className="flex items-center gap-4 text-white font-bold uppercase tracking-widest text-sm">
+                       <Mail className="text-primary w-5 h-5" /> rinkukumarpaswan1796@gmail.com
+                    </div>
+                 </div>
+              </div>
+              <div className="relative group">
+                 <div className="absolute inset-0 bg-primary/20 blur-3xl rounded-full scale-110 opacity-50 group-hover:opacity-100 transition-opacity" />
+                 <div className="w-full aspect-square bg-[#0a061c] rounded-[4rem] border-4 border-white/10 flex items-center justify-center relative z-10 overflow-hidden shadow-2xl">
+                    <User size={150} className="text-primary/20 group-hover:scale-110 transition-transform duration-1000" />
+                    <div className="absolute bottom-10 left-10 right-10 p-6 glass-panel rounded-3xl border-primary/50 text-center">
+                       <span className="text-[10px] font-black text-primary uppercase tracking-[0.5em]">CERTIFIED MASTER DEVELOPER</span>
+                    </div>
+                 </div>
+              </div>
+           </div>
+        </section>
 
         <div className="grid md:grid-cols-2 gap-20 items-center">
            <div className="space-y-12">
@@ -94,7 +130,10 @@ export default function AboutPage() {
 
         <div className="text-center space-y-12">
            <Heart className="w-16 h-16 text-rose-500 mx-auto animate-pulse" />
-           <p className="text-[12px] text-muted-foreground font-black uppercase tracking-[1em] opacity-30">Designed & Powered by 100% Neural Intelligence in India</p>
+           <div className="space-y-4">
+              <p className="text-[12px] text-muted-foreground font-black uppercase tracking-[1em] opacity-30">Designed & Powered by 100% Neural Intelligence in India</p>
+              <p className="text-[10px] text-primary font-black uppercase tracking-[0.5em] opacity-50">Developed by Rinku Ganjawala</p>
+           </div>
         </div>
       </main>
     </div>

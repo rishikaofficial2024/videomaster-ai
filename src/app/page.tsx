@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { 
   Video, Play, Zap, Cpu, Crown, 
   ShieldCheck, Sparkles, Star, Globe, ArrowRight,
-  Rocket, MousePointer2
+  Rocket, MousePointer2, Heart
 } from "lucide-react";
 import Image from "next/image";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
@@ -224,11 +224,20 @@ export default function LandingPage() {
                <Link key={link} href={`/${link.toLowerCase()}`} className="text-xs font-black uppercase tracking-[0.5em] hover:text-primary transition-colors">{link}</Link>
              ))}
           </div>
-          <div className="space-y-6 max-w-xl mx-auto">
+          <div className="space-y-6 max-w-2xl mx-auto">
+             <div className="flex items-center justify-center gap-4 text-[10px] text-muted-foreground font-black uppercase tracking-[0.8em] opacity-40">
+                <span>© 2026 VideoMaster AI</span>
+                <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+                <span>Developed by Rinku Ganjawala</span>
+             </div>
              <p className="text-[10px] text-muted-foreground font-black uppercase tracking-[1em] opacity-20">GOLD STANDARD PRODUCTION NODE v4.2.0</p>
              <p className="text-sm text-muted-foreground/30 italic leading-relaxed">
-               © 2026 VideoMaster AI Technologies. Luxury video synthesis powered by Google Deep Research Labs.
+               Luxury video synthesis powered by Google Deep Research Labs. <br/>
+               Contact: rinkukumarpaswan1796@gmail.com
              </p>
+             <div className="pt-8">
+               <Heart className="w-8 h-8 text-primary mx-auto opacity-20 animate-pulse fill-primary" />
+             </div>
           </div>
       </footer>
     </div>

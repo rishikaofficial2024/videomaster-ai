@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { 
   Mail, MessageSquare, Globe, Phone, 
-  Send, ArrowLeft, Zap, Sparkles 
+  Send, ArrowLeft, Zap, Sparkles, User
 } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
@@ -52,8 +52,9 @@ export default function ContactPage() {
 
               <div className="space-y-8">
                  {[
+                   { icon: User, label: "Master Creator", value: "Rinku Ganjawala" },
                    { icon: Mail, label: "Neural Inquiries", value: "hello@videomaster-ai.tech" },
-                   { icon: MessageSquare, label: "Technical Support", value: "support@videomaster-ai.tech" },
+                   { icon: Mail, label: "Personal Reach", value: "rinkukumarpaswan1796@gmail.com" },
                    { icon: Globe, label: "Global Presence", value: "Bengaluru, India • San Francisco, USA" }
                  ].map((item, i) => (
                    <div key={i} className="flex items-center gap-8 p-8 bg-white/5 rounded-[2.5rem] border border-white/5 hover:border-primary/30 transition-all group">
@@ -95,6 +96,10 @@ export default function ContactPage() {
               </form>
            </Card>
         </div>
+
+        <footer className="text-center pt-10 opacity-40">
+           <p className="text-[9px] text-muted-foreground font-black uppercase tracking-[1em]">© 2026 VideoMaster AI • Developed by Rinku Ganjawala</p>
+        </footer>
       </main>
     </div>
   );

@@ -8,7 +8,7 @@ import {
   Settings, Bell, Shield, Languages, Eye, Moon, 
   Sun, Database, Download, HelpCircle, MessageSquare, 
   Info, ArrowLeft, ChevronRight, Check, Trash2, 
-  Smartphone, Monitor, Zap, Globe, Gauge
+  Smartphone, Monitor, Zap, Globe, Gauge, User, Mail
 } from "lucide-react";
 import Link from "next/link";
 import { useToast } from "@/hooks/use-toast";
@@ -24,6 +24,7 @@ import { cn } from "@/lib/utils";
 
 /**
  * ⚙️ SYSTEM HUB: Optimized for Global SaaS Settings.
+ * Updated: Included "About Developer" section for Rinku Ganjawala.
  */
 export default function SettingsPage() {
   const { toast } = useToast();
@@ -45,6 +46,22 @@ export default function SettingsPage() {
   if (!mounted) return null;
 
   const sections = [
+    {
+      title: "About Developer",
+      icon: User,
+      items: [
+        { 
+          label: "Master Architect", 
+          desc: "Rinku Ganjawala", 
+          control: <div className="text-[10px] font-black uppercase tracking-widest text-primary">Creator Node</div> 
+        },
+        { 
+          label: "Inquiry Node", 
+          desc: "rinkukumarpaswan1796@gmail.com", 
+          control: <Button variant="ghost" size="sm" className="rounded-xl border-white/5 h-10 hover:bg-primary/10"><Mail className="w-3.5 h-3.5" /></Button> 
+        }
+      ]
+    },
     {
       title: "Localization & Globalization",
       icon: Languages,
@@ -145,7 +162,7 @@ export default function SettingsPage() {
         <header className="space-y-6">
           <Link href="/profile" className="flex items-center gap-3 text-[10px] font-black text-muted-foreground hover:text-primary transition-all uppercase tracking-[0.5em] group">
             <div className="p-3 bg-white/5 rounded-2xl group-hover:border-primary/50 border border-transparent transition-all shadow-xl">
-              <ArrowLeft className="w-5 h-5" />
+              <ArrowLeft className="w-4 h-4" />
             </div>
             Back to Profile
           </Link>
@@ -186,7 +203,7 @@ export default function SettingsPage() {
         </div>
 
         <footer className="text-center space-y-4 pt-10">
-           <p className="text-[9px] text-muted-foreground font-black uppercase tracking-[0.6em] opacity-20">VideoMaster AI Enterprise Build v3.0.0</p>
+           <p className="text-[9px] text-muted-foreground font-black uppercase tracking-[0.6em] opacity-20">VideoMaster AI • Developed by Rinku Ganjawala • v3.0.0</p>
            <div className="flex justify-center gap-6 opacity-20 text-[8px] font-bold uppercase tracking-widest">
               <span>Auto-Scaling</span>
               <span>Edge-Cached</span>

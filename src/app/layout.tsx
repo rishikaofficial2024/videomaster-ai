@@ -5,8 +5,11 @@ import { FirebaseClientProvider } from '@/firebase';
 
 export const metadata: Metadata = {
   title: 'VideoMaster AI - India\'s #1 Professional AI Video Studio',
-  description: 'Create viral AI videos 10x faster with Gemini Fast AI. Professional script writing, cinematic video generation, and 4K thumbnail design.',
-  keywords: ['AI Video Maker', 'Viral Script Writer', 'VideoMaster AI Tech', 'Gemini AI Video', 'YouTube Shorts AI', 'Video Editor India'],
+  description: 'Create viral AI videos 10x faster with Gemini Fast AI. Developed by Rinku Ganjawala.',
+  keywords: ['AI Video Maker', 'Viral Script Writer', 'VideoMaster AI Tech', 'Gemini AI Video', 'YouTube Shorts AI', 'Video Editor India', 'Rinku Ganjawala'],
+  authors: [{ name: 'Rinku Ganjawala', url: 'https://videomaster-ai.tech' }],
+  creator: 'Rinku Ganjawala',
+  publisher: 'VideoMaster AI Technologies',
   metadataBase: new URL('https://videomaster-ai.tech'),
   alternates: { canonical: '/' },
   verification: {
@@ -14,7 +17,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: 'VideoMaster AI - The Ultimate Neural Production Studio',
-    description: 'Transform cinematic ideas into professional video assets with Gemini Fast AI.',
+    description: 'Transform cinematic ideas into professional video assets. Developed by Rinku Ganjawala.',
     url: 'https://videomaster-ai.tech',
     siteName: 'VideoMaster AI',
     locale: 'en_IN',
@@ -24,7 +27,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'VideoMaster AI Studio',
-    description: 'High-speed viral video generation powered by Google AI.',
+    description: 'High-speed viral video generation powered by Google AI. Created by Rinku Ganjawala.',
     images: ['https://picsum.photos/seed/videomaster-tw/1200/630'],
   },
 };
@@ -41,6 +44,11 @@ export default function RootLayout({
     "url": "https://videomaster-ai.tech",
     "operatingSystem": "Android, Web",
     "applicationCategory": "MultimediaApplication",
+    "author": {
+      "@type": "Person",
+      "name": "Rinku Ganjawala",
+      "email": "rinkukumarpaswan1796@gmail.com"
+    },
     "offers": {
       "@type": "Offer",
       "price": "0",

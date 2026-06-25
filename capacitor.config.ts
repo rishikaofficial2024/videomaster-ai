@@ -12,6 +12,13 @@ const config: CapacitorConfig = {
     allowMixedContent: true,
     captureInput: true,
     backgroundColor: '#05070a'
+  },
+  // Creator Branding for Production APK
+  plugins: {
+    SplashScreen: {
+      launchShowDuration: 2000,
+      backgroundColor: '#05070a'
+    }
   }
 };
 
