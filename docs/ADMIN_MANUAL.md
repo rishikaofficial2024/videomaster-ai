@@ -1,36 +1,27 @@
+# 🛡️ VideoMaster AI: Enterprise Admin & Agency Manual
 
-# 🛡️ VideoMaster AI: Master Admin Manual
+Welcome to the command center of your SaaS empire. This guide explains how to manage agency nodes, track enterprise revenue, and monitor global system health.
 
-Welcome to the command center of your AI empire. This guide explains how to manage your nodes, track revenue, and monitor system health.
-
-### 1. How to Authorize Yourself as Admin
-By default, no user is an admin for security reasons. To grant yourself access:
+### 1. How to Authorize Agency Clearance
+Agency plans allow users to manage team seats. To manually upgrade a client:
 1.  Go to the [Firebase Console](https://console.firebase.google.com/).
 2.  Open **Firestore Database** > **users** collection.
-3.  Find your `UID` document.
-4.  Add a field: `isAdmin` (Boolean) = `true`.
-5.  Refresh your app, and the "Master Admin Node" will appear in your Navbar.
+3.  Find the `UID` document.
+4.  Update field: `subscriptionPlan` = `business` or `agency`.
+5.  Add field: `maxTeamSeats` (Number) = `5`.
 
-### 2. Monitoring Your Empire 📊
-You can monitor the app through two primary channels:
-*   **App Internal Hub (/admin)**: Real-time user stats, manual credit injections, and system diagnostics.
-*   **Firebase Console**: Deep-level logs, database usage, and authentication security audits.
-*   **Live Monitoring (/admin/monitoring)**: Use this for technical checks on DNS, AdSense sync, and Neural Core connectivity.
+### 2. Global Monitoring 📊
+*   **Revenue Node (/admin)**: Real-time user stats, manual credit injections, and sub-management.
+*   **Integration Matrix (/admin/monitoring)**: Technical checks on DNS, AdSense sync, and Neural Core connectivity.
+*   **AdSense Identity**: Ensure `videomaster-ai.tech/app-ads.txt` remains live for crawler verification.
 
-### 3. Managing Creator Nodes
-Inside the **Revenue Hub (/admin)**, you can:
-*   **Inject Credits**: Instantly add +1000 credits to any user (useful for rewards or support).
-*   **Authorize Pro**: Manually upgrade a user to the "Pro Studio" plan.
-*   **Revoke Access**: Block unauthorized nodes by removing their Admin status.
+### 3. Cost Optimization Protocols
+To maintain profitability at 100k+ users:
+*   **CDN Purging**: Only run `npm run web:deploy` when major UI changes occur to maximize browser cache hits.
+*   **Database Writes**: Users are rate-limited to 1 save per 30 seconds to minimize Firestore write costs.
 
-### 4. Revenue & Ads Oversight
-*   **AdSense**: Monitor actual daily revenue in the [AdSense Dashboard](https://adsense.google.com).
-*   **Subscription Logs**: All manual upgrades are tracked in the `totalSpent` field in Firestore.
-*   **Payouts**: Follow the instructions in `BANK_TRANSFER_GUIDE.md` to move funds to your bank.
+### 4. Expansion Protocols
+*   **Localizing Nodes**: When a new region is targeted (e.g., Brazil), update the `localization-config.json` and sync the setting hub.
+*   **Support SLA**: Pro users get 24-hour support; Enterprise/Elite users get 4-hour "Fast Lane" support.
 
-### 5. Technical Self-Healing
-If the "Live Monitoring" hub shows a "DNS Warning":
-1.  Check your domain A-records in your registrar.
-2.  Run `npm run web:deploy` in the Terminal to refresh the static hosting files.
-
-**Your business node is stabilized and optimized for production scale!** 🚀💰💎
+**Your SaaS business node is optimized for enterprise scaling.** 🚀💰💎

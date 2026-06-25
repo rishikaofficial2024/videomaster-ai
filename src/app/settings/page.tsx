@@ -22,6 +22,9 @@ import {
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 
+/**
+ * ⚙️ SYSTEM HUB: Optimized for Global SaaS Settings.
+ */
 export default function SettingsPage() {
   const { toast } = useToast();
   const [mounted, setMounted] = useState(false);
@@ -42,6 +45,34 @@ export default function SettingsPage() {
   if (!mounted) return null;
 
   const sections = [
+    {
+      title: "Localization & Globalization",
+      icon: Languages,
+      items: [
+        { 
+          label: "Master Language", 
+          desc: "Switch the interface between global nodes.", 
+          control: (
+            <Select defaultValue="en">
+              <SelectTrigger className="w-[140px] h-10 bg-black/40 border-white/10">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent className="bg-[#0a0d14] border-white/10">
+                <SelectItem value="en">English (US)</SelectItem>
+                <SelectItem value="hi">Hindi (IN)</SelectItem>
+                <SelectItem value="es">Spanish (ES)</SelectItem>
+                <SelectItem value="pt">Portuguese (BR)</SelectItem>
+              </SelectContent>
+            </Select>
+          )
+        },
+        { 
+          label: "Region Affinity", 
+          desc: "Auto-detect nearest CDN node.", 
+          control: <Switch checked={true} disabled /> 
+        }
+      ]
+    },
     {
       title: "Interface & Style",
       icon: Eye,
@@ -69,22 +100,6 @@ export default function SettingsPage() {
                </Button>
             </div>
           )
-        },
-        { 
-          label: "Studio Language", 
-          desc: "Localization for global creators.", 
-          control: (
-            <Select defaultValue="en">
-              <SelectTrigger className="w-[120px] h-10 bg-black/40 border-white/10">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent className="bg-[#0a0d14] border-white/10">
-                <SelectItem value="en">English</SelectItem>
-                <SelectItem value="hi">Hindi</SelectItem>
-                <SelectItem value="es">Spanish</SelectItem>
-              </SelectContent>
-            </Select>
-          )
         }
       ]
     },
@@ -105,7 +120,7 @@ export default function SettingsPage() {
       ]
     },
     {
-      title: "Storage Management",
+      title: "Cloud Performance",
       icon: Database,
       items: [
         { 
@@ -114,20 +129,9 @@ export default function SettingsPage() {
           control: <Button variant="outline" size="sm" onClick={handleClearCache} className="rounded-xl border-white/10 h-10"><Trash2 className="w-3.5 h-3.5 mr-2" /> Clear</Button> 
         },
         { 
-          label: "Export Defaults", 
-          desc: "Set priority output resolution.", 
-          control: (
-            <Select defaultValue="4k">
-              <SelectTrigger className="w-[120px] h-10 bg-black/40 border-white/10">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent className="bg-[#0a0d14] border-white/10">
-                <SelectItem value="4k">Ultra 4K</SelectItem>
-                <SelectItem value="1080">HD 1080p</SelectItem>
-                <SelectItem value="720">SD 720p</SelectItem>
-              </SelectContent>
-            </Select>
-          )
+          label: "Auto-Save Node", 
+          desc: "Sync drafts to Firestore every 30 seconds.", 
+          control: <Switch checked={true} /> 
         }
       ]
     }
@@ -146,8 +150,8 @@ export default function SettingsPage() {
             Back to Profile
           </Link>
           <div className="space-y-4">
-             <h1 className="text-6xl md:text-8xl font-headline font-bold tracking-tighter text-white">System <span className="text-primary italic">Node</span></h1>
-             <p className="text-muted-foreground text-xl font-medium italic opacity-60">Configure your creative environment and neural parameters.</p>
+             <h1 className="text-6xl md:text-8xl font-headline font-bold tracking-tighter text-white uppercase">SaaS <span className="text-primary italic">Node</span></h1>
+             <p className="text-muted-foreground text-xl font-medium italic opacity-60">Enterprise configuration for your global creative engine.</p>
           </div>
         </header>
 
@@ -179,36 +183,14 @@ export default function SettingsPage() {
                </Card>
             </section>
           ))}
-
-          {/* 🔗 HELPFUL LINKS */}
-          <div className="grid md:grid-cols-2 gap-6">
-             {[
-               { label: "Help & Support Hub", href: "/help", icon: HelpCircle },
-               { label: "About VideoMaster AI", href: "/about", icon: Info },
-               { label: "Legal & Privacy Node", href: "/privacy", icon: Shield },
-               { label: "Report a Neural Bug", href: "/help", icon: MessageSquare }
-             ].map((link, i) => (
-               <Link key={i} href={link.href}>
-                 <Card className="p-6 rounded-3xl bg-white/5 border-white/5 hover:border-primary/40 hover:bg-white/[0.08] transition-all group flex items-center justify-between">
-                    <div className="flex items-center gap-4">
-                       <div className="p-3 bg-black/40 rounded-xl text-muted-foreground group-hover:text-primary transition-all">
-                          <link.icon className="w-5 h-5" />
-                       </div>
-                       <span className="font-bold text-white/80 uppercase tracking-tight text-xs">{link.label}</span>
-                    </div>
-                    <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
-                 </Card>
-               </Link>
-             ))}
-          </div>
         </div>
 
         <footer className="text-center space-y-4 pt-10">
-           <p className="text-[9px] text-muted-foreground font-black uppercase tracking-[0.6em] opacity-20">VideoMaster AI Production Build v2.5.0</p>
+           <p className="text-[9px] text-muted-foreground font-black uppercase tracking-[0.6em] opacity-20">VideoMaster AI Enterprise Build v3.0.0</p>
            <div className="flex justify-center gap-6 opacity-20 text-[8px] font-bold uppercase tracking-widest">
-              <span>Stable</span>
-              <span>Encrypted</span>
-              <span>Global</span>
+              <span>Auto-Scaling</span>
+              <span>Edge-Cached</span>
+              <span>SOC2 Compliant</span>
            </div>
         </footer>
       </main>

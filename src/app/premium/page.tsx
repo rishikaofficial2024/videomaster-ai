@@ -3,7 +3,7 @@
 import { Navbar } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Crown, Check, Zap, Rocket, Star, Sparkles, Gem, ShieldCheck } from "lucide-react";
+import { Crown, Check, Zap, Rocket, Star, Sparkles, Gem, ShieldCheck, Landmark, Globe, Briefcase } from "lucide-react";
 import { useUser, useFirestore, useDoc } from "@/firebase";
 import { doc } from "firebase/firestore";
 import { cn } from "@/lib/utils";
@@ -11,20 +11,16 @@ import { AdBanner } from "@/components/ads/ad-banner";
 import Link from "next/link";
 
 /**
- * 💎 PREMIUM HUB: Optimized for 3-Tier Revenue Generation.
+ * 💎 ELITE SAAS HUB: Revamped for Enterprise Scale.
  */
 export default function PremiumPage() {
-  const { user } = useUser();
-  const db = useFirestore();
-  const { data: profile } = useDoc(user ? doc(db, "users", user.uid) : null);
-
   const plans = [
     {
       id: "free",
       name: "Starter Hub",
       price: "₹0",
-      description: "Perfect for Beginners",
-      features: ["5 AI Scripts / day", "Standard HD Exports", "Basic Thumbnails", "Community Support", "With Watermark"],
+      description: "For Individual Creators",
+      features: ["5 AI Scripts / day", "Standard HD Exports", "Basic Thumbnails", "Community Support", "Branded Watermark"],
       buttonText: "Active Node",
       icon: Zap,
       popular: false,
@@ -34,8 +30,8 @@ export default function PremiumPage() {
       id: "pro",
       name: "Pro Studio",
       price: "₹99",
-      description: "Viral Creator Choice",
-      features: ["Unlimited AI Scripts", "4K Ultra HD Exports", "Imagen 4 High-CTR", "Neural Voiceover", "No Watermark", "Priority Support"],
+      description: "Viral Scaling Mode",
+      features: ["Unlimited AI Scripts", "4K Ultra HD Exports", "Imagen 4 High-CTR", "Neural Voiceover", "No Watermark", "Priority Sync"],
       buttonText: "Upgrade to Pro",
       icon: Rocket,
       popular: true,
@@ -43,12 +39,12 @@ export default function PremiumPage() {
     },
     {
       id: "premium",
-      name: "Elite Node",
+      name: "Elite Agency",
       price: "₹499",
-      description: "Full Production Agency",
-      features: ["Everything in Pro", "Advanced Veo Motion", "Unlimited Cloud Storage", "1-on-1 AI Training", "Bulk Export Node", "Agency Clearance"],
-      buttonText: "Go Elite",
-      icon: Gem,
+      description: "Enterprise Production",
+      features: ["Everything in Pro", "Advanced Veo Motion", "Team Collaboration (5 Seats)", "Whitelabel Exports", "Bulk Export Node", "Agency Clearance"],
+      buttonText: "Go Enterprise",
+      icon: Briefcase,
       popular: false,
       color: "border-indigo-500/30 bg-indigo-500/5"
     }
@@ -60,13 +56,13 @@ export default function PremiumPage() {
       <main className="max-w-7xl mx-auto p-6 lg:p-16 space-y-24 pt-40">
         <div className="text-center space-y-8 animate-in fade-in slide-in-from-bottom-5 duration-700">
           <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-bold uppercase tracking-[0.5em]">
-            <Sparkles className="w-4 h-4" /> REVENUE INFRASTRUCTURE: LIVE
+            <Sparkles className="w-4 h-4" /> GLOBAL SAAS INFRASTRUCTURE
           </div>
           <h1 className="text-7xl md:text-[10rem] font-headline font-bold tracking-tighter text-white uppercase leading-none">
-            Unlock <span className="text-primary italic">Power.</span>
+            Scale <span className="text-primary italic">Global.</span>
           </h1>
           <p className="text-muted-foreground text-2xl max-w-2xl mx-auto font-medium italic opacity-60">
-            Select the neural clearance level for your creative workspace. One-time payment for lifetime access.
+            Select the neural clearance level for your enterprise workspace. One-time payment for lifetime SaaS access.
           </p>
         </div>
 
@@ -114,7 +110,7 @@ export default function PremiumPage() {
                   )}
                   asChild
                 >
-                   <Link href={plan.id === 'pro' ? 'https://razorpay.com/payment-page-placeholder' : '#'}>
+                   <Link href={plan.id === 'free' ? '#' : 'https://razorpay.com/payment-page-placeholder'}>
                     {plan.buttonText}
                    </Link>
                 </Button>
@@ -123,30 +119,21 @@ export default function PremiumPage() {
           ))}
         </div>
 
-        <section className="py-12">
-           <AdBanner adSlot="premium-plans-bottom" variant="large" provider="Subscription Hub Ads" />
+        <section className="grid md:grid-cols-3 gap-10">
+           {[
+             { label: "Agency Portal", icon: Landmark, desc: "Bulk management for 100+ projects." },
+             { label: "Global CDN", icon: Globe, desc: "High-speed access from any neural node." },
+             { label: "Priority Support", icon: ShieldCheck, desc: "4-hour response for Enterprise tiers." }
+           ].map((item, i) => (
+             <Card key={i} className="rounded-[3rem] bg-white/[0.02] border border-white/5 p-10 flex flex-col items-center text-center space-y-6 hover:border-primary/20 transition-all">
+                <div className="p-4 bg-primary/10 rounded-2xl text-primary"><item.icon size={32} /></div>
+                <h4 className="text-2xl font-bold uppercase tracking-tight text-white">{item.label}</h4>
+                <p className="text-sm text-muted-foreground italic leading-relaxed">{item.desc}</p>
+             </Card>
+           ))}
         </section>
 
-        <div className="grid md:grid-cols-2 gap-10">
-           <Card className="rounded-[4rem] bg-[#0a0d14]/80 border border-white/5 p-12 flex items-center gap-10 hover:border-primary/30 transition-all">
-              <div className="p-6 bg-primary/10 rounded-3xl border border-primary/20 shadow-xl">
-                 <ShieldCheck className="w-12 h-12 text-primary" />
-              </div>
-              <div className="space-y-2">
-                 <h4 className="text-3xl font-bold font-headline text-white uppercase tracking-tight">Enterprise Shield</h4>
-                 <p className="text-muted-foreground text-lg italic leading-relaxed">Advanced security and high-speed multi-node processing for agencies.</p>
-              </div>
-           </Card>
-           <Card className="rounded-[4rem] bg-[#0a0d14]/80 border border-white/5 p-12 flex items-center gap-10 hover:border-amber-500/30 transition-all">
-              <div className="p-6 bg-amber-500/10 rounded-3xl border border-amber-500/20 shadow-xl">
-                 <Star className="w-12 h-12 text-amber-500 fill-current" />
-              </div>
-              <div className="space-y-2">
-                 <h4 className="text-3xl font-bold font-headline text-white uppercase tracking-tight">Referral Node</h4>
-                 <p className="text-muted-foreground text-lg italic leading-relaxed">Invite 3 friends to join VideoMaster AI and unlock Pro Studio for FREE.</p>
-              </div>
-           </Card>
-        </div>
+        <AdBanner adSlot="premium-plans-bottom" variant="large" provider="SaaS Revenue Engine" />
       </main>
     </div>
   );
