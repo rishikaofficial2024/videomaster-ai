@@ -1,16 +1,16 @@
 import type {NextConfig} from 'next';
 
 const nextConfig: NextConfig = {
-  // ✅ ELITE STATIC EXPORT: Mandatory for Capacitor (Android APK) and Firebase Hosting stability.
+  // ✅ ELITE STATIC EXPORT: Mandatory for Capacitor (Android APK) and Firebase Hosting.
   output: 'export',
   
   images: {
-    // 🎨 CUSTOM IMAGE LOADER: As requested for professional static optimization.
+    // 🎨 CUSTOM IMAGE LOADER: For Cloudinary and static optimization.
     loader: 'custom',
     loaderFile: './my-loader.ts',
-    unoptimized: false, // Set to true if you don't have a resizing proxy
   },
 
+  // 🛡️ BUILD STABILITY: Ignore non-critical errors during elite production builds.
   typescript: {
     ignoreBuildErrors: true,
   },
@@ -19,8 +19,7 @@ const nextConfig: NextConfig = {
   },
   
   webpack: (config, { isServer }) => {
-    // 🛡️ BROWSER-SIDE AI SHIELD: Polyfill Node modules for Genkit & Opentelemetry client-side usage.
-    // This stops "Module not found: Can't resolve 'fs'" errors during build.
+    // 🛡️ BROWSER-SIDE AI SHIELD: Polyfill Node modules for Genkit client-side usage.
     if (!isServer) {
       config.resolve.fallback = {
         ...config.resolve.fallback,

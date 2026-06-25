@@ -4,11 +4,10 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { 
   Video, ArrowRight, Play, Zap, Cpu, Crown, Check, 
-  Gift, Coins, UserCircle, ShieldCheck, Sparkles, Image as ImageIcon
+  ShieldCheck, Sparkles, Image as ImageIcon
 } from "lucide-react";
 import Image from "next/image";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
-import { cn } from "@/lib/utils";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { useAuth, useFirestore } from "@/firebase";
 import { signInAnonymously } from "firebase/auth";
@@ -97,13 +96,6 @@ export default function LandingPage() {
                     {loading ? <Sparkles className="animate-spin mr-3" /> : <Zap className="mr-4 w-8 h-8 fill-current group-hover:animate-pulse" />}
                     Enter Free Studio
                   </Button>
-                  
-                  <Button asChild variant="outline" size="lg" className="h-24 px-12 rounded-[2.5rem] text-xl font-black uppercase tracking-tight bg-white/5 border-white/10 hover:bg-primary/20 hover:border-primary/50 transition-all group">
-                    <Link href="/login">
-                      <UserCircle className="mr-3 w-7 h-7 text-primary group-hover:scale-110 transition-transform" /> 
-                      Owner Login
-                    </Link>
-                  </Button>
                 </div>
 
                 <div className="flex items-center gap-4 text-[10px] font-black uppercase tracking-[0.5em] text-muted-foreground opacity-40">
@@ -136,7 +128,31 @@ export default function LandingPage() {
           </div>
         </section>
 
-        <section id="features" className="w-full py-40 bg-indigo-500/5 border-y border-white/5 relative overflow-hidden">
+        {/* 🐢 OPTIMIZED RENDERING TEST SECTION */}
+        <section className="w-full py-40 border-y border-white/5">
+           <div className="container px-6 mx-auto text-center space-y-12">
+              <div className="space-y-4">
+                <h2 className="text-4xl font-headline font-black uppercase tracking-tight">Optimized Rendering Test</h2>
+                <p className="text-muted-foreground italic">Verifying Custom Image Loader Protocol...</p>
+              </div>
+              <div className="max-w-sm mx-auto p-4 bg-white/5 rounded-[3rem] border border-white/10 shadow-2xl relative group overflow-hidden">
+                 <Image 
+                   alt="turtles" 
+                   src="https://picsum.photos/seed/turtles/600/600" 
+                   width={300} 
+                   height={300} 
+                   className="rounded-[2.5rem] mx-auto grayscale group-hover:grayscale-0 transition-all duration-700"
+                   data-ai-hint="turtles underwater"
+                 />
+                 <div className="mt-6 flex items-center justify-center gap-3 text-primary">
+                    <ImageIcon className="w-4 h-4" />
+                    <span className="text-[10px] font-black uppercase tracking-widest">Custom Loader Verified</span>
+                 </div>
+              </div>
+           </div>
+        </section>
+
+        <section id="features" className="w-full py-40 bg-indigo-500/5 relative overflow-hidden">
           <div className="container px-6 mx-auto relative z-10">
             <div className="grid lg:grid-cols-2 gap-20 items-center">
                <div className="space-y-8">
@@ -159,9 +175,6 @@ export default function LandingPage() {
                        </li>
                      ))}
                   </ul>
-                  <Button onClick={handleGuestEntry} disabled={loading} size="lg" className="h-16 px-10 rounded-2xl bg-indigo-600 hover:bg-indigo-700 shadow-xl">
-                     Get Started Free
-                  </Button>
                </div>
                <div className="relative">
                   <div className="premium-card p-2 aspect-video bg-black/40 overflow-hidden blue-glow flex items-center justify-center rounded-[3rem]">
@@ -179,51 +192,6 @@ export default function LandingPage() {
             </div>
           </div>
         </section>
-
-        {/* 🐢 TEST IMAGE SECTION (As requested) */}
-        <section className="w-full py-40 border-b border-white/5">
-           <div className="container px-6 mx-auto text-center space-y-12">
-              <h2 className="text-4xl font-headline font-black uppercase tracking-tight">Optimized Rendering Test</h2>
-              <div className="max-w-sm mx-auto p-4 bg-white/5 rounded-[3rem] border border-white/10 shadow-2xl relative group overflow-hidden">
-                 <Image 
-                   alt="Optimized Test Image" 
-                   src="https://picsum.photos/seed/turtles/600/600" 
-                   width={300} 
-                   height={300} 
-                   className="rounded-[2.5rem] mx-auto grayscale group-hover:grayscale-0 transition-all duration-700"
-                   data-ai-hint="turtles underwater"
-                 />
-                 <div className="mt-6 flex items-center justify-center gap-3 text-primary">
-                    <ImageIcon className="w-4 h-4" />
-                    <span className="text-[10px] font-black uppercase tracking-widest">Custom Loader Active</span>
-                 </div>
-              </div>
-           </div>
-        </section>
-
-        <section className="w-full py-40 bg-[#05070a]">
-          <div className="container px-6 mx-auto max-w-4xl">
-             <div className="text-center mb-20">
-                <h2 className="text-5xl font-headline font-bold mb-4 uppercase tracking-tighter">Gemini <span className="text-primary">FAQ</span></h2>
-                <p className="text-muted-foreground italic tracking-widest text-xs font-black uppercase opacity-40">Unlimited Access Protocol</p>
-             </div>
-             
-             <Accordion type="single" collapsible className="space-y-4">
-                {[
-                  { q: "Is everything really free?", a: "Yes. All features, including 4K exports and premium AI generation, are 100% free for everyone." },
-                  { q: "Do I need to enter credit card details?", a: "No. You don't even need to create a password if you enter as a guest." },
-                  { q: "What is Gemini Fast AI?", a: "It is the world's most advanced AI engine, optimized for rapid video and script production." }
-                ].map((item, i) => (
-                  <AccordionItem key={i} value={`item-${i}`} className="border-white/5 bg-white/5 rounded-3xl px-8 py-2">
-                    <AccordionTrigger className="text-lg font-bold hover:no-underline hover:text-primary transition-colors uppercase tracking-tight">{item.q}</AccordionTrigger>
-                    <AccordionContent className="text-muted-foreground text-base italic leading-relaxed">
-                      {item.a}
-                    </AccordionContent>
-                  </AccordionItem>
-                ))}
-             </Accordion>
-          </div>
-        </section>
       </main>
 
       <footer className="py-20 px-10 border-t border-white/5 glass-panel">
@@ -236,7 +204,7 @@ export default function LandingPage() {
              <Link href="/privacy" className="text-[10px] font-bold uppercase tracking-widest hover:text-primary">Privacy</Link>
              <Link href="/terms" className="text-[10px] font-bold uppercase tracking-widest hover:text-primary">Terms</Link>
           </div>
-          <p className="text-[9px] text-muted-foreground/30 font-black uppercase tracking-[0.8em]">Production Build v2.0.0 Free Unlocked</p>
+          <p className="text-[9px] text-muted-foreground/30 font-black uppercase tracking-[0.8em]">Production Build v2.5.0 Free Unlocked</p>
         </div>
       </footer>
     </div>

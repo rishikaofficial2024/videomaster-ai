@@ -8,12 +8,6 @@
     ],
     "cleanUrls": true,
     "trailingSlash": false,
-    "rewrites": [
-      {
-        "source": "**",
-        "destination": "/index.html"
-      }
-    ],
     "headers": [
       {
         "source": "**/*.@(jpg|jpeg|gif|png|svg|webp|js|css|woff2|woff)",
@@ -23,31 +17,12 @@
             "value": "max-age=31536000"
           }
         ]
-      },
+      }
+    ],
+    "rewrites": [
       {
         "source": "**",
-        "headers": [
-          {
-            "key": "X-Content-Type-Options",
-            "value": "nosniff"
-          },
-          {
-            "key": "X-Frame-Options",
-            "value": "DENY"
-          },
-          {
-            "key": "X-XSS-Protection",
-            "value": "1; mode=block"
-          },
-          {
-            "key": "Referrer-Policy",
-            "value": "strict-origin-when-cross-origin"
-          },
-          {
-            "key": "Strict-Transport-Security",
-            "value": "max-age=31536000; includeSubDomains; preload"
-          }
-        ]
+        "destination": "/index.html"
       }
     ]
   }
