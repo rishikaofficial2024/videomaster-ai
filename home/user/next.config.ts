@@ -43,6 +43,9 @@ const nextConfig: NextConfig = {
         dns: false,
         timers: false,
         buffer: false,
+        async_hooks: false,
+        diagnostics_channel: false,
+        process: false,
       };
     }
     return config;
