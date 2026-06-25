@@ -1,7 +1,7 @@
 /**
  * Barrel file for Genkit AI flows.
  * 
- * NOTE: Do NOT use 'use client' here. These flows are server-side actions.
+ * ✅ TRANSFORMED: Now exports client-compatible async functions.
  */
 import './genkit.js';
 import './flows/ai-auto-caption-and-subtitle-generation-flow.js';

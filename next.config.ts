@@ -32,6 +32,21 @@ const nextConfig: NextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  webpack: (config, { isServer }) => {
+    // 🛡️ ELITE BROWSER FIX: Polyfill Node modules for Genkit client-side usage
+    if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        fs: false,
+        net: false,
+        tls: false,
+        child_process: false,
+        readline: false,
+        perf_hooks: false,
+      };
+    }
+    return config;
+  },
 };
 
 export default nextConfig;
