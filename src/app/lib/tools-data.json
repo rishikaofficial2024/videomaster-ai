@@ -1,0 +1,12 @@
+
+{
+  "tools": [
+    { "slug": "ai-video-editor", "title": "AI Video Editor", "desc": "Create professional cinematic videos in seconds with Gemini Fast AI.", "icon": "Wand2", "h1": "India's Most Powerful AI Video Editor", "features": ["Viral Script Writing", "Veo Motion Synthesis", "4K Cloud Rendering"] },
+    { "slug": "video-compressor", "title": "Video Compressor", "desc": "Reduce video size without losing 4K quality for WhatsApp and Discord.", "icon": "Scissors", "h1": "Free Online Video Compressor", "features": ["90% Compression", "MP4/MOV Support", "High-Fidelity Retention"] },
+    { "slug": "youtube-shorts-maker", "title": "YouTube Shorts Maker", "desc": "Generate high-retention viral shorts from long-form content.", "icon": "Video", "h1": "AI YouTube Shorts Generator", "features": ["Auto-Captions", "Smart Framing", "Trend Analysis"] },
+    { "slug": "instagram-reels-editor", "title": "Instagram Reels Editor", "desc": "Design trending reels with viral hooks and cinematic transitions.", "icon": "Sparkles", "h1": "Viral Instagram Reels Editor", "features": ["Trending Audio Sync", "Beauty Filters", "One-Tap Export"] },
+    { "slug": "tiktok-video-editor", "title": "TikTok Video Editor", "desc": "Master the FYP with AI-powered hooks and fast-paced editing.", "icon": "Zap", "h1": "Elite TikTok Editor Online", "features": ["Hook Generator", "Auto-Subtitles", "Speed Control"] },
+    { "slug": "ai-caption-generator", "title": "AI Caption Generator", "desc": "Transcribe audio into 50+ languages with synchronized WebVTT subtitles.", "icon": "Type", "h1": "Neural Caption & Subtitle Generator", "features": ["99% Accuracy", "Multilingual Support", "VTT/SRT Export"] },
+    { "slug": "ai-thumbnail-maker", "title": "AI Thumbnail Maker", "desc": "Generate high-CTR 4K thumbnails using Imagen 4.0 Pro Engine.", "icon": "Image", "h1": "Cinematic AI Thumbnail Designer", "features": ["Face Enhancement", "Custom Text Overlay", "Viral Style Templates"] }
+  ]
+}

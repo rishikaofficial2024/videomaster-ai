@@ -1,12 +1,9 @@
+
 import type {Metadata} from 'next';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
 import { FirebaseClientProvider } from '@/firebase';
 
-/**
- * 📈 ELITE SEO & METADATA CORE: Final Production Release
- * Optimized for Google Search and Viral Acquisition.
- */
 export const metadata: Metadata = {
   title: 'VideoMaster AI - India\'s #1 Professional AI Video Studio',
   description: 'Create viral AI videos 10x faster with Gemini Fast AI. Professional script writing, cinematic video generation, and 4K thumbnail design. Unlock Pro features for FREE.',
@@ -64,10 +61,17 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
         <meta name="theme-color" content="#05070a" />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         
-        {/* 📊 ADSENSE & ANALYTICS NODE */}
+        {/* 📊 GA4 ANALYTICS & ADSENSE NODE */}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-MEASUREMENT_ID"></script>
+        <script dangerouslySetInnerHTML={{
+          __html: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-MEASUREMENT_ID');
+          `
+        }} />
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8946933317699938" crossOrigin="anonymous"></script>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       </head>

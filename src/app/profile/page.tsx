@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect } from "react";
@@ -5,9 +6,9 @@ import { Navbar } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { 
-  Settings, ChevronRight, Coins, LayoutTemplate, 
-  Zap, LogOut, Loader2, Edit3, ShieldCheck, UserCircle,
-  HelpCircle, Star, Crown, Globe, Bell, Smartphone
+  Settings, ChevronRight, LayoutTemplate, 
+  Zap, LogOut, Loader2, Edit3, ShieldCheck,
+  HelpCircle, Crown, Globe, Bell, Smartphone, Gift, Users, Copy, Check
 } from "lucide-react";
 import Link from "next/link";
 import { useUser, useFirestore, useDoc, useMemoFirebase } from "@/firebase";
@@ -33,6 +34,7 @@ export default function ProfilePage() {
   const [newDisplayName, setNewDisplayName] = useState("");
   const [saving, setSaving] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -44,6 +46,15 @@ export default function ProfilePage() {
   }, [user?.uid, db]);
 
   const { data: profile, loading: profileLoading } = useDoc(profileRef);
+
+  const referralLink = `https://videomaster-ai.tech/signup?ref=${user?.uid || 'studio'}`;
+
+  const copyReferral = () => {
+    navigator.clipboard.writeText(referralLink);
+    setCopied(true);
+    toast({ title: "Referral Link Copied!", description: "Share this to earn free Pro credits." });
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   const handleLogout = async () => {
     await signOut(auth);
@@ -61,12 +72,11 @@ export default function ProfilePage() {
         setIsEditing(false);
       })
       .catch(async (serverError) => {
-        const permissionError = new FirestorePermissionError({
+        errorEmitter.emit('permission-error', new FirestorePermissionError({
           path: profileRef.path,
           operation: 'update',
           requestResourceData: updateData,
-        } satisfies SecurityRuleContext);
-        errorEmitter.emit('permission-error', permissionError);
+        } satisfies SecurityRuleContext));
       })
       .finally(() => {
         setSaving(false);
@@ -80,40 +90,6 @@ export default function ProfilePage() {
       </div>
     );
   }
-
-  const menuItems = [
-    { 
-      label: "My Project Workspace", 
-      icon: Zap, 
-      href: "/projects",
-      color: "text-emerald-400"
-    },
-    { 
-      label: "System Settings", 
-      icon: Settings, 
-      href: "/settings",
-      color: "text-primary"
-    },
-    { 
-      label: "Templates Library", 
-      icon: LayoutTemplate, 
-      href: "/templates",
-      color: "text-indigo-400"
-    },
-    { 
-      label: "Master Admin Hub", 
-      icon: ShieldCheck, 
-      href: "/admin",
-      color: "text-red-500",
-      show: profile?.isAdmin
-    },
-    { 
-      label: "Help & Technical Hub", 
-      icon: HelpCircle, 
-      href: "/help",
-      color: "text-muted-foreground"
-    },
-  ].filter(item => item.show !== false);
 
   return (
     <div className="min-h-screen bg-[#05070a] hero-gradient pb-32">
@@ -155,7 +131,7 @@ export default function ProfilePage() {
         </Dialog>
       </div>
 
-      <main className="max-w-2xl mx-auto px-6 space-y-16">
+      <main className="max-w-2xl mx-auto px-6 space-y-12">
         <div className="flex flex-col items-center gap-8 animate-in fade-in slide-in-from-bottom-5 duration-700">
           <div className="relative group">
              <div className="absolute inset-0 bg-primary/20 blur-[50px] rounded-full scale-125 group-hover:scale-150 transition-all duration-1000" />
@@ -182,53 +158,54 @@ export default function ProfilePage() {
           </div>
         </div>
 
+        {/* 🎁 REFERRAL NODE */}
+        <Card className="rounded-[3.5rem] bg-primary/10 border-2 border-primary/30 p-10 space-y-8 relative overflow-hidden group">
+           <div className="absolute -top-10 -right-10 opacity-5 rotate-12 group-hover:rotate-0 transition-transform duration-1000">
+              <Gift className="w-60 h-60 text-primary" />
+           </div>
+           <div className="space-y-3 relative z-10">
+              <h3 className="text-3xl font-headline font-black text-white uppercase tracking-tight flex items-center gap-4">
+                 <Users className="text-primary w-8 h-8" /> GROW YOUR EMPIRE
+              </h3>
+              <p className="text-sm text-muted-foreground italic leading-relaxed">
+                Invite 3 friends to join VideoMaster AI and unlock **Unlimited High-Speed 4K Exports** for life.
+              </p>
+           </div>
+           <div className="flex items-center gap-4 bg-black/40 p-4 rounded-2xl border border-white/10 relative z-10">
+              <div className="flex-1 truncate text-[10px] font-mono text-primary px-2">{referralLink}</div>
+              <Button onClick={copyReferral} size="sm" className="rounded-xl h-10 px-6 gap-2 bg-primary">
+                 {copied ? <Check size={16}/> : <Copy size={16}/>}
+                 {copied ? "COPIED" : "COPY"}
+              </Button>
+           </div>
+        </Card>
+
         <div className="grid grid-cols-1 gap-6">
-          {menuItems.map((item, index) => (
-            <Link 
-              key={index} 
-              href={item.href}
-              className="flex items-center justify-between p-8 bg-[#0a0d14]/40 border border-white/5 group hover:bg-[#0a0d14]/80 hover:border-primary/30 transition-all rounded-[3rem] shadow-xl relative overflow-hidden"
-            >
-              <div className="absolute inset-0 shimmer opacity-[0.02] pointer-events-none" />
+          {[
+            { label: "My Workspace", icon: Zap, href: "/projects", color: "text-emerald-400" },
+            { label: "System Settings", icon: Settings, href: "/settings", color: "text-primary" },
+            { label: "Templates Library", icon: LayoutTemplate, href: "/templates", color: "text-indigo-400" },
+            { label: "Master Admin Hub", icon: ShieldCheck, href: "/admin", color: "text-red-500", show: profile?.isAdmin },
+            { label: "Help & Technical", icon: HelpCircle, href: "/help", color: "text-muted-foreground" },
+          ].filter(item => item.show !== false).map((item, index) => (
+            <Link key={index} href={item.href} className="flex items-center justify-between p-8 bg-[#0a0d14]/40 border border-white/5 group hover:bg-[#0a0d14]/80 hover:border-primary/30 transition-all rounded-[3rem] shadow-xl relative overflow-hidden">
               <div className="flex items-center gap-8 relative z-10">
-                <div className={cn("p-5 rounded-2xl bg-black/40 shadow-inner transition-transform group-hover:scale-110 duration-500", item.color)}>
+                <div className={cn("p-5 rounded-2xl bg-black/40 shadow-inner transition-transform group-hover:scale-110", item.color)}>
                   <item.icon className="w-8 h-8" />
                 </div>
                 <span className="text-2xl font-bold text-white/90 font-headline uppercase tracking-tight">{item.label}</span>
               </div>
-              <ChevronRight className="w-6 h-6 text-muted-foreground group-hover:text-primary group-hover:translate-x-2 transition-all relative z-10" />
+              <ChevronRight className="w-6 h-6 text-muted-foreground group-hover:text-primary transition-all" />
             </Link>
           ))}
         </div>
 
-        <Button 
-          variant="ghost" 
-          className="w-full justify-start text-destructive hover:bg-destructive/10 gap-8 h-28 rounded-[3.5rem] px-10 transition-all border border-transparent hover:border-destructive/20 shadow-2xl"
-          onClick={handleLogout}
-        >
-          <div className="p-5 rounded-2xl bg-destructive/10">
-            <LogOut className="w-8 h-8" />
-          </div>
-          <span className="text-2xl font-black font-headline uppercase tracking-tighter">Terminate Studio Session</span>
+        <Button variant="ghost" className="w-full justify-start text-destructive hover:bg-destructive/10 gap-8 h-28 rounded-[3.5rem] px-10 transition-all shadow-2xl" onClick={handleLogout}>
+          <div className="p-5 rounded-2xl bg-destructive/10"><LogOut className="w-8 h-8" /></div>
+          <span className="text-2xl font-black font-headline uppercase tracking-tighter">Terminate Session</span>
         </Button>
 
-        <div className="text-center pt-16 pb-10 space-y-6">
-           <div className="flex justify-center gap-12 opacity-30">
-              <div className="flex flex-col items-center gap-2">
-                 <Globe className="w-5 h-5" />
-                 <span className="text-[8px] font-black uppercase tracking-widest">CDN SYNC</span>
-              </div>
-              <div className="flex flex-col items-center gap-2">
-                 <Bell className="w-5 h-5" />
-                 <span className="text-[8px] font-black uppercase tracking-widest">PUSH READY</span>
-              </div>
-              <div className="flex flex-col items-center gap-2">
-                 <Smartphone className="w-5 h-5" />
-                 <span className="text-[8px] font-black uppercase tracking-widest">MOBILE OPS</span>
-              </div>
-           </div>
-           <p className="text-[10px] text-muted-foreground/20 uppercase tracking-[0.8em] font-black">VideoMaster AI • ELITE GLOBAL PRODUCTION</p>
-        </div>
+        <p className="text-center text-[10px] text-muted-foreground/20 uppercase tracking-[0.8em] font-black pt-10">VideoMaster AI • ELITE GLOBAL PRODUCTION</p>
       </main>
     </div>
   );
