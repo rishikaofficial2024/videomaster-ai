@@ -1,3 +1,4 @@
+
 {
   "entities": {
     "UserProfile": {
@@ -32,37 +33,37 @@
         "createdAt": { "type": "string", "format": "date-time" },
         "updatedAt": { "type": "string", "format": "date-time" },
         "status": { "type": "string", "enum": ["draft", "processing", "completed", "error"] },
-        "category": { "type": "string", "enum": ["social", "business", "personal", "ads"] },
-        "duration": { "type": "number", "description": "Duration in seconds" },
-        "aspectRatio": { "type": "string", "enum": ["16:9", "9:16", "1:1"] },
-        "transcript": { "type": "string" },
-        "optimizedTitle": { "type": "string" },
-        "optimizedDescription": { "type": "string" },
-        "hashtags": { "type": "array", "items": { "type": "string" } },
-        "thumbnailUrl": { "type": "string" },
         "videoDataUri": { "type": "string" },
-        "audioDataUri": { "type": "string", "description": "Primary voiceover track" },
-        "backgroundMusicUrl": { "type": "string", "description": "Active background music track" },
-        "mediaAssets": { 
-          "type": "array", 
-          "items": { 
-            "type": "object",
-            "properties": {
-              "id": { "type": "string" },
-              "url": { "type": "string" },
-              "type": { "type": "string", "enum": ["image", "video", "audio"] },
-              "label": { "type": "string" }
-            }
-          }
-        },
-        "subtitles": { "type": "string" },
-        "aiNotes": { "type": "string", "description": "AI recommendations for the video" }
+        "mediaAssets": { "type": "array", "items": { "type": "object" } }
       },
       "required": ["title", "createdAt", "status"]
+    },
+    "VideoTemplate": {
+      "title": "Video Template",
+      "description": "Reusable creative framework for users.",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "category": { "type": "string" },
+        "thumbnailUrl": { "type": "string" },
+        "isPremium": { "type": "boolean" }
+      }
+    },
+    "SystemAnalytics": {
+      "title": "System Analytics",
+      "description": "Institutional event logging for growth tracking.",
+      "type": "object",
+      "properties": {
+        "event": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "userId": { "type": "string" },
+        "node": { "type": "string" }
+      }
     }
   },
   "auth": {
-    "providers": ["google.com", "facebook.com", "github.com", "phone", "password"]
+    "providers": ["google.com", "password", "anonymous"]
   },
   "firestore": {
     "/users/{userId}": {
@@ -71,7 +72,15 @@
     },
     "/users/{userId}/projects/{projectId}": {
       "schema": { "$ref": "#/backend/entities/VideoProject" },
-      "description": "User's video editing projects collection."
+      "description": "User's individual creative workspace."
+    },
+    "/templates/{templateId}": {
+      "schema": { "$ref": "#/backend/entities/VideoTemplate" },
+      "description": "Global repository of viral video templates."
+    },
+    "/analytics/{docId}": {
+      "schema": { "$ref": "#/backend/entities/SystemAnalytics" },
+      "description": "Enterprise-level activity logging node."
     }
   }
 }

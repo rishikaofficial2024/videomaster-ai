@@ -1,3 +1,4 @@
+
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
@@ -30,7 +31,7 @@ service cloud.firestore {
       allow read: if isOwner(userId) || isAdmin();
       allow create: if isAuthenticated() && request.auth.uid == userId;
                     
-      // Owner can update everything. Others are restricted.
+      // Owner can update everything. Others restricted from changing admin/email fields.
       allow update: if isMaster() || (
                     isOwner(userId) && 
                     !request.resource.data.diff(resource.data).affectedKeys().hasAny(['isAdmin', 'email'])
@@ -41,18 +42,28 @@ service cloud.firestore {
       match /projects/{projectId} {
         allow read, write: if isOwner(userId) || isAdmin();
       }
-
-      match /diagnostics/{docId} {
-        allow read, write: if isOwner(userId) || isAdmin();
+      
+      match /notifications/{notifId} {
+        allow read: if isOwner(userId) || isAdmin();
+        allow write: if isAdmin();
       }
+    }
+
+    // 🎥 Global Templates
+    match /templates/{templateId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // 📊 Institutional Analytics
+    match /analytics/{docId} {
+      allow read: if isAdmin();
+      allow create: if isAuthenticated(); // Allow nodes to log events
+      allow update, delete: if isAdmin();
     }
 
     match /connection_tests/{docId} {
       allow read, write: if isAuthenticated();
-    }
-    
-    match /users {
-      allow list: if isAdmin();
     }
   }
 }
