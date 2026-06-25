@@ -1,6 +1,6 @@
-'use server';
 /**
- * @fileOverview A Genkit flow for automatically generating captions and subtitles (Server-Side Action).
+ * @fileOverview A Genkit flow for automatically generating captions and subtitles.
+ * ✅ TRANSFORMED: Removed 'use server' for Static Export compatibility.
  */
 
 import { ai, geminiModel, z } from '@/ai/genkit';

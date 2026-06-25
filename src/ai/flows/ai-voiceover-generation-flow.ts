@@ -1,6 +1,6 @@
-'use server';
 /**
- * @fileOverview An AI agent that generates professional voiceovers (Server-Side Action).
+ * @fileOverview An AI agent that generates professional voiceovers.
+ * ✅ TRANSFORMED: Removed 'use server' for Static Export compatibility.
  */
 
 import { ai, z, ttsModel } from '@/ai/genkit';
@@ -36,7 +36,6 @@ export async function generateAiVoiceover(input: VoiceoverInput): Promise<Voiceo
       throw new Error('No audio returned from AI.');
     }
 
-    // Media from Gemini TTS is PCM format, but usually transferred as data uri or url
     return {
       audioDataUri: media.url,
     };

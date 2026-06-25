@@ -1,8 +1,8 @@
-'use server';
 /**
- * @fileOverview Elite Text-to-Video generation engine (Server-Side Action).
- *
- * - generateAiVideo - Handles the multi-step video generation process.
+ * @fileOverview Elite Text-to-Video generation engine.
+ * 
+ * ✅ TRANSFORMED: Removed 'use server' for Static Export compatibility.
+ * This flow now runs directly on the client using the browser-compatible Genkit interface.
  */
 
 import { ai, veoModel, z } from '@/ai/genkit';
@@ -48,25 +48,16 @@ export async function generateAiVideo(input: VideoGenerationInput): Promise<Vide
       throw new Error('Failed to find the generated video artifact.');
     }
 
-    const apiKey = (process.env.GEMINI_API_KEY || '').trim().replace(/^["']|["']$/g, '').trim();
+    // On client side, we use the URL directly with the API key if needed
+    const apiKey = (process.env.NEXT_PUBLIC_GEMINI_API_KEY || '').trim().replace(/^["']|["']$/g, '').trim();
     const videoUrlWithKey = `${videoPart.media.url}&key=${apiKey}`;
     
-    const response = await fetch(videoUrlWithKey);
-    if (!response.ok) {
-      throw new Error('Failed to fetch generated video binary.');
-    }
-
-    const arrayBuffer = await response.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
-    const contentType = response.headers.get('content-type') || 'video/mp4';
-    
     return {
-      videoDataUri: `data:${contentType};base64,${buffer.toString('base64')}`
+      videoDataUri: videoUrlWithKey
     };
 
   } catch (e: any) {
     console.error("⚠️ AI Motion Engine Error:", e.message);
-    // Return a safe fallback for the UI to handle
     return { videoDataUri: "https://www.w3schools.com/html/mov_bbb.mp4" };
   }
 }

@@ -1,6 +1,6 @@
-'use server';
 /**
- * @fileOverview A Genkit flow for designing cinematic video thumbnails (Server-Side Action).
+ * @fileOverview A Genkit flow for designing cinematic video thumbnails.
+ * ✅ TRANSFORMED: Removed 'use server' for Static Export compatibility.
  */
 
 import { ai, imagenModel, z } from '@/ai/genkit';

@@ -2,13 +2,16 @@ import { genkit } from 'genkit';
 import { googleAI } from '@genkit-ai/google-genai';
 
 /**
- * 🧠 Genkit AI Initialization (Server-Side Optimized).
- * Mark as server-side to ensure it doesn't get bundled into the client.
+ * 🧠 Genkit AI Initialization (Client & Server Compatible).
+ * Configured to work in both environments for static export support.
  */
 
 const getApiKey = () => {
-  // On the server, we can access environment variables directly.
-  const rawKey = process.env.GEMINI_API_KEY || process.env.NEXT_PUBLIC_GEMINI_API_KEY || '';
+  // Try both server and public environment variables
+  const rawKey = typeof process !== 'undefined' 
+    ? process.env.GEMINI_API_KEY || process.env.NEXT_PUBLIC_GEMINI_API_KEY || ''
+    : (globalThis as any).NEXT_PUBLIC_GEMINI_API_KEY || '';
+    
   return rawKey.trim().replace(/^["']|["']$/g, '').trim();
 };
 

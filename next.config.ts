@@ -21,10 +21,12 @@ const nextConfig: NextConfig = {
   
   webpack: (config, { isServer }) => {
     // 🛡️ BROWSER-SIDE AI SHIELD: Polyfill Node modules for Genkit & Opentelemetry client-side usage.
-    // This stops "Module not found: Can't resolve 'fs', 'async_hooks', etc." errors during static export.
+    // This stops "Module not found" errors for async_hooks, fs, etc. during browser bundling.
     if (!isServer) {
       config.resolve.fallback = {
         ...config.resolve.fallback,
+        async_hooks: false,
+        diagnostics_channel: false,
         fs: false,
         net: false,
         tls: false,
@@ -43,8 +45,6 @@ const nextConfig: NextConfig = {
         dns: false,
         timers: false,
         buffer: false,
-        async_hooks: false,
-        diagnostics_channel: false,
         process: false,
         string_decoder: false,
         util: false,

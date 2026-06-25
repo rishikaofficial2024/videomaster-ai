@@ -1,6 +1,6 @@
-'use server';
 /**
- * @fileOverview AI Growth Assistant (Server-Side Action).
+ * @fileOverview AI Growth Assistant.
+ * ✅ TRANSFORMED: Removed 'use server' for Static Export compatibility.
  */
 
 import { ai, geminiModel, z } from '@/ai/genkit';
