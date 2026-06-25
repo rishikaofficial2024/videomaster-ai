@@ -7,7 +7,7 @@ import {
   Plus, Sparkles, Loader2, Coins, 
   ArrowRight, Wand2, Video as VideoIcon, Mic, Image as ImageIcon,
   Crown, TrendingUp, History, Star, Globe, Zap, LayoutTemplate,
-  Activity, Search
+  Activity, Search, User
 } from "lucide-react";
 import Link from "next/link";
 import { useUser, useFirestore, useDoc, useMemoFirebase } from "@/firebase";
@@ -68,8 +68,13 @@ export default function Dashboard() {
         {/* HEADER AREA */}
         <header className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-12 animate-in fade-in slide-in-from-bottom-5 duration-1000">
           <div className="space-y-6">
-            <div className="inline-flex items-center gap-3 px-5 py-2 rounded-full glass-panel text-primary text-[10px] font-black uppercase tracking-[0.4em] border-primary/30 shadow-glow">
-              <Globe className="w-3.5 h-3.5" /> ELITE NODE: GOLD-RESERVE-01
+            <div className="flex flex-wrap items-center gap-4">
+              <div className="inline-flex items-center gap-3 px-5 py-2 rounded-full glass-panel text-primary text-[10px] font-black uppercase tracking-[0.4em] border-primary/30 shadow-glow">
+                <Globe className="w-3.5 h-3.5" /> ELITE NODE: GOLD-RESERVE-01
+              </div>
+              <div className="inline-flex items-center gap-3 px-5 py-2 rounded-full bg-white/5 border border-white/10 text-white text-[10px] font-black uppercase tracking-[0.4em]">
+                <User className="w-3.5 h-3.5 text-primary" /> Created by Rinku Ganjawala
+              </div>
             </div>
             <h1 className="text-7xl md:text-[10rem] font-headline font-black tracking-tighter text-white leading-none uppercase">
               Creator <span className="text-gradient italic">Hub.</span>
@@ -140,7 +145,7 @@ export default function Dashboard() {
                        <p className="text-[11px] text-muted-foreground font-black uppercase tracking-[0.4em] opacity-50">{tool.desc}</p>
                     </div>
                  </div>
-                 <div className="pt-10 flex items-center justify-between relative z-10">
+                 <div className="pt-10 flex items-center justify-between relative LUXURY_ANIMATION">
                     <div className="h-1 flex-1 bg-white/5 rounded-full overflow-hidden mr-6">
                        <div className={cn("h-full w-0 group-hover:w-full transition-all duration-1000 bg-primary shadow-glow")} />
                     </div>
