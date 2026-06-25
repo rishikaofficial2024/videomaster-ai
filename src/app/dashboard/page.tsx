@@ -1,3 +1,4 @@
+
 "use client";
 
 import { Navbar } from "@/components/navbar";
@@ -5,22 +6,18 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { 
   Plus, Sparkles, Loader2, Coins, 
-  Play, Zap, ArrowRight, Wand2, Video as VideoIcon, Mic, Image as ImageIcon,
-  Cpu, TrendingUp, Rocket, Crown
+  ArrowRight, Wand2, Video as VideoIcon, Mic, Image as ImageIcon,
+  Crown
 } from "lucide-react";
 import Link from "next/link";
 import { useUser, useFirestore, useDoc, useMemoFirebase } from "@/firebase";
-import { doc, updateDoc, increment } from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 import { useState, useEffect } from "react";
-import { useToast } from "@/hooks/use-toast";
-import { errorEmitter } from '@/firebase/error-emitter';
-import { FirestorePermissionError, type SecurityRuleContext } from '@/firebase/errors';
 import { cn } from "@/lib/utils";
 
 export default function Dashboard() {
   const { user, loading: userLoading } = useUser();
   const db = useFirestore();
-  const { toast } = useToast();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
