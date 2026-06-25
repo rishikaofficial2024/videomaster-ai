@@ -2,7 +2,7 @@ import type {NextConfig} from 'next';
 import path from 'path';
 
 /** @type {import('next').NextConfig} */
-const nextConfig: NextConfig = {
+const nextConfig: Config = {
   // ✅ ELITE STATIC EXPORT: Mandatory for Capacitor (Android APK) and Firebase Hosting.
   output: 'export',
   
@@ -20,10 +20,12 @@ const nextConfig: NextConfig = {
   
   webpack: (config, { isServer }) => {
     // 🚀 FIRESTORE OPTIMIZATION: Force the use of the browser ESM build even during SSR pass.
-    // This bypasses the gRPC Node.js implementation which causes promisify errors.
+    const firestorePath = path.resolve(__dirname, 'node_modules/@firebase/firestore/dist/index.esm2017.js');
+    const shimPath = path.resolve(__dirname, 'src/lib/empty-module.ts');
+
     config.resolve.alias = {
       ...config.resolve.alias,
-      'firebase/firestore': path.resolve(__dirname, 'node_modules/@firebase/firestore/dist/index.esm2017.js'),
+      'firebase/firestore': firestorePath,
     };
 
     // 🛡️ BROWSER-SIDE SHIELD: Polyfill Node modules for client-side usage.
@@ -60,11 +62,13 @@ const nextConfig: NextConfig = {
       // On the server (SSR pass), we alias problematic Node built-ins to our proxy shim.
       config.resolve.alias = {
         ...config.resolve.alias,
-        'fs': path.resolve(__dirname, 'src/lib/empty-module.ts'),
-        'net': path.resolve(__dirname, 'src/lib/empty-module.ts'),
-        'tls': path.resolve(__dirname, 'src/lib/empty-module.ts'),
-        'dns': path.resolve(__dirname, 'src/lib/empty-module.ts'),
-        'http2': path.resolve(__dirname, 'src/lib/empty-module.ts'),
+        'fs': shimPath,
+        'net': shimPath,
+        'tls': shimPath,
+        'dns': shimPath,
+        'http2': shimPath,
+        'async_hooks': shimPath,
+        'diagnostics_channel': shimPath,
       };
     }
 
@@ -74,7 +78,7 @@ const nextConfig: NextConfig = {
   experimental: {
     turbo: {
       resolveAlias: {
-        // Force browser build for Turbopack as well
+        // Force browser build and shims for Turbopack as well
         'firebase/firestore': './node_modules/@firebase/firestore/dist/index.esm2017.js',
         'async_hooks': './src/lib/empty-module.ts',
         'diagnostics_channel': './src/lib/empty-module.ts',

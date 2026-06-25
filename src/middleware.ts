@@ -1,9 +1,11 @@
+import { NextResponse } from 'next/server';
+
 /**
- * 🛠️ MIDDLEWARE DEACTIVATED: Middleware is incompatible with Next.js 'output: export'.
- * Route protection is now handled in Client-Side 'AuthGuard' and 'AdminGuard' components.
+ * 🛠️ MIDDLEWARE STUB: Middleware is technically incompatible with 'output: export'.
+ * We return NextResponse.next() to satisfy Next.js request lifecycle without intervention.
  */
 export default function middleware() {
-  return;
+  return NextResponse.next();
 }
 
 export const config = {

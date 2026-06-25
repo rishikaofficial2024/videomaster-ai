@@ -7,6 +7,8 @@ import { googleAI } from '@genkit-ai/google-genai';
  */
 
 const getApiKey = () => {
+  // Safe environment variable check for both SSR and Browser
+  if (typeof process === 'undefined' || !process.env) return '';
   const rawKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY || '';
   return rawKey.trim().replace(/^["']|["']$/g, '').trim();
 };

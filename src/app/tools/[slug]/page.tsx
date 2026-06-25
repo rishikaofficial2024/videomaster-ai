@@ -1,7 +1,3 @@
-
-"use client";
-
-import { use } from "react";
 import { Navbar } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -13,8 +9,12 @@ import { notFound } from "next/navigation";
 
 const iconMap: any = { Wand2, Video, Scissors, Sparkles, Type, ImageIcon, Zap };
 
-export default function ToolLandingPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = use(params);
+/**
+ * 🛠️ TOOL LANDING NODE: SEO-Optimized Server Component.
+ * Optimized for Next.js 15 Static Export.
+ */
+export default async function ToolLandingPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
   const tool = toolsData.tools.find(t => t.slug === slug);
 
   if (!tool) return notFound();

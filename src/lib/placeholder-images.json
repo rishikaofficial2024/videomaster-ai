@@ -1,7 +1,7 @@
 {
   "placeholderImages": [
     {
-      "id": "hero-bg",
+      "id": "hero-main",
       "description": "Professional video editing setup with neon lighting",
       "imageUrl": "https://picsum.photos/seed/videomaster-hero/1200/800",
       "imageHint": "video editing studio"
