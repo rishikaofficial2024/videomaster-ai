@@ -9,6 +9,7 @@ import { useUser, useFirestore, useCollection, useMemoFirebase } from "@/firebas
 import { collection, query, orderBy, limit } from "firebase/firestore";
 import Image from "next/image";
 import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
 
 export default function Dashboard() {
   const { user } = useUser();
