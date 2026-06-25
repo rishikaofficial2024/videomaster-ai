@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect } from "react";
@@ -36,8 +37,10 @@ export default function AdminRevenueHub() {
     daily: 0,
     conversion: 8.4
   });
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
+    setIsClient(true);
     if (db) fetchRevenue();
   }, [db]);
 
@@ -83,7 +86,7 @@ export default function AdminRevenueHub() {
            </div>
            <div className="space-y-1 relative z-10">
               <p className="text-[10px] font-black text-emerald-500/60 uppercase tracking-widest">Total Master Reserve</p>
-              <h3 className="text-8xl font-black text-white tracking-tighter uppercase">₹{stats.total.toLocaleString()}</h3>
+              <h3 className="text-8xl font-black text-white tracking-tighter uppercase">{isClient ? `₹${stats.total.toLocaleString()}` : '₹...'}</h3>
            </div>
            <div className="flex items-center gap-6 relative z-10 pt-6">
               <div className="flex items-center gap-2 text-emerald-500 font-black">

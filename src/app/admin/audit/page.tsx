@@ -11,12 +11,17 @@ import {
 import { useFirestore, useCollection, useMemoFirebase } from "@/firebase";
 import { collection, query, orderBy, limit } from "firebase/firestore";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 
 export default function AdminAuditLogs() {
   const db = useFirestore();
   const [search, setSearch] = useState("");
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const logsQuery = useMemoFirebase(() => {
     if (!db) return null;
@@ -106,7 +111,7 @@ export default function AdminAuditLogs() {
                     </td>
                     <td className="text-sm font-mono text-muted-foreground uppercase opacity-60">...{log.targetId?.slice(-8)}</td>
                     <td className="text-xs text-muted-foreground italic">
-                       {log.timestamp ? new Date(log.timestamp.seconds * 1000).toLocaleString() : 'Processing...'}
+                       {!isClient ? 'Loading...' : log.timestamp ? new Date(log.timestamp.seconds * 1000).toLocaleString() : 'Processing...'}
                     </td>
                     <td className="text-right px-12">
                        <button className="text-[10px] font-black text-primary hover:text-white uppercase tracking-widest transition-all">Expand Protocol</button>

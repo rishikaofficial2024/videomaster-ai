@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect } from "react";
@@ -42,8 +43,10 @@ export default function AdminOverview() {
     activeVideos: 0,
     storageUsed: "142 GB"
   });
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
+    setIsClient(true);
     if (db) {
       fetchLiveStats();
     }
@@ -73,7 +76,7 @@ export default function AdminOverview() {
 
   const dashboardCards = [
     { label: "Institutional Nodes", val: stats.totalUsers, icon: Users, trend: "+12% Growth", color: "text-primary" },
-    { label: "Lifetime Revenue", val: `₹${stats.revenue.toLocaleString()}`, icon: Banknote, trend: "+8.4% MoM", color: "text-emerald-500" },
+    { label: "Lifetime Revenue", val: isClient ? `₹${stats.revenue.toLocaleString()}` : "₹...", icon: Banknote, trend: "+8.4% MoM", color: "text-emerald-500" },
     { label: "Active Project Matrix", val: stats.activeVideos, icon: Activity, trend: "48s Node Latency", color: "text-indigo-400" },
     { label: "Cloud Node Storage", val: stats.storageUsed, icon: Database, trend: "98% Efficiency", color: "text-amber-500" },
   ];

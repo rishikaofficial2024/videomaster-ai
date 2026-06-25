@@ -1,6 +1,7 @@
 
 "use client";
 
+import { useState, useEffect } from "react";
 import { Navbar } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -13,7 +14,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useUser, useFirestore, useCollection, useMemoFirebase } from "@/firebase";
 import { collection, query, orderBy, deleteDoc, doc } from "firebase/firestore";
-import { useState } from "react";
 import Image from "next/image";
 import { 
   DropdownMenu, 
@@ -31,6 +31,11 @@ export default function ProjectsPage() {
   const router = useRouter();
   const { toast } = useToast();
   const [search, setSearch] = useState("");
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const projectsQuery = useMemoFirebase(() => {
     if (!db || !user) return null;
@@ -63,6 +68,7 @@ export default function ProjectsPage() {
   };
 
   const formatDate = (project: any) => {
+    if (!isClient) return "Loading...";
     const ts = project.updatedAt || project.createdAt;
     if (!ts) return "Recently";
     try {
