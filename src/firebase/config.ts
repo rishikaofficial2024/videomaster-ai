@@ -2,7 +2,9 @@
  * Firebase configuration object for VideoMaster AI.
  * 
  * ✅ STATUS: PRODUCTION STABILIZED (Elite Release)
- * 🛠️ FIX: Using firebaseapp.com as primary authDomain to prevent NXDOMAIN login crashes during propagation.
+ * 🛠️ PRODUCTION TOGGLE: 
+ * - For testing/initial launch: use 'studio-9489287013-59986.firebaseapp.com'
+ * - After DNS propagation: switch to 'videomaster-ai.tech'
  */
 export const firebaseConfig = {
   apiKey: "AIzaSyCz-pMZtY7_OVr9IyyHiIqwPWnpP3Lb21w",
@@ -15,7 +17,7 @@ export const firebaseConfig = {
   /**
    * 🛡️ SECURITY LAYER: App Check
    * ReCAPTCHA v3 site key for bot protection.
-   * Note: Populate this after registering domain in reCAPTCHA Admin console.
+   * ACTION: Create a reCAPTCHA v3 project for videomaster-ai.tech and paste Site Key here.
    */
   appCheckSiteKey: "" 
 };
