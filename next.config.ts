@@ -3,7 +3,6 @@ import path from 'path';
 
 /** @type {import('next').NextConfig} */
 const nextConfig: NextConfig = {
-  // ✅ ELITE STATIC EXPORT: Mandatory for Capacitor (Android APK) and Firebase Hosting.
   output: 'export',
   
   images: {
@@ -19,8 +18,6 @@ const nextConfig: NextConfig = {
   },
   
   webpack: (config, { isServer }) => {
-    // 🛡️ BROWSER-SIDE AI SHIELD: Polyfill Node modules for Genkit client-side usage.
-    // We apply some shims even for the server bundle during static build to prevent gRPC crashes.
     const shimPath = path.resolve(process.cwd(), 'src/lib/empty-module.ts');
 
     if (!isServer) {
@@ -50,7 +47,6 @@ const nextConfig: NextConfig = {
       };
     }
 
-    // Force resolve aliases for both client and server to satisfy gRPC-js logic during evaluation
     config.resolve.alias = {
       ...config.resolve.alias,
       'async_hooks': shimPath,
@@ -60,7 +56,6 @@ const nextConfig: NextConfig = {
       'dns': shimPath,
       'http2': shimPath,
       'diagnostics_channel': shimPath,
-      // Force Firestore to use the browser-compatible version even during pre-rendering
       '@firebase/firestore': path.resolve(process.cwd(), 'node_modules/@firebase/firestore/dist/index.esm2017.js'),
     };
 

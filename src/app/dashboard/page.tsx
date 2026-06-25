@@ -5,11 +5,10 @@ import { Navbar } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { 
-  Plus, Video, Wand2, Sparkles, History, Play, 
+  Plus, Wand2, Sparkles, History, Play, 
   MoreVertical, Search, Star, Youtube, Instagram, 
-  ChevronRight, Zap, ExternalLink, Upload, 
-  CloudUpload, LayoutDashboard, Clock, FileVideo,
-  TrendingUp, Tornado, Activity
+  ChevronRight, Zap, ExternalLink, CloudUpload, 
+  TrendingUp, Tornado, Activity, FileVideo, Clock
 } from "lucide-react";
 import Link from "next/link";
 import { useUser, useFirestore, useCollection, useMemoFirebase } from "@/firebase";
@@ -85,7 +84,6 @@ export default function Dashboard() {
           </div>
         </header>
 
-        {/* Neural Toolset */}
         <section className="space-y-10">
            <div className="flex items-center justify-between px-6">
               <h2 className="text-[11px] font-black uppercase tracking-[0.6em] text-primary/40">NEURAL PROTOCOLS</h2>
@@ -111,7 +109,6 @@ export default function Dashboard() {
         </section>
 
         <div className="grid lg:grid-cols-4 gap-16 pt-12">
-          {/* Active Matrix Registry */}
           <section className="lg:col-span-3 space-y-12">
             <div className="flex items-center justify-between border-b pb-12 border-white/5">
               <div className="flex items-center gap-8">
@@ -142,7 +139,6 @@ export default function Dashboard() {
                         alt={project.title}
                         fill
                         className="object-cover group-hover:scale-110 transition-transform duration-[2s] opacity-70"
-                        data-ai-hint="video fragment"
                       />
                       <div className="absolute inset-0 bg-black/60 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-700 gap-8 backdrop-blur-md">
                          <div className="p-8 bg-white rounded-[2.5rem] shadow-[0_0_80px_rgba(255,255,255,0.4)] scale-50 group-hover:scale-100 transition-all duration-700">
@@ -187,7 +183,6 @@ export default function Dashboard() {
             )}
           </section>
 
-          {/* Neural Feedback Metrics */}
           <aside className="space-y-16">
             <Card className="rounded-[4rem] border-none shadow-[0_50px_100px_-20px_rgba(0,112,243,0.3)] bg-primary text-primary-foreground overflow-hidden group relative">
               <div className="absolute top-0 right-0 p-16 opacity-10 rotate-12 group-hover:rotate-0 transition-transform duration-[1.5s]">

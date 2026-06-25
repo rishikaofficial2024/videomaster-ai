@@ -5,7 +5,7 @@ import { Navbar } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Wand2, Sparkles, Youtube, Instagram, Loader2, Copy, Check, MessageSquare, ArrowLeft, Send, Zap } from "lucide-react";
+import { Wand2, Sparkles, Youtube, Instagram, Loader2, Copy, Check, MessageSquare, ArrowLeft, Send, Zap, ArrowRight } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
@@ -22,7 +22,6 @@ export default function AiScriptWriter() {
   const handleGenerate = () => {
     if (!topic) return;
     setIsGenerating(true);
-    // Simulate Genkit Flow
     setTimeout(() => {
       setScript(`[INTRO]\nHey guys, welcome back! Today we're decoding the viral potential of ${topic}.\n\n[HOOK]\nDid you know that most creators ignore the neural core of ${topic}? Let's fix that protocol right now.\n\n[BODY]\nStep 1: Frame the narrative around high-dopamine triggers.\nStep 2: Use rapid-cut editing nodes for +40% retention.\n\n[OUTRO]\nSubscribe for more elite ${topic} intelligence. Sync with you in the next one.`);
       setIsGenerating(false);
