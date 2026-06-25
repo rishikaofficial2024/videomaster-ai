@@ -2,14 +2,15 @@
  * @fileOverview An AI agent that generates professional voiceovers.
  * 
  * ✅ TRANSFORMED: Converted to Client-Side utility.
- * 🛠️ FIX: Removed Node-only 'wav' dependency for browser compatibility.
+ * 🎙️ SUPPORT: English + Hindi multi-lingual support.
  */
 
 import { ai, z } from '@/ai/genkit';
 
 const VoiceoverInputSchema = z.object({
-  text: z.string().describe('The text script.'),
+  text: z.string().describe('The text script to convert to speech.'),
   voiceName: z.enum(['Algenib', 'Achernar', 'Sirius']).default('Algenib'),
+  language: z.enum(['en', 'hi']).default('en'),
 });
 export type VoiceoverInput = z.infer<typeof VoiceoverInputSchema>;
 
@@ -29,14 +30,13 @@ export async function generateAiVoiceover(input: VoiceoverInput): Promise<Voiceo
         },
       },
     },
-    prompt: input.text,
+    prompt: `Language: ${input.language}. Convert this text to a professional high-fidelity voiceover: ${input.text}`,
   });
 
   if (!media?.url) {
     throw new Error('No audio returned from AI.');
   }
 
-  // In the browser, we can use the media.url directly as it's already a data URI or blob
   return {
     audioDataUri: media.url,
   };
