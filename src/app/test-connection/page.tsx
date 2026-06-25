@@ -16,6 +16,7 @@ import { firebaseConfig } from "@/firebase/config";
 import Link from "next/link";
 import { errorEmitter } from "@/firebase/error-emitter";
 import { FirestorePermissionError, type SecurityRuleContext } from "@/firebase/errors";
+import { isAiEngineAuthorized } from "@/ai/genkit";
 
 export default function TestConnectionPage() {
   const auth = useAuth();
@@ -83,7 +84,7 @@ export default function TestConnectionPage() {
     }
 
     // 4. Integration: AI Neural Core
-    setStatus(prev => ({ ...prev, ai_integration: "success" }));
+    setStatus(prev => ({ ...prev, ai_integration: isAiEngineAuthorized() ? "success" : "warning" }));
 
     // 5. Integration: Branded Domain Sync
     const hostname = typeof window !== 'undefined' ? window.location.hostname : "";
@@ -95,7 +96,10 @@ export default function TestConnectionPage() {
        setStatus(prev => ({ ...prev, domain_sync: "success" }));
     }
 
-    // 6. AdSense Technical Check
+    // 6. App Check Key Detection
+    setStatus(prev => ({ ...prev, app_check: firebaseConfig.appCheckSiteKey ? "success" : "warning" }));
+
+    // 7. AdSense Technical Check
     const adsenseLoaded = typeof window !== 'undefined' && !!document.querySelector('script[src*="adsbygoogle"]');
     setStatus(prev => ({ ...prev, adsense: adsenseLoaded ? "success" : "warning" }));
     
@@ -123,7 +127,7 @@ export default function TestConnectionPage() {
           <div className="space-y-6">
             <Link href="/dashboard" className="flex items-center gap-3 text-[10px] font-black text-muted-foreground hover:text-primary transition-all uppercase tracking-[0.5em] group">
               <div className="p-3 bg-white/5 rounded-2xl group-hover:border-primary/50 border border-transparent transition-all shadow-xl">
-                <ArrowLeft className="w-5 h-5" />
+                <ArrowLeft className="w-4 h-4" />
               </div>
               Back to Neural Hub
             </Link>
@@ -171,11 +175,11 @@ export default function TestConnectionPage() {
              </CardHeader>
              <CardContent className="p-12 space-y-6 relative z-10">
                 {[
-                  { label: "Firebase Integration", sub: "Cloud Pipeline Connected", id: status.firestore, icon: Database },
-                  { label: "Neural AI Core", sub: "Gemini 1.5 & Veo Engines Linked", id: status.ai_integration, icon: Cpu },
-                  { label: "AdSense Integration", sub: "Publisher ID: ca-pub-8946933317699938", id: status.adsense, icon: DollarSign },
-                  { label: "Branded Domain Sync", sub: "Authorized: videomaster-ai.tech", id: status.domain_sync, icon: Globe },
-                  { label: "Security Layer", sub: "App Check & Bot Filter Active", id: status.app_check, icon: ShieldCheck },
+                  { label: "Firebase Pipeline", sub: "Cloud Handshake Authorized", id: status.config, icon: Database },
+                  { label: "Neural AI Core", sub: "Gemini 1.5 Flash Engine Status", id: status.ai_integration, icon: Cpu },
+                  { label: "AdSense Node", sub: "Publisher Identity Check", id: status.adsense, icon: DollarSign },
+                  { label: "Security Hub", sub: "App Check Site Key Detection", id: status.app_check, icon: ShieldCheck },
+                  { label: "Static Session", sub: "User Identity Persistence", id: status.session, icon: Activity },
                 ].map((item, i) => (
                   <div key={i} className="flex items-center justify-between p-8 bg-white/[0.02] rounded-[3rem] border border-white/5 hover:border-primary/40 hover:bg-white/[0.04] transition-all group cursor-default">
                     <div className="flex items-center gap-8">
@@ -202,7 +206,7 @@ export default function TestConnectionPage() {
              </CardContent>
            </Card>
 
-           <div className="space-y-12">
+           <aside className="space-y-12">
               <Card className="rounded-[3.5rem] bg-emerald-500/5 border-2 border-emerald-500/20 p-12 space-y-10 shadow-2xl">
                  <div className="flex flex-col items-center text-center space-y-4">
                     <div className="p-5 bg-emerald-500/10 rounded-[2rem] animate-pulse border-2 border-emerald-500/20 shadow-[0_0_40px_rgba(16,185,129,0.3)]">
@@ -212,7 +216,7 @@ export default function TestConnectionPage() {
                  </div>
                  <div className="space-y-6">
                     <p className="text-sm text-muted-foreground leading-relaxed italic text-center font-medium">
-                       Google AdSense is active. Verification pending review from Google Networks.
+                       Google AdSense is active. Ensure your `app-ads.txt` is verified.
                     </p>
                     <Button className="w-full h-20 rounded-3xl bg-orange-600 hover:bg-orange-700 font-black text-lg gap-3 shadow-2xl shadow-orange-600/40" asChild>
                        <a href="https://adsense.google.com" target="_blank">
@@ -224,24 +228,24 @@ export default function TestConnectionPage() {
 
               <Card className="rounded-[3.5rem] bg-primary/5 border border-primary/20 p-10 space-y-6 shadow-xl">
                  <h4 className="text-xs font-black uppercase tracking-[0.5em] flex items-center gap-3 text-primary">
-                   <Info className="w-4 h-4" /> Technical Details
+                   <Info className="w-4 h-4" /> Config Status
                  </h4>
                  <div className="space-y-4 pt-4">
                     <div className="flex justify-between text-[11px] font-bold uppercase tracking-widest border-b border-white/5 pb-2">
-                       <span className="text-muted-foreground">Publisher ID</span>
-                       <span className="text-white truncate max-w-[80px]">894693...</span>
-                    </div>
-                    <div className="flex justify-between text-[11px] font-bold uppercase tracking-widest border-b border-white/5 pb-2">
-                       <span className="text-muted-foreground">Domain State</span>
-                       <span className="text-emerald-500">Authorized</span>
+                       <span className="text-muted-foreground">Gemini</span>
+                       <span className={cn(isAiEngineAuthorized() ? "text-emerald-500" : "text-amber-500")}>
+                          {isAiEngineAuthorized() ? "Authorized" : "Missing Key"}
+                       </span>
                     </div>
                     <div className="flex justify-between text-[11px] font-bold uppercase tracking-widest">
-                       <span className="text-muted-foreground">Ads.txt</span>
-                       <span className="text-primary">Operational</span>
+                       <span className="text-muted-foreground">App Check</span>
+                       <span className={cn(firebaseConfig.appCheckSiteKey ? "text-emerald-500" : "text-amber-500")}>
+                          {firebaseConfig.appCheckSiteKey ? "Configured" : "Not Set"}
+                       </span>
                     </div>
                  </div>
               </Card>
-           </div>
+           </aside>
         </div>
       </main>
     </div>

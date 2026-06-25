@@ -1,9 +1,9 @@
 /**
  * @fileOverview AI Growth Assistant.
- * ✅ TRANSFORMED: Removed 'use server' for Static Export compatibility.
+ * ✅ Hardened: Returns a configuration error instead of crashing.
  */
 
-import { ai, geminiModel, z } from '@/ai/genkit';
+import { ai, geminiModel, z, isAiEngineAuthorized } from '@/ai/genkit';
 
 const AiChatInputSchema = z.object({
   message: z.string().describe('The user message'),
@@ -17,6 +17,13 @@ const AiChatOutputSchema = z.object({
 export type AiChatOutput = z.infer<typeof AiChatOutputSchema>;
 
 export async function sendAiChatMessage(input: AiChatInput): Promise<AiChatOutput> {
+  // Defensive Check
+  if (!isAiEngineAuthorized()) {
+    return { 
+      response: "⚠️ CONFIGURATION REQUIRED: Please set NEXT_PUBLIC_GEMINI_API_KEY in your environment variables to enable the AI Growth Assistant." 
+    };
+  }
+
   try {
     const { text } = await ai.generate({
       model: geminiModel,

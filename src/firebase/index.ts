@@ -13,7 +13,7 @@ let firestore: Firestore;
 
 /**
  * Optimized Firebase Initialization for Next.js 15 Production.
- * Forces the use of browser SDK instances and safely initializes App Check.
+ * Features strict conditional initialization for App Check to prevent local build failures.
  */
 export function initializeFirebase() {
   if (getApps().length > 0) {
@@ -26,18 +26,23 @@ export function initializeFirebase() {
   firestore = getFirestore(app);
 
   // 🛡️ ELITE SECURITY: App Check Initialization
-  if (typeof window !== 'undefined' && 
-      firebaseConfig.appCheckSiteKey && 
-      !window.location.hostname.includes('localhost') &&
-      !window.location.hostname.includes('127.0.0.1')) {
+  // Only attempt initialization if key is present AND not on localhost
+  const isBrowser = typeof window !== 'undefined';
+  const siteKey = firebaseConfig.appCheckSiteKey;
+  const isLocal = isBrowser && (window.location.hostname.includes('localhost') || window.location.hostname.includes('127.0.0.1'));
+
+  if (isBrowser && siteKey && !isLocal) {
     try {
       initializeAppCheck(app, {
-        provider: new ReCaptchaV3Provider(firebaseConfig.appCheckSiteKey),
+        provider: new ReCaptchaV3Provider(siteKey),
         isTokenAutoRefreshEnabled: true
       });
+      console.log("🛡️ App Check Protection Active.");
     } catch (e) {
-      // App Check is non-critical for core logical flow
+      console.warn("🛡️ App Check initialization skipped or failed:", e);
     }
+  } else if (isBrowser && isLocal) {
+    console.log("🛡️ Development Mode: App Check bypassed on localhost.");
   }
   
   return { app, auth, firestore };

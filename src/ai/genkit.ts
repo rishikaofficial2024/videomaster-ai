@@ -2,9 +2,8 @@ import { genkit } from 'genkit';
 import { googleAI } from '@genkit-ai/google-genai';
 
 /**
- * 🧠 Genkit AI Initialization (Audit Verified).
- * Configured for Static Export: Uses NEXT_PUBLIC_ prefix to ensure 
- * the API key is bundled into the Android APK.
+ * 🧠 Genkit AI Initialization (Hardened).
+ * Features a safety check to prevent crashes if the API key is missing.
  */
 
 const getApiKey = () => {
@@ -12,13 +11,24 @@ const getApiKey = () => {
   return rawKey.trim().replace(/^["']|["']$/g, '').trim();
 };
 
+const apiKey = getApiKey();
+
+// Defensive initialization: Only use googleAI if key is present
 export const ai = genkit({
   plugins: [
     googleAI({
-      apiKey: getApiKey(),
+      apiKey: apiKey || 'dummy-key-for-initialization',
     }),
   ],
 });
+
+/**
+ * 🛠️ CONFIG CHECK UTILITY
+ * Call this before executing flows to ensure the engine is ready.
+ */
+export const isAiEngineAuthorized = () => {
+  return !!apiKey && apiKey.length > 20;
+};
 
 // 🚀 PRODUCTION READY MODELS
 export const geminiModel = googleAI.model('googleai/gemini-1.5-flash-latest');
