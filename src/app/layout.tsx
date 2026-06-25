@@ -1,4 +1,3 @@
-
 import type {Metadata} from 'next';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
@@ -6,8 +5,8 @@ import { FirebaseClientProvider } from '@/firebase';
 
 export const metadata: Metadata = {
   title: 'VideoMaster AI - India\'s #1 Professional AI Video Studio',
-  description: 'Create viral AI videos 10x faster with Gemini Fast AI. Professional script writing, cinematic video generation, and 4K thumbnail design. Unlock Pro features for FREE.',
-  keywords: ['AI Video Maker India', 'Viral Script Writer', 'Cinematic AI Video', 'VideoMaster AI Tech', 'Gemini Fast AI Video', 'YouTube Shorts AI', 'Instagram Reel Maker', 'Best AI Video Editor'],
+  description: 'Create viral AI videos 10x faster with Gemini Fast AI. Professional script writing, cinematic video generation, and 4K thumbnail design.',
+  keywords: ['AI Video Maker', 'Viral Script Writer', 'VideoMaster AI Tech', 'Gemini AI Video', 'YouTube Shorts AI'],
   metadataBase: new URL('https://videomaster-ai.tech'),
   alternates: { canonical: '/' },
   verification: {
@@ -21,12 +20,6 @@ export const metadata: Metadata = {
     locale: 'en_IN',
     type: 'website',
     images: [{ url: 'https://picsum.photos/seed/videomaster-og/1200/630', width: 1200, height: 630 }],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'VideoMaster AI - Master the Viral Social Game',
-    description: 'Create viral shorts and reels in seconds with Gemini Fast AI.',
-    images: ['https://picsum.photos/seed/videomaster-twitter/1200/630'],
   },
 };
 
@@ -46,11 +39,6 @@ export default function RootLayout({
       "@type": "Offer",
       "price": "0",
       "priceCurrency": "INR"
-    },
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.9",
-      "ratingCount": "1250"
     }
   };
 
@@ -62,16 +50,7 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
         <meta name="theme-color" content="#05070a" />
         
-        {/* 📊 GA4 ANALYTICS & ADSENSE NODE */}
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-MEASUREMENT_ID"></script>
-        <script dangerouslySetInnerHTML={{
-          __html: `
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-MEASUREMENT_ID');
-          `
-        }} />
+        {/* 📊 ADSENSE & ANALYTICS */}
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8946933317699938" crossOrigin="anonymous"></script>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       </head>

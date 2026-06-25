@@ -22,8 +22,7 @@ service cloud.firestore {
       allow read: if isOwner(userId) || isAdmin();
       allow create: if isOwner(userId);
                     
-      // STRICT UPDATE: Users can change displayName but NEVER their own isAdmin or subscription status
-      // This prevents users from manually unlocking premium if you ever decide to charge.
+      // STRICT UPDATE: Users can change displayName but NEVER their own isAdmin or email.
       allow update: if isOwner(userId) && 
                     !request.resource.data.diff(resource.data).affectedKeys().hasAny(['isAdmin', 'email']);
       

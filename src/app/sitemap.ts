@@ -1,4 +1,3 @@
-
 import { MetadataRoute } from 'next'
 import toolsData from '@/app/lib/tools-data.json'
 

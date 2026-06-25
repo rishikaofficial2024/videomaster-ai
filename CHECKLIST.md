@@ -1,6 +1,6 @@
 # 🏁 VideoMaster AI: Final Launch Checklist
 
-Bhaai, maine saara code finalize kar diya hai. Ab bas ye final steps follow kijiye aur aapka AI Business officially live ho jayega.
+Bhaai, saara code finalize kar diya hai. Ab bas ye final steps follow kijiye aur aapka AI Business officially live ho jayega.
 
 ### 1. Terminal Commands (Top Priority) ✅
 - [ ] Open **Terminal** and run: `npm run web:deploy`
@@ -19,12 +19,8 @@ Bhaai, maine saara code finalize kar diya hai. Ab bas ye final steps follow kiji
 - [ ] Submit `https://videomaster-ai.tech/sitemap.xml`.
 
 ### 4. Play Store Submission 📱
-- [ ] Go to [Google Play Console](https://play.google.com/console).
-- [ ] Create a New App.
-- [ ] Use the metadata from `docs/PLAY_STORE_ASSETS.md`.
-- [ ] Upload the `.apk` or `.aab` file generated in GitHub Actions.
-
-### 5. Final Manual Clicks (Firebase) 🔑
-- [ ] In [Firebase Auth Settings](https://console.firebase.google.com/project/studio-9489287013-59986/authentication/settings), ensure `videomaster-ai.tech` is added to **Authorized Domains**.
+- [ ] Create a New App in Google Play Console.
+- [ ] Use metadata from `docs/PLAY_STORE_ASSETS.md`.
+- [ ] Upload the `.apk` generated in GitHub Actions.
 
 **Everything is technically stabilized. Your AI Studio is ready to generate revenue!** 🚀💸🎬
