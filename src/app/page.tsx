@@ -16,6 +16,10 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 
+/**
+ * 🚀 PRODUCTION LANDING: VideoMaster AI Elite Release.
+ * Optimized for high-conversion and premium SaaS branding.
+ */
 export default function LandingPage() {
   const heroImg = PlaceHolderImages.find(img => img.id === "hero-bg");
   const auth = useAuth();
@@ -45,22 +49,22 @@ export default function LandingPage() {
         }, { merge: true });
       }
 
-      toast({ title: "Elite Access Activated", description: "Loading the Gold Standard Workspace..." });
+      toast({ title: "Elite Access Activated", description: "Loading the Pro Workspace..." });
       router.push("/dashboard");
     } catch (error: any) {
-      toast({ variant: "destructive", title: "Entry Failed", description: "Handshake interrupted." });
+      toast({ variant: "destructive", title: "Entry Failed", description: "Connection timed out." });
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#0f0f0f] selection:bg-primary/30 overflow-x-hidden">
+    <div className="flex flex-col min-h-screen bg-[#050314] selection:bg-primary/30 overflow-x-hidden">
       {/* HEADER */}
       <header className="px-6 lg:px-12 h-24 flex items-center fixed top-0 w-full bg-black/60 backdrop-blur-xl z-50 border-b border-white/5">
         <Link className="flex items-center justify-center gap-4 group" href="/">
-          <div className="bg-gradient-to-br from-primary to-yellow-600 p-2.5 rounded-2xl shadow-glow group-hover:rotate-6 transition-all duration-500">
-            <Video className="h-6 w-6 text-black" />
+          <div className="bg-gradient-to-br from-primary to-accent p-2.5 rounded-2xl shadow-glow group-hover:rotate-6 transition-all duration-500">
+            <Video className="h-6 w-6 text-white" />
           </div>
           <span className="font-headline font-bold text-2xl tracking-tighter text-white uppercase">VideoMaster<span className="text-primary italic">AI</span></span>
         </Link>
@@ -69,7 +73,7 @@ export default function LandingPage() {
           <Link href="/templates" className="text-[10px] font-black uppercase tracking-[0.4em] text-muted-foreground hover:text-primary transition-all">Templates</Link>
           <div className="h-6 w-px bg-white/10 mx-2" />
           <Link href="/login" className="text-[10px] font-black uppercase tracking-[0.4em] text-white hover:text-primary transition-all">Sign In</Link>
-          <Button onClick={handleGuestEntry} disabled={loading} className="h-11 rounded-full bg-white text-black hover:bg-primary transition-all font-black text-[10px] uppercase tracking-widest px-8 shadow-2xl">
+          <Button onClick={handleGuestEntry} disabled={loading} className="h-11 rounded-full bg-white text-black hover:bg-primary hover:text-white transition-all font-black text-[10px] uppercase tracking-widest px-8 shadow-2xl">
              Try For Free
           </Button>
         </nav>
@@ -83,21 +87,21 @@ export default function LandingPage() {
           <div className="container px-6 mx-auto relative">
             <div className="flex flex-col items-center text-center space-y-12 mb-32">
               <div className="inline-flex items-center gap-3 px-6 py-2.5 rounded-full bg-primary/15 border border-primary/30 backdrop-blur-xl text-primary text-[10px] font-black uppercase tracking-[0.4em] animate-in fade-in zoom-in duration-1000 shadow-glow">
-                <Sparkles className="w-4 h-4" /> THE GOLD STANDARD OF AI PRODUCTION
+                <Sparkles className="w-4 h-4" /> THE NEURAL PRODUCTION STANDARD
               </div>
               
               <h1 className="text-7xl md:text-[11rem] font-bold tracking-tighter font-headline max-w-7xl leading-[0.85] uppercase text-white animate-in slide-in-from-bottom-10 duration-1000">
-                Produce <span className="text-gradient italic">Gold.</span> <br/>
+                Create <span className="text-gradient italic">Viral.</span> <br/>
                 <span className="text-white">With AI.</span>
               </h1>
               
               <p className="max-w-3xl text-muted-foreground text-xl md:text-3xl font-medium leading-relaxed italic opacity-70">
-                Transform cinematic ideas into professional production assets in seconds. India's #1 Luxury AI Video Studio.
+                Transform cinematic ideas into professional video assets in seconds. India's #1 Premium AI Video Studio.
               </p>
 
               <div className="flex flex-col items-center gap-12 w-full max-w-4xl mx-auto pt-8">
                 <div className="flex flex-col sm:flex-row gap-8 w-full justify-center">
-                  <Button onClick={handleGuestEntry} disabled={loading} className="h-24 px-16 rounded-full text-2xl font-black uppercase tracking-tight shadow-glow hover:scale-105 active:scale-95 bg-primary text-black border-b-[10px] border-yellow-800 group relative overflow-hidden">
+                  <Button onClick={handleGuestEntry} disabled={loading} className="h-24 px-16 rounded-full text-2xl font-black uppercase tracking-tight shadow-glow hover:scale-105 active:scale-95 bg-primary text-white border-b-[10px] border-purple-900 group relative overflow-hidden">
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/25 to-transparent -translate-x-full group-hover:animate-[shimmer_2s_infinite] pointer-events-none" />
                     {loading ? <Sparkles className="animate-spin mr-4" /> : <Zap className="mr-4 w-8 h-8 fill-current" />}
                     Enter Pro Studio
@@ -111,7 +115,7 @@ export default function LandingPage() {
                   {[Globe, ShieldCheck, Cpu].map((Icon, i) => (
                     <div key={i} className="flex items-center gap-3">
                        <Icon className="w-5 h-5 text-primary" />
-                       <span className="text-[10px] font-black uppercase tracking-[0.5em] text-white">Luxury Node</span>
+                       <span className="text-[10px] font-black uppercase tracking-[0.5em] text-white">Elite Node</span>
                     </div>
                   ))}
                 </div>
@@ -120,17 +124,17 @@ export default function LandingPage() {
 
             {/* PREVIEW IMAGE */}
             <div className="relative max-w-[95rem] mx-auto group">
-              <div className="absolute -inset-1 bg-gradient-to-r from-primary via-[#F9E272] to-primary rounded-[5rem] blur opacity-15 group-hover:opacity-40 transition duration-1000" />
+              <div className="absolute -inset-1 bg-gradient-to-r from-primary via-secondary to-accent rounded-[5rem] blur opacity-15 group-hover:opacity-40 transition duration-1000" />
               <div className="premium-card overflow-hidden rounded-[5rem] relative group border-white/10 shadow-[0_50px_100px_rgba(0,0,0,0.9)]">
                 {heroImg && (
                   <Image
-                    alt="VideoMaster AI Luxury Hub"
+                    alt="VideoMaster AI Studio"
                     className="w-full aspect-[21/9] object-cover opacity-50 group-hover:scale-105 transition-transform duration-[6s]"
                     height={1080}
                     src={heroImg.imageUrl}
                     width={1920}
                     priority
-                    data-ai-hint="luxury office gold"
+                    data-ai-hint="video editing studio"
                   />
                 )}
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-90" />
@@ -139,19 +143,19 @@ export default function LandingPage() {
                    <div className="space-y-4 max-w-xl">
                       <div className="flex items-center gap-3 px-4 py-1.5 rounded-full bg-primary/30 border border-primary/50 w-fit backdrop-blur-xl">
                          <Star className="w-4 h-4 text-primary fill-current" />
-                         <span className="text-[10px] font-black text-white uppercase tracking-widest">The Gold Standard</span>
+                         <span className="text-[10px] font-black text-white uppercase tracking-widest">Premium Production</span>
                       </div>
-                      <h3 className="text-4xl md:text-6xl font-headline font-bold text-white uppercase leading-none tracking-tighter">Designed for <br/> High-Value Creators.</h3>
+                      <h3 className="text-4xl md:text-6xl font-headline font-bold text-white uppercase leading-none tracking-tighter">Engineered for <br/> Viral Growth.</h3>
                    </div>
                    <div className="p-8 bg-black/70 backdrop-blur-3xl rounded-[3rem] border border-white/20 flex items-center gap-8 shadow-2xl">
                       <div className="flex flex-col">
                          <span className="text-4xl font-bold text-primary tracking-tighter">0.4s</span>
-                         <span className="text-[9px] font-black text-muted-foreground uppercase tracking-widest">Production Latency</span>
+                         <span className="text-[9px] font-black text-muted-foreground uppercase tracking-widest">Logic Latency</span>
                       </div>
                       <div className="w-px h-12 bg-white/20" />
                       <div className="flex flex-col">
                          <span className="text-4xl font-bold text-white tracking-tighter">100k+</span>
-                         <span className="text-[9px] font-black text-muted-foreground uppercase tracking-widest">Premium Nodes</span>
+                         <span className="text-[9px] font-black text-muted-foreground uppercase tracking-widest">Active Projects</span>
                       </div>
                    </div>
                 </div>
@@ -161,18 +165,18 @@ export default function LandingPage() {
         </section>
 
         {/* FEATURE GRID */}
-        <section id="features" className="w-full py-40 border-y border-white/5 relative bg-[#0a0a0a]">
+        <section id="features" className="w-full py-40 border-y border-white/5 relative bg-[#0a061c]/30">
            <div className="container px-6 mx-auto">
               <div className="text-center mb-32 space-y-4">
-                 <h2 className="text-6xl md:text-8xl font-headline font-bold text-white uppercase tracking-tighter">The <span className="text-gradient">Elite</span> Stack</h2>
-                 <p className="text-xl text-muted-foreground italic max-w-2xl mx-auto">Every instrument required to dominate the global economy.</p>
+                 <h2 className="text-6xl md:text-8xl font-headline font-bold text-white uppercase tracking-tighter">The <span className="text-gradient">Production</span> Stack</h2>
+                 <p className="text-xl text-muted-foreground italic max-w-2xl mx-auto">Everything you need to dominate social media with AI.</p>
               </div>
               
               <div className="grid md:grid-cols-3 gap-16">
                  {[
-                   { icon: Cpu, title: "Neural Logic", desc: "Powered by Gemini 1.5 Pro for deep narrative understanding and complex script generation.", color: "text-primary" },
-                   { icon: Zap, title: "Veo Motion", desc: "State-of-the-art text-to-video synthesis engine for professional-grade 4K motion assets.", color: "text-primary" },
-                   { icon: MousePointer2, title: "Precision Edit", desc: "An intelligent VN-style editor optimized for high-speed luxury mobile and web workflows.", color: "text-white" }
+                   { icon: Cpu, title: "Neural Logic", desc: "Powered by Gemini 1.5 Flash for high-speed script and caption generation.", color: "text-primary" },
+                   { icon: Zap, title: "Veo Motion", desc: "State-of-the-art text-to-video synthesis for cinematic HD video sequences.", color: "text-accent" },
+                   { icon: MousePointer2, title: "Precision Edit", desc: "A streamlined VN-style editor optimized for fast mobile and web workflows.", color: "text-white" }
                  ].map((feat, i) => (
                    <div key={i} className="premium-card p-12 text-center group space-y-8 h-full border-white/10 bg-white/[0.01]">
                       <div className="w-24 h-24 rounded-[2.5rem] bg-white/5 flex items-center justify-center mx-auto border border-white/10 group-hover:scale-110 transition-all duration-500 shadow-2xl">
@@ -182,10 +186,6 @@ export default function LandingPage() {
                         <h3 className="text-3xl font-headline font-bold text-white uppercase tracking-tight">{feat.title}</h3>
                         <p className="text-muted-foreground italic leading-relaxed opacity-60">{feat.desc}</p>
                       </div>
-                      <div className="pt-4 flex items-center justify-center gap-2 text-primary opacity-0 group-hover:opacity-100 transition-all">
-                         <span className="text-[10px] font-black uppercase tracking-widest">Explore Node</span>
-                         <ArrowRight className="w-4 h-4" />
-                      </div>
                    </div>
                  ))}
               </div>
@@ -193,18 +193,18 @@ export default function LandingPage() {
         </section>
 
         {/* CTA SECTION */}
-        <section className="py-40 relative bg-[#0f0f0f]">
+        <section className="py-40 relative bg-[#050314]">
            <div className="container px-6 mx-auto">
-              <div className="max-w-6xl mx-auto glass-panel rounded-[5rem] p-16 md:p-32 text-center space-y-12 relative overflow-hidden gold-glow border-primary/30">
+              <div className="max-w-6xl mx-auto glass-panel rounded-[5rem] p-16 md:p-32 text-center space-y-12 relative overflow-hidden purple-glow border-primary/30">
                  <div className="absolute top-0 right-0 p-20 opacity-[0.05] rotate-12">
                     <Crown className="w-96 h-96 text-primary" />
                  </div>
                  <div className="space-y-6 relative z-10">
-                    <h2 className="text-7xl md:text-[10rem] font-headline font-black text-white leading-none uppercase tracking-tighter">Enter the <br/> <span className="text-gradient">Elite Circle.</span></h2>
-                    <p className="text-2xl md:text-4xl text-muted-foreground font-medium italic opacity-60 max-w-4xl mx-auto">Luxury production tools for those who refuse to compromise.</p>
+                    <h2 className="text-7xl md:text-[10rem] font-headline font-black text-white leading-none uppercase tracking-tighter">Build Your <br/> <span className="text-gradient">Empire.</span></h2>
+                    <p className="text-2xl md:text-4xl text-muted-foreground font-medium italic opacity-60 max-w-4xl mx-auto">Luxury production tools for the next generation of creators.</p>
                  </div>
-                 <Button onClick={handleGuestEntry} disabled={loading} className="h-28 px-24 rounded-full bg-white text-black hover:bg-primary transition-all font-black text-3xl uppercase tracking-tight shadow-glow relative z-10 active:scale-95">
-                    Start Your Legacy
+                 <Button onClick={handleGuestEntry} disabled={loading} className="h-28 px-24 rounded-full bg-white text-black hover:bg-primary hover:text-white transition-all font-black text-3xl uppercase tracking-tight shadow-glow relative z-10 active:scale-95">
+                    Start Creating
                  </Button>
               </div>
            </div>
@@ -214,8 +214,8 @@ export default function LandingPage() {
       {/* FOOTER */}
       <footer className="py-32 px-10 border-t border-white/5 glass-panel text-center space-y-16">
           <div className="flex flex-col items-center gap-6">
-             <div className="bg-gradient-to-br from-primary to-yellow-600 p-4 rounded-3xl shadow-glow">
-                <Video className="w-10 h-10 text-black" />
+             <div className="bg-gradient-to-br from-primary to-accent p-4 rounded-3xl shadow-glow">
+                <Video className="w-10 h-10 text-white" />
              </div>
              <span className="text-5xl font-headline font-bold tracking-tighter text-white uppercase">VideoMaster<span className="text-primary italic">AI.</span></span>
           </div>
@@ -230,9 +230,9 @@ export default function LandingPage() {
                 <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
                 <span>Developed by Rinku Ganjawala</span>
              </div>
-             <p className="text-[10px] text-muted-foreground font-black uppercase tracking-[1em] opacity-20">GOLD STANDARD PRODUCTION NODE v4.2.0</p>
+             <p className="text-[10px] text-muted-foreground font-black uppercase tracking-[1em] opacity-20">PRODUCTION HUB v4.5.2 • ELITE RELEASE</p>
              <p className="text-sm text-muted-foreground/30 italic leading-relaxed">
-               Luxury video synthesis powered by Google Deep Research Labs. <br/>
+               Neural video synthesis powered by Google Generative AI Labs. <br/>
                Contact: rinkukumarpaswan1796@gmail.com
              </p>
              <div className="pt-8">

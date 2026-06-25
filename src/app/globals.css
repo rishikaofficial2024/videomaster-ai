@@ -4,35 +4,37 @@
 
 @layer base {
   :root {
-    /* Precise Gold & Obsidian Palette */
-    --background: 0 0% 6%; /* #0F0F0F */
-    --foreground: 0 0% 100%; /* #FFFFFF */
+    /* Premium Purple & Pink Palette */
+    --background: 260 30% 4%; /* Deep Obsidian */
+    --foreground: 0 0% 100%;
     
-    --card: 0 0% 8%; 
+    --card: 260 30% 6%;
     --card-foreground: 0 0% 100%;
     
-    --popover: 0 0% 5%;
+    --popover: 260 30% 3%;
     --popover-foreground: 0 0% 100%;
     
-    /* #D4AF37 - Precision Luxury Gold */
-    --primary: 46 65% 52%; 
-    --primary-foreground: 0 0% 6%;
+    /* #6D28D9 - Premium Purple */
+    --primary: 263 70% 50%;
+    --primary-foreground: 0 0% 100%;
     
-    --secondary: 0 0% 12%; 
+    /* #8B5CF6 - Secondary Purple */
+    --secondary: 258 90% 66%;
     --secondary-foreground: 0 0% 100%;
     
-    --muted: 0 0% 10%;
-    --muted-foreground: 0 0% 60%; 
+    /* #EC4899 - Accent Pink */
+    --accent: 330 81% 60%;
+    --accent-foreground: 0 0% 100%;
     
-    --accent: 46 65% 52%;
-    --accent-foreground: 0 0% 6%;
+    --muted: 260 20% 12%;
+    --muted-foreground: 260 10% 70%;
     
     --destructive: 0 84% 60%;
     --destructive-foreground: 210 40% 98%;
     
-    --border: 46 65% 52% / 0.15;
-    --input: 46 65% 52% / 0.08;
-    --ring: 46 65% 52%;
+    --border: 263 70% 50% / 0.2;
+    --input: 263 70% 50% / 0.1;
+    --ring: 263 70% 50%;
     --radius: 2.5rem;
   }
 }
@@ -42,10 +44,10 @@
     @apply border-border outline-none;
   }
   body {
-    @apply bg-[#0f0f0f] text-foreground font-body antialiased selection:bg-primary/40;
+    @apply bg-[#050314] text-foreground font-body antialiased selection:bg-primary/40;
     background-image: 
-      radial-gradient(at 0% 0%, hsla(46, 65%, 52%, 0.12) 0px, transparent 50%),
-      radial-gradient(at 100% 100%, hsla(0, 0%, 100%, 0.04) 0px, transparent 50%);
+      radial-gradient(at 0% 0%, hsla(263, 70%, 50%, 0.15) 0px, transparent 50%),
+      radial-gradient(at 100% 100%, hsla(330, 81%, 60%, 0.08) 0px, transparent 50%);
     background-attachment: fixed;
   }
   h1, h2, h3, h4, h5, h6 {
@@ -61,20 +63,16 @@
   @apply glass-panel rounded-[2.5rem] transition-all duration-500 hover:border-primary/40 hover:bg-white/[0.05] hover:scale-[1.02];
 }
 
-.gold-glow {
-  box-shadow: 0 0 80px -20px hsla(46, 65%, 52%, 0.35);
+.purple-glow {
+  box-shadow: 0 0 80px -20px hsla(263, 70%, 50%, 0.35);
 }
 
 .shadow-glow {
-  box-shadow: 0 0 40px hsla(46, 65%, 52%, 0.45);
+  box-shadow: 0 0 40px hsla(263, 70%, 50%, 0.45);
 }
 
 .text-gradient {
-  @apply bg-clip-text text-transparent bg-gradient-to-r from-[#D4AF37] via-[#F9E272] to-[#D4AF37];
-}
-
-.gold-border-gradient {
-  border-image: linear-gradient(to right, #D4AF37, #F9E272, #D4AF37) 1;
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-[#6D28D9] via-[#8B5CF6] to-[#EC4899];
 }
 
 @keyframes float {

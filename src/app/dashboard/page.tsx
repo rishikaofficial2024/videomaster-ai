@@ -7,7 +7,7 @@ import {
   Plus, Sparkles, Loader2, Coins, 
   ArrowRight, Wand2, Video as VideoIcon, Mic, Image as ImageIcon,
   Crown, TrendingUp, History, Star, Globe, Zap, LayoutTemplate,
-  Activity, Search, User
+  Activity, Search, User, Heart
 } from "lucide-react";
 import Link from "next/link";
 import { useUser, useFirestore, useDoc, useMemoFirebase } from "@/firebase";
@@ -15,6 +15,9 @@ import { doc, updateDoc } from "firebase/firestore";
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 
+/**
+ * 🎨 PREMIUM DASHBOARD: The Creator's Institutional Hub.
+ */
 export default function Dashboard() {
   const { user, loading: userLoading } = useUser();
   const db = useFirestore();
@@ -44,14 +47,14 @@ export default function Dashboard() {
 
   const toolSuite = [
     { label: "Viral Script", icon: Wand2, desc: "AI Narrative Node", color: "text-primary", bg: "bg-primary/15", href: "/editor?tool=ai" },
-    { label: "Veo Motion", icon: VideoIcon, desc: "Text-to-Video", color: "text-white", bg: "bg-white/5", href: "/editor?tool=ai" },
-    { label: "Neural Voice", icon: Mic, desc: "Studio Voiceover", color: "text-primary", bg: "bg-primary/15", href: "/editor?tool=ai" },
-    { label: "Elite Thumbnail", icon: ImageIcon, desc: "High-CTR Visuals", color: "text-white", bg: "bg-white/5", href: "/editor?tool=ai" },
+    { label: "Veo Motion", icon: VideoIcon, desc: "Text-to-Video", color: "text-accent", bg: "bg-accent/15", href: "/editor?tool=ai" },
+    { label: "Neural Voice", icon: Mic, desc: "Studio Voiceover", color: "text-white", bg: "bg-white/10", href: "/editor?tool=ai" },
+    { label: "Elite Thumbnail", icon: ImageIcon, desc: "High-CTR Visuals", color: "text-primary", bg: "bg-primary/15", href: "/editor?tool=ai" },
   ];
 
   if (!mounted || userLoading) {
     return (
-      <div className="h-screen flex items-center justify-center bg-[#0f0f0f]">
+      <div className="h-screen flex items-center justify-center bg-[#050314]">
         <div className="relative">
           <Loader2 className="w-16 h-16 animate-spin text-primary" />
           <div className="absolute inset-0 blur-3xl bg-primary/20 rounded-full" />
@@ -61,7 +64,7 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen pb-40 bg-[#0f0f0f]">
+    <div className="min-h-screen pb-40 bg-[#050314]">
       <Navbar />
       
       <main className="max-w-[95rem] mx-auto p-6 lg:p-12 space-y-16 pt-32 lg:pt-40">
@@ -80,12 +83,12 @@ export default function Dashboard() {
               Creator <span className="text-gradient italic">Hub.</span>
             </h1>
             <p className="text-muted-foreground text-2xl md:text-3xl font-medium italic opacity-60">
-              Welcome to the Gold Standard, {profile?.displayName?.split(' ')[0] || 'Creator'}.
+              Welcome to the Pro Studio, {profile?.displayName?.split(' ')[0] || 'Creator'}.
             </p>
           </div>
           
           <div className="flex items-center gap-8 glass-panel p-8 md:p-12 rounded-[4rem] border-white/10 shadow-2xl relative overflow-hidden group hover:border-primary/40 transition-all">
-             <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-white/5" />
+             <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-accent/5" />
              <div className="flex flex-col px-8 border-r border-white/20 relative z-10">
                 <span className="text-[11px] font-black uppercase tracking-[0.5em] text-primary mb-3 opacity-40">Clearance</span>
                 <div className="flex items-center gap-5">
@@ -93,11 +96,11 @@ export default function Dashboard() {
                     <Crown className="w-10 h-10 text-primary fill-current group-hover:scale-125 transition-all duration-500" />
                     <div className="absolute inset-0 blur-2xl bg-primary/50 rounded-full" />
                   </div>
-                  <span className="text-6xl font-bold font-headline text-white tracking-tighter uppercase">ELITE</span>
+                  <span className="text-6xl font-bold font-headline text-white tracking-tighter uppercase">PRO</span>
                 </div>
              </div>
-             <Button className="rounded-full h-24 font-black px-12 shadow-glow text-2xl gap-5 bg-white text-black hover:bg-primary transition-all relative z-10 active:scale-95" asChild>
-                <Link href="/editor"><Plus className="w-10 h-10" /> New Masterpiece</Link>
+             <Button className="rounded-full h-24 font-black px-12 shadow-glow text-2xl gap-5 bg-white text-black hover:bg-primary hover:text-white transition-all relative z-10 active:scale-95" asChild>
+                <Link href="/editor"><Plus className="w-10 h-10" /> New Project</Link>
              </Button>
           </div>
         </header>
@@ -107,14 +110,14 @@ export default function Dashboard() {
            <div className="flex-1 w-full relative group">
               <Search className="absolute left-8 top-1/2 -translate-y-1/2 text-muted-foreground w-6 h-6 group-focus-within:text-primary transition-colors" />
               <input 
-                placeholder="Search the repository..." 
+                placeholder="Search your creative assets..." 
                 className="w-full h-20 bg-white/[0.03] border border-white/10 rounded-full px-20 text-xl text-white focus:border-primary/50 transition-all outline-none placeholder:opacity-30 font-medium shadow-inner"
               />
            </div>
            <div className="flex gap-4 scrollbar-hide overflow-x-auto w-full lg:w-auto">
               {[
-                { label: "Active Nodes", val: "24", icon: Activity },
-                { label: "Power Level", val: "100%", icon: TrendingUp },
+                { label: "Active Nodes", val: "12", icon: Activity },
+                { label: "Neural Load", val: "14%", icon: TrendingUp },
                 { label: "Cloud Sync", val: "Verified", icon: Globe }
               ].map((stat, i) => (
                 <div key={i} className="glass-panel px-10 py-5 rounded-full border-white/10 flex items-center gap-5 whitespace-nowrap shadow-xl">
@@ -167,9 +170,9 @@ export default function Dashboard() {
                     <div className="p-4 bg-primary/20 rounded-2xl border border-primary/30 shadow-glow">
                        <History className="text-primary w-8 h-8" />
                     </div>
-                    <h3 className="text-4xl font-headline font-black text-white uppercase tracking-tight">Project Archive</h3>
+                    <h3 className="text-4xl font-headline font-black text-white uppercase tracking-tight">Recent Archives</h3>
                  </div>
-                 <Link href="/projects" className="px-6 py-2.5 rounded-full border border-white/20 text-[10px] font-black uppercase tracking-widest text-white hover:bg-white/10 transition-all">View Repository</Link>
+                 <Link href="/projects" className="px-6 py-2.5 rounded-full border border-white/20 text-[10px] font-black uppercase tracking-widest text-white hover:bg-white/10 transition-all">Explore All</Link>
               </div>
               
               <div className="py-24 text-center space-y-8 relative z-10 opacity-30">
@@ -177,8 +180,8 @@ export default function Dashboard() {
                     <Plus className="w-full h-full text-muted-foreground" />
                  </div>
                  <div className="space-y-2">
-                    <h4 className="text-2xl font-bold uppercase tracking-tight">Node Empty</h4>
-                    <p className="text-sm font-medium italic">Your creative assets will be archived here.</p>
+                    <h4 className="text-2xl font-bold uppercase tracking-tight">Project Node Empty</h4>
+                    <p className="text-sm font-medium italic">Start a new masterpiece to populate this archive.</p>
                  </div>
               </div>
            </Card>
@@ -193,10 +196,10 @@ export default function Dashboard() {
                        <TrendingUp size={28} />
                        <h4 className="text-3xl font-black font-headline uppercase tracking-tight">Growth Node</h4>
                     </div>
-                    <p className="text-lg text-muted-foreground italic leading-relaxed opacity-70">AI-powered trend analysis for high-value engagement.</p>
+                    <p className="text-lg text-muted-foreground italic leading-relaxed opacity-70">AI analysis for viral hashtag and narrative hooks.</p>
                  </div>
-                 <Button className="w-full h-20 rounded-full bg-white text-black hover:bg-primary transition-all font-black text-xs uppercase tracking-widest shadow-2xl relative z-10 active:scale-95" asChild>
-                    <Link href="/ai-assistant">Launch Protocol</Link>
+                 <Button className="w-full h-20 rounded-full bg-white text-black hover:bg-primary hover:text-white transition-all font-black text-xs uppercase tracking-widest shadow-2xl relative z-10 active:scale-95" asChild>
+                    <Link href="/ai-assistant">Launch Assistant</Link>
                  </Button>
               </Card>
 
@@ -206,17 +209,22 @@ export default function Dashboard() {
                        <LayoutTemplate className="w-8 h-8 text-white" />
                     </div>
                     <div>
-                       <h4 className="text-2xl font-bold text-white uppercase tracking-tight">Templates</h4>
-                       <span className="text-[9px] font-black text-muted-foreground uppercase tracking-widest opacity-40">Luxury Presets</span>
+                       <h4 className="text-2xl font-bold text-white uppercase tracking-tight">Library</h4>
+                       <span className="text-[9px] font-black text-muted-foreground uppercase tracking-widest opacity-40">Pro Presets</span>
                     </div>
                  </div>
-                 <p className="text-base text-muted-foreground italic leading-relaxed opacity-70">Access professional frameworks for global dominance.</p>
+                 <p className="text-base text-muted-foreground italic leading-relaxed opacity-70">High-fidelity frameworks for viral production.</p>
                  <Button className="w-full h-16 rounded-full bg-black/50 border border-white/20 text-white font-black text-[10px] uppercase tracking-widest transition-all hover:bg-white/10" asChild>
-                    <Link href="/templates">Enter Library</Link>
+                    <Link href="/templates">Access Library</Link>
                  </Button>
               </Card>
            </div>
         </section>
+
+        <footer className="text-center pt-20 border-t border-white/5 opacity-40">
+           <Heart className="w-6 h-6 text-accent mx-auto mb-6 animate-pulse fill-accent/20" />
+           <p className="text-[10px] text-muted-foreground font-black uppercase tracking-[0.5em]">Developed by Rinku Ganjawala • Neural Intelligence India</p>
+        </footer>
       </main>
     </div>
   );
