@@ -68,6 +68,7 @@ function EditorContent() {
       setProjectId(projectIdFromUrl);
       setIsNewProject(false);
     } else {
+      // 🛡️ HYDRATION FIX: ID generation moved to useEffect
       const newId = "prj-" + Date.now().toString(36).substring(4);
       setProjectId(newId);
     }
