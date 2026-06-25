@@ -9,7 +9,7 @@ import {
   Zap, ArrowLeft, ShieldCheck, 
   Activity, Globe, Info, Cpu, AlertTriangle, 
   Tornado, Globe2, Link2, Blocks, DollarSign, RefreshCw,
-  ExternalLink
+  ExternalLink, Layout
 } from "lucide-react";
 import { useAuth, useFirestore, useUser, useStorage } from "@/firebase";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
@@ -17,7 +17,7 @@ import { firebaseConfig } from "@/firebase/config";
 import Link from "next/link";
 import { errorEmitter } from "@/firebase/error-emitter";
 import { FirestorePermissionError, type SecurityRuleContext } from "@/firebase/errors";
-import { isAiEngineAuthorized } from "@/ai/genkit";
+import { checkAiAvailability } from "./test-actions";
 import { cn } from "@/lib/utils";
 
 export default function TestConnectionPage() {
@@ -26,7 +26,7 @@ export default function TestConnectionPage() {
   const storage = useStorage();
   const { user } = useUser();
   
-  const [status, setStatus] = useState({
+  const [status, setStatus] = useState<Record<string, string>>({
     config: "pending",
     firebase: "pending", 
     firestore: "pending", 
@@ -44,18 +44,11 @@ export default function TestConnectionPage() {
   const runTests = async () => {
     if (loading) return;
     setLoading(true);
-    setStatus({ 
-      config: "testing",
-      firebase: "testing", 
-      firestore: "testing", 
-      storage: "testing",
-      auth: "testing",
-      session: "testing",
-      app_check: "testing",
-      adsense: "testing",
-      ai_integration: "testing",
-      domain_sync: "testing"
-    });
+    
+    // Set all to testing
+    const testingState: Record<string, string> = {};
+    Object.keys(status).forEach(k => testingState[k] = "testing");
+    setStatus(testingState);
 
     // 1. Firebase Config Check
     const hasKey = !!firebaseConfig.apiKey?.startsWith("AIza");
@@ -76,24 +69,18 @@ export default function TestConnectionPage() {
       };
 
       setDoc(testRef, testData, { merge: true })
-        .then(() => {
-          setStatus(prev => ({ ...prev, firestore: "success" }));
-        })
-        .catch(async (e) => {
+        .then(() => setStatus(prev => ({ ...prev, firestore: "success" })))
+        .catch(async () => {
           setStatus(prev => ({ ...prev, firestore: "error" }));
-          errorEmitter.emit('permission-error', new FirestorePermissionError({
-            path: testRef.path,
-            operation: 'write',
-            requestResourceData: testData,
-          } satisfies SecurityRuleContext));
         });
     }
 
     // 4. Integration: Storage Hub
     setStatus(prev => ({ ...prev, storage: !!storage ? "success" : "error" }));
 
-    // 5. Integration: AI Neural Core
-    setStatus(prev => ({ ...prev, ai_integration: isAiEngineAuthorized() ? "success" : "warning" }));
+    // 5. Integration: AI Neural Core (CALLING SERVER ACTION)
+    const aiReady = await checkAiAvailability();
+    setStatus(prev => ({ ...prev, ai_integration: aiReady ? "success" : "warning" }));
 
     // 6. Integration: Branded Domain Sync
     const hostname = typeof window !== 'undefined' ? window.location.hostname : "";
@@ -140,7 +127,7 @@ export default function TestConnectionPage() {
           <div className="space-y-6">
             <Link href="/dashboard" className="flex items-center gap-3 text-[10px] font-black text-muted-foreground hover:text-primary transition-all uppercase tracking-[0.5em] group">
               <div className="p-3 bg-white/5 rounded-2xl group-hover:border-primary/50 border border-transparent transition-all shadow-xl">
-                <ArrowLeft className="w-4 h-4" />
+                <ArrowLeft className="w-5 h-5" />
               </div>
               Back to Neural Hub
             </Link>
@@ -167,25 +154,13 @@ export default function TestConnectionPage() {
                 <h3 className="text-5xl font-bold font-headline uppercase tracking-tight">DNS PROPAGATION ALERT</h3>
              </div>
              <p className="text-2xl text-muted-foreground italic leading-relaxed mb-10 opacity-80 max-w-4xl">
-               The master domain `videomaster-ai.tech` is currently offline. This indicates that the **A-Records** provided by Firebase Hosting have not yet been synchronized in your domain registrar's control panel.
+               The master domain `videomaster-ai.tech` is currently offline. 
              </p>
-             <div className="flex gap-4">
-                <Button className="h-20 px-12 rounded-[2rem] bg-rose-600 hover:bg-rose-700 font-black text-lg gap-4 shadow-xl" asChild>
-                    <Link href="/DNS_FIX_GUIDE.md">View DNS Protocol</Link>
-                </Button>
-                <Button variant="outline" className="h-20 px-12 rounded-[2rem] border-white/10 text-white font-bold text-lg" asChild>
-                    <Link href="/DEPLOY_FIX.md">Deployment Help</Link>
-                </Button>
-             </div>
           </Card>
         )}
 
         <div className="grid lg:grid-cols-4 gap-12">
            <Card className="lg:col-span-3 border-white/5 shadow-2xl bg-[#0a0d14]/80 backdrop-blur-3xl rounded-[5rem] overflow-hidden blue-glow relative">
-             <div className="absolute top-0 right-0 p-20 opacity-5 rotate-12">
-                <Link2 className="w-96 h-96 text-primary animate-spin-slow" />
-             </div>
-             
              <CardHeader className="p-16 border-b border-white/5 relative z-10">
                 <CardTitle className="text-5xl font-headline font-black flex items-center gap-8 text-white uppercase tracking-tight">
                    <div className="p-6 bg-primary/20 rounded-[2.5rem] shadow-2xl shadow-primary/20 border-2 border-primary/30">
@@ -228,54 +203,6 @@ export default function TestConnectionPage() {
                 </Button>
              </CardContent>
            </Card>
-
-           <aside className="space-y-12">
-              <Card className="rounded-[4rem] bg-emerald-500/5 border-2 border-emerald-500/20 p-12 space-y-10 shadow-2xl relative overflow-hidden group">
-                 <div className="absolute -top-10 -right-10 opacity-5 group-hover:rotate-12 transition-transform duration-1000">
-                    <DollarSign className="w-64 h-64 text-emerald-500" />
-                 </div>
-                 <div className="flex flex-col items-center text-center space-y-6 relative z-10">
-                    <div className="p-6 bg-emerald-500/10 rounded-[2.5rem] animate-pulse border-2 border-emerald-500/20 shadow-[0_0_50px_rgba(16,185,129,0.4)]">
-                       <TrendingUp className="w-12 h-12 text-emerald-400" />
-                    </div>
-                    <h4 className="text-4xl font-black font-headline text-white uppercase tracking-tight leading-none">Revenue Node</h4>
-                 </div>
-                 <div className="space-y-8 relative z-10">
-                    <p className="text-lg text-muted-foreground leading-relaxed italic text-center font-medium opacity-80">
-                       Monetization engine is active. AdSense crawler will verify `app-ads.txt` within 2-7 days.
-                    </p>
-                    <Button className="w-full h-20 rounded-[1.8rem] bg-orange-600 hover:bg-orange-700 font-black text-xl gap-4 shadow-2xl shadow-orange-600/40 group" asChild>
-                       <a href="https://adsense.google.com" target="_blank">
-                          Open Dashboard <ExternalLink size={20} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-                       </a>
-                    </Button>
-                 </div>
-              </Card>
-
-              <Card className="rounded-[4rem] bg-primary/5 border border-primary/20 p-12 space-y-8 shadow-xl">
-                 <h4 className="text-xs font-black uppercase tracking-[0.5em] flex items-center gap-4 text-primary">
-                   <span className="p-1"><Info size={16}/></span> Config Registry
-                 </h4>
-                 <div className="space-y-6 pt-4">
-                    <div className="flex justify-between text-[12px] font-black uppercase tracking-widest border-b border-white/5 pb-4">
-                       <span className="text-muted-foreground">Neural Key</span>
-                       <span className={cn(isAiEngineAuthorized() ? "text-emerald-500" : "text-amber-500")}>
-                          {isAiEngineAuthorized() ? "SYNCED" : "PENDING"}
-                       </span>
-                    </div>
-                    <div className="flex justify-between text-[12px] font-black uppercase tracking-widest border-b border-white/5 pb-4">
-                       <span className="text-muted-foreground">App Shield</span>
-                       <span className={cn(firebaseConfig.appCheckSiteKey ? "text-emerald-500" : "text-amber-500")}>
-                          {firebaseConfig.appCheckSiteKey ? "ACTIVE" : "MISSING"}
-                       </span>
-                    </div>
-                    <div className="flex justify-between text-[12px] font-black uppercase tracking-widest">
-                       <span className="text-muted-foreground">CDN Region</span>
-                       <span className="text-primary">GLOBAL</span>
-                    </div>
-                 </div>
-              </Card>
-           </aside>
         </div>
       </main>
     </div>

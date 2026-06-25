@@ -1,10 +1,10 @@
-import type {NextConfig} from 'next';
+import type { NextConfig } from 'next';
 import path from 'path';
 
 /** @type {import('next').NextConfig} */
-const nextConfig: Config = {
-  // ✅ ELITE STATIC EXPORT: Mandatory for Capacitor (Android APK) and Firebase Hosting.
-  output: 'export',
+const nextConfig: NextConfig = {
+  // 🚀 HYBRID ARCHITECTURE: Removed 'output: export' to allow Server Actions.
+  // This is required for Genkit and AI flows to function correctly.
   
   images: {
     loader: 'custom',
@@ -19,7 +19,7 @@ const nextConfig: Config = {
   },
   
   webpack: (config, { isServer }) => {
-    // 🚀 FIRESTORE OPTIMIZATION: Force the use of the browser ESM build even during SSR pass.
+    // 🚀 FIRESTORE OPTIMIZATION
     const firestorePath = path.resolve(__dirname, 'node_modules/@firebase/firestore/dist/index.esm2017.js');
     const shimPath = path.resolve(__dirname, 'src/lib/empty-module.ts');
 
@@ -28,7 +28,7 @@ const nextConfig: Config = {
       'firebase/firestore': firestorePath,
     };
 
-    // 🛡️ BROWSER-SIDE SHIELD: Polyfill Node modules for client-side usage.
+    // 🛡️ BROWSER-SIDE SHIELD: Prevent Webpack from trying to bundle Node modules in the browser.
     if (!isServer) {
       config.resolve.fallback = {
         ...config.resolve.fallback,
@@ -59,7 +59,6 @@ const nextConfig: Config = {
         string_decoder: false,
       };
     } else {
-      // On the server (SSR pass), we alias problematic Node built-ins to our proxy shim.
       config.resolve.alias = {
         ...config.resolve.alias,
         'fs': shimPath,
@@ -78,7 +77,6 @@ const nextConfig: Config = {
   experimental: {
     turbo: {
       resolveAlias: {
-        // Force browser build and shims for Turbopack as well
         'firebase/firestore': './node_modules/@firebase/firestore/dist/index.esm2017.js',
         'async_hooks': './src/lib/empty-module.ts',
         'diagnostics_channel': './src/lib/empty-module.ts',

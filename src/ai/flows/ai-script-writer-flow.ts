@@ -1,6 +1,7 @@
+'use server';
 /**
  * @fileOverview Professional video script writer.
- * ✅ TRANSFORMED: Removed 'use server' for Static Export compatibility.
+ * ✅ CONVERTED TO SERVER ACTION.
  */
 
 import { ai, geminiModel, z } from '@/ai/genkit';
@@ -20,12 +21,23 @@ const ScriptWriterOutputSchema = z.object({
 export type ScriptWriterOutput = z.infer<typeof ScriptWriterOutputSchema>;
 
 export async function generateAiScript(input: ScriptWriterInput): Promise<ScriptWriterOutput> {
-  const { output } = await ai.generate({
-    model: geminiModel,
-    prompt: `Create a viral script for ${input.platform} about "${input.topic}". Tone: ${input.tone || 'energetic'}.`,
-    output: { schema: ScriptWriterOutputSchema },
-  });
-  
-  if (!output) throw new Error('AI returned an empty response.');
-  return output;
+  return scriptWriterFlow(input);
 }
+
+const scriptWriterFlow = ai.defineFlow(
+  {
+    name: 'scriptWriterFlow',
+    inputSchema: ScriptWriterInputSchema,
+    outputSchema: ScriptWriterOutputSchema,
+  },
+  async (input) => {
+    const { output } = await ai.generate({
+      model: geminiModel,
+      prompt: `Create a viral script for ${input.platform} about "${input.topic}". Tone: ${input.tone || 'energetic'}.`,
+      output: { schema: ScriptWriterOutputSchema },
+    });
+    
+    if (!output) throw new Error('AI returned an empty response.');
+    return output;
+  }
+);
