@@ -4,38 +4,38 @@
 
 @layer base {
   :root {
-    /* Premium Purple & Pink Palette */
-    --background: 260 30% 4%; /* Deep Obsidian */
+    /* 🏆 ELITE GOLD & OBSIDIAN PALETTE */
+    --background: 0 0% 2%; /* Deepest Obsidian */
     --foreground: 0 0% 100%;
     
-    --card: 260 30% 6%;
+    --card: 0 0% 4%;
     --card-foreground: 0 0% 100%;
     
-    --popover: 260 30% 3%;
+    --popover: 0 0% 3%;
     --popover-foreground: 0 0% 100%;
     
-    /* #6D28D9 - Premium Purple */
-    --primary: 263 70% 50%;
-    --primary-foreground: 0 0% 100%;
+    /* #D4AF37 - Prestige Gold */
+    --primary: 46 65% 52%;
+    --primary-foreground: 0 0% 0%;
     
-    /* #8B5CF6 - Secondary Purple */
-    --secondary: 258 90% 66%;
-    --secondary-foreground: 0 0% 100%;
+    /* #F3E5AB - Soft Gold */
+    --secondary: 48 70% 81%;
+    --secondary-foreground: 0 0% 0%;
     
-    /* #EC4899 - Accent Pink */
-    --accent: 330 81% 60%;
-    --accent-foreground: 0 0% 100%;
+    /* #FFFFFF - Brilliant White */
+    --accent: 0 0% 100%;
+    --accent-foreground: 0 0% 0%;
     
-    --muted: 260 20% 12%;
-    --muted-foreground: 260 10% 70%;
+    --muted: 0 0% 12%;
+    --muted-foreground: 0 0% 60%;
     
     --destructive: 0 84% 60%;
     --destructive-foreground: 210 40% 98%;
     
-    --border: 263 70% 50% / 0.2;
-    --input: 263 70% 50% / 0.1;
-    --ring: 263 70% 50%;
-    --radius: 2.5rem;
+    --border: 46 65% 52% / 0.15;
+    --input: 46 65% 52% / 0.1;
+    --ring: 46 65% 52%;
+    --radius: 3rem;
   }
 }
 
@@ -44,10 +44,10 @@
     @apply border-border outline-none;
   }
   body {
-    @apply bg-[#050314] text-foreground font-body antialiased selection:bg-primary/40;
+    @apply bg-background text-foreground font-body antialiased selection:bg-primary/40;
     background-image: 
-      radial-gradient(at 0% 0%, hsla(263, 70%, 50%, 0.15) 0px, transparent 50%),
-      radial-gradient(at 100% 100%, hsla(330, 81%, 60%, 0.08) 0px, transparent 50%);
+      radial-gradient(at 0% 0%, hsla(46, 65%, 52%, 0.1) 0px, transparent 50%),
+      radial-gradient(at 100% 100%, hsla(0, 0%, 100%, 0.03) 0px, transparent 50%);
     background-attachment: fixed;
   }
   h1, h2, h3, h4, h5, h6 {
@@ -56,32 +56,32 @@
 }
 
 .glass-panel {
-  @apply bg-white/[0.03] backdrop-blur-3xl border border-white/5 shadow-2xl;
+  @apply bg-white/[0.02] backdrop-blur-3xl border border-white/5 shadow-2xl;
 }
 
 .premium-card {
-  @apply glass-panel rounded-[2.5rem] transition-all duration-500 hover:border-primary/40 hover:bg-white/[0.05] hover:scale-[1.02];
+  @apply glass-panel rounded-[3rem] transition-all duration-500 hover:border-primary/40 hover:bg-white/[0.04] hover:scale-[1.02];
 }
 
-.purple-glow {
-  box-shadow: 0 0 80px -20px hsla(263, 70%, 50%, 0.35);
+.gold-glow {
+  box-shadow: 0 0 80px -20px hsla(46, 65%, 52%, 0.3);
 }
 
 .shadow-glow {
-  box-shadow: 0 0 40px hsla(263, 70%, 50%, 0.45);
+  box-shadow: 0 0 40px hsla(46, 65%, 52%, 0.4);
 }
 
 .text-gradient {
-  @apply bg-clip-text text-transparent bg-gradient-to-r from-[#6D28D9] via-[#8B5CF6] to-[#EC4899];
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-[#D4AF37] via-[#F3E5AB] to-[#D4AF37];
 }
 
 @keyframes float {
   0%, 100% { transform: translateY(0px) rotate(0deg); }
-  50% { transform: translateY(-15px) rotate(1deg); }
+  50% { transform: translateY(-10px) rotate(0.5deg); }
 }
 
 .animate-float {
-  animation: float 8s ease-in-out infinite;
+  animation: float 6s ease-in-out infinite;
 }
 
 .scrollbar-hide::-webkit-scrollbar {
@@ -90,4 +90,8 @@
 .scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+@keyframes shimmer {
+  100% { transform: translateX(100%); }
 }
