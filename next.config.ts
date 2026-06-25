@@ -1,7 +1,7 @@
 import type {NextConfig} from 'next';
 
 const nextConfig: NextConfig = {
-  // ✅ PRODUCTION OPTIMIZED: Static export for Capacitor and Firebase Hosting.
+  // ✅ PURE STATIC EXPORT: Enabled for Capacitor and Firebase Hosting compatibility.
   output: 'export',
   images: {
     unoptimized: true, 
@@ -25,13 +25,6 @@ const nextConfig: NextConfig = {
         pathname: '/**',
       },
     ],
-  },
-  // Increase server action timeout for long-running AI generations (Video/Audio)
-  experimental: {
-    serverActions: {
-      bodySizeLimit: '10mb',
-      allowedOrigins: ['localhost:3000', 'studio-9489287013-59986.web.app', 'videomaster-ai.tech'],
-    },
   },
   typescript: {
     ignoreBuildErrors: true,

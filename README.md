@@ -1,4 +1,4 @@
-m# 🚀 VideoMaster AI: Elite Production Hub
+mdeplot# 🚀 VideoMaster AI: Elite Production Hub
 
 Welcome to your professional AI Video Studio. This application is powered by **App Prototyper** in Firebase Studio, optimized for high-speed viral content creation using the world's most advanced AI engines.
 
