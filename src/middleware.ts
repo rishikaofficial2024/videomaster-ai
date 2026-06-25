@@ -1,6 +1,7 @@
 /**
  * 🛠️ FIXED: Middleware neutralized to support "output: export" for Capacitor & Static Hosting.
- * Do not add middleware logic here as it will break the production build.
+ * To use Middleware, "output: export" must be removed from next.config.ts.
+ * But since we need static export for the Android APK, this file is kept empty.
  */
 export const dynamic = 'force-static';
 export default function middleware() {

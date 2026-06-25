@@ -27,7 +27,7 @@ function LoginForm() {
   
   const router = useRouter();
   const searchParams = useSearchParams();
-  // 🔥 REDIRECT TO EDITOR BY DEFAULT
+  // 🔥 REDIRECT TO EDITOR BY DEFAULT FOR PRODUCTION SPEED
   const returnUrl = searchParams.get("returnUrl") || "/editor";
   const { toast } = useToast();
   const auth = useAuth();

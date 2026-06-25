@@ -68,7 +68,6 @@ function EditorContent() {
       setProjectId(projectIdFromUrl);
       setIsNewProject(false);
     } else {
-      // 🔥 Generate a deterministic project ID based on timestamp to avoid hydration mismatch
       const newId = "prj-" + Date.now().toString(36).substring(4);
       setProjectId(newId);
     }
@@ -209,10 +208,16 @@ function EditorContent() {
           </div>
         </div>
 
-        <Button className="h-14 px-10 rounded-xl font-black uppercase tracking-[0.2em] bg-primary shadow-glow text-[11px] gap-3">
-          <Download className="w-5 h-5" />
-          Export Project (FREE)
-        </Button>
+        <div className="flex items-center gap-4">
+           <div className="hidden md:flex items-center gap-2 px-4 py-2 bg-white/5 rounded-xl border border-white/5">
+              <Smartphone className="w-4 h-4 text-primary" />
+              <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Mobile Bridge Ready</span>
+           </div>
+           <Button className="h-14 px-10 rounded-xl font-black uppercase tracking-[0.2em] bg-primary shadow-glow text-[11px] gap-3">
+            <Download className="w-5 h-5" />
+            Export Project (FREE)
+          </Button>
+        </div>
       </div>
 
       <div className="flex-1 flex overflow-hidden">
@@ -243,12 +248,12 @@ function EditorContent() {
                 <div className="space-y-6">
                    <p className="text-[10px] font-black uppercase tracking-widest text-primary opacity-60">Narrative Strategist</p>
                    <textarea 
-                     className="w-full bg-black/40 border border-white/10 rounded-2xl p-5 text-sm h-32 outline-none" 
+                     className="w-full bg-black/40 border border-white/10 rounded-2xl p-5 text-sm h-32 outline-none focus:border-primary/40 transition-all" 
                      placeholder="What's your viral topic?" 
                      value={scriptTopic} 
                      onChange={(e) => setScriptTopic(e.target.value)} 
                    />
-                   <Button className="w-full h-14 rounded-2xl font-black text-[10px] uppercase tracking-widest bg-primary/10 text-primary" onClick={handleGenerateScript} disabled={isProcessing}>
+                   <Button className="w-full h-14 rounded-2xl font-black text-[10px] uppercase tracking-widest bg-primary/10 text-primary hover:bg-primary/20" onClick={handleGenerateScript} disabled={isProcessing}>
                       {isProcessing ? <Loader2 className="w-4 h-4 animate-spin mr-3" /> : <Wand2 className="w-4 h-4 mr-3" />}
                       Generate Script
                    </Button>
@@ -257,12 +262,12 @@ function EditorContent() {
                 <div className="space-y-6">
                    <p className="text-[10px] font-black uppercase tracking-widest text-indigo-400 opacity-60">Motion Engine</p>
                    <textarea 
-                     className="w-full bg-black/40 border border-white/10 rounded-2xl p-5 text-sm h-32 outline-none" 
+                     className="w-full bg-black/40 border border-white/10 rounded-2xl p-5 text-sm h-32 outline-none focus:border-indigo-400/40 transition-all" 
                      placeholder="Describe cinematic scene..." 
                      value={videoPrompt} 
                      onChange={(e) => setVideoPrompt(e.target.value)} 
                    />
-                   <Button className="w-full h-14 rounded-2xl font-black text-[10px] uppercase tracking-widest bg-indigo-600 shadow-xl" onClick={handleGenerateVideo} disabled={isProcessing}>
+                   <Button className="w-full h-14 rounded-2xl font-black text-[10px] uppercase tracking-widest bg-indigo-600 shadow-xl hover:bg-indigo-700" onClick={handleGenerateVideo} disabled={isProcessing}>
                       {isProcessing ? <Loader2 className="w-4 h-4 animate-spin mr-3" /> : <VideoIcon className="w-4 h-4 mr-3" />}
                       Synthesize Clip
                    </Button>
@@ -273,7 +278,7 @@ function EditorContent() {
            {activeTab === 'media' && (
              <div className="space-y-8 animate-in fade-in slide-in-from-left-4">
                 <input type="file" ref={fileInputRef} className="hidden" accept="video/*,image/*,audio/*" onChange={handleFileUpload} />
-                <Button className="w-full h-44 border-2 border-dashed border-white/10 rounded-3xl bg-white/[0.02] flex flex-col gap-6" onClick={() => fileInputRef.current?.click()}>
+                <Button className="w-full h-44 border-2 border-dashed border-white/10 rounded-3xl bg-white/[0.02] flex flex-col gap-6 hover:bg-white/[0.05] transition-all" onClick={() => fileInputRef.current?.click()}>
                    <Upload className="w-8 h-8 text-muted-foreground" />
                    <span className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Inject Asset</span>
                 </Button>
@@ -281,7 +286,7 @@ function EditorContent() {
                    {mediaAssets.map((asset) => (
                      <div key={asset.id} className="aspect-video rounded-2xl bg-black border border-white/10 overflow-hidden relative group cursor-pointer">
                         {asset.type === 'video' ? <video src={asset.url} className="w-full h-full object-cover opacity-60" /> : <img src={asset.url} className="w-full h-full object-cover opacity-60" alt={asset.name} />}
-                        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 bg-black/60">
+                        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 bg-black/60 transition-all">
                            <Plus className="w-6 h-6 text-white" />
                         </div>
                      </div>
@@ -365,6 +370,14 @@ function EditorContent() {
                     <Crown className="w-3 h-3 text-primary fill-current" />
                  </button>
               </div>
+
+              <div className="p-6 bg-emerald-500/5 border border-emerald-500/10 rounded-3xl">
+                 <div className="flex items-center gap-3 text-emerald-400 mb-2">
+                    <RefreshCw size={14} className="animate-spin-slow" />
+                    <span className="text-[10px] font-black uppercase tracking-widest">Live Cloud Sync</span>
+                 </div>
+                 <p className="text-[11px] text-muted-foreground italic">Project is automatically saved to your private creative node.</p>
+              </div>
            </div>
         </div>
       </div>
@@ -373,7 +386,7 @@ function EditorContent() {
         <div className="fixed inset-0 z-[100] bg-black/98 backdrop-blur-[100px] flex items-center justify-center">
            <div className="text-center space-y-12 max-w-xl">
               <Loader2 className="w-16 h-16 animate-spin text-primary mx-auto" />
-              <h2 className="text-4xl font-headline font-black text-white uppercase">GEMINI NEURAL PROCESSING</h2>
+              <h2 className="text-4xl font-headline font-black text-white uppercase tracking-tighter">GEMINI NEURAL PROCESSING</h2>
            </div>
         </div>
       )}
