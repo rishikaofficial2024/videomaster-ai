@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Wand2, Sparkles, Youtube, Instagram, Loader2, Copy, Check, MessageSquare } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import Link from "next/link";
 
 export default function AiScriptWriter() {
   const [topic, setTopic] = useState("");
