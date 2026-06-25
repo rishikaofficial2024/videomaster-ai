@@ -4,94 +4,80 @@
 
 @layer base {
   :root {
-    /* 🏆 ELITE GOLD & OBSIDIAN PALETTE */
-    --background: 0 0% 2%; /* Deepest Obsidian */
-    --foreground: 0 0% 100%;
+    --background: 210 40% 98%;
+    --foreground: 222 47% 11%;
     
-    --card: 0 0% 4%;
-    --card-foreground: 0 0% 100%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
     
-    --popover: 0 0% 3%;
-    --popover-foreground: 0 0% 100%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
     
-    /* #D4AF37 - Prestige Gold */
-    --primary: 46 65% 52%;
-    --primary-foreground: 0 0% 0%;
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
     
-    /* #F3E5AB - Soft Gold */
-    --secondary: 48 70% 81%;
-    --secondary-foreground: 0 0% 0%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222 47% 11%;
     
-    /* #FFFFFF - Brilliant White */
-    --accent: 0 0% 100%;
-    --accent-foreground: 0 0% 0%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
     
-    --muted: 0 0% 12%;
-    --muted-foreground: 0 0% 60%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222 47% 11%;
     
-    --destructive: 0 84% 60%;
+    --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
     
-    --border: 46 65% 52% / 0.15;
-    --input: 46 65% 52% / 0.1;
-    --ring: 46 65% 52%;
-    --radius: 3rem;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221.2 83.2% 53.3%;
+    --radius: 1rem;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 224.3 76.3% 48%;
   }
 }
 
 @layer base {
   * {
-    @apply border-border outline-none;
+    @apply border-border;
   }
   body {
-    @apply bg-background text-foreground font-body antialiased selection:bg-primary/40;
-    background-image: 
-      radial-gradient(at 0% 0%, hsla(46, 65%, 52%, 0.1) 0px, transparent 50%),
-      radial-gradient(at 100% 100%, hsla(0, 0%, 100%, 0.03) 0px, transparent 50%);
-    background-attachment: fixed;
-  }
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-headline tracking-tighter;
+    @apply bg-background text-foreground font-sans antialiased;
   }
 }
 
-.glass-panel {
-  @apply bg-white/[0.02] backdrop-blur-3xl border border-white/5 shadow-2xl;
+.editor-timeline-track {
+  @apply relative h-20 w-full bg-secondary/50 rounded-lg overflow-hidden border border-dashed border-muted-foreground/20 flex items-center px-4;
 }
 
-.premium-card {
-  @apply glass-panel rounded-[3rem] transition-all duration-500 hover:border-primary/40 hover:bg-white/[0.04] hover:scale-[1.02];
-}
-
-.gold-glow {
-  box-shadow: 0 0 80px -20px hsla(46, 65%, 52%, 0.3);
-}
-
-.shadow-glow {
-  box-shadow: 0 0 40px hsla(46, 65%, 52%, 0.4);
-}
-
-.text-gradient {
-  @apply bg-clip-text text-transparent bg-gradient-to-r from-[#D4AF37] via-[#F3E5AB] to-[#D4AF37];
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0px) rotate(0deg); }
-  50% { transform: translateY(-10px) rotate(0.5deg); }
-}
-
-.animate-float {
-  animation: float 6s ease-in-out infinite;
-}
-
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
-}
-.scrollbar-hide {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-@keyframes shimmer {
-  100% { transform: translateX(100%); }
+.big-icon-button {
+  @apply flex flex-col items-center justify-center p-4 rounded-2xl bg-card border border-border hover:border-primary hover:bg-primary/5 transition-all gap-2 text-center;
 }
