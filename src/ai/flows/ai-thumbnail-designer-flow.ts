@@ -1,7 +1,6 @@
-'use server';
 /**
  * @fileOverview Cinematic video thumbnail designer.
- * ✅ CONVERTED TO SERVER ACTION.
+ * ✅ TRANSFORMED: Removed 'use server' for Static Export compatibility.
  */
 
 import { ai, imagenModel, z } from '@/ai/genkit';
@@ -18,34 +17,23 @@ const ThumbnailDesignerOutputSchema = z.object({
 export type ThumbnailDesignerOutput = z.infer<typeof ThumbnailDesignerOutputSchema>;
 
 export async function generateAiThumbnail(input: ThumbnailDesignerInput): Promise<ThumbnailDesignerOutput> {
-  return thumbnailDesignerFlow(input);
-}
-
-const thumbnailDesignerFlow = ai.defineFlow(
-  {
-    name: 'thumbnailDesignerFlow',
-    inputSchema: ThumbnailDesignerInputSchema,
-    outputSchema: ThumbnailDesignerOutputSchema,
-  },
-  async (input) => {
-    try {
-      const { media } = await ai.generate({
-        model: imagenModel,
-        prompt: `Cinematic professional video thumbnail: ${input.prompt}. 4k resolution, professional photography.`,
-        config: {
-          responseModalities: ['IMAGE']
-        }
-      });
-
-      if (media?.url) {
-        return { thumbnailDataUri: media.url, isAiGenerated: true };
+  try {
+    const { media } = await ai.generate({
+      model: imagenModel,
+      prompt: `Cinematic professional video thumbnail: ${input.prompt}. 4k resolution, professional photography.`,
+      config: {
+        responseModalities: ['IMAGE']
       }
-      throw new Error('No media generated.');
+    });
 
-    } catch (e: any) {
-      console.error("Thumbnail Generation Error:", e.message);
-      const fallbackUrl = `https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1200&q=80`;
-      return { thumbnailDataUri: fallbackUrl, isAiGenerated: false };
+    if (media?.url) {
+      return { thumbnailDataUri: media.url, isAiGenerated: true };
     }
+    throw new Error('No media generated.');
+
+  } catch (e: any) {
+    console.error("Thumbnail Generation Error:", e.message);
+    const fallbackUrl = `https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1200&q=80`;
+    return { thumbnailDataUri: fallbackUrl, isAiGenerated: false };
   }
-);
+}

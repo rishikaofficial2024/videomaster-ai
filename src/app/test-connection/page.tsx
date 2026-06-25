@@ -8,17 +8,13 @@ import {
   CheckCircle2, XCircle, Loader2, Database, 
   Zap, ArrowLeft, ShieldCheck, 
   Activity, Globe, Info, Cpu, AlertTriangle, 
-  Tornado, Globe2, Link2, Blocks, DollarSign, RefreshCw,
-  ExternalLink, Layout
+  RefreshCw, DollarSign, Blocks, Layout
 } from "lucide-react";
 import { useAuth, useFirestore, useUser, useStorage } from "@/firebase";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { firebaseConfig } from "@/firebase/config";
 import Link from "next/link";
-import { errorEmitter } from "@/firebase/error-emitter";
-import { FirestorePermissionError, type SecurityRuleContext } from "@/firebase/errors";
-import { checkAiAvailability } from "./test-actions";
-import { cn } from "@/lib/utils";
+import { isAiEngineAuthorized } from "@/ai/genkit";
 
 export default function TestConnectionPage() {
   const auth = useAuth();
@@ -40,6 +36,11 @@ export default function TestConnectionPage() {
   });
   const [loading, setLoading] = useState(false);
   const [isDnsError, setIsDnsError] = useState(false);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const runTests = async () => {
     if (loading) return;
@@ -78,8 +79,8 @@ export default function TestConnectionPage() {
     // 4. Integration: Storage Hub
     setStatus(prev => ({ ...prev, storage: !!storage ? "success" : "error" }));
 
-    // 5. Integration: AI Neural Core (CALLING SERVER ACTION)
-    const aiReady = await checkAiAvailability();
+    // 5. Integration: AI Neural Core (Client-side key check)
+    const aiReady = isAiEngineAuthorized();
     setStatus(prev => ({ ...prev, ai_integration: aiReady ? "success" : "warning" }));
 
     // 6. Integration: Branded Domain Sync
@@ -105,6 +106,8 @@ export default function TestConnectionPage() {
   useEffect(() => {
     if (user && db) runTests();
   }, [user, db]);
+
+  if (!isClient) return null;
 
   const StatusIcon = ({ state }: { state: string }) => {
     if (state === "testing") return <Loader2 className="animate-spin text-primary" size={24} />;
@@ -132,7 +135,7 @@ export default function TestConnectionPage() {
               Back to Neural Hub
             </Link>
             <h1 className="text-7xl md:text-9xl font-headline font-bold tracking-tighter text-white leading-none uppercase">Integration <span className="text-primary italic">Hub.</span></h1>
-            <p className="text-muted-foreground text-2xl font-medium italic opacity-60">Full-scale diagnostic suite for creative nodes, AI, and monetization engine.</p>
+            <p className="text-muted-foreground text-2xl font-medium italic opacity-60">Diagnostic suite optimized for Elite Production Nodes.</p>
           </div>
           
           <div className="flex items-center gap-6 bg-[#0a0d14]/80 p-8 rounded-[3rem] border border-white/5 backdrop-blur-3xl shadow-2xl">
@@ -146,18 +149,6 @@ export default function TestConnectionPage() {
              </div>
           </div>
         </header>
-
-        {isDnsError && (
-          <Card className="rounded-[4rem] bg-rose-500/10 border-2 border-rose-500/30 p-12 animate-in fade-in slide-in-from-top-4 duration-500 shadow-2xl">
-             <div className="flex items-center gap-6 text-rose-500 mb-6">
-                <Globe2 className="w-16 h-16" />
-                <h3 className="text-5xl font-bold font-headline uppercase tracking-tight">DNS PROPAGATION ALERT</h3>
-             </div>
-             <p className="text-2xl text-muted-foreground italic leading-relaxed mb-10 opacity-80 max-w-4xl">
-               The master domain `videomaster-ai.tech` is currently offline. 
-             </p>
-          </Card>
-        )}
 
         <div className="grid lg:grid-cols-4 gap-12">
            <Card className="lg:col-span-3 border-white/5 shadow-2xl bg-[#0a0d14]/80 backdrop-blur-3xl rounded-[5rem] overflow-hidden blue-glow relative">

@@ -2,13 +2,13 @@ import { genkit } from 'genkit';
 import { googleAI } from '@genkit-ai/google-genai';
 
 /**
- * 🧠 Genkit AI Initialization (Server-Side Only).
- * 🛡️ This file should ONLY be imported by files marked with 'use server'.
+ * 🧠 Genkit AI Initialization (Universal Compatibility).
+ * Optimized for Static Export and Browser usage with Polyfills.
  */
 
 const getApiKey = () => {
-  // Strict server-side environment check
-  const rawKey = process.env.GEMINI_API_KEY || process.env.NEXT_PUBLIC_GEMINI_API_KEY || '';
+  // Check browser-available environment variables
+  const rawKey = typeof process !== 'undefined' ? (process.env.NEXT_PUBLIC_GEMINI_API_KEY || "") : "";
   return rawKey.trim().replace(/^["']|["']$/g, '').trim();
 };
 
@@ -23,7 +23,7 @@ export const ai = genkit({
 });
 
 /**
- * 🛠️ CONFIG CHECK UTILITY (Server-Side)
+ * 🛠️ CONFIG CHECK UTILITY
  */
 export const isAiEngineAuthorized = () => {
   return !!apiKey && apiKey.length > 20;
