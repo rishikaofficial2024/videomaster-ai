@@ -59,7 +59,7 @@ function EditorContent() {
 
   useEffect(() => {
     setMounted(true);
-    // ✅ HYDRATION SHIELD: Ensure random generation only happens on client mount
+    // ✅ HYDRATION SHIELD: Ensure ID generation only happens on client mount
     if (projectIdFromUrl) {
       setProjectId(projectIdFromUrl);
       setIsNewProject(false);

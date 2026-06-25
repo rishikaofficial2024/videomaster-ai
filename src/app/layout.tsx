@@ -6,7 +6,7 @@ import { FirebaseClientProvider } from '@/firebase';
 export const metadata: Metadata = {
   title: 'VideoMaster AI - India\'s #1 Professional AI Video Studio',
   description: 'Create viral AI videos 10x faster with Gemini Fast AI. Professional script writing, cinematic video generation, and 4K thumbnail design.',
-  keywords: ['AI Video Maker', 'Viral Script Writer', 'VideoMaster AI Tech', 'Gemini AI Video', 'YouTube Shorts AI'],
+  keywords: ['AI Video Maker', 'Viral Script Writer', 'VideoMaster AI Tech', 'Gemini AI Video', 'YouTube Shorts AI', 'Video Editor India'],
   metadataBase: new URL('https://videomaster-ai.tech'),
   alternates: { canonical: '/' },
   verification: {
@@ -20,6 +20,12 @@ export const metadata: Metadata = {
     locale: 'en_IN',
     type: 'website',
     images: [{ url: 'https://picsum.photos/seed/videomaster-og/1200/630', width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'VideoMaster AI Studio',
+    description: 'High-speed viral video generation powered by Google AI.',
+    images: ['https://picsum.photos/seed/videomaster-tw/1200/630'],
   },
 };
 
