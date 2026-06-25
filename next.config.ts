@@ -3,7 +3,8 @@ import path from 'path';
 
 /** @type {import('next').NextConfig} */
 const nextConfig: NextConfig = {
-  output: 'export',
+  // 🛡️ DYNAMIC MODE: Removed 'output: export' to support Server Actions for AI flows.
+  // This resolves build-time bundling of Node.js modules into client code.
   
   images: {
     loader: 'custom',

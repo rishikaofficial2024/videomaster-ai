@@ -1,6 +1,7 @@
+'use server';
 /**
  * @fileOverview AI Growth Assistant.
- * ✅ TRANSFORMED: Client-compatible for Static Export.
+ * ✅ REVERTED: Now a Server Action.
  */
 
 import { ai, geminiModel, z, isAiEngineAuthorized } from '@/ai/genkit';
@@ -19,7 +20,7 @@ export type AiChatOutput = z.infer<typeof AiChatOutputSchema>;
 export async function sendAiChatMessage(input: AiChatInput): Promise<AiChatOutput> {
   if (!isAiEngineAuthorized()) {
     return { 
-      response: "⚠️ CONFIGURATION REQUIRED: Please set NEXT_PUBLIC_GEMINI_API_KEY in your environment variables." 
+      response: "⚠️ CONFIGURATION REQUIRED: Please set GEMINI_API_KEY in your server environment variables." 
     };
   }
 

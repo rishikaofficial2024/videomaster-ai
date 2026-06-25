@@ -1,6 +1,7 @@
+'use server';
 /**
  * @fileOverview Elite Text-to-Video generation engine.
- * ✅ TRANSFORMED: Removed 'use server' for Static Export compatibility.
+ * ✅ REVERTED: Now a Server Action.
  */
 
 import { ai, veoModel, z } from '@/ai/genkit';

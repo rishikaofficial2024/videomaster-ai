@@ -1,6 +1,7 @@
+'use server';
 /**
  * @fileOverview Cinematic video thumbnail designer.
- * ✅ TRANSFORMED: Removed 'use server' for Static Export compatibility.
+ * ✅ REVERTED: Now a Server Action.
  */
 
 import { ai, imagenModel, z } from '@/ai/genkit';

@@ -1,6 +1,7 @@
+'use server';
 /**
  * @fileOverview An AI agent that generates professional voiceovers.
- * ✅ TRANSFORMED: Removed 'use server' for Static Export compatibility.
+ * ✅ REVERTED: Now a Server Action.
  */
 
 import { ai, z, ttsModel } from '@/ai/genkit';

@@ -14,7 +14,7 @@ import { useAuth, useFirestore, useUser, useStorage } from "@/firebase";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { firebaseConfig } from "@/firebase/config";
 import Link from "next/link";
-import { isAiEngineAuthorized } from "@/ai/genkit";
+import { checkAiAvailability } from "./test-actions";
 
 export default function TestConnectionPage() {
   const auth = useAuth();
@@ -79,9 +79,13 @@ export default function TestConnectionPage() {
     // 4. Integration: Storage Hub
     setStatus(prev => ({ ...prev, storage: !!storage ? "success" : "error" }));
 
-    // 5. Integration: AI Neural Core (Client-side key check)
-    const aiReady = isAiEngineAuthorized();
-    setStatus(prev => ({ ...prev, ai_integration: aiReady ? "success" : "warning" }));
+    // 5. Integration: AI Neural Core (Server Action bridge)
+    try {
+      const aiReady = await checkAiAvailability();
+      setStatus(prev => ({ ...prev, ai_integration: aiReady ? "success" : "warning" }));
+    } catch (e) {
+      setStatus(prev => ({ ...prev, ai_integration: "error" }));
+    }
 
     // 6. Integration: Branded Domain Sync
     const hostname = typeof window !== 'undefined' ? window.location.hostname : "";

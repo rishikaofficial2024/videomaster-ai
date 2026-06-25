@@ -2,13 +2,13 @@ import { genkit } from 'genkit';
 import { googleAI } from '@genkit-ai/google-genai';
 
 /**
- * 🧠 Genkit AI Initialization (Universal Compatibility).
- * Optimized for Static Export and Browser usage with Polyfills.
+ * 🧠 Genkit AI Initialization (Server-Side Only).
+ * Hardened to prevent Node.js modules from leaking into client bundles.
  */
 
 const getApiKey = () => {
-  // Check browser-available environment variables
-  const rawKey = typeof process !== 'undefined' ? (process.env.NEXT_PUBLIC_GEMINI_API_KEY || "") : "";
+  // Use server-side environment variable only
+  const rawKey = process.env.GEMINI_API_KEY || "";
   return rawKey.trim().replace(/^["']|["']$/g, '').trim();
 };
 

@@ -1,6 +1,7 @@
+'use server';
 /**
  * @fileOverview Professional video script writer.
- * ✅ TRANSFORMED: Removed 'use server' for Static Export compatibility.
+ * ✅ REVERTED: Now a Server Action.
  */
 
 import { ai, geminiModel, z } from '@/ai/genkit';

@@ -1,6 +1,7 @@
+'use server';
 /**
  * @fileOverview AI agent that suggests optimized hashtags, titles, and descriptions.
- * ✅ TRANSFORMED: Removed 'use server' for Static Export compatibility.
+ * ✅ REVERTED: Now a Server Action.
  */
 
 import { ai, geminiModel, z } from '@/ai/genkit';
