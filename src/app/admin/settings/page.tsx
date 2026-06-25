@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState } from "react";
@@ -14,6 +13,8 @@ import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { useUser, useFirestore } from "@/firebase";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { errorEmitter } from "@/firebase/error-emitter";
+import { FirestorePermissionError, type SecurityRuleContext } from "@/firebase/errors";
 
 const OWNER_EMAIL = "rinkukumarpaswan1796@gmail.com";
 
@@ -25,18 +26,30 @@ export default function AdminSettings() {
   const isMaster = user?.email === OWNER_EMAIL;
 
   const logAction = (action: string, details: string) => {
+    if (!db || !user) return;
     const logRef = collection(db, "admin_logs");
-    addDoc(logRef, {
+    const logData = {
       adminId: user?.uid,
       adminEmail: user?.email,
       action,
       details,
       timestamp: serverTimestamp()
-    }).catch(() => {});
+    };
+    
+    // Pattern 1: Non-blocking mutation with contextual error emission
+    addDoc(logRef, logData)
+      .catch(async (err) => {
+        errorEmitter.emit('permission-error', new FirestorePermissionError({
+          path: 'admin_logs',
+          operation: 'create',
+          requestResourceData: logData
+        } satisfies SecurityRuleContext));
+      });
   };
 
   const handleSave = () => {
     setSaving(true);
+    // Simulate propagation
     setTimeout(() => {
       toast({ title: "Matrix Settings Propagation Complete", description: "All creative nodes have been synchronized with the new master protocols." });
       logAction("Settings Mutation", "Global system feature toggles updated.");

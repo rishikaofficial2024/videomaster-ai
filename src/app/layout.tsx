@@ -13,7 +13,8 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://videomaster-ai.tech'),
   alternates: { canonical: '/' },
   verification: {
-    google: 'google-site-verification-id-placeholder', 
+    // ACTION: Paste your Google Search Console verification code here
+    google: 'google-site-verification-final-sync-id', 
   },
   openGraph: {
     title: 'VideoMaster AI - The Ultimate Neural Production Studio',
