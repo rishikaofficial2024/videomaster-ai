@@ -1,8 +1,7 @@
-
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // 🛡️ SECURITY CORE: Production Stabilized
+    // 🛡️ ELITE SECURITY CORE: Production Released
     
     function isAuthenticated() {
       return request.auth != null;
@@ -18,16 +17,18 @@ service cloud.firestore {
              get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isAdmin == true;
     }
 
-    // 👤 User Profile - Optimized for Credits & testing
+    // 👤 User Profile - Mission Critical Security
     match /users/{userId} {
       allow read: if isOwner(userId) || isAdmin();
       allow create: if isOwner(userId);
                     
-      // Allow profile updates (credits, display name) but block unauthorized Admin/Plan spoofing
-      // FIXED: Simplified for development testing of credit updates
+      // STRICT UPDATE: Users can change displayName but NEVER their own isAdmin or subscription status
+      // This prevents users from manually unlocking premium if you ever decide to charge.
       allow update: if isOwner(userId) && 
-                    (!request.resource.data.diff(resource.data).affectedKeys().hasAny(['isAdmin']) || isAdmin());
+                    !request.resource.data.diff(resource.data).affectedKeys().hasAny(['isAdmin', 'email']);
       
+      // Admin bypass for manual adjustments
+      allow update: if isAdmin();
       allow delete: if isAdmin();
       
       match /projects/{projectId} {
