@@ -82,7 +82,7 @@ function EditorContent() {
     } else {
       /**
        * 🛠️ LEAD DEVELOPER FIX: Hydration safe ID generation.
-       * Generating random IDs during render causes server-client mismatch.
+       * Generating IDs outside of useEffect causes server/client mismatch.
        */
       const newId = "prj-" + Math.random().toString(36).substring(7);
       setProjectId(newId);

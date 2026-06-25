@@ -31,13 +31,19 @@ export default function Dashboard() {
   const { data: profile } = useDoc(userProfileRef);
 
   useEffect(() => {
+    /**
+     * 🔓 FREE UNLOCKED PROTOCOL:
+     * Automatically ensure all users have Pro status and unlimited credits.
+     */
     if (mounted && userProfileRef && profile && (!profile.isPremium || profile.credits < 10000)) {
       updateDoc(userProfileRef, {
         isPremium: true,
         subscriptionPlan: "pro",
         credits: 999999,
         updatedAt: new Date().toISOString()
-      }).catch(() => {});
+      }).catch(() => {
+        // Silent fail for offline/permission sync
+      });
     }
   }, [mounted, profile, userProfileRef]);
 
